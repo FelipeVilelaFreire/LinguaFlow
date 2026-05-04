@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #111827;
+  background: #f7f7f4;
+  --area-primary: #047857;
+  --area-primary-dark: #065f46;
+  --area-primary-soft: #d1fae5;
+  --area-accent: #facc15;
+  --area-accent-soft: #fef9c3;
+  --area-page: #f8fafc;
+  --area-text-on-primary: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  35% {
+    transform: translateX(-5px);
+  }
+  70% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes areaSwitch {
+  0% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.98) translateY(-8px);
+  }
+}
+
+@keyframes areaSweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  55% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(110%);
+  }
+}
+
+@keyframes areaPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.72;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
