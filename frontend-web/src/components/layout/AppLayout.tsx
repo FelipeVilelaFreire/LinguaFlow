@@ -1,8 +1,10 @@
-import { CheckCircle2, ChevronRight, Flame, LogOut, X } from "lucide-react";
+import { CheckCircle2, ChevronRight, Flame, Languages, LogOut, Trash2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { useStrings } from "../../contexts/StringsContext";
+import WarningModal from "../ui/WarningModal";
+import type { AppLocale } from "../../constants/strings";
 import type { User } from "../../services/authService";
 import { getStudyAreaTheme, getStudyAreaThemeStyle } from "../../theme/studyAreaTheme";
 import type { Goal } from "../../types/content";
@@ -13,19 +15,23 @@ interface AppLayoutProps {
   children: ReactNode;
   navItems: NavItem[];
   user: User;
-  activeGoal: Goal;
+  activeGoal: Goal | null;
   goals: Goal[];
   switchingAreaLabel: string | null;
+  uiLocale: AppLocale;
+  onLocaleChange: (locale: AppLocale) => void;
+  onDeleteGoal: (goal: Goal) => void;
   onLogout: () => void;
   onSwitchGoal: (goal: Goal) => void;
   onNavigate: (route: AppRoute) => void;
 }
 
-export default function AppLayout({ activeRoute, activeGoal, children, goals, navItems, switchingAreaLabel, user, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
+export default function AppLayout({ activeRoute, activeGoal, children, goals, navItems, switchingAreaLabel, uiLocale, user, onDeleteGoal, onLocaleChange, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
   const [isAreaModalOpen, setIsAreaModalOpen] = useState(false);
+  const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
   const strings = useStrings();
   const activeTheme = getStudyAreaTheme(activeGoal);
-  const activeArea = activeTheme.label;
+  const activeArea = activeGoal ? activeTheme.label : uiLocale === "pt" ? "Nenhuma area ativa" : "No active area";
 
   return (
     <div className="min-h-screen text-slate-950 transition-colors duration-500" style={{ ...getStudyAreaThemeStyle(activeTheme), background: "var(--area-page)" }}>
@@ -63,10 +69,31 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         </nav>
 
         <div className="absolute inset-x-4 bottom-5 space-y-3">
-          <button type="button" onClick={() => setIsAreaModalOpen(true)} className="w-full rounded-[8px] p-3 text-left ring-1 transition hover:brightness-[0.98]" style={{ background: "var(--area-primary-soft)", borderColor: "var(--area-primary-soft)" }}>
+          <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3">
+            <p className="flex items-center gap-2 text-xs font-semibold uppercase text-slate-500">
+              <Languages size={14} />
+              {strings.layout.interfaceLanguage}
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {(["pt", "en"] as AppLocale[]).map((locale) => (
+                <button
+                  key={locale}
+                  type="button"
+                  onClick={() => onLocaleChange(locale)}
+                  className={`h-10 rounded-[8px] text-sm font-semibold ring-1 transition ${
+                    uiLocale === locale ? "text-white shadow-sm" : "bg-white text-slate-600 ring-slate-200 hover:bg-slate-100"
+                  }`}
+                  style={uiLocale === locale ? { background: "var(--area-primary)", borderColor: "var(--area-primary)" } : undefined}
+                >
+                  {locale === "pt" ? strings.layout.portuguese : strings.layout.english}
+                </button>
+              ))}
+            </div>
+          </div>
+          <button type="button" onClick={() => goals.length ? setIsAreaModalOpen(true) : onNavigate("account")} className="w-full rounded-[8px] p-3 text-left ring-1 transition hover:brightness-[0.98]" style={{ background: "var(--area-primary-soft)", borderColor: "var(--area-primary-soft)" }}>
             <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary-dark)" }}>{strings.layout.activeArea}</p>
             <p className="mt-1 truncate font-semibold text-slate-950">{activeArea}</p>
-            <p className="mt-1 text-xs font-medium text-slate-500">{activeGoal.progress_percent}% {strings.layout.completed}</p>
+            <p className="mt-1 text-xs font-medium text-slate-500">{activeGoal ? `${activeGoal.progress_percent}% ${strings.layout.completed}` : uiLocale === "pt" ? "Crie uma area no perfil" : "Create an area in profile"}</p>
           </button>
           <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs font-semibold uppercase text-slate-500">{strings.layout.loggedAs}</p>
@@ -83,15 +110,16 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         <div key={activeRoute} className="mx-auto max-w-6xl animate-[fadeIn_220ms_ease-out]">{children}</div>
       </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-6 border-t border-slate-200 bg-white md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-20 grid border-t border-slate-200 bg-white md:hidden" style={{ gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}>
         {navItems.map((item) => (
           <button
             key={item.route}
             type="button"
             onClick={() => onNavigate(item.route)}
             className={`flex h-16 min-w-0 flex-col items-center justify-center gap-1 text-[10px] font-semibold ${
-              activeRoute === item.route ? "text-emerald-700" : "text-slate-500"
+              activeRoute === item.route ? "" : "text-slate-500"
             }`}
+            style={activeRoute === item.route ? { color: "var(--area-primary-dark)" } : undefined}
           >
             <item.icon size={18} />
             <span className="max-w-full truncate px-1">{strings.nav[item.labelKey]}</span>
@@ -113,28 +141,48 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
             </div>
 
             <div className="mt-5 grid gap-3">
+              {!goals.length ? (
+                <div className="rounded-[8px] border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
+                  <p className="font-semibold">{uiLocale === "pt" ? "Nenhuma area criada" : "No areas yet"}</p>
+                  <p className="mt-1 text-sm font-medium text-slate-500">{uiLocale === "pt" ? "Va para o perfil para criar sua primeira area de estudo." : "Go to profile to create your first study area."}</p>
+                </div>
+              ) : null}
               {goals.map((goal) => {
                 const theme = getStudyAreaTheme(goal);
                 return (
-                  <button
+                  <article
                     key={goal.id}
-                    type="button"
-                    onClick={() => {
-                      setIsAreaModalOpen(false);
-                      onSwitchGoal(goal);
-                    }}
                     className={`rounded-[8px] p-4 text-left ring-1 transition ${goal.is_active ? "" : "bg-white ring-slate-200 hover:bg-slate-50"}`}
                     style={goal.is_active ? { background: theme.primarySoft, boxShadow: `inset 0 0 0 1px ${theme.primary}` } : undefined}
                   >
                     <div className="flex items-start justify-between gap-4">
-                      <div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsAreaModalOpen(false);
+                          onSwitchGoal(goal);
+                        }}
+                        className="min-w-0 flex-1 text-left"
+                      >
                         <p className="font-semibold">{theme.label}</p>
                         <p className="mt-0.5 text-sm font-medium" style={{ color: theme.primaryDark }}>{theme.name}</p>
                         <p className="mt-1 text-sm font-medium text-slate-500">{goal.progress_percent}% {strings.layout.completed}</p>
+                      </button>
+                      <div className="flex items-center gap-2">
+                        {goal.is_active ? <CheckCircle2 style={{ color: theme.primary }} size={20} /> : null}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setGoalToDelete(goal);
+                          }}
+                          className="grid h-9 w-9 place-items-center rounded-[8px] bg-white text-red-700 ring-1 ring-red-100 transition hover:bg-red-50"
+                          title={strings.actions.delete}
+                        >
+                          <Trash2 size={16} />
+                        </button>
                       </div>
-                      {goal.is_active ? <CheckCircle2 style={{ color: theme.primary }} size={20} /> : null}
                     </div>
-                  </button>
+                  </article>
                 );
               })}
             </div>
@@ -146,10 +194,32 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         </div>
       ) : null}
 
+      {goalToDelete ? (
+        <WarningModal
+          title={uiLocale === "pt" ? "Excluir area?" : "Delete area?"}
+          detail={`${goalToDelete.source_language?.code ?? ""} -> ${goalToDelete.target_language?.code ?? ""} ${goalToDelete.target_level}: ${
+            goals.length <= 1
+              ? uiLocale === "pt"
+                ? "essa e sua ultima area. Depois de excluir, sua conta ficara sem area ativa."
+                : "this is your last area. After deleting it, your account will have no active area."
+              : uiLocale === "pt"
+                ? "essa area sera removida do seu perfil."
+                : "this area will be removed from your profile."
+          }`}
+          cancelLabel={uiLocale === "pt" ? "Cancelar" : "Cancel"}
+          confirmLabel={strings.actions.delete}
+          onCancel={() => setGoalToDelete(null)}
+          onConfirm={() => {
+            setIsAreaModalOpen(false);
+            onDeleteGoal(goalToDelete);
+            setGoalToDelete(null);
+          }}
+        />
+      ) : null}
+
       {switchingAreaLabel ? (
         <div className="fixed inset-0 z-50 grid place-items-center overflow-hidden text-white" style={{ background: "linear-gradient(135deg, var(--area-primary-dark), var(--area-primary))" }}>
           <div className="absolute inset-y-0 left-0 w-full animate-[areaSweep_900ms_ease-in-out] bg-white/10" />
-          <div className="absolute h-72 w-72 rounded-full blur-3xl animate-[areaPulse_900ms_ease-in-out]" style={{ background: "var(--area-accent)" }} />
           <div className="relative animate-[areaSwitch_900ms_ease-in-out] text-center">
             <p className="text-sm font-semibold uppercase tracking-wide opacity-80">{strings.layout.enteringArea}</p>
             <h2 className="mt-3 text-5xl font-semibold">{switchingAreaLabel}</h2>

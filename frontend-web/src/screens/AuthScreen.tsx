@@ -1,4 +1,4 @@
-import { ArrowRight, Languages, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Languages, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import { authService, type User } from "../services/authService";
@@ -9,20 +9,39 @@ interface AuthScreenProps {
 
 export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
   const [mode, setMode] = useState<"login" | "register">("register");
-  const [username, setUsername] = useState("felipe");
-  const [email, setEmail] = useState("felipe@linguaflow.dev");
-  const [password, setPassword] = useState("linguaflow");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const passwordRules = getPasswordRules(password);
+  const isRegisterPasswordValid = passwordRules.every((rule) => rule.valid);
 
   async function submit() {
+    if (!username.trim()) {
+      setError("Informe um usuario.");
+      return;
+    }
+    if (mode === "register" && !email.trim()) {
+      setError("Informe um email.");
+      return;
+    }
+    if (mode === "register" && !isRegisterPasswordValid) {
+      setError("Complete os requisitos da senha antes de continuar.");
+      return;
+    }
+    if (mode === "login" && !password) {
+      setError("Informe sua senha.");
+      return;
+    }
+
     setLoading(true);
     setError("");
     try {
       const user = mode === "login" ? await authService.login(username, password) : await authService.register(username, email, password);
       onAuthenticated(user);
-    } catch {
-      setError("Nao foi possivel entrar. Confira os dados ou tente outro usuario.");
+    } catch (requestError) {
+      setError(getAuthErrorMessage(requestError, mode));
     } finally {
       setLoading(false);
     }
@@ -43,9 +62,14 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             Um app de estudo diario com metas, licoes curtas, cenarios reais e progresso por usuario.
           </p>
           <div className="mt-8 grid max-w-xl gap-3 sm:grid-cols-3">
-            {["PT -> DE", "30 dias", "180 frases"].map((item) => (
-              <div key={item} className="rounded-[8px] bg-white p-4 font-semibold shadow-sm ring-1 ring-slate-200">
-                {item}
+            {[
+              { title: "Licoes curtas", detail: "Pratica diaria guiada" },
+              { title: "Cenarios reais", detail: "Restaurante, mercado e rotina" },
+              { title: "Progresso salvo", detail: "Conta, meta e favoritos" },
+            ].map((item) => (
+              <div key={item.title} className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200">
+                <p className="font-semibold">{item.title}</p>
+                <p className="mt-1 text-sm font-medium text-slate-500">{item.detail}</p>
               </div>
             ))}
           </div>
@@ -63,12 +87,26 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           </div>
 
           <div className="grid gap-3">
-            <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={username} onChange={(event) => setUsername(event.target.value)} placeholder="usuario" />
+            <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={username} onChange={(event) => setUsername(event.target.value)} placeholder="usuario" autoComplete="username" />
             {mode === "register" ? (
-              <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email" />
+              <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="email" autoComplete="email" />
             ) : null}
-            <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="senha" type="password" />
+            <input className="h-12 rounded-[8px] border border-slate-200 px-4 font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="senha" type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} />
           </div>
+
+          {mode === "register" ? (
+            <div className="mt-4 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
+              <p className="text-sm font-semibold uppercase text-slate-500">Senha segura</p>
+              <div className="mt-3 grid gap-2">
+                {passwordRules.map((rule) => (
+                  <div key={rule.label} className={`flex items-center gap-2 text-sm font-semibold transition ${rule.valid ? "text-emerald-700" : "text-slate-500"}`}>
+                    <CheckCircle2 size={17} className={rule.valid ? "fill-emerald-100" : ""} />
+                    {rule.label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           {error ? <p className="mt-4 rounded-[8px] bg-red-100 p-3 text-sm font-bold text-red-700">{error}</p> : null}
 
@@ -84,4 +122,28 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
       </div>
     </main>
   );
+}
+
+function getAuthErrorMessage(error: unknown, mode: "login" | "register") {
+  const message = error instanceof Error ? error.message : "";
+  if (message.includes("Username already exists")) return "Esse usuario ja existe. Tente entrar ou escolha outro nome.";
+  if (message.includes("Invalid username or password")) return "Usuario ou senha incorretos.";
+  if (message.includes("uppercase")) return "A senha precisa ter uma letra maiuscula.";
+  if (message.includes("lowercase")) return "A senha precisa ter uma letra minuscula.";
+  if (message.includes("number")) return "A senha precisa ter um numero.";
+  if (message.includes("password:")) return "A senha precisa ter pelo menos 6 caracteres.";
+  if (message.includes("email:")) return "Informe um email valido.";
+  if (message.includes("Failed to fetch")) return "Nao consegui conectar no backend. Confirme se o Django esta rodando na porta 8000.";
+  return mode === "login"
+    ? "Nao foi possivel entrar. Confira usuario e senha."
+    : "Nao foi possivel criar a conta. Confira os dados e tente novamente.";
+}
+
+function getPasswordRules(password: string) {
+  return [
+    { label: "Pelo menos 6 caracteres", valid: password.length >= 6 },
+    { label: "Uma letra maiuscula", valid: /[A-Z]/.test(password) },
+    { label: "Uma letra minuscula", valid: /[a-z]/.test(password) },
+    { label: "Um numero", valid: /\d/.test(password) },
+  ];
 }

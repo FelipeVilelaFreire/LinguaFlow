@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 
 import AppLayout from "./components/layout/AppLayout";
-import { getLocaleFromSourceLanguage } from "./constants/strings";
+import { getLocaleFromSourceLanguage, type AppLocale } from "./constants/strings";
 import { StringsProvider } from "./contexts/StringsContext";
 import { AUTH_PATHS, NAV_ITEMS, ROUTE_PATHS } from "./constants/routes";
 import AccountScreen from "./screens/AccountScreen";
 import AuthScreen from "./screens/AuthScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
 import ScenariosScreen from "./screens/ScenariosScreen";
@@ -16,11 +17,17 @@ import { contentService } from "./services/contentService";
 import type { Goal } from "./types/content";
 import type { AppRoute } from "./types/navigation";
 
+const UI_LOCALE_KEY = "linguaflow_ui_locale";
+
 export default function App() {
   const [route, setRoute] = useState<AppRoute>(() => routeFromPath(window.location.pathname));
   const [user, setUser] = useState<User | null>(null);
   const [goal, setGoal] = useState<Goal | null>(null);
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [uiLocale, setUiLocale] = useState<AppLocale | null>(() => {
+    const saved = window.localStorage.getItem(UI_LOCALE_KEY);
+    return saved === "pt" || saved === "en" ? saved : null;
+  });
   const [switchingAreaLabel, setSwitchingAreaLabel] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
 
@@ -65,24 +72,21 @@ export default function App() {
       replacePath(AUTH_PATHS.login);
       return;
     }
-    if (user && !goal && window.location.pathname !== AUTH_PATHS.onboarding) {
-      replacePath(AUTH_PATHS.onboarding);
-      return;
-    }
-    if (user && goal && isAuthPath(window.location.pathname)) {
+    if (user && isAuthPath(window.location.pathname)) {
       replacePath(ROUTE_PATHS[route]);
     }
   }, [booting, user, goal, route]);
 
   const screen = useMemo(() => {
     if (route === "today") return <TodayScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} />;
+    if (route === "history") return <HistoryScreen />;
     if (route === "scenarios") return <ScenariosScreen />;
     if (route === "vocabulary") return <VocabularyScreen />;
     if (route === "account" && user) {
       return (
         <AccountScreen
           user={user}
-          goals={goals.length ? goals : ([goal].filter(Boolean) as Goal[])}
+          goals={goals}
           onCreateGoal={handleGoalChanged}
           onDeleteGoal={deleteGoal}
           onLogout={logout}
@@ -90,8 +94,8 @@ export default function App() {
         />
       );
     }
-    return <HomeScreen onStartToday={() => navigate("today")} />;
-  }, [route, user]);
+    return <HomeScreen hasActiveGoal={Boolean(goal)} onCreateArea={() => navigate("account")} onStartToday={() => navigate("today")} />;
+  }, [route, user, goal, goals]);
 
   function navigate(nextRoute: AppRoute) {
     setRoute(nextRoute);
@@ -134,10 +138,18 @@ export default function App() {
     setGoals(nextGoals);
     if (result.current_goal) {
       setGoal(result.current_goal);
+      if (route === "account") return;
+      navigate("home");
       return;
     }
     setGoal(null);
-    replacePath(AUTH_PATHS.onboarding);
+    setRoute("account");
+    replacePath(ROUTE_PATHS.account);
+  }
+
+  function changeUiLocale(locale: AppLocale) {
+    setUiLocale(locale);
+    window.localStorage.setItem(UI_LOCALE_KEY, locale);
   }
 
   if (booting) return <div className="grid min-h-screen place-items-center bg-slate-50 font-semibold">Loading LinguaFlow...</div>;
@@ -153,13 +165,14 @@ export default function App() {
             navigate("home");
           } catch {
             setGoal(null);
-            replacePath(AUTH_PATHS.onboarding);
+            setGoals([]);
+            navigate("account");
           }
         }} />
       </StringsProvider>
     );
   }
-  if (!goal) {
+  if (window.location.pathname === AUTH_PATHS.onboarding) {
     return (
       <StringsProvider locale="pt">
         <OnboardingScreen onComplete={(createdGoal) => {
@@ -171,9 +184,11 @@ export default function App() {
     );
   }
 
+  const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
+
   return (
-    <StringsProvider locale={getLocaleFromSourceLanguage(goal.source_language?.code)}>
-      <AppLayout activeRoute={route} activeGoal={goal} goals={goals.length ? goals : [goal]} switchingAreaLabel={switchingAreaLabel} navItems={NAV_ITEMS} user={user} onLogout={logout} onSwitchGoal={switchGoal} onNavigate={navigate}>
+    <StringsProvider locale={activeLocale}>
+      <AppLayout activeRoute={route} activeGoal={goal} goals={goals} switchingAreaLabel={switchingAreaLabel} navItems={NAV_ITEMS} user={user} uiLocale={activeLocale} onDeleteGoal={deleteGoal} onLocaleChange={changeUiLocale} onLogout={logout} onSwitchGoal={switchGoal} onNavigate={navigate}>
         {screen}
       </AppLayout>
     </StringsProvider>

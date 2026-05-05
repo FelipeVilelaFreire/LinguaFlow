@@ -1,4 +1,4 @@
-import { CheckCircle2, Sparkles } from "lucide-react";
+import { CalendarCheck2, CheckCircle2, Flame, Lightbulb, Sparkles, Trophy } from "lucide-react";
 
 import LessonCard from "../components/learning/LessonCard";
 import VideoCard from "../components/learning/VideoCard";
@@ -17,7 +17,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
   const today = study.today.data;
 
   if (study.today.loading) return <StateMessage />;
-  if (study.today.error || !today || !study.currentPhrase) {
+  if (study.today.error || !today || !study.currentItem) {
     return (
       <StateMessage
         title={strings.today.noLessonsTitle}
@@ -28,32 +28,57 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
 
   if (study.completed) {
     return (
-      <section className="rounded-[8px] bg-white p-8 text-center shadow-sm ring-1 ring-slate-200">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white text-emerald-600">
-          <CheckCircle2 size={34} />
+      <section className="relative overflow-hidden rounded-[8px] bg-white p-6 text-center shadow-sm ring-1 ring-slate-200 md:p-8">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-center gap-5">
+          {[0, 1, 2, 3, 4, 5].map((item) => (
+            <span
+              key={item}
+              className="h-2.5 w-2.5 rounded-[3px] opacity-0"
+              style={{
+                animation: `confettiFall 1100ms ease-out ${item * 90}ms both`,
+                background: item % 2 === 0 ? "var(--area-primary)" : "var(--area-accent)",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="mx-auto grid h-20 w-20 place-items-center rounded-[8px] text-white shadow-sm" style={{ animation: "successPop 420ms ease-out both, progressGlow 1600ms ease-in-out 320ms 2", background: "var(--area-primary)" }}>
+          <Trophy size={38} />
         </div>
         <p className="mt-5 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.today.completed}</p>
-        <h2 className="mt-2 text-4xl font-semibold text-slate-950">{today.lesson.title}</h2>
-        <p className="mx-auto mt-3 max-w-xl font-medium text-slate-600">{strings.today.completedDetail}</p>
+        <h2 className="mt-2 text-4xl font-semibold text-slate-950 md:text-5xl">Sessao finalizada</h2>
+        <p className="mx-auto mt-3 max-w-xl font-medium leading-7 text-slate-600">{strings.today.completedDetail}</p>
+
+        <div className="mx-auto mt-7 grid max-w-3xl gap-3 md:grid-cols-3">
+          <CompletionStat icon={<CheckCircle2 size={20} />} label="Exercicios" value={study.phrases.length} />
+          <CompletionStat icon={<CalendarCheck2 size={20} />} label="Dia" value={today.day_number} />
+          <CompletionStat icon={<Flame size={20} />} label="Progresso" value={100} suffix="%" />
+        </div>
+
+        <div className="mx-auto mt-7 max-w-xl rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
+          <p className="text-sm font-semibold uppercase text-slate-500">{today.lesson.scenario.title}</p>
+          <p className="mt-1 text-xl font-semibold text-slate-950">{today.lesson.title}</p>
+        </div>
       </section>
     );
   }
 
   return (
     <div className="pb-20 md:pb-0">
-      <header className="mb-6 rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+      <header className="mb-6 rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
               <Sparkles size={16} />
-              {strings.today.session}
+              {study.stage.title}
             </p>
-            <h2 className="mt-3 text-3xl font-semibold md:text-5xl">
+            <h2 className="mt-3 text-3xl font-semibold leading-tight md:text-5xl">
               {strings.today.titlePrefix} {String(today.day_number).padStart(2, "0")} - {today.lesson.title}
             </h2>
+            <p className="mt-2 max-w-2xl font-medium text-slate-500">{study.stage.detail}</p>
           </div>
-          <div className="text-left md:text-right">
-            <p className="text-sm font-semibold uppercase text-slate-500">{study.progress}% {strings.layout.completed}</p>
+          <div className="rounded-[8px] bg-slate-50 p-4 text-left ring-1 ring-slate-200 md:min-w-56 md:text-right">
+            <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{study.progress}% {strings.layout.completed}</p>
             <p className="font-medium text-slate-500">{today.lesson.scenario.title}</p>
           </div>
         </div>
@@ -64,9 +89,12 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
 
       <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
         <LessonCard
+          key={study.currentItem?.id ?? study.phraseIndex}
           answer={study.answer}
           checked={study.checked}
+          feedback={study.feedback}
           isCorrect={study.isCorrect}
+          item={study.currentItem}
           phrase={study.currentPhrase}
           phraseIndex={study.phraseIndex}
           totalPhrases={study.phrases.length}
@@ -80,12 +108,26 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
         <div className="grid content-start gap-4">
           <VideoCard title={today.lesson.video_title} duration={today.lesson.video_duration} url={today.lesson.video_url} />
           <aside className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
-            <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.today.practice}</p>
+            <div className="grid h-11 w-11 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
+              <Lightbulb size={20} />
+            </div>
             <p className="mt-2 text-2xl font-semibold">{strings.today.practice}</p>
-            <p className="mt-2 text-sm font-medium text-slate-600">{strings.today.tryAgain}</p>
+            <p className="mt-2 text-sm font-medium leading-6 text-slate-600">{strings.today.inputPrompt}</p>
           </aside>
         </div>
       </div>
+    </div>
+  );
+}
+
+function CompletionStat({ icon, label, value, suffix = "" }: { icon: React.ReactNode; label: string; value: number; suffix?: string }) {
+  return (
+    <div className="rounded-[8px] bg-slate-50 p-4 text-left ring-1 ring-slate-200" style={{ animation: "celebrationRise 420ms ease-out both" }}>
+      <div className="grid h-10 w-10 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
+        {icon}
+      </div>
+      <p className="mt-3 text-3xl font-semibold text-slate-950">{value}{suffix}</p>
+      <p className="text-sm font-bold text-slate-500">{label}</p>
     </div>
   );
 }

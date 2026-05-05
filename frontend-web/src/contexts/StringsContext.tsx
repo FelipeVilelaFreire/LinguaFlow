@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 
 import { STRINGS, STRINGS_BY_LOCALE, type AppLocale, type AppStrings } from "../constants/strings";
 
-const StringsContext = createContext<AppStrings>(STRINGS);
+const StringsContext = createContext<{ strings: AppStrings; locale: AppLocale }>({ strings: STRINGS, locale: "pt" });
 
 interface StringsProviderProps {
   children: ReactNode;
@@ -11,9 +11,13 @@ interface StringsProviderProps {
 }
 
 export function StringsProvider({ children, locale }: StringsProviderProps) {
-  return <StringsContext.Provider value={STRINGS_BY_LOCALE[locale]}>{children}</StringsContext.Provider>;
+  return <StringsContext.Provider value={{ strings: STRINGS_BY_LOCALE[locale], locale }}>{children}</StringsContext.Provider>;
 }
 
 export function useStrings() {
-  return useContext(StringsContext);
+  return useContext(StringsContext).strings;
+}
+
+export function useLocale() {
+  return useContext(StringsContext).locale;
 }

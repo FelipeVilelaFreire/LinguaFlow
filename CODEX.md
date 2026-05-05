@@ -35,9 +35,24 @@ Frontend:
 
 Manter separacao clara:
 
-- `backend/`: API, modelos, serializers, views, seeds e comandos Django.
+- `backend/`: API Django organizada por apps de dominio.
 - `frontend-web/`: app React, telas, componentes, hooks, services, types e tema.
 - `docs/`: especificacoes e notas de produto.
+
+Estrutura atual do backend:
+
+- `backend/apps/accounts/`: autenticacao, cadastro, login, usuario atual e refresh de token.
+- `backend/apps/learning/`: idiomas, cenarios, frases, licoes, study days, seeds e conteudo de estudo.
+- `backend/apps/goals/`: areas de estudo, onboarding, rotina, area ativa e historico mensal.
+- `backend/apps/progress/`: favoritos, progresso por frase e conclusoes de estudo.
+- `backend/content/`: pacote legado/compatibilidade e seeds antigos. Nao deve receber codigo novo de produto.
+- `backend/linguaflow/`: configuracao global, settings e roteamento principal.
+
+Regra importante:
+
+- Codigo novo deve importar dos apps reais: `apps.learning`, `apps.goals`, `apps.progress`, `apps.accounts`.
+- Imports via `content.*` devem ser usados apenas por compatibilidade ou seed legado.
+- A documentacao detalhada da arquitetura fica em `backend/ARCHITECTURE.md`.
 
 ## Arquitetura Frontend
 
@@ -67,6 +82,7 @@ Rotas atuais:
 - `/onboarding`
 - `/`
 - `/estudo-guiado`
+- `/historico`
 - `/cenarios`
 - `/vocabulario`
 - `/perfil`
@@ -103,6 +119,23 @@ Regras:
 - Trocar de area deve passar pelo modal de area ativa ou pelo Perfil.
 - Criar e excluir areas deve ficar no Perfil.
 - A troca de area deve ter transicao visual full-screen.
+- `Goal` tambem guarda rotina de estudo: `study_weekdays` e `session_minutes`.
+- Se `study_weekdays` estiver vazio, a area esta em modo de estudo avulso.
+
+## Rotina e Estudo Avulso
+
+O onboarding deve permitir dois modos:
+
+- Criar rotina: usuario escolhe dias da semana e duracao da sessao.
+- Estudar avulso: usuario nao define agenda fixa por enquanto.
+
+Regras:
+
+- Rotina deve vir do backend, nao ficar apenas como estado visual do frontend.
+- Home deve mostrar se hoje e dia de estudo ou qual e a proxima sessao.
+- Se for estudo avulso, Home deve mostrar que nao existe agenda fixa.
+- Historico deve separar conclusoes por area de estudo.
+- Conclusoes devem registrar a area ativa no momento do estudo.
 
 ## Tema por Area
 
@@ -175,17 +208,76 @@ Preferir:
 
 ## Backend
 
-Modelos principais:
+O backend esta organizado em apps reais.
+
+### `apps.accounts`
+
+Responsavel por:
+
+- cadastro
+- login
+- usuario atual
+- refresh de token
+
+Classes principais:
+
+- `RegisterSerializer`
+- `LoginSerializer`
+- `UserSerializer`
+- `AuthViewSet`
+
+### `apps.learning`
+
+Responsavel pelo conteudo estudavel.
+
+Modelos:
 
 - `Language`
 - `Scenario`
 - `Phrase`
 - `Lesson`
 - `StudyDay`
-- `StudyDayCompletion`
+
+ViewSets:
+
+- `PhraseViewSet`
+- `ScenarioViewSet`
+- `StudyDayViewSet`
+
+### `apps.goals`
+
+Responsavel por areas, planejamento e historico agregado.
+
+Modelo:
+
 - `Goal`
+
+ViewSet:
+
+- `GoalViewSet`
+
+Endpoints importantes:
+
+- `GET /api/goals/`
+- `GET /api/goals/current/`
+- `POST /api/goals/onboarding/`
+- `POST /api/goals/{id}/activate/`
+- `GET /api/goals/history/?year=YYYY&month=M`
+
+### `apps.progress`
+
+Responsavel por atividade do usuario.
+
+Modelos:
+
+- `StudyDayCompletion`
 - `UserProgress`
 - `Favorite`
+
+ViewSets:
+
+- `FavoriteViewSet`
+- `ProgressViewSet`
 
 Regras:
 
@@ -193,6 +285,9 @@ Regras:
 - `Goal.current` deve retornar a area ativa.
 - `StudyDay.today` deve considerar a area ativa.
 - Favoritos e progresso devem pertencer ao usuario.
+- `StudyDayCompletion` deve gravar `goal` para permitir historico separado por area.
+- Nao criar codigo novo de dominio em `content/`; usar `apps/*`.
+- Os models novos preservam tabelas antigas via `db_table`, por exemplo `content_goal`.
 
 ## Seeds
 
@@ -210,8 +305,16 @@ O seed deve:
 - criar licoes
 - criar study days
 
-Por enquanto o conteudo mais completo esta em PT -> DE.
-Novos pares, como PT -> ES, devem ganhar seeds proprios.
+Pares com seed principal:
+
+- `PT -> DE` nos niveis `A1`, `A2`, `B1`
+- `PT -> ES` nos niveis `A1`, `A2`, `B1`
+- `EN -> DE` nos niveis `A1`, `A2`, `B1`
+
+Novos pares devem ganhar seeds proprios antes de aparecerem como disponiveis na UI.
+
+O comando `seed_content` e exposto por `apps.learning`, mas ainda pode consumir
+helpers em `content/seeds/` ate esses seeds serem migrados para a estrutura nova.
 
 ## Comandos Locais
 
@@ -220,9 +323,19 @@ Backend:
 ```powershell
 cd backend
 pip install -r requirements.txt
-python manage.py migrate
+python manage.py migrate --fake-initial
 python manage.py seed_content
 python manage.py runserver
+```
+
+Usar `--fake-initial` quando o banco local ja tiver tabelas antigas `content_*`.
+Para banco completamente novo, `python manage.py migrate` e suficiente.
+
+Validacao backend:
+
+```powershell
+python manage.py check
+python manage.py makemigrations --check
 ```
 
 Frontend:
@@ -248,3 +361,7 @@ npm run build
 - Nao voltar para auth por token simples; manter JWT.
 - Nao hardcodar cor de area quando existe token de tema.
 - Se criar nova feature, manter a experiencia coerente com areas de estudo.
+- Nao reintroduzir fallback mockado no frontend para dados que devem vir da API.
+- Nao criar novas tabelas com nomes diferentes sem pensar na migracao dos dados existentes.
+- Se mexer em models dos apps novos, criar migrations nos apps corretos.
+- Se mexer em rotas de API, manter compatibilidade com o frontend ou atualizar `services/`.

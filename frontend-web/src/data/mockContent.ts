@@ -25,12 +25,18 @@ export const mockPhrases: Phrase[] = [
 
 export const mockGoal: Goal = {
   id: 1,
+  current_level: "NONE",
   target_level: "A1",
   duration_days: 90,
   total_phrases: 300,
   learned_phrases: 18,
   completed_lessons: 3,
   streak_days: 4,
+  study_weekdays: [0, 1, 2, 3, 4, 5, 6],
+  session_minutes: 60,
+  is_study_day_today: true,
+  next_study_date: new Date().toISOString().slice(0, 10),
+  is_active: true,
   progress_percent: 6,
 };
 
@@ -38,6 +44,8 @@ export const mockToday: StudyDay = {
   id: 1,
   day_number: 7,
   is_active: true,
+  completed: false,
+  practice_items: [],
   lesson: {
     id: 1,
     title: "Restaurant Basics",

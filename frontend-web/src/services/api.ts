@@ -46,7 +46,7 @@ async function requestWithAuth<T>(path: string, options: RequestInit | undefined
   }
 
   if (!response.ok) {
-    throw new Error(`API error ${response.status}`);
+    throw new Error(await getApiErrorMessage(response));
   }
 
   if (response.status === 204) {
@@ -54,6 +54,19 @@ async function requestWithAuth<T>(path: string, options: RequestInit | undefined
   }
 
   return response.json() as Promise<T>;
+}
+
+async function getApiErrorMessage(response: Response) {
+  try {
+    const data = await response.json();
+    if (typeof data.detail === "string") return data.detail;
+    if (Array.isArray(data.non_field_errors) && data.non_field_errors.length) return String(data.non_field_errors[0]);
+    const firstError = Object.entries(data).find(([, value]) => Array.isArray(value) && value.length);
+    if (firstError) return `${firstError[0]}: ${String((firstError[1] as unknown[])[0])}`;
+  } catch {
+    // Keep the status fallback below when the response is not JSON.
+  }
+  return `API error ${response.status}`;
 }
 
 async function refreshAccessToken() {

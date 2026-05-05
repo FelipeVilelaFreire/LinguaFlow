@@ -9,6 +9,7 @@ const PT_STRINGS = {
   nav: {
     home: "Home",
     today: "Estudo Guiado",
+    history: "Historico",
     scenarios: "Cenarios",
     vocabulary: "Vocabulario",
     profile: "Perfil",
@@ -37,6 +38,9 @@ const PT_STRINGS = {
     apiHint: "Inicie o backend e rode o seed para carregar os dados reais.",
   },
   layout: {
+    interfaceLanguage: "Idioma da tela",
+    portuguese: "Portugues",
+    english: "Ingles",
     activeArea: "Area ativa",
     completed: "concluido",
     loggedAs: "Logado como",
@@ -46,25 +50,36 @@ const PT_STRINGS = {
   },
   home: {
     title: "Hoje",
-    eyebrow: "Plano de hoje",
-    headline: "Pequeno sprint, progresso real.",
-    subtitle: "Complete a licao diaria, marque frases importantes e avance sua meta.",
+    eyebrow: "Seu proximo passo",
+    headline: "Continue de onde parou.",
+    subtitle: "Uma sessao curta com video, frases do contexto e pratica de memoria para fixar melhor.",
     lessons: "licoes concluidas",
     streak: "dias de sequencia",
     progress: "progresso",
     remaining: "dias restantes",
-    recommendedPace: "Ritmo recomendado",
-    recommendedDetail: "Uma licao por dia. O app escolhe o proximo Study Day com base nas suas conclusoes.",
+    recommendedPace: "Como estudar hoje",
+    recommendedDetail: "Assista ao video rapido, tente entender as frases sem traducao e finalize verificando sua resposta.",
     activeGoal: "Meta ativa",
     learned: (learned: number, total: number) => `${learned} de ${total} frases aprendidas.`,
+    duration: (days: number) => `Meta de ${days} dias`,
+    languagePath: (source: string, target: string, level: string) => `${source} para ${target} - ${level}`,
+    routine: (days: string, minutes: number) => `${days} - ${minutes} min por sessao`,
+    studyToday: "Hoje e dia de estudo",
+    nextSession: (date: string) => `Proxima sessao: ${date}`,
+    flexibleStudy: "Estudo avulso",
+    noFixedSchedule: "Sem agenda fixa: estude quando quiser",
+    dailyPlan: "Plano da sessao",
+    dailyPlanDetail: "Video curto, pratica guiada e revisao das frases que voce favoritar.",
+    nextLesson: "Proxima licao",
+    keepGoing: "Faltam poucos minutos para manter sua sequencia.",
   },
   today: {
     titlePrefix: "Day",
-    session: "~15 min session",
+    session: "Sessao guiada de ~15 min",
     lesson: "Licao",
     video: "Video",
     practice: "Reforco",
-    inputPrompt: "Tente entender a frase antes de revelar.",
+    inputPrompt: "Leia a frase no idioma alvo e tente lembrar o significado antes de revelar.",
     recallPrompt: "Escreva em alemao:",
     correct: "Boa resposta",
     tryAgain: "Tente novamente ou avance",
@@ -114,6 +129,7 @@ const EN_STRINGS = {
   nav: {
     home: "Home",
     today: "Guided Study",
+    history: "History",
     scenarios: "Scenarios",
     vocabulary: "Vocabulary",
     profile: "Profile",
@@ -142,6 +158,9 @@ const EN_STRINGS = {
     apiHint: "Start the backend and run the seed to load real data.",
   },
   layout: {
+    interfaceLanguage: "Screen language",
+    portuguese: "Portuguese",
+    english: "English",
     activeArea: "Active area",
     completed: "completed",
     loggedAs: "Signed in as",
@@ -151,25 +170,36 @@ const EN_STRINGS = {
   },
   home: {
     title: "Today",
-    eyebrow: "Today's plan",
-    headline: "Small sprint, real progress.",
-    subtitle: "Complete your daily lesson, save important phrases, and move your goal forward.",
+    eyebrow: "Your next step",
+    headline: "Continue where you left off.",
+    subtitle: "A short session with video, contextual phrases, and memory practice to make it stick.",
     lessons: "completed lessons",
     streak: "day streak",
     progress: "progress",
     remaining: "days remaining",
-    recommendedPace: "Recommended pace",
-    recommendedDetail: "One lesson per day. The app chooses the next Study Day based on your completions.",
+    recommendedPace: "How to study today",
+    recommendedDetail: "Watch the short video, try to understand each phrase without translation, then check your recall.",
     activeGoal: "Active goal",
     learned: (learned: number, total: number) => `${learned} of ${total} phrases learned.`,
+    duration: (days: number) => `${days}-day goal`,
+    languagePath: (source: string, target: string, level: string) => `${source} to ${target} - ${level}`,
+    routine: (days: string, minutes: number) => `${days} - ${minutes} min per session`,
+    studyToday: "Today is a study day",
+    nextSession: (date: string) => `Next session: ${date}`,
+    flexibleStudy: "Flexible study",
+    noFixedSchedule: "No fixed schedule: study whenever you want",
+    dailyPlan: "Session plan",
+    dailyPlanDetail: "Short video, guided practice, and review of the phrases you save.",
+    nextLesson: "Next lesson",
+    keepGoing: "A few minutes are enough to keep your streak moving.",
   },
   today: {
     titlePrefix: "Day",
-    session: "~15 min session",
+    session: "~15 min guided session",
     lesson: "Lesson",
     video: "Video",
     practice: "Practice",
-    inputPrompt: "Try to understand the phrase before revealing it.",
+    inputPrompt: "Read the target-language phrase and try to remember the meaning before revealing it.",
     recallPrompt: "Write it in German:",
     correct: "Good answer",
     tryAgain: "Try again or continue",
@@ -210,14 +240,22 @@ const EN_STRINGS = {
   },
 } as const;
 
-export const STRINGS_BY_LOCALE = {
+type WidenStrings<T> = {
+  [K in keyof T]: T[K] extends (...args: infer Args) => infer Return
+    ? (...args: Args) => Return
+    : T[K] extends string
+      ? string
+      : WidenStrings<T[K]>;
+};
+
+export type AppStrings = WidenStrings<typeof PT_STRINGS>;
+
+export const STRINGS_BY_LOCALE: Record<AppLocale, AppStrings> = {
   pt: PT_STRINGS,
   en: EN_STRINGS,
-} as const;
+};
 
-export type AppStrings = typeof PT_STRINGS;
-
-export const STRINGS = PT_STRINGS;
+export const STRINGS: AppStrings = PT_STRINGS;
 
 export function getLocaleFromSourceLanguage(code?: string): AppLocale {
   return code === "EN" ? "en" : "pt";
