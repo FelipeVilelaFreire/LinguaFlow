@@ -76,16 +76,16 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-5 py-8 text-slate-950">
+    <main className="min-h-screen bg-slate-50 px-3 py-4 text-slate-950 md:px-5 md:py-8">
       <section className="mx-auto max-w-4xl">
-        <div className="rounded-[8px] bg-white p-6 shadow-sm ring-1 ring-slate-200">
-          <div className="flex items-center gap-4">
-            <div className="grid h-14 w-14 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
+        <div className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
+          <div className="flex items-start gap-3 md:items-center md:gap-4">
+            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 md:h-14 md:w-14">
               <Flag />
             </div>
             <div>
               <p className="text-sm font-semibold uppercase text-emerald-700">{strings.onboarding.eyebrow}</p>
-              <h1 className="text-3xl font-semibold">{strings.onboarding.title}</h1>
+              <h1 className="text-2xl font-semibold leading-tight md:text-3xl">{strings.onboarding.title}</h1>
             </div>
           </div>
 
@@ -95,14 +95,14 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
             <Choice title={strings.onboarding.session} value={routineMode === "planned" ? `${sessionMinutes} min` : "Estudo avulso"} detail={routineMode === "planned" ? formatWeekdays(studyWeekdays) : "Sem dias fixos por enquanto"} />
           </div>
 
-          <div className="mt-8 rounded-[8px] bg-slate-50 p-5 ring-1 ring-slate-200">
+          <div className="mt-6 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200 md:mt-8 md:p-5">
             <div className="flex items-start gap-3">
               <div className="grid h-11 w-11 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
                 <Clock size={20} />
               </div>
               <div>
                 <p className="text-sm font-semibold uppercase text-slate-500">Sua rotina de estudo</p>
-                <h2 className="mt-1 text-2xl font-semibold">Quando voce quer estudar?</h2>
+                <h2 className="mt-1 text-xl font-semibold md:text-2xl">Quando voce quer estudar?</h2>
                 <p className="mt-1 font-medium text-slate-500">O plano usa essa rotina para organizar suas sessoes e manter o estudo realista.</p>
               </div>
             </div>
@@ -153,7 +153,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
             )}
           </div>
 
-          <button type="button" onClick={start} disabled={loading || (routineMode === "planned" && studyWeekdays.length === 0)} className="mt-7 flex h-14 w-full items-center justify-center gap-2 rounded-[8px] bg-emerald-600 font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-60">
+          <button type="button" onClick={start} disabled={loading || (routineMode === "planned" && studyWeekdays.length === 0)} className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-[8px] bg-emerald-600 font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-60 md:mt-7">
             {loading ? strings.actions.creating : strings.onboarding.start}
             <ArrowRight size={18} />
           </button>
@@ -239,12 +239,12 @@ function LanguageModal({
   const availableTargets = getAvailableTargets(sourceLanguage.code);
 
   return (
-    <div className="fixed inset-0 z-40 grid place-items-center bg-slate-950/40 px-4 backdrop-blur-sm">
-      <section className="w-full max-w-2xl rounded-[8px] bg-white p-5 shadow-xl ring-1 ring-slate-200">
+        <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0">
+      <section className="max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase text-emerald-700">{isSource ? "Idioma de origem" : "Idioma de destino"}</p>
-            <h2 className="mt-1 text-3xl font-semibold">{isSource ? "Qual idioma voce entende melhor?" : "Qual idioma voce quer aprender?"}</h2>
+            <h2 className="mt-1 text-2xl font-semibold leading-tight md:text-3xl">{isSource ? "Qual idioma voce entende melhor?" : "Qual idioma voce quer aprender?"}</h2>
             <p className="mt-2 max-w-xl font-medium text-slate-500">
               {isSource ? "Esse idioma sera usado para explicacoes e traducoes." : "Escolha o idioma principal e o nivel inicial do curso."}
             </p>

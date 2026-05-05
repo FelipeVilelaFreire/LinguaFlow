@@ -49,7 +49,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
         <h2 className="mt-2 text-4xl font-semibold text-slate-950 md:text-5xl">Sessao finalizada</h2>
         <p className="mx-auto mt-3 max-w-xl font-medium leading-7 text-slate-600">{strings.today.completedDetail}</p>
 
-        <div className="mx-auto mt-7 grid max-w-3xl gap-3 md:grid-cols-3">
+        <div className="mx-auto mt-6 grid max-w-3xl grid-cols-3 gap-2 md:mt-7 md:gap-3">
           <CompletionStat icon={<CheckCircle2 size={20} />} label="Exercicios" value={study.phrases.length} />
           <CompletionStat icon={<CalendarCheck2 size={20} />} label="Dia" value={today.day_number} />
           <CompletionStat icon={<Flame size={20} />} label="Progresso" value={100} suffix="%" />
@@ -64,20 +64,20 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
   }
 
   return (
-    <div className="pb-20 md:pb-0">
-      <header className="mb-6 rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+    <div className="pb-4 md:pb-0">
+      <header className="mb-4 rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:mb-6 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
               <Sparkles size={16} />
               {study.stage.title}
             </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight md:text-5xl">
+            <h2 className="mt-3 text-2xl font-semibold leading-tight md:text-5xl">
               {strings.today.titlePrefix} {String(today.day_number).padStart(2, "0")} - {today.lesson.title}
             </h2>
             <p className="mt-2 max-w-2xl font-medium text-slate-500">{study.stage.detail}</p>
           </div>
-          <div className="rounded-[8px] bg-slate-50 p-4 text-left ring-1 ring-slate-200 md:min-w-56 md:text-right">
+          <div className="rounded-[8px] bg-slate-50 p-3 text-left ring-1 ring-slate-200 md:min-w-56 md:p-4 md:text-right">
             <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{study.progress}% {strings.layout.completed}</p>
             <p className="font-medium text-slate-500">{today.lesson.scenario.title}</p>
           </div>
@@ -87,7 +87,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
         </div>
       </header>
 
-      <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
+      <div className="grid gap-4 lg:grid-cols-[1fr_320px] lg:gap-5">
         <LessonCard
           key={study.currentItem?.id ?? study.phraseIndex}
           answer={study.answer}
@@ -122,12 +122,12 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
 
 function CompletionStat({ icon, label, value, suffix = "" }: { icon: React.ReactNode; label: string; value: number; suffix?: string }) {
   return (
-    <div className="rounded-[8px] bg-slate-50 p-4 text-left ring-1 ring-slate-200" style={{ animation: "celebrationRise 420ms ease-out both" }}>
-      <div className="grid h-10 w-10 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
+    <div className="min-w-0 rounded-[8px] bg-slate-50 p-3 text-left ring-1 ring-slate-200 md:p-4" style={{ animation: "celebrationRise 420ms ease-out both" }}>
+      <div className="grid h-9 w-9 place-items-center rounded-[8px] md:h-10 md:w-10" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
         {icon}
       </div>
-      <p className="mt-3 text-3xl font-semibold text-slate-950">{value}{suffix}</p>
-      <p className="text-sm font-bold text-slate-500">{label}</p>
+      <p className="mt-3 text-2xl font-semibold text-slate-950 md:text-3xl">{value}{suffix}</p>
+      <p className="break-words text-[11px] font-bold leading-tight text-slate-500 md:text-sm">{label}</p>
     </div>
   );
 }

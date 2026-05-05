@@ -32,9 +32,27 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
   const strings = useStrings();
   const activeTheme = getStudyAreaTheme(activeGoal);
   const activeArea = activeGoal ? activeTheme.label : uiLocale === "pt" ? "Nenhuma area ativa" : "No active area";
+  const mobileNavItems = navItems.filter((item) => ["home", "today", "history", "vocabulary", "account"].includes(item.route));
 
   return (
     <div className="min-h-screen text-slate-950 transition-colors duration-500" style={{ ...getStudyAreaThemeStyle(activeTheme), background: "var(--area-page)" }}>
+      <header className="safe-top sticky top-0 z-30 border-b border-slate-200 bg-white/95 px-4 pb-3 backdrop-blur md:hidden">
+        <div className="flex items-center justify-between gap-3">
+          <button type="button" onClick={() => onNavigate("home")} className="flex min-w-0 items-center gap-3 text-left">
+            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
+              <Flame size={19} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-base font-semibold leading-tight">{strings.app.name}</p>
+              <p className="truncate text-xs font-bold text-slate-500">{activeArea}</p>
+            </div>
+          </button>
+          <button type="button" onClick={() => goals.length ? setIsAreaModalOpen(true) : onNavigate("account")} className="rounded-[8px] px-3 py-2 text-xs font-bold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)", borderColor: "var(--area-primary-soft)" }}>
+            {activeGoal ? `${activeGoal.progress_percent}%` : strings.actions.createArea}
+          </button>
+        </div>
+      </header>
+
       <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-slate-200 bg-white px-4 py-5 md:block">
         <div className="mb-8 flex items-center gap-3">
           <div className="grid h-11 w-11 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
@@ -106,30 +124,33 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         </div>
       </aside>
 
-      <main className="min-h-screen px-4 py-4 md:ml-72 md:px-8 md:py-8">
+      <main className="min-h-screen px-3 pb-32 pt-3 md:ml-72 md:px-8 md:py-8">
         <div key={activeRoute} className="mx-auto max-w-6xl animate-[fadeIn_220ms_ease-out]">{children}</div>
       </main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-20 grid border-t border-slate-200 bg-white md:hidden" style={{ gridTemplateColumns: `repeat(${navItems.length}, minmax(0, 1fr))` }}>
-        {navItems.map((item) => (
+      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 px-2 pt-2 shadow-[0_-10px_24px_rgba(15,23,42,0.10)] backdrop-blur md:hidden">
+        <div className="mx-auto grid max-w-md grid-cols-5 items-end gap-1">
+        {mobileNavItems.map((item) => {
+          const isActive = activeRoute === item.route;
+          return (
           <button
             key={item.route}
             type="button"
             onClick={() => onNavigate(item.route)}
-            className={`flex h-16 min-w-0 flex-col items-center justify-center gap-1 text-[10px] font-semibold ${
-              activeRoute === item.route ? "" : "text-slate-500"
-            }`}
-            style={activeRoute === item.route ? { color: "var(--area-primary-dark)" } : undefined}
+            className={`flex h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-[8px] text-[10px] font-semibold transition ${isActive ? "" : "text-slate-500"}`}
+            style={isActive ? { background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" } : undefined}
           >
             <item.icon size={18} />
             <span className="max-w-full truncate px-1">{strings.nav[item.labelKey]}</span>
           </button>
-        ))}
+          );
+        })}
+        </div>
       </nav>
 
       {isAreaModalOpen ? (
-        <div className="fixed inset-0 z-40 grid place-items-center bg-slate-950/40 px-4 backdrop-blur-sm">
-          <section className="w-full max-w-lg animate-[fadeIn_180ms_ease-out] rounded-[8px] bg-white p-5 shadow-xl ring-1 ring-slate-200">
+        <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0">
+          <section className="max-h-[88vh] w-full max-w-lg animate-[fadeIn_180ms_ease-out] overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.layout.switchArea}</p>

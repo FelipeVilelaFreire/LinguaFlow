@@ -103,21 +103,21 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
   }
 
   return (
-    <div className="pb-20 md:pb-0">
-      <section className="rounded-[8px] bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <div className="pb-4 md:pb-0">
+      <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
           <UserCircle size={18} />
           {strings.profile.eyebrow}
         </p>
-        <h2 className="mt-2 text-4xl font-semibold">{strings.profile.title}</h2>
+        <h2 className="mt-2 text-3xl font-semibold leading-tight md:text-4xl">{strings.profile.title}</h2>
         <p className="mt-2 max-w-xl font-medium text-slate-600">
           {strings.profile.subtitle}
         </p>
       </section>
 
-      <section className="mt-6 grid gap-4 lg:grid-cols-[0.85fr_1.15fr]">
-        <div className="space-y-4">
-          <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+      <section className="mt-4 grid gap-3 md:mt-6 md:gap-4 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="space-y-3 md:space-y-4">
+          <div className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
             <div className="flex items-center gap-4">
               <div className="grid h-14 w-14 place-items-center rounded-full ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
                 <UserCircle size={30} />
@@ -128,13 +128,13 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
               </div>
             </div>
 
-            <button type="button" onClick={onLogout} className="mt-6 inline-flex h-12 items-center gap-2 rounded-[8px] bg-slate-950 px-5 font-semibold text-white transition hover:bg-slate-800">
+            <button type="button" onClick={onLogout} className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-[8px] bg-slate-950 px-5 font-semibold text-white transition hover:bg-slate-800 sm:w-auto md:mt-6">
               <LogOut size={18} />
               {strings.actions.logout}
             </button>
           </div>
 
-          <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+          <div className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
             <div className="grid h-11 w-11 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
               <GraduationCap size={21} />
             </div>
@@ -149,7 +149,7 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
           </div>
         </div>
 
-        <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+        <div className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
           <h3 className="text-xl font-semibold">{strings.profile.yourAreas}</h3>
           <div className="mt-4 grid gap-3">
             {!goals.length ? (
@@ -167,11 +167,11 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
 
       {isCreateModalOpen ? (
         <div className="fixed inset-0 z-40 grid place-items-center bg-slate-950/40 px-4 backdrop-blur-sm">
-          <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[8px] bg-white p-5 shadow-xl ring-1 ring-slate-200">
+          <section className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.profile.newArea}</p>
-                <h2 className="mt-1 text-3xl font-semibold">{locale === "pt" ? "Monte sua nova area" : "Build your new area"}</h2>
+                <h2 className="mt-1 text-2xl font-semibold leading-tight md:text-3xl">{locale === "pt" ? "Monte sua nova area" : "Build your new area"}</h2>
                 <p className="mt-2 max-w-xl font-medium text-slate-500">
                   {locale === "pt" ? "Escolha origem, destino, nivel, duracao e rotina como no onboarding." : "Choose source, target, level, duration, and routine like onboarding."}
                 </p>
@@ -181,7 +181,7 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
               </button>
             </div>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <div className="mt-5 grid gap-3 md:mt-6 md:grid-cols-3 md:gap-4">
               <ChoiceCard title={locale === "pt" ? "Origem" : "Source"} value={getLanguageLabel(sourceLanguage, locale)} detail={getLanguageDetail(sourceLanguage, locale)} onClick={() => setLanguageModal("source")} />
               <ChoiceCard title={locale === "pt" ? "Destino e meta" : "Target and goal"} value={`${getLanguageLabel(targetLanguage, locale)} ${targetLevel.code}`} detail={`${locale === "pt" ? currentLevel.label : currentLevel.labelEn} -> ${locale === "pt" ? targetLevel.label : targetLevel.labelEn}`} onClick={() => setLanguageModal("target")} />
               <ChoiceCard title={locale === "pt" ? "Sessao" : "Session"} value={routineMode === "planned" ? formatSession(sessionMinutes, locale) : locale === "pt" ? "Estudo avulso" : "Flexible study"} detail={routineMode === "planned" ? formatWeekdays(studyWeekdays, locale) : locale === "pt" ? "Sem dias fixos por enquanto" : "No fixed days for now"} />
@@ -194,7 +194,7 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
                 </div>
                 <div>
                   <p className="text-sm font-semibold uppercase text-slate-500">{locale === "pt" ? "Plano de estudo" : "Study plan"}</p>
-                  <h3 className="mt-1 text-2xl font-semibold">{locale === "pt" ? "Quando e por quanto tempo?" : "When and for how long?"}</h3>
+                  <h3 className="mt-1 text-xl font-semibold md:text-2xl">{locale === "pt" ? "Quando e por quanto tempo?" : "When and for how long?"}</h3>
                   <p className="mt-1 font-medium text-slate-500">{locale === "pt" ? "Essa rotina organiza o calendario, historico e sessoes dessa area." : "This routine organizes the calendar, history, and sessions for this area."}</p>
                 </div>
               </div>
@@ -421,12 +421,12 @@ function LanguagePickerModal({
   const minimumRank = minimumGoalRank(currentLevel);
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 px-4 backdrop-blur-sm">
-      <section className="w-full max-w-2xl rounded-[8px] bg-white p-5 shadow-xl ring-1 ring-slate-200">
+    <div className="fixed inset-0 z-50 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0">
+      <section className="max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{isSource ? locale === "pt" ? "Idioma de origem" : "Source language" : locale === "pt" ? "Destino e meta" : "Target and goal"}</p>
-            <h2 className="mt-1 text-3xl font-semibold">{isSource ? locale === "pt" ? "Qual idioma voce entende melhor?" : "Which language do you understand best?" : locale === "pt" ? "O que voce quer aprender?" : "What do you want to learn?"}</h2>
+            <h2 className="mt-1 text-2xl font-semibold leading-tight md:text-3xl">{isSource ? locale === "pt" ? "Qual idioma voce entende melhor?" : "Which language do you understand best?" : locale === "pt" ? "O que voce quer aprender?" : "What do you want to learn?"}</h2>
             <p className="mt-2 max-w-xl font-medium text-slate-500">
               {isSource ? locale === "pt" ? "Esse idioma sera usado para explicacoes e traducoes." : "This language will be used for explanations and translations." : locale === "pt" ? "Escolha o idioma, seu nivel atual e a meta que quer alcancar." : "Choose the language, your current level, and the goal you want to reach."}
             </p>

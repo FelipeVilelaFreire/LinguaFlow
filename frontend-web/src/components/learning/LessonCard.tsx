@@ -57,11 +57,11 @@ export default function LessonCard({
     return (
       <section className="relative">
         <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[8px] bg-white/60 ring-1 ring-slate-200" style={{ animation: "stackLift 360ms ease-out both" }} />
-        <div className="relative rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: "studyCardIn 320ms ease-out both" }}>
+        <div className="relative rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: "studyCardIn 320ms ease-out both" }}>
           <p className="inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
             Aula do dia
           </p>
-          <h2 className="mt-4 text-3xl font-semibold leading-tight text-slate-950 md:text-5xl">{exercise.prompt}</h2>
+          <h2 className="mt-4 text-2xl font-semibold leading-tight text-slate-950 md:text-5xl">{exercise.prompt}</h2>
           <p className="mt-3 max-w-2xl font-medium leading-7 text-slate-600">
             Primeiro veja o contexto e as frases principais. Depois a pratica vai cobrar exatamente esse conteudo e revisoes anteriores.
           </p>
@@ -70,7 +70,7 @@ export default function LessonCard({
             {(exercise.preview_phrases ?? []).map((preview, index) => (
               <div key={`${preview.target_text}-${index}`} className="rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
                 <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{preview.target_code}</p>
-                <p className="mt-1 text-xl font-semibold text-slate-950">{preview.target_text}</p>
+                <p className="mt-1 text-lg font-semibold text-slate-950 md:text-xl">{preview.target_text}</p>
                 <p className="mt-2 text-sm font-semibold uppercase text-slate-500">{preview.source_code}</p>
                 <p className="mt-1 font-medium text-slate-600">{preview.source_text}</p>
               </div>
@@ -90,21 +90,21 @@ export default function LessonCard({
     <section className="relative">
       <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[8px] bg-white/60 ring-1 ring-slate-200" style={{ animation: "stackLift 360ms ease-out both" }} />
       <div className="absolute inset-x-8 -bottom-6 top-10 rounded-[8px] bg-white/40 ring-1 ring-slate-200" style={{ animation: "stackLift 420ms ease-out both" }} />
-      <div className="relative rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: checked && feedback.quality !== "wrong" ? "lessonBounce 360ms ease-out both" : "studyCardIn 320ms ease-out both" }}>
-      <div className="flex items-start justify-between gap-4">
+      <div className="relative rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: checked && feedback.quality !== "wrong" ? "lessonBounce 360ms ease-out both" : "studyCardIn 320ms ease-out both" }}>
+      <div className="flex items-start justify-between gap-3 md:gap-4">
         <div>
           <p className="inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
             {labels.title} {phraseIndex + 1} / {totalPhrases}
           </p>
           <p className="mt-4 max-w-2xl text-sm font-bold leading-6 text-slate-500">{labels.detail}</p>
-          <h2 className="mt-5 min-h-24 text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">{exercise.prompt}</h2>
+          <h2 className="mt-4 min-h-20 text-3xl font-semibold leading-tight text-slate-950 md:mt-5 md:min-h-24 md:text-5xl">{exercise.prompt}</h2>
         </div>
-        <button type="button" onClick={onFavorite} className="grid h-11 w-11 shrink-0 place-items-center rounded-[8px] bg-rose-50 text-rose-600 ring-1 ring-rose-100 transition hover:bg-rose-100" title={strings.actions.favorite}>
+        <button type="button" onClick={onFavorite} className="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] bg-rose-50 text-rose-600 ring-1 ring-rose-100 transition hover:bg-rose-100 md:h-11 md:w-11" title={strings.actions.favorite}>
           <Heart size={21} />
         </button>
       </div>
 
-      <button type="button" onClick={onReveal} className="mt-6 inline-flex items-center gap-2 rounded-[8px] bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800">
+      <button type="button" onClick={onReveal} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-[8px] bg-slate-950 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 sm:w-auto md:mt-6">
         <RotateCcw size={17} />
         {showTranslation ? strings.actions.hideTranslation : strings.actions.showTranslation}
       </button>
@@ -133,7 +133,7 @@ export default function LessonCard({
       ) : usesWordOrder ? (
         <div className="mt-6 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
           <p className="text-sm font-semibold uppercase text-slate-500">{labels.input}</p>
-          <div className="mt-3 min-h-14 rounded-[8px] bg-white p-3 text-lg font-semibold ring-1 ring-slate-200">
+          <div className="mt-3 min-h-14 rounded-[8px] bg-white p-3 text-base font-semibold ring-1 ring-slate-200 md:text-lg">
             {answer || " "}
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -178,11 +178,11 @@ export default function LessonCard({
       ) : null}
 
       <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto]">
-        <button type="button" onClick={canContinue ? onNext : onCheck} className="inline-flex items-center justify-center gap-2 rounded-[8px] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
+        <button type="button" onClick={canContinue ? onNext : onCheck} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[8px] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
           {primaryAction}
           <Send size={16} />
         </button>
-        <button type="button" onClick={onNext} className="rounded-[8px] bg-white px-4 py-3 text-sm font-semibold ring-1 ring-slate-200 transition hover:bg-slate-50">
+        <button type="button" onClick={onNext} className="min-h-12 rounded-[8px] bg-white px-4 py-3 text-sm font-semibold ring-1 ring-slate-200 transition hover:bg-slate-50">
           {strings.actions.skip}
         </button>
       </div>

@@ -61,22 +61,22 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
     : locale === "pt" ? "Ajuste o ritmo esta semana" : "Adjust your pace this week";
 
   return (
-    <div className="pb-20 md:pb-0">
+    <div className="pb-4 md:pb-0">
       <section className="grid overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-slate-200 lg:grid-cols-[1fr_360px]">
-        <div className="p-6 md:p-8">
+        <div className="p-4 md:p-8">
           <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
             <PlayCircle size={16} />
             {strings.home.eyebrow}
           </div>
-          <h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">
+          <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-slate-950 md:text-5xl">
             {strings.home.headline}
           </h2>
-          <p className="mt-4 max-w-2xl text-lg font-medium leading-8 text-slate-600">
+          <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-slate-600 md:mt-4 md:text-lg md:leading-8">
             {strings.home.subtitle}
           </p>
 
           <div className="mt-7 grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
-            <button type="button" onClick={onStartToday} className="inline-flex h-12 items-center justify-center gap-2 rounded-[8px] px-5 font-semibold text-white shadow-sm transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
+            <button type="button" onClick={onStartToday} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-[8px] px-5 font-semibold text-white shadow-sm transition hover:brightness-95 sm:w-auto" style={{ background: "var(--area-primary)" }}>
               {strings.actions.startToday}
               <ArrowRight size={19} />
             </button>
@@ -84,10 +84,10 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
           </div>
         </div>
 
-        <aside className="border-t border-slate-200 bg-slate-50 p-6 lg:border-l lg:border-t-0 md:p-8">
+        <aside className="border-t border-slate-200 bg-slate-50 p-4 lg:border-l lg:border-t-0 md:p-8">
           <p className="text-sm font-semibold uppercase text-slate-500">{strings.home.progress}</p>
           <div className="mt-3 flex items-end justify-between gap-4">
-            <p className="text-5xl font-semibold text-slate-950">{goal.data.progress_percent}%</p>
+            <p className="text-4xl font-semibold text-slate-950 md:text-5xl">{goal.data.progress_percent}%</p>
             <span className="rounded-[8px] px-3 py-2 text-sm font-bold" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
               {targetCode} {goal.data.target_level}
             </span>
@@ -103,7 +103,7 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
         </aside>
       </section>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
+      <div className="mt-4 grid grid-cols-3 gap-2 md:mt-5 md:gap-4">
         <Stat icon={<Flame />} color="area" value={goal.data.streak_days} label={strings.home.streak} />
         <Stat icon={<BookOpen />} color="bg-sky-100 text-sky-700" value={goal.data.completed_lessons} label={strings.home.lessons} />
         <Stat icon={<CalendarDays />} color="bg-violet-100 text-violet-700" value={remaining} label={strings.home.remaining} />
@@ -192,10 +192,10 @@ function getLanguageName(code: string | undefined, locale: "pt" | "en") {
 
 function Stat({ icon, color, value, label }: { icon: ReactNode; color: string; value: number; label: string }) {
   return (
-    <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
-      <div className={`grid h-11 w-11 place-items-center rounded-[8px] ${color === "area" ? "" : color}`} style={color === "area" ? { background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" } : undefined}>{icon}</div>
-      <p className="mt-4 text-3xl font-semibold">{value}</p>
-      <p className="mt-1 text-sm font-bold text-slate-500">{label}</p>
+    <div className="min-w-0 rounded-[8px] bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-5">
+      <div className={`grid h-9 w-9 place-items-center rounded-[8px] md:h-11 md:w-11 ${color === "area" ? "" : color}`} style={color === "area" ? { background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" } : undefined}>{icon}</div>
+      <p className="mt-3 text-2xl font-semibold md:mt-4 md:text-3xl">{value}</p>
+      <p className="mt-1 break-words text-[11px] font-bold leading-tight text-slate-500 md:text-sm">{label}</p>
     </div>
   );
 }

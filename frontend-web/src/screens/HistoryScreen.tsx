@@ -36,15 +36,20 @@ export default function HistoryScreen() {
   const summary = getMonthSummary(history.data.goals);
 
   return (
-    <div className="pb-20 md:pb-0">
-      <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+    <div className="pb-4 md:pb-0">
+      <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
           <CalendarDays size={18} />
           {locale === "pt" ? "Agenda mensal" : "Monthly calendar"}
         </p>
         <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <h2 className="text-4xl font-semibold capitalize md:text-5xl">{monthLabel}</h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-2xl font-semibold capitalize leading-tight md:text-4xl">{monthLabel}</h2>
+              <button type="button" onClick={() => setCursor({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 })} className="h-9 rounded-[8px] bg-slate-50 px-3 text-xs font-semibold ring-1 ring-slate-200 transition hover:bg-slate-100 md:h-10 md:text-sm">
+                {locale === "pt" ? "Mes atual" : "Current month"}
+              </button>
+            </div>
             <p className="mt-2 max-w-2xl font-medium text-slate-600">
               {locale === "pt" ? "Veja seus dias planejados e concluidos por area de estudo." : "Review planned and completed days by study area."}
             </p>
@@ -53,16 +58,13 @@ export default function HistoryScreen() {
             <button type="button" onClick={() => moveMonth(-1)} className="grid h-11 w-11 place-items-center rounded-[8px] bg-white ring-1 ring-slate-200 transition hover:bg-slate-50">
               <ChevronLeft size={19} />
             </button>
-            <button type="button" onClick={() => setCursor({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 })} className="h-11 rounded-[8px] bg-white px-4 text-sm font-semibold ring-1 ring-slate-200 transition hover:bg-slate-50">
-              {locale === "pt" ? "Mes atual" : "Current month"}
-            </button>
             <button type="button" onClick={() => moveMonth(1)} className="grid h-11 w-11 place-items-center rounded-[8px] bg-white ring-1 ring-slate-200 transition hover:bg-slate-50">
               <ChevronRight size={19} />
             </button>
           </div>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid grid-cols-3 gap-2 md:mt-5 md:gap-3">
           <CompactStat label={locale === "pt" ? "Maior streak" : "Best streak"} value={summary.bestStreak} />
           <CompactStat label={locale === "pt" ? "Dias estudados" : "Study days"} value={summary.completedDays} />
           <CompactStat label={locale === "pt" ? "Sessoes" : "Sessions"} value={summary.sessions} />
@@ -80,7 +82,7 @@ export default function HistoryScreen() {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5">
+      <div className="mt-4 grid gap-4 md:mt-5 md:gap-5">
         {viewMode === "all" ? (
           <AllHistoryPanel goals={history.data.goals} locale={locale} />
         ) : (
@@ -100,7 +102,7 @@ function AllHistoryPanel({ goals, locale }: { goals: Array<{ goal: Goal; days: H
   const bestStreak = getBestStreak(days);
 
   return (
-    <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+    <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{locale === "pt" ? "Todas as areas" : "All areas"}</p>
@@ -120,7 +122,7 @@ function AllHistoryPanel({ goals, locale }: { goals: Array<{ goal: Goal; days: H
         <Legend color="#ffffff" label={locale === "pt" ? "Livre" : "Open"} textColor="text-slate-600" />
       </div>
 
-      <div className="mt-5 grid grid-cols-7 gap-2">
+      <div className="mt-5 grid grid-cols-7 gap-1.5 md:gap-2">
         {getWeekdays(locale).map((day) => (
           <p key={day} className="text-center text-xs font-bold uppercase text-slate-400">{day}</p>
         ))}
@@ -142,7 +144,7 @@ function GoalHistoryPanel({ goal, days, locale }: { goal: Goal; days: HistoryDay
   const bestStreak = getBestStreak(days);
 
   return (
-    <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+    <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase" style={{ color: theme.primary }}>{locale === "pt" ? "Area" : "Area"}</p>
@@ -169,7 +171,7 @@ function GoalHistoryPanel({ goal, days, locale }: { goal: Goal; days: HistoryDay
         <Legend color="#ffffff" label={locale === "pt" ? "Livre" : "Open"} textColor="text-slate-600" />
       </div>
 
-      <div className="mt-5 grid grid-cols-7 gap-2">
+      <div className="mt-5 grid grid-cols-7 gap-1.5 md:gap-2">
         {getWeekdays(locale).map((day) => (
           <p key={day} className="text-center text-xs font-bold uppercase text-slate-400">{day}</p>
         ))}
@@ -186,9 +188,9 @@ function GoalHistoryPanel({ goal, days, locale }: { goal: Goal; days: HistoryDay
 
 function CompactStat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-[8px] bg-slate-50 p-3 ring-1 ring-slate-200">
-      <p className="text-xs font-semibold uppercase text-slate-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-slate-950">{value}</p>
+    <div className="min-w-0 rounded-[8px] bg-slate-50 p-2.5 ring-1 ring-slate-200 md:p-3">
+      <p className="break-words text-[10px] font-semibold uppercase leading-tight text-slate-500 md:text-xs">{label}</p>
+      <p className="mt-1 text-xl font-semibold text-slate-950 md:text-2xl">{value}</p>
     </div>
   );
 }
@@ -211,10 +213,10 @@ function HistoryCell({ day, locale, softColor }: { day: HistoryDay; locale: "pt"
   return (
     <div
       title={title}
-      className={`aspect-square rounded-[8px] p-2 ring-1 transition ${day.completed ? "text-white shadow-sm" : day.planned ? "bg-slate-50 text-slate-700 ring-slate-200" : "bg-white text-slate-400 ring-slate-100"}`}
+      className={`aspect-square rounded-[8px] p-1.5 ring-1 transition md:p-2 ${day.completed ? "text-white shadow-sm" : day.planned ? "bg-slate-50 text-slate-700 ring-slate-200" : "bg-white text-slate-400 ring-slate-100"}`}
       style={day.completed ? { background: COMPLETED_COLOR, borderColor: COMPLETED_COLOR } : day.planned ? { background: softColor } : undefined}
     >
-      <p className="text-sm font-semibold">{date.getDate()}</p>
+      <p className="text-xs font-semibold md:text-sm">{date.getDate()}</p>
       {day.completion_count ? <p className="mt-1 text-xs font-bold">{day.completion_count}x</p> : null}
     </div>
   );

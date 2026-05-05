@@ -49,19 +49,19 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
 
   return (
     <main className="min-h-screen overflow-hidden bg-slate-50 text-slate-950">
-      <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-8 px-5 py-8 lg:grid-cols-[1.05fr_0.95fr]">
+      <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-5 px-3 py-4 md:px-5 md:py-8 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="relative">
           <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 ring-1 ring-emerald-100">
             <Sparkles size={18} />
             Daily language flow
           </div>
-          <h1 className="mt-6 max-w-2xl text-5xl font-semibold leading-tight tracking-normal md:text-7xl">
+          <h1 className="mt-5 max-w-2xl text-4xl font-semibold leading-tight tracking-normal md:mt-6 md:text-7xl">
             LinguaFlow
           </h1>
-          <p className="mt-5 max-w-xl text-xl font-medium text-slate-600">
+          <p className="mt-4 max-w-xl text-base font-medium leading-7 text-slate-600 md:mt-5 md:text-xl">
             Um app de estudo diario com metas, licoes curtas, cenarios reais e progresso por usuario.
           </p>
-          <div className="mt-8 grid max-w-xl gap-3 sm:grid-cols-3">
+          <div className="mt-6 grid max-w-xl gap-3 sm:grid-cols-3 md:mt-8">
             {[
               { title: "Licoes curtas", detail: "Pratica diaria guiada" },
               { title: "Cenarios reais", detail: "Restaurante, mercado e rotina" },
@@ -75,7 +75,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           </div>
         </section>
 
-        <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-7">
+        <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-7">
           <div className="mb-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-semibold uppercase text-emerald-700">{mode === "login" ? "Entrar" : "Criar conta"}</p>

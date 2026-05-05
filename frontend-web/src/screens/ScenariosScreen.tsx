@@ -16,27 +16,27 @@ export default function ScenariosScreen() {
   if (scenarios.error || !scenarios.data) return <StateMessage title={strings.states.empty} detail={strings.states.apiHint} />;
 
   return (
-    <div className="pb-20 md:pb-0">
-      <header className="rounded-[8px] bg-white p-6 shadow-sm ring-1 ring-slate-200">
+    <div className="pb-4 md:pb-0">
+      <header className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase text-emerald-700">
           <MapPinned size={18} />
           {strings.scenarios.eyebrow}
         </p>
-        <h2 className="mt-2 text-4xl font-semibold">{strings.scenarios.title}</h2>
+        <h2 className="mt-2 text-3xl font-semibold leading-tight md:text-4xl">{strings.scenarios.title}</h2>
         <p className="mt-2 max-w-xl font-medium text-slate-600">{strings.scenarios.subtitle}</p>
       </header>
 
-      <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-2 md:mt-6 md:grid-cols-2 md:gap-3 lg:grid-cols-3">
         {scenarios.data.map((scenario) => (
-          <button key={scenario.slug} type="button" onClick={() => setSelectedScenario(scenario.slug)} className={`rounded-[8px] p-5 text-left shadow-sm ring-1 transition hover:-translate-y-0.5 ${selectedScenario === scenario.slug ? "bg-slate-950 text-white ring-slate-950" : "bg-white ring-slate-200 hover:ring-emerald-200"}`}>
-            <h3 className="text-xl font-semibold">{scenario.title}</h3>
-            <p className={`mt-2 text-sm font-bold ${selectedScenario === scenario.slug ? "text-slate-300" : "text-slate-700"}`}>{scenario.description}</p>
+          <button key={scenario.slug} type="button" onClick={() => setSelectedScenario(scenario.slug)} className={`rounded-[8px] p-4 text-left shadow-sm ring-1 transition hover:-translate-y-0.5 md:p-5 ${selectedScenario === scenario.slug ? "bg-slate-950 text-white ring-slate-950" : "bg-white ring-slate-200 hover:ring-emerald-200"}`}>
+            <h3 className="text-base font-semibold md:text-xl">{scenario.title}</h3>
+            <p className={`mt-2 line-clamp-3 text-xs font-bold md:text-sm ${selectedScenario === scenario.slug ? "text-slate-300" : "text-slate-700"}`}>{scenario.description}</p>
             <p className="mt-4 text-xs font-semibold uppercase">{scenario.phrase_count} frases</p>
           </button>
         ))}
       </div>
 
-      <section className="mt-6 rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+      <section className="mt-4 rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:mt-6 md:p-5">
         {phrases.loading ? <StateMessage /> : null}
         <div className="grid gap-3 md:grid-cols-2">
           {phrases.data?.map((phrase) => (
