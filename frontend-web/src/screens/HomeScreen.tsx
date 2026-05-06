@@ -13,146 +13,116 @@ interface HomeScreenProps {
 }
 
 export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }: HomeScreenProps) {
-  const strings = useStrings();
+  const s = useStrings();
   const locale = useLocale();
   const goal = useAsyncData(contentService.getCurrentGoal);
 
-  // ── No goal ──────────────────────────────────────────────────────────────
   if (!hasActiveGoal) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 pb-20 text-center md:pb-0">
-        <div
-          className="grid h-16 w-16 place-items-center rounded-full text-white"
-          style={{ background: "var(--area-primary)" }}
-        >
+        <div className="grid h-16 w-16 place-items-center rounded-full text-white" style={{ background: "var(--area-primary)" }}>
           <BookOpen size={26} />
         </div>
-        <h2 className="mt-6 text-2xl font-semibold text-slate-950">
-          {locale === "pt" ? "Nenhuma área ativa" : "No active area"}
-        </h2>
-        <p className="mt-3 max-w-xs text-base font-medium leading-7 text-slate-500">
-          {locale === "pt"
-            ? "Crie uma área de estudo para começar seu plano de idiomas."
-            : "Create a study area to start your language plan."}
-        </p>
+        <h2 className="mt-6 text-2xl font-bold text-slate-950">{s.home.noActiveArea}</h2>
+        <p className="mt-3 max-w-xs text-sm font-medium leading-6 text-slate-500">{s.home.noActiveAreaDetail}</p>
         <button
           type="button"
           onClick={onCreateArea}
-          className="mt-7 inline-flex h-12 items-center gap-2 rounded-[8px] px-6 font-semibold text-white transition hover:brightness-95"
+          className="mt-7 inline-flex h-12 items-center gap-2 rounded-xl px-6 font-semibold text-white transition hover:brightness-95"
           style={{ background: "var(--area-primary)" }}
         >
           <Plus size={18} />
-          {strings.actions.createArea}
+          {s.actions.createArea}
         </button>
       </div>
     );
   }
 
   if (goal.loading) return <StateMessage />;
-  if (goal.error || !goal.data) return <StateMessage title={strings.states.empty} detail={strings.states.apiHint} />;
+  if (goal.error || !goal.data) return <StateMessage title={s.states.empty} detail={s.states.apiHint} />;
 
   const g = goal.data;
   const remaining = Math.max(g.duration_days - g.completed_lessons, 0);
-  const targetLanguage = getLanguageName(g.target_language?.code, locale);
-  const sourceLanguage = getLanguageName(g.source_language?.code, locale);
   const targetCode = g.target_language?.code ?? "DE";
+  const sourceCode = g.source_language?.code ?? "PT";
+  const targetName = s.languages[targetCode as keyof typeof s.languages] ?? targetCode;
+  const sourceName = s.languages[sourceCode as keyof typeof s.languages] ?? sourceCode;
   const hasRoutine = Boolean(g.study_weekdays?.length);
+
+  const weekdayStr = g.study_weekdays?.length === 7
+    ? s.profile.allDays
+    : g.study_weekdays?.length === 0
+      ? s.home.noRoutine
+      : (g.study_weekdays ?? []).map((d) => s.weekdays.short[d]).join(", ");
+
   const routine = hasRoutine
-    ? strings.home.routine(formatWeekdays(g.study_weekdays ?? [], locale), g.session_minutes ?? 30)
-    : strings.home.flexibleStudy;
+    ? s.home.routine(weekdayStr, g.session_minutes ?? 30)
+    : s.home.flexibleStudy;
+
   const nextStudyLabel = hasRoutine
     ? g.is_study_day_today
-      ? strings.home.studyToday
-      : strings.home.nextSession(formatDate(g.next_study_date, locale))
-    : strings.home.noFixedSchedule;
+      ? s.home.studyToday
+      : s.home.nextSession(formatDate(g.next_study_date, locale))
+    : s.home.noFixedSchedule;
 
   return (
     <div className="pb-4 md:pb-0">
 
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="rounded-[8px] bg-white p-5 ring-1 ring-slate-200 md:p-7">
+      {/* Hero */}
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex items-center justify-between gap-3">
-          <span
-            className="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
-            style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}
-          >
+          <span className="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider area-bg-soft">
             {targetCode} · {g.current_level} → {g.target_level}
           </span>
-          <span className="text-xl font-bold tabular-nums" style={{ color: "var(--area-primary)" }}>
+          <span className="text-xl font-bold tabular-nums area-text-primary">
             {g.progress_percent}%
           </span>
         </div>
 
-        <h2 className="mt-4 text-3xl font-semibold leading-tight text-slate-950 md:text-4xl">
-          {targetLanguage}
-        </h2>
+        <h2 className="mt-4 text-3xl font-bold leading-tight text-slate-950">{targetName}</h2>
         <p className="mt-1 text-sm font-medium text-slate-400">
-          {sourceLanguage} → {targetLanguage} · {g.target_level}
+          {s.home.languagePath(sourceName, targetName, g.target_level)}
         </p>
 
         <div className="mt-5">
           <ProgressBar value={g.progress_percent} />
           <p className="mt-2 text-xs font-semibold text-slate-400">
-            {g.learned_phrases.toLocaleString()} / {g.total_phrases.toLocaleString()}{" "}
-            {locale === "pt" ? "frases" : "phrases"}
+            {g.learned_phrases.toLocaleString()} / {g.total_phrases.toLocaleString()} {s.home.phrasesLabel}
           </p>
         </div>
 
         <button
           type="button"
           onClick={onStartToday}
-          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[8px] font-semibold text-white transition hover:brightness-95 active:scale-[0.99]"
+          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl font-semibold text-white transition hover:brightness-95 active:scale-[0.99]"
           style={{ background: "var(--area-primary)" }}
         >
-          {strings.actions.startToday}
+          {s.actions.startToday}
           <ArrowRight size={18} />
         </button>
       </section>
 
-      {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <div className="mt-3 grid grid-cols-3 overflow-hidden rounded-[8px] bg-slate-200" style={{ gap: 1 }}>
-        <StatCell
-          value={g.streak_days}
-          label={strings.home.streak}
-          icon={<Flame size={13} style={{ color: "var(--area-primary)" }} />}
-        />
-        <StatCell
-          value={g.completed_lessons}
-          label={strings.home.lessons}
-          icon={<BookOpen size={13} className="text-sky-500" />}
-        />
-        <StatCell
-          value={remaining}
-          label={strings.home.remaining}
-          icon={<CalendarDays size={13} className="text-violet-500" />}
-        />
+      {/* Stats */}
+      <div className="mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-slate-200 bg-slate-200">
+        <StatCell value={g.streak_days} label={s.home.streak} icon={<Flame size={13} className="area-text-primary" />} />
+        <StatCell value={g.completed_lessons} label={s.home.lessons} icon={<BookOpen size={13} className="text-sky-500" />} />
+        <StatCell value={remaining} label={s.home.remaining} icon={<CalendarDays size={13} className="text-violet-500" />} />
       </div>
 
-      {/* ── Schedule + Goal ──────────────────────────────────────────────── */}
-      <div className="mt-3 overflow-hidden rounded-[8px] bg-white ring-1 ring-slate-200 divide-y divide-slate-100">
-        <div className="px-4 py-4 md:px-5">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-            {strings.home.nextLesson}
-          </p>
+      {/* Agenda + Meta */}
+      <div className="mt-3 divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.home.nextLesson}</p>
           <p className="mt-1.5 text-sm font-semibold text-slate-800">{routine}</p>
-          <p
-            className="mt-0.5 text-sm font-bold"
-            style={{ color: "var(--area-primary)" }}
-          >
-            {nextStudyLabel}
-          </p>
+          <p className="mt-0.5 text-sm font-bold area-text-primary">{nextStudyLabel}</p>
         </div>
-
-        <div className="px-4 py-4 md:px-5">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-            {locale === "pt" ? "Meta" : "Goal"}
-          </p>
+        <div className="px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.home.goalLabel}</p>
           <p className="mt-1.5 text-sm font-semibold text-slate-800">
-            {strings.home.languagePath(sourceLanguage, targetLanguage, g.target_level)}
+            {s.home.languagePath(sourceName, targetName, g.target_level)}
           </p>
           <p className="mt-0.5 text-sm font-medium text-slate-400">
-            {g.duration_days} {locale === "pt" ? "dias" : "days"} ·{" "}
-            {remaining} {locale === "pt" ? "restantes" : "remaining"}
+            {g.duration_days} {s.home.daysLabel} · {remaining} {s.home.remaining}
           </p>
         </div>
       </div>
@@ -163,8 +133,8 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
 
 function StatCell({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) {
   return (
-    <div className="bg-white px-3 py-4 md:px-5">
-      <p className="text-2xl font-semibold tabular-nums text-slate-950 md:text-3xl">{value}</p>
+    <div className="bg-white px-3 py-4">
+      <p className="text-2xl font-bold tabular-nums text-slate-950">{value}</p>
       <div className="mt-1.5 flex items-center gap-1.5">
         {icon}
         <p className="text-[11px] font-bold leading-tight text-slate-500">{label}</p>
@@ -173,32 +143,11 @@ function StatCell({ value, label, icon }: { value: number; label: string; icon: 
   );
 }
 
-const WEEKDAY_LABELS: Record<"pt" | "en", string[]> = {
-  pt: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"],
-  en: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-};
-
-const LANGUAGE_NAMES: Record<"pt" | "en", Record<string, string>> = {
-  pt: { PT: "Portugues", EN: "Ingles", DE: "Alemao", ES: "Espanhol" },
-  en: { PT: "Portuguese", EN: "English", DE: "German", ES: "Spanish" },
-};
-
-function formatWeekdays(days: number[], locale: "pt" | "en") {
-  if (days.length === 7) return locale === "pt" ? "Todo dia" : "Every day";
-  if (!days.length) return locale === "pt" ? "Sem rotina definida" : "No routine set";
-  return days.map((day) => WEEKDAY_LABELS[locale][day]).filter(Boolean).join(", ");
-}
-
 function formatDate(value: string | null, locale: "pt" | "en") {
-  if (!value) return locale === "pt" ? "sem data definida" : "no date set";
+  if (!value) return "";
   return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", {
     weekday: "long",
     day: "2-digit",
     month: "2-digit",
   }).format(new Date(`${value}T12:00:00`));
-}
-
-function getLanguageName(code: string | undefined, locale: "pt" | "en") {
-  if (!code) return locale === "pt" ? "Idioma" : "Language";
-  return LANGUAGE_NAMES[locale][code] ?? code;
 }

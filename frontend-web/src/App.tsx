@@ -7,6 +7,7 @@ import { StringsProvider } from "./contexts/StringsContext";
 import { ADVENTURE_CHAPTER_BASE, AUTH_PATHS, NAV_ITEMS, ROUTE_PATHS } from "./constants/routes";
 import AccountScreen from "./screens/AccountScreen";
 import AdventureChapterScreen from "./screens/AdventureChapterScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import AdventureScreen from "./screens/AdventureScreen";
 import AuthScreen from "./screens/AuthScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -82,15 +83,20 @@ export default function App() {
     if (route === "adventure") return <AdventureScreen />;
     if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} />;
     if (route === "vocabulary") return <VocabularyScreen />;
+    if (route === "history") {
+      return <HistoryScreen onBack={() => navigate("account")} />;
+    }
     if (route === "account" && user) {
       return (
         <AccountScreen
           user={user}
           goals={goals}
           onCreateGoal={handleGoalChanged}
+          onUpdateGoal={handleGoalChanged}
           onDeleteGoal={deleteGoal}
           onLogout={logout}
           onSwitchGoal={switchGoal}
+          onViewHistory={() => navigate("history")}
         />
       );
     }

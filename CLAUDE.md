@@ -124,6 +124,27 @@ Grid hairline: grid grid-cols-N gap-px bg-slate-200 overflow-hidden rounded-[8px
 
 ---
 
+## Arquitetura CSS — Como escrever estilos
+
+Regra de ouro: cada tipo de estilo tem um lugar fixo. Nunca misturar.
+
+| O que | Onde fica | Exemplo |
+|---|---|---|
+| Layout, espaçamento, cores slate | Tailwind no JSX | `className="flex flex-col gap-3"` |
+| CSS vars, hover com vars, animações | `globals.css` | `.auth-submit`, `.auth-input:focus` |
+| Valor calculado em JS | `style={{}}` inline | `opacity: mounted ? 1 : 0` |
+| **Nunca** | `<style>` dentro do componente | — |
+
+**Por que isso importa para IA:** quando os estilos estão em um só lugar previsível, qualquer modelo consegue ler, editar e não quebrar o que já existe. Estilos espalhados entre `style={{}}`, `className` e `<style>` tornam o código imprevisível para edição automatizada.
+
+**Aplicação prática:**
+- Classe nova que usa `--area-primary`? → vai para `globals.css`
+- Posição/tamanho/cor slate? → vai para `className` com Tailwind
+- Delay de animação que depende de índice JS? → único caso aceitável para `style={{}}`
+- Quer criar `.minha-screen-btn`? → adiciona em `globals.css`, agrupa próximo às outras classes da tela
+
+---
+
 ## Animações (definidas em globals.css)
 | Nome | Uso |
 |------|-----|

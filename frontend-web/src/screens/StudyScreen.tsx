@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useLocale } from "../contexts/StringsContext";
+import { useStrings } from "../contexts/StringsContext";
 import ScenariosScreen from "./ScenariosScreen";
 import TodayScreen from "./TodayScreen";
 
@@ -9,7 +9,7 @@ interface StudyScreenProps {
 }
 
 export default function StudyScreen({ onCompleted }: StudyScreenProps) {
-  const locale = useLocale();
+  const s = useStrings();
   const [tab, setTab] = useState<"session" | "scenarios">("session");
 
   return (
@@ -20,14 +20,14 @@ export default function StudyScreen({ onCompleted }: StudyScreenProps) {
           onClick={() => setTab("session")}
           className={`h-10 rounded-[6px] text-sm font-semibold transition ${tab === "session" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
         >
-          {locale === "pt" ? "Sessao do Dia" : "Daily Session"}
+          {s.today.tabSession}
         </button>
         <button
           type="button"
           onClick={() => setTab("scenarios")}
           className={`h-10 rounded-[6px] text-sm font-semibold transition ${tab === "scenarios" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
         >
-          {locale === "pt" ? "Cenarios" : "Scenarios"}
+          {s.today.tabScenarios}
         </button>
       </div>
       {tab === "session" ? <TodayScreen onCompleted={onCompleted} /> : <ScenariosScreen />}

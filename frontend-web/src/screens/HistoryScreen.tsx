@@ -1,4 +1,4 @@
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import StateMessage from "../components/ui/StateMessage";
@@ -10,7 +10,11 @@ import type { Goal, HistoryDay } from "../types/content";
 
 const COMPLETED_COLOR = "#16a34a";
 
-export default function HistoryScreen() {
+interface HistoryScreenProps {
+  onBack: () => void;
+}
+
+export default function HistoryScreen({ onBack }: HistoryScreenProps) {
   const locale = useLocale();
   const [viewMode, setViewMode] = useState<"all" | "areas">("all");
   const [cursor, setCursor] = useState(() => {
@@ -37,6 +41,13 @@ export default function HistoryScreen() {
 
   return (
     <div className="pb-4 md:pb-0">
+
+      {/* Back */}
+      <button type="button" onClick={onBack} className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-slate-800">
+        <ArrowLeft size={16} />
+        {locale === "pt" ? "Voltar ao perfil" : "Back to profile"}
+      </button>
+
       <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
           <CalendarDays size={18} />

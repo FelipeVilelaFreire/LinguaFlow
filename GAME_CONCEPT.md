@@ -38,49 +38,225 @@ Série A2 — Floresta Sombria (~50 episódios)
 
 ## O Vocabulário Como Mecânica de Jogo
 
-### Inventário vivo
-Quando você aprende uma palavra, o objeto aparece no seu inventário.
+### Atributos do Personagem
 
-- Aprende `Apfel` → maçã aparece no inventário → pode comer para recuperar HP
-- Aprende `Wasser` → água disponível → recupera energia entre batalhas
-- Aprende `Brot` → pão → sustento mais longo
-- Aprende `Schwert` → espada desbloqueada como arma
-- Aprende `Schild` → escudo defensivo disponível
+```
+[Nome do jogador]
+──────────────────────────────────
+❤️  HP (Lebenspunkte)   ████████░░  80/100
+⚡  Stamina             ██████░░░░  60/100
+✨  Runa                ████░░░░░░  40/100
+──────────────────────────────────
+Fome:  ██░░░░  (precisa comer)
+Sede:  ████░░  (ok por enquanto)
+```
 
-Você não recebe o item como recompensa — você **o invoca ao dominar o nome**. Não sabe a palavra? O item não existe para você.
+- **HP** — cai quando você erra no boss. Recupera com comida.
+- **Stamina** — cai ao longo das fases. Recupera com água e descanso.
+- **Runa** — combustível dos poderes. Recupera dominando palavras novas.
 
-### Alimentação como vocabulário passivo
-Entre batalhas, o personagem tem fome e sede. Você escolhe o que consumir do inventário — os itens estão em alemão. Sem exercício formal, você memoriza `Milch`, `Fleisch`, `Käse`, `Wein` naturalmente, porque a sobrevivência do personagem depende disso.
+---
 
-### Sistema de Poderes por Categoria Gramatical
-O tipo de palavra que você aprende define o tipo de poder:
+### Sistema de Domínio — Quanto Você Sabe, Tanto Você Pode
 
-| Categoria | Exemplos | Poder desbloqueado |
-|-----------|----------|--------------------|
-| Verbos de ação | `laufen`, `kämpfen`, `springen` | Habilidades físicas e movimentos |
+A palavra não tem poder fixo. O poder **cresce conforme você a encontra e acerta em mais contextos**.
+
+```
+Nível 1 — Vista (apareceu na narrativa):
+  Feuer  🔥        5 dano
+
+Nível 2 — Praticada (exercícios da fase concluídos):
+  Feuer  🔥🔥      12 dano
+
+Nível 3 — Consolidada (revisada corretamente em fases posteriores):
+  Feuer  🔥🔥🔥    20 dano  ← domínio máximo
+```
+
+**Por que funciona:** o jogador quer acertar os exercícios de verdade — errar não é neutro, enfraquece os poderes. E quer voltar para revisar — cada acerto em fase posterior fortalece o poder.
+
+A consolidação acontece naturalmente pelo ritmo do jogo: a palavra aparece na narrativa nova, na seção de revisão, na conversa com NPCs recorrentes. Cada acerto = mais força.
+
+---
+
+### Inventário Vivo — Itens Invocados pelo Conhecimento
+
+Você não recebe itens como recompensa. **Você os invoca ao dominar o nome.** Não sabe a palavra? O item não existe para você.
+
+#### Comida (recupera HP, mata fome/sede)
+| Palavra | Item | Efeito |
+|---------|------|--------|
+| Apfel | 🍎 Maçã | +10 HP, -fome |
+| Brot | 🍞 Pão | +15 HP, -fome longa |
+| Milch | 🥛 Leite | +10 HP, -sede |
+| Wasser | 💧 Água | +stamina, -sede |
+| Fleisch | 🥩 Carne | +25 HP, -fome longa |
+| Ei | 🥚 Ovo | +10 HP |
+| Käse | 🧀 Queijo | +10 HP, -fome |
+
+#### Armas e Proteção
+| Palavra | Item | Efeito no boss |
+|---------|------|----------------|
+| Messer | 🔪 Faca | +5 dano |
+| Schwert | ⚔️ Espada | +15 dano |
+| Schild | 🛡️ Escudo | -10 dano recebido |
+
+#### Poderes Elementais (Runensprache)
+| Palavra | Poder | Efeito (nível máximo) |
+|---------|-------|----------------------|
+| Feuer | 🔥 Fogo | 20 dano no boss |
+| Wasser | 🌊 Água | Escudo líquido — bloqueia próximo ataque |
+| Stein | 🪨 Pedra | Barreira — reduz todo dano pela metade |
+| Licht | 💡 Luz | Revela fraqueza do boss |
+| Dunkel | 🌑 Escuridão | Atordoa boss por 1 turno |
+| Wind | 💨 Vento | Você ataca primeiro neste turno |
+
+---
+
+### Alimentação como Vocabulário Passivo
+
+Entre fases, o personagem tem fome e sede. O inventário abre com os itens em alemão. Você escolhe o que consumir.
+
+Sem exercício. Sem pressão. Em 2 semanas você memoriza `Milch`, `Apfel`, `Brot`, `Wasser` porque a sobrevivência do personagem depende disso todos os dias.
+
+---
+
+### Poderes por Categoria Gramatical
+
+O tipo de palavra define o tipo de poder:
+
+| Categoria | Exemplos | Poder |
+|-----------|----------|-------|
 | Substantivos de natureza | `Feuer`, `Wasser`, `Stein`, `Wind` | Magias elementais |
-| Cores e adjetivos | `stark`, `schnell`, `groß` | Buffs e melhorias de atributos |
-| Verbos sociais | `sprechen`, `helfen`, `fragen` | Habilidades diplomáticas e de persuasão |
-| Números e tempo | `jetzt`, `morgen`, `immer` | Poderes de previsão e tempo |
+| Verbos de ação | `laufen`, `kämpfen`, `springen` | Habilidades físicas |
+| Adjetivos | `stark`, `schnell`, `groß` | Buffs de atributo |
+| Verbos sociais | `sprechen`, `helfen`, `fragen` | Habilidades diplomáticas |
+| Tempo e números | `jetzt`, `morgen`, `immer` | Poderes de previsão |
+
+---
+
+### Verbos como Habilidades — O Sistema de Ações
+
+Aprender um verbo não é só vocabulário. É desbloquear uma ação real no mundo do jogo.
+
+| Verbo (DE) | Tradução | Habilidade desbloqueada |
+|-----------|----------|------------------------|
+| jagen | caçar | 🏹 Arco → pode caçar animais para comida |
+| schwimmen | nadar | 🏊 Acesso a áreas aquáticas |
+| klettern | escalar | 🧗 Acesso a áreas elevadas |
+| schlafen | dormir | 🛏️ Recupera HP completo na estalagem |
+| kochen | cozinhar | 🍳 Transforma comida crua em refeição melhor |
+| kämpfen | lutar | ⚔️ Habilidades de combate avançadas |
+| laufen | correr | 💨 Fuga de situações de perigo |
+| sprechen | falar | 💬 Novas opções de diálogo com NPCs |
+| fragen | perguntar | ❓ Extrai informações extras de NPCs |
+| helfen | ajudar | 🤝 Soluções diplomáticas em vez de combate |
+| suchen | procurar | 🔍 Encontra itens escondidos nas cenas |
+
+**Conjugação como nível de poder:**
+Não basta saber o infinitivo. Cada forma conjugada domina aumenta a habilidade:
+
+```
+jagen (infinitivo):         habilidade desbloqueada — nível básico
+ich jage (presente):        uso atual, situações do dia a dia
+ich jagte (passado):        referência ao que já fez — +confiança de NPCs
+ich werde jagen (futuro):   planejamento — opções estratégicas no mapa
+todas as formas:            domínio total → habilidade no nível máximo
+```
+
+---
 
 ### Batalha com Boss
-O boss ataca. Você precisa responder corretamente para defender ou atacar.
-- Acertou → causa dano, avança
-- Errou → perde HP
-- O nível de dificuldade do boss reflete o quanto você consolidou o vocabulário da temporada
-- Não dá para "furar" o boss na sorte — ele testa especificamente as palavras que você viu
+
+O boss ataca. Você responde corretamente para defender ou atacar.
+
+- **Acertou** → causa dano (baseado no nível de domínio da palavra)
+- **Errou** → perde HP
+- **Usou poder** → efeito proporcional ao domínio (nível 1/2/3)
+- **Usou habilidade de verbo** → ação especial disponível se dominou o verbo
+- Não dá pra furar na sorte — o boss testa especificamente as palavras que você viu
+- Perde: refaz as frases que errou → tenta de novo
+
+---
+
+### Kids Module (Futuro)
+
+Se o app escalar, criar módulo separado com:
+- História mais leve, personagens coloridos, sem temas de vingança/morte
+- Mesmo sistema de vocabulário e Runensprache — simplificado visualmente
+- Público: 8-12 anos, com pais como decisores de compra
+- Visual completamente diferente — não misturar com o módulo principal
 
 ---
 
 ## Mundos e Narrativa por Série
 
-| Série | Mundo | Visual | Arco Narrativo |
-|-------|-------|--------|----------------|
-| A1 | Vila Medieval | Tons quentes, âmbar, épico simples | Guerreiro amnésico aprende a língua pra sobreviver. Descobre sua origem. |
-| A2 | Floresta Sombria | Verde escuro, místico, névoa | Magia ligada às palavras. Criaturas que só entendem alemão puro. |
-| B1 | Reino do Castelo | Roxo e dourado, grandioso | Intrigas políticas. Você vira diplomata — palavras erradas têm consequências. |
-| B2 | Porto Internacional | Azul oceano, vibrante, cosmopolita | Espião/comerciante em missões. Dialetos e gírias entram em cena. |
-| C1 | Ruínas Antigas | Preto e ouro, misterioso | Descobre a origem do idioma. Você virou mestre — ensina outros personagens. |
+### Princípio narrativo
+Cada série tem uma história própria que **faz sentido com o nível linguístico do personagem**.
+No A1 você não sabe nada — faz sentido ser recém chegado ou amnésico.
+No B2 você já é fluente o suficiente para ser espião.
+A história justifica o vocabulário. O vocabulário avança a história.
+
+---
+
+### A1 — Vila Medieval: O Forasteiro
+**Visual:** tons quentes, âmbar, épico simples
+**Personagem:** você acorda sem memória num vilarejo germânico. Ninguém te conhece. Ninguém fala sua língua.
+**Por que funciona:** amnésia = zero vocabulário faz sentido total. Cada palavra aprendida reconstrói sua identidade.
+**Vocabulário natural:** comida, abrigo, direções, números, saudações, objetos do dia a dia.
+**Boss final:** o líder do vilarejo te testa antes de aceitar você como um dos seus.
+**Recompensa:** A Espada das Runas → carrega para o A2.
+
+---
+
+### A2 — Bundesliga: O Reforço
+**Visual:** verde gramado, amarelo, atmosfera de estádio e cidade moderna
+**Personagem:** um clube brasileiro te contrata como novo jogador. Você voa para a Alemanha imediatamente. Você sabe o básico — mas precisa se virar sozinho.
+**Por que funciona:** sabe as palavras básicas mas enfrenta a vida real — apartamento, supermercado, treinos, vestiário, coletiva de imprensa, cidade nova.
+**Vocabulário natural:** rotina, trabalho, cidade, transporte, alimentação, cotidiano, relacionamentos simples.
+**Boss final:** a coletiva de imprensa decisiva — jornalistas te pressionam, cada palavra errada vira manchete.
+**Recompensa:** A Chuteira de Ouro → carrega para o B1.
+
+---
+
+### B1 — Universidade de Berlim: O Intercambista
+**Visual:** roxo e cinza, arquitetura clássica, outono berlinense
+**Personagem:** você conseguiu uma vaga de intercâmbio. Aulas, professores, projetos em grupo, burocracia alemã, amizades, cultura, vida de república.
+**Por que funciona:** consegue se comunicar mas precisa argumentar, opinar, debater, explicar ideias complexas.
+**Vocabulário natural:** academia, política, cultura, opiniões, discussões, burocracia, amizades profundas.
+**Boss final:** apresentação final de TCC para uma banca exigente — sem rascunho, ao vivo.
+**Recompensa:** O Diploma de Berlim → carrega para o B2.
+
+---
+
+### B2 — Berlim 1961: O Espião
+**Visual:** cinza e vermelho escuro, Guerra Fria, sombrio e tenso
+**Personagem:** você é enviado como agente disfarçado em Berlim Oriental. O Muro acabou de ser construído. Uma palavra errada te expõe.
+**Por que funciona:** fluência quase nativa exigida — sotaque, nuances, vocabulário político, gírias, pressão social real.
+**Vocabulário natural:** política, ideologia, persuasão, negociação, vocabulário técnico, linguagem formal e informal.
+**Boss final:** interrogatório pela Stasi — eles sabem que você não é quem diz ser. Prove o contrário.
+**Recompensa:** O Dossiê Secreto → carrega para o C1.
+
+---
+
+### C1 — Ruínas Antigas: O Tradutor
+**Visual:** preto e dourado, misterioso, ruínas iluminadas por tochas
+**Personagem:** um arqueólogo descobre manuscritos germânicos medievais. Você é o único chamado para traduzir. O conteúdo muda a história da língua alemã.
+**Por que funciona:** domínio total — linguagem formal, expressões arcaicas, nuances históricas, registro culto.
+**Vocabulário natural:** linguagem formal, história, filosofia, expressões idiomáticas avançadas, registros variados.
+**Boss final:** apresentação pública da descoberta para a academia — qualquer erro de tradução destrói sua credibilidade.
+**Recompensa:** O Grimório Original — você virou mestre.
+
+---
+
+### Tabela resumo
+
+| Série | História | Visual | Nível linguístico exigido |
+|-------|----------|--------|--------------------------|
+| A1 | Forasteiro na Vila Medieval | Âmbar, épico | Zero — tudo começa aqui |
+| A2 | Reforço na Bundesliga | Verde, moderno | Básico — cotidiano real |
+| B1 | Intercambista em Berlim | Roxo, clássico | Intermediário — opinar e argumentar |
+| B2 | Espião na Guerra Fria | Cinza escuro, tenso | Avançado — fluência sob pressão |
+| C1 | Tradutor das Ruínas | Preto e dourado | Domínio — linguagem formal e arcaica |
 
 ---
 

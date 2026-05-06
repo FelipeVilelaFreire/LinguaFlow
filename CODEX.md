@@ -178,6 +178,25 @@ Exemplos:
 - destaque suave: `var(--area-primary-soft)`
 - fundo geral: `var(--area-page)`
 
+## Arquitetura CSS — Como escrever estilos
+
+Regra de ouro: cada tipo de estilo tem um lugar fixo. Nunca misturar.
+
+| O que | Onde fica | Exemplo |
+|---|---|---|
+| Layout, espacamento, cores slate | Tailwind no JSX | `className="flex flex-col gap-3"` |
+| CSS vars, hover com vars, animacoes | `globals.css` | `.auth-submit`, `.auth-input:focus` |
+| Valor calculado em JS | `style={{}}` inline | `opacity: mounted ? 1 : 0` |
+| **Nunca** | `<style>` dentro do componente | — |
+
+Por que isso importa para IA: quando os estilos estao em um so lugar previsivel, qualquer modelo consegue ler, editar e nao quebrar o que ja existe. Estilos espalhados entre `style={{}}`, `className` e `<style>` tornam o codigo imprevisivel para edicao automatizada.
+
+Aplicacao pratica:
+- Classe nova que usa `--area-primary`? Vai para `globals.css`.
+- Posicao/tamanho/cor slate? Vai para `className` com Tailwind.
+- Delay de animacao que depende de indice JS? Unico caso aceitavel para `style={{}}`.
+- Quer criar `.minha-screen-btn`? Adiciona em `globals.css`, agrupa proximo as outras classes da tela.
+
 ## Design e UX
 
 Direcao visual:

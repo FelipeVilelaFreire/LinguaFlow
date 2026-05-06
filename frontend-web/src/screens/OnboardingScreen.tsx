@@ -1,309 +1,368 @@
-import { ArrowRight, Check, ChevronDown, Clock, Flag, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 
+import { APP_NAME } from "../constants/app";
 import { contentService } from "../services/contentService";
-import { useStrings } from "../contexts/StringsContext";
 import type { Goal } from "../types/content";
 
 interface OnboardingScreenProps {
   onComplete: (goal: Goal) => void;
 }
 
+// ── Dados ────────────────────────────────────────────────
+
 const SOURCE_LANGUAGES = [
-  { code: "PT", label: "Portugues", detail: "Explicacoes, traducoes e apoio em portugues." },
-  { code: "EN", label: "Ingles", detail: "Use ingles como idioma base do estudo." },
+  { code: "PT", flag: "🇧🇷", label: "Português", detail: "Explicações em português" },
+  { code: "EN", flag: "🇺🇸", label: "English", detail: "Explanations in English" },
 ];
 
 const TARGET_LANGUAGES = [
-  { code: "DE", label: "Alemao", detail: "Frases praticas para viagem, rotina e estudos." },
-  { code: "ES", label: "Espanhol", detail: "Comunicacao cotidiana para contextos reais." },
-];
-
-const AVAILABLE_COURSES = [
-  { source: "PT", target: "DE" },
-  { source: "PT", target: "ES" },
-  { source: "EN", target: "DE" },
+  { code: "DE", flag: "🇩🇪", label: "Alemão", detail: "Vila Medieval · A história começa aqui", available: true },
+  { code: "ES", flag: "🇪🇸", label: "Espanhol", detail: "Em breve", available: false },
 ];
 
 const LEVELS = [
-  { code: "A1", label: "A1", detail: "Comecando do basico." },
-  { code: "A2", label: "A2", detail: "Frases simples com mais autonomia." },
-  { code: "B1", label: "B1", detail: "Conversas e situacoes mais completas." },
+  { code: "A1", label: "Iniciante", detail: "Começando do zero" },
+  { code: "A2", label: "Básico", detail: "Sei algumas palavras" },
+  { code: "B1", label: "Tenho base", detail: "Consigo me virar" },
 ];
 
 const WEEKDAYS = [
-  { value: 0, short: "Seg", label: "Segunda" },
-  { value: 1, short: "Ter", label: "Terca" },
-  { value: 2, short: "Qua", label: "Quarta" },
-  { value: 3, short: "Qui", label: "Quinta" },
-  { value: 4, short: "Sex", label: "Sexta" },
-  { value: 5, short: "Sab", label: "Sabado" },
-  { value: 6, short: "Dom", label: "Domingo" },
+  { value: 0, short: "Seg" },
+  { value: 1, short: "Ter" },
+  { value: 2, short: "Qua" },
+  { value: 3, short: "Qui" },
+  { value: 4, short: "Sex" },
+  { value: 5, short: "Sáb" },
+  { value: 6, short: "Dom" },
 ];
 
 const SESSION_OPTIONS = [15, 30, 45, 60, 90];
 
+// Meses estimados para A1 baseado em sessões por semana × minutos
+function estimateMonths(days: number[], minutes: number) {
+  if (days.length === 0) return null;
+  const hoursPerWeek = (days.length * minutes) / 60;
+  const totalHoursNeeded = 80; // referência para A1
+  const weeks = totalHoursNeeded / hoursPerWeek;
+  const months = Math.round(weeks / 4.3);
+  return Math.max(1, months);
+}
+
+// ── Componente principal ──────────────────────────────────
+
 export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
-  const strings = useStrings();
+  const [step, setStep] = useState<1 | 2>(1);
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
+
+  // Step 1
   const [sourceLanguage, setSourceLanguage] = useState(SOURCE_LANGUAGES[0]);
   const [targetLanguage, setTargetLanguage] = useState(TARGET_LANGUAGES[0]);
-  const [targetLevel, setTargetLevel] = useState(LEVELS[0]);
-  const [routineMode, setRoutineMode] = useState<"planned" | "flexible">("planned");
-  const [studyWeekdays, setStudyWeekdays] = useState(WEEKDAYS.map((day) => day.value));
-  const [sessionMinutes, setSessionMinutes] = useState(60);
-  const [modal, setModal] = useState<"source" | "target" | null>(null);
+  const [level, setLevel] = useState(LEVELS[0]);
+
+  // Step 2
+  const [studyDays, setStudyDays] = useState([0, 2, 4]); // Seg, Qua, Sex
+  const [sessionMinutes, setSessionMinutes] = useState(30);
+
   const [loading, setLoading] = useState(false);
 
-  async function start() {
-    if (routineMode === "planned" && studyWeekdays.length === 0) return;
-    setLoading(true);
-    const goal = await contentService.createGoal({
-      source_language: sourceLanguage.code,
-      target_language: targetLanguage.code,
-      target_level: targetLevel.code,
-      duration_days: 90,
-      study_weekdays: routineMode === "planned" ? studyWeekdays : [],
-      session_minutes: sessionMinutes,
-    });
-    onComplete(goal);
+  function goToStep2() {
+    setDirection("forward");
+    setStep(2);
   }
 
-  function toggleWeekday(day: number) {
-    setStudyWeekdays((current) => {
-      if (current.includes(day)) return current.filter((item) => item !== day);
-      return [...current, day].sort((a, b) => a - b);
-    });
+  function goToStep1() {
+    setDirection("back");
+    setStep(1);
   }
+
+  function toggleDay(day: number) {
+    setStudyDays((curr) =>
+      curr.includes(day) ? curr.filter((d) => d !== day) : [...curr, day].sort((a, b) => a - b)
+    );
+  }
+
+  async function finish() {
+    if (studyDays.length === 0) return;
+    setLoading(true);
+    try {
+      const goal = await contentService.createGoal({
+        source_language: sourceLanguage.code,
+        target_language: targetLanguage.code,
+        target_level: level.code,
+        duration_days: 90,
+        study_weekdays: studyDays,
+        session_minutes: sessionMinutes,
+      });
+      onComplete(goal);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const months = estimateMonths(studyDays, sessionMinutes);
+  const animClass = direction === "forward" ? "onb-step-forward" : "onb-step-back";
 
   return (
-    <main className="min-h-screen bg-slate-50 px-3 py-4 text-slate-950 md:px-5 md:py-8">
-      <section className="mx-auto max-w-4xl">
-        <div className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
-          <div className="flex items-start gap-3 md:items-center md:gap-4">
-            <div className="grid h-12 w-12 shrink-0 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 md:h-14 md:w-14">
-              <Flag />
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase text-emerald-700">{strings.onboarding.eyebrow}</p>
-              <h1 className="text-2xl font-semibold leading-tight md:text-3xl">{strings.onboarding.title}</h1>
-            </div>
+    <main className="flex min-h-dvh flex-col items-center justify-center bg-white px-4 py-10">
+
+      {/* Ambient glow */}
+      <div aria-hidden className="auth-glow z-0" />
+
+      <div className="relative z-10 flex w-full max-w-[440px] flex-col gap-6">
+
+        {/* Logo + progresso */}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <span className="text-base font-bold tracking-tight text-slate-950">{APP_NAME}</span>
+            <span className="text-xs font-semibold text-slate-400">Passo {step} de 2</span>
           </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <Choice title={strings.onboarding.source} value={sourceLanguage.label} detail={sourceLanguage.detail} onClick={() => setModal("source")} />
-            <Choice title={strings.onboarding.target} value={`${targetLanguage.label} ${targetLevel.label}`} detail={targetLanguage.detail} onClick={() => setModal("target")} />
-            <Choice title={strings.onboarding.session} value={routineMode === "planned" ? `${sessionMinutes} min` : "Estudo avulso"} detail={routineMode === "planned" ? formatWeekdays(studyWeekdays) : "Sem dias fixos por enquanto"} />
+          <div className="onb-progress-bar">
+            <div className="onb-progress-fill" style={{ width: step === 1 ? "50%" : "100%" }} />
           </div>
-
-          <div className="mt-6 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200 md:mt-8 md:p-5">
-            <div className="flex items-start gap-3">
-              <div className="grid h-11 w-11 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100">
-                <Clock size={20} />
-              </div>
-              <div>
-                <p className="text-sm font-semibold uppercase text-slate-500">Sua rotina de estudo</p>
-                <h2 className="mt-1 text-xl font-semibold md:text-2xl">Quando voce quer estudar?</h2>
-                <p className="mt-1 font-medium text-slate-500">O plano usa essa rotina para organizar suas sessoes e manter o estudo realista.</p>
-              </div>
-            </div>
-
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              <button type="button" onClick={() => setRoutineMode("planned")} className={`rounded-[8px] p-4 text-left ring-1 transition ${routineMode === "planned" ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white ring-slate-200 hover:bg-slate-50"}`}>
-                <p className="font-semibold">Criar rotina</p>
-                <p className={`mt-1 text-sm font-medium ${routineMode === "planned" ? "text-emerald-50" : "text-slate-500"}`}>Escolher dias e tempo fixo para estudar.</p>
-              </button>
-              <button type="button" onClick={() => setRoutineMode("flexible")} className={`rounded-[8px] p-4 text-left ring-1 transition ${routineMode === "flexible" ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white ring-slate-200 hover:bg-slate-50"}`}>
-                <p className="font-semibold">Estudar avulso</p>
-                <p className={`mt-1 text-sm font-medium ${routineMode === "flexible" ? "text-emerald-50" : "text-slate-500"}`}>Entrar quando quiser, sem agenda definida.</p>
-              </button>
-            </div>
-
-            {routineMode === "planned" ? (
-              <>
-            <div className="mt-5">
-              <p className="text-sm font-semibold uppercase text-slate-500">Dias da semana</p>
-              <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 md:grid-cols-7">
-                {WEEKDAYS.map((day) => {
-                  const selected = studyWeekdays.includes(day.value);
-                  return (
-                    <button key={day.value} type="button" onClick={() => toggleWeekday(day.value)} className={`h-14 rounded-[8px] px-3 text-sm font-semibold ring-1 transition ${selected ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white text-slate-600 ring-slate-200 hover:bg-slate-50"}`}>
-                      {day.short}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <p className="text-sm font-semibold uppercase text-slate-500">Tempo por sessao</p>
-              <div className="mt-3 flex flex-wrap gap-3">
-                {SESSION_OPTIONS.map((item) => (
-                  <button key={item} type="button" onClick={() => setSessionMinutes(item)} className={`rounded-[8px] px-5 py-3 font-semibold ring-1 transition ${sessionMinutes === item ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white ring-slate-200 hover:bg-slate-50"}`}>
-                    {item === 60 ? "1 hora" : `${item} min`}
-                  </button>
-                ))}
-              </div>
-            </div>
-              </>
-            ) : (
-              <div className="mt-5 rounded-[8px] bg-white p-4 ring-1 ring-slate-200">
-                <p className="font-semibold text-slate-900">Sem rotina fixa por agora</p>
-                <p className="mt-1 text-sm font-medium text-slate-500">Voce ainda pode iniciar uma sessao pela Home quando quiser. Depois da para criar uma rotina no perfil.</p>
-              </div>
-            )}
-          </div>
-
-          <button type="button" onClick={start} disabled={loading || (routineMode === "planned" && studyWeekdays.length === 0)} className="mt-6 flex h-14 w-full items-center justify-center gap-2 rounded-[8px] bg-emerald-600 font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-60 md:mt-7">
-            {loading ? strings.actions.creating : strings.onboarding.start}
-            <ArrowRight size={18} />
-          </button>
         </div>
-      </section>
 
-      {modal ? (
-        <LanguageModal
-          mode={modal}
-          sourceLanguage={sourceLanguage}
-          targetLanguage={targetLanguage}
-          targetLevel={targetLevel}
-          onClose={() => setModal(null)}
-          onSelectSource={(language) => {
-            setSourceLanguage(language);
-            const nextTargets = getAvailableTargets(language.code);
-            if (!nextTargets.some((target) => target.code === targetLanguage.code)) {
-              setTargetLanguage(nextTargets[0]);
-            }
-            setModal(null);
-          }}
-          onSelectTarget={(language) => setTargetLanguage(language)}
-          onSelectLevel={(level) => setTargetLevel(level)}
-          onConfirmTarget={() => setModal(null)}
-        />
-      ) : null}
+        {/* Card de step */}
+        <div
+          key={step}
+          className={`w-full rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_2px_4px_rgba(0,0,0,0.03),0_8px_24px_rgba(0,0,0,0.06)] ${animClass}`}
+        >
+          {step === 1 ? (
+            <Step1
+              sourceLanguage={sourceLanguage}
+              targetLanguage={targetLanguage}
+              level={level}
+              onSelectSource={setSourceLanguage}
+              onSelectTarget={setTargetLanguage}
+              onSelectLevel={setLevel}
+            />
+          ) : (
+            <Step2
+              studyDays={studyDays}
+              sessionMinutes={sessionMinutes}
+              months={months}
+              onToggleDay={toggleDay}
+              onSelectMinutes={setSessionMinutes}
+            />
+          )}
+
+          {/* Navegação */}
+          <div className="mt-6 flex gap-3">
+            {step === 2 && (
+              <button
+                type="button"
+                onClick={goToStep1}
+                className="flex h-13 w-13 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50"
+                style={{ minWidth: "52px", height: "52px" }}
+              >
+                <ArrowLeft size={18} />
+              </button>
+            )}
+
+            <button
+              type="button"
+              onClick={step === 1 ? goToStep2 : finish}
+              disabled={loading || (step === 2 && studyDays.length === 0)}
+              className="auth-submit flex-1"
+            >
+              {loading ? (
+                <LoadingDots />
+              ) : step === 1 ? (
+                <>Próximo <ArrowRight size={17} strokeWidth={2.5} /></>
+              ) : (
+                <>Começar <ArrowRight size={17} strokeWidth={2.5} /></>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
 
-function formatWeekdays(days: number[]) {
-  if (days.length === 7) return "Todo dia";
-  if (days.length === 0) return "Escolha pelo menos um dia";
-  return WEEKDAYS.filter((day) => days.includes(day.value)).map((day) => day.short).join(", ");
-}
+// ── Step 1: Idiomas + Nível ───────────────────────────────
 
-function Choice({ title, value, detail, onClick }: { title: string; value: string; detail: string; onClick?: () => void }) {
-  const content = (
-    <>
-      <div className="flex items-start justify-between gap-3">
-        <Check className="text-emerald-500" />
-        {onClick ? <ChevronDown className="text-slate-400" size={18} /> : null}
-      </div>
-      <p className="mt-4 text-sm font-semibold uppercase text-slate-500">{title}</p>
-      <p className="text-xl font-semibold">{value}</p>
-      <p className="mt-1 text-sm font-medium text-slate-500">{detail}</p>
-    </>
-  );
-
-  if (onClick) {
-    return (
-      <button type="button" onClick={onClick} className="rounded-[8px] bg-white p-4 text-left ring-1 ring-slate-200 transition hover:bg-slate-50">
-        {content}
-      </button>
-    );
-  }
-
-  return <div className="rounded-[8px] bg-white p-4 text-left ring-1 ring-slate-200">{content}</div>;
-}
-
-function LanguageModal({
-  mode,
-  sourceLanguage,
-  targetLanguage,
-  targetLevel,
-  onClose,
-  onSelectSource,
-  onSelectTarget,
-  onSelectLevel,
-  onConfirmTarget,
+function Step1({
+  sourceLanguage, targetLanguage, level,
+  onSelectSource, onSelectTarget, onSelectLevel,
 }: {
-  mode: "source" | "target";
   sourceLanguage: typeof SOURCE_LANGUAGES[number];
   targetLanguage: typeof TARGET_LANGUAGES[number];
-  targetLevel: typeof LEVELS[number];
-  onClose: () => void;
-  onSelectSource: (language: typeof SOURCE_LANGUAGES[number]) => void;
-  onSelectTarget: (language: typeof TARGET_LANGUAGES[number]) => void;
-  onSelectLevel: (level: typeof LEVELS[number]) => void;
-  onConfirmTarget: () => void;
+  level: typeof LEVELS[number];
+  onSelectSource: (l: typeof SOURCE_LANGUAGES[number]) => void;
+  onSelectTarget: (l: typeof TARGET_LANGUAGES[number]) => void;
+  onSelectLevel: (l: typeof LEVELS[number]) => void;
 }) {
-  const isSource = mode === "source";
-  const availableTargets = getAvailableTargets(sourceLanguage.code);
-
   return (
-        <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0">
-      <section className="max-h-[88vh] w-full max-w-2xl overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold uppercase text-emerald-700">{isSource ? "Idioma de origem" : "Idioma de destino"}</p>
-            <h2 className="mt-1 text-2xl font-semibold leading-tight md:text-3xl">{isSource ? "Qual idioma voce entende melhor?" : "Qual idioma voce quer aprender?"}</h2>
-            <p className="mt-2 max-w-xl font-medium text-slate-500">
-              {isSource ? "Esse idioma sera usado para explicacoes e traducoes." : "Escolha o idioma principal e o nivel inicial do curso."}
-            </p>
-          </div>
-          <button type="button" onClick={onClose} className="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] text-slate-500 transition hover:bg-slate-100">
-            <X size={19} />
-          </button>
-        </div>
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-xl font-bold tracking-tight text-slate-950">Configure seu curso</h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">Escolha os idiomas e seu ponto de partida</p>
+      </div>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          {(isSource ? SOURCE_LANGUAGES : availableTargets).map((language) => {
-            const selected = isSource ? language.code === sourceLanguage.code : language.code === targetLanguage.code;
-            return (
-              <button
-                key={language.code}
-                type="button"
-                onClick={() => isSource ? onSelectSource(language as typeof SOURCE_LANGUAGES[number]) : onSelectTarget(language as typeof TARGET_LANGUAGES[number])}
-                className={`rounded-[8px] p-4 text-left ring-1 transition ${selected ? "bg-emerald-50 text-emerald-950 ring-emerald-200" : "bg-white ring-slate-200 hover:bg-slate-50"}`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-xl font-semibold">{language.label}</p>
-                    <p className="mt-1 text-sm font-medium text-slate-500">{language.detail}</p>
-                  </div>
-                  {selected ? <Check className="text-emerald-600" size={20} /> : null}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {!isSource ? (
-          <>
-            <div className="mt-6 border-t border-slate-200 pt-5">
-              <p className="text-sm font-semibold uppercase text-slate-500">Nivel inicial</p>
-              <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                {LEVELS.map((level) => {
-                  const selected = level.code === targetLevel.code;
-                  return (
-                    <button key={level.code} type="button" onClick={() => onSelectLevel(level)} className={`rounded-[8px] p-4 text-left ring-1 transition ${selected ? "bg-emerald-600 text-white ring-emerald-600" : "bg-white ring-slate-200 hover:bg-slate-50"}`}>
-                      <p className="text-xl font-semibold">{level.label}</p>
-                      <p className={`mt-1 text-sm font-medium ${selected ? "text-emerald-50" : "text-slate-500"}`}>{level.detail}</p>
-                    </button>
-                  );
-                })}
+      {/* Origem */}
+      <Section label="Você fala...">
+        <div className="flex flex-col gap-2">
+          {SOURCE_LANGUAGES.map((lang) => (
+            <button
+              key={lang.code}
+              type="button"
+              onClick={() => onSelectSource(lang)}
+              className={`onb-select-card ${sourceLanguage.code === lang.code ? "selected" : ""}`}
+            >
+              <span className="text-2xl">{lang.flag}</span>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-bold text-slate-950">{lang.label}</p>
+                <p className="text-xs font-medium text-slate-500">{lang.detail}</p>
               </div>
-            </div>
-
-            <button type="button" onClick={onConfirmTarget} className="mt-6 h-12 w-full rounded-[8px] bg-emerald-600 px-5 font-semibold text-white transition hover:bg-emerald-700">
-              Confirmar destino
+              {sourceLanguage.code === lang.code && (
+                <Check size={16} className="shrink-0 area-text-primary" />
+              )}
             </button>
-          </>
-        ) : null}
-      </section>
+          ))}
+        </div>
+      </Section>
+
+      {/* Destino */}
+      <Section label="Você quer aprender...">
+        <div className="flex flex-col gap-2">
+          {TARGET_LANGUAGES.map((lang) => (
+            <button
+              key={lang.code}
+              type="button"
+              onClick={() => lang.available && onSelectTarget(lang)}
+              className={`onb-select-card ${!lang.available ? "disabled" : ""} ${targetLanguage.code === lang.code ? "selected" : ""}`}
+            >
+              <span className="text-2xl">{lang.flag}</span>
+              <div className="flex-1 text-left">
+                <p className="text-sm font-bold text-slate-950">{lang.label}</p>
+                <p className="text-xs font-medium text-slate-500">{lang.detail}</p>
+              </div>
+              {!lang.available && (
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-400">
+                  Em breve
+                </span>
+              )}
+              {lang.available && targetLanguage.code === lang.code && (
+                <Check size={16} className="shrink-0 area-text-primary" />
+              )}
+            </button>
+          ))}
+        </div>
+      </Section>
+
+      {/* Nível */}
+      <Section label="Seu nível inicial">
+        <div className="flex gap-2">
+          {LEVELS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => onSelectLevel(l)}
+              className={`onb-pill flex-1 text-center ${level.code === l.code ? "selected" : ""}`}
+              style={{ padding: "10px 8px" }}
+            >
+              <span className="block text-sm font-bold">{l.label}</span>
+              <span className="block text-[11px] font-medium opacity-70">{l.detail}</span>
+            </button>
+          ))}
+        </div>
+      </Section>
     </div>
   );
 }
 
-function getAvailableTargets(sourceCode: string) {
-  const targetCodes = AVAILABLE_COURSES.filter((course) => course.source === sourceCode).map((course) => course.target);
-  return TARGET_LANGUAGES.filter((language) => targetCodes.includes(language.code));
+// ── Step 2: Rotina ────────────────────────────────────────
+
+function Step2({
+  studyDays, sessionMinutes, months,
+  onToggleDay, onSelectMinutes,
+}: {
+  studyDays: number[];
+  sessionMinutes: number;
+  months: number | null;
+  onToggleDay: (day: number) => void;
+  onSelectMinutes: (m: number) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-xl font-bold tracking-tight text-slate-950">Crie sua rotina</h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">Você pode estudar qualquer dia — vamos te lembrar nesses</p>
+      </div>
+
+      {/* Dias */}
+      <Section label="Dias de estudo">
+        <div className="flex justify-between gap-1">
+          {WEEKDAYS.map((day) => (
+            <button
+              key={day.value}
+              type="button"
+              onClick={() => onToggleDay(day.value)}
+              className={`onb-day-pill ${studyDays.includes(day.value) ? "selected" : ""}`}
+            >
+              {day.short}
+            </button>
+          ))}
+        </div>
+        {studyDays.length === 0 && (
+          <p className="mt-2 text-xs font-semibold text-red-500">Escolha pelo menos um dia</p>
+        )}
+      </Section>
+
+      {/* Duração */}
+      <Section label="Duração da sessão">
+        <div className="flex flex-wrap gap-2">
+          {SESSION_OPTIONS.map((opt) => (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onSelectMinutes(opt)}
+              className={`onb-pill ${sessionMinutes === opt ? "selected" : ""}`}
+            >
+              {opt === 60 ? "1h" : opt === 90 ? "1h30" : `${opt} min`}
+            </button>
+          ))}
+        </div>
+      </Section>
+
+      {/* Estimativa */}
+      {months !== null && (
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+          <p className="text-sm font-semibold text-slate-950">
+            No seu ritmo, você chega no <span className="area-text-primary">A1</span> em cerca de{" "}
+            <span className="area-text-primary">{months} {months === 1 ? "mês" : "meses"}</span>
+          </p>
+          <p className="mt-1 text-xs font-medium text-slate-400">
+            {studyDays.length}× por semana · {sessionMinutes === 60 ? "1 hora" : sessionMinutes === 90 ? "1h30" : `${sessionMinutes} min`} por sessão
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Helpers ───────────────────────────────────────────────
+
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col gap-2.5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+      {children}
+    </div>
+  );
+}
+
+function LoadingDots() {
+  return (
+    <span className="flex items-center gap-1.5">
+      {[0, 1, 2].map((i) => (
+        <span
+          key={i}
+          className="h-1.5 w-1.5 rounded-full bg-current opacity-70"
+          style={{ animation: "loadingDot 1.2s ease-in-out infinite", animationDelay: `${i * 0.2}s` }}
+        />
+      ))}
+    </span>
+  );
 }

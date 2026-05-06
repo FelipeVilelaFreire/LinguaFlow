@@ -16,6 +16,8 @@ export const contentService = {
     apiRequest<void>("/progress/mark/", { method: "POST", body: JSON.stringify(data) }),
   createGoal: (data: { source_language: string; target_language: string; current_level?: string; target_level: string; duration_days: number; study_weekdays: number[]; session_minutes: number }) =>
     apiRequest<Goal>("/goals/onboarding/", { method: "POST", body: JSON.stringify(data) }),
+  updateGoal: (goalId: number, data: { study_weekdays?: number[]; session_minutes?: number }) =>
+    apiRequest<Goal>(`/goals/${goalId}/`, { method: "PATCH", body: JSON.stringify(data) }),
   completeStudyDay: (studyDayId: number) => apiRequest<{ completed: boolean }>(`/study-days/${studyDayId}/complete/`, { method: "POST" }),
   removeFavorite: (favoriteId: number) => apiRequest<void>(`/favorites/${favoriteId}/`, { method: "DELETE" }),
 };

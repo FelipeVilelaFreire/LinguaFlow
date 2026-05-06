@@ -16,6 +16,7 @@ export const ROUTE_PATHS = {
   today: "/estudo-guiado",
   vocabulary: "/vocabulario",
   account: "/perfil",
+  history: "/historico",
 } as const;
 
 export const ADVENTURE_CHAPTER_BASE = "/aventura/capitulo";
