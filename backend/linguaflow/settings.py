@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "apps.learning.apps.LearningConfig",
     "apps.goals.apps.GoalsConfig",
     "apps.progress.apps.ProgressConfig",
+    "apps.adventure.apps.AdventureConfig",
 ]
 
 MIDDLEWARE = [

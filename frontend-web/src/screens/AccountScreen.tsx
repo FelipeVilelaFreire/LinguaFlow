@@ -8,6 +8,7 @@ import { contentService } from "../services/contentService";
 import type { User } from "../services/authService";
 import { getStudyAreaTheme } from "../theme/studyAreaTheme";
 import type { Goal } from "../types/content";
+import HistoryScreen from "./HistoryScreen";
 
 interface AccountScreenProps {
   user: User;
@@ -61,6 +62,7 @@ const SESSION_OPTIONS = [15, 30, 45, 60, 90];
 export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal, onLogout, onSwitchGoal }: AccountScreenProps) {
   const strings = useStrings();
   const locale = useLocale();
+  const [profileTab, setProfileTab] = useState<"profile" | "history">("profile");
   const [sourceLanguage, setSourceLanguage] = useState(SOURCE_LANGUAGES[0]);
   const [targetLanguage, setTargetLanguage] = useState(TARGET_LANGUAGES[0]);
   const [currentLevel, setCurrentLevel] = useState(CURRENT_LEVELS[0]);
@@ -104,6 +106,26 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
 
   return (
     <div className="pb-4 md:pb-0">
+      <div className="mb-4 grid grid-cols-2 gap-1 rounded-[8px] bg-slate-100 p-1">
+        <button
+          type="button"
+          onClick={() => setProfileTab("profile")}
+          className={`h-10 rounded-[6px] text-sm font-semibold transition ${profileTab === "profile" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+        >
+          {locale === "pt" ? "Perfil" : "Profile"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setProfileTab("history")}
+          className={`h-10 rounded-[6px] text-sm font-semibold transition ${profileTab === "history" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500 hover:text-slate-700"}`}
+        >
+          {locale === "pt" ? "Historico" : "History"}
+        </button>
+      </div>
+
+      {profileTab === "history" ? <HistoryScreen /> : null}
+      {profileTab !== "profile" ? null : <>
+
       <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
         <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
           <UserCircle size={18} />
@@ -318,6 +340,7 @@ export default function AccountScreen({ user, goals, onCreateGoal, onDeleteGoal,
           }}
         />
       ) : null}
+      </>}
     </div>
   );
 }

@@ -6,13 +6,13 @@
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #111827;
   background: #f7f7f4;
-  --area-primary: #047857;
-  --area-primary-dark: #065f46;
-  --area-primary-soft: #d1fae5;
-  --area-accent: #facc15;
-  --area-accent-soft: #fef9c3;
+  --area-primary: #14b8a6;
+  --area-primary-dark: #0f766e;
+  --area-primary-soft: #f0fdfa;
+  --area-accent: #dc2626;
+  --area-accent-soft: #fef2f2;
   --area-page: #f8fafc;
-  --area-text-on-primary: #ffffff;
+  --area-text-on-primary: #0f172a;
 }
 
 * {
@@ -213,6 +213,84 @@ input {
   100% {
     transform: scale(1);
   }
+}
+
+@keyframes adventureBounce {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0px);
+  }
+  45% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+
+@keyframes sheetSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes immersiveWipe {
+  from {
+    clip-path: circle(0% at 50% 88%);
+  }
+  to {
+    clip-path: circle(150% at 50% 88%);
+  }
+}
+
+@keyframes immersiveReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes narrativeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.area-text-primary {
+  color: var(--area-primary);
+}
+
+.area-bg-soft {
+  background-color: var(--area-primary-soft);
+  color: var(--area-primary);
+}
+
+.area-ring-soft {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--area-primary) 25%, transparent);
+}
+
+.area-btn {
+  background-color: var(--area-primary);
+  color: var(--area-text-on-primary);
+}
+
+.area-btn:hover:not(:disabled) {
+  background-color: var(--area-primary-dark);
+}
+
+.area-input:focus {
+  outline: none;
+  border-color: var(--area-primary) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--area-primary) 18%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

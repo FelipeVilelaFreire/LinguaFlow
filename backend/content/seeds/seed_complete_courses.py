@@ -6,7 +6,6 @@ from content.models import Language, Lesson, Phrase, Scenario, StudyDay
 COURSES = [
     ("PT", "DE"),
     ("EN", "DE"),
-    ("PT", "ES"),
 ]
 
 LEVELS = ["A1", "A2", "B1"]

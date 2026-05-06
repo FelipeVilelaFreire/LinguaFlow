@@ -1,5 +1,4 @@
-import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, Flame, Gauge, PlayCircle, Plus, Trophy } from "lucide-react";
-import type { ReactNode } from "react";
+import { ArrowRight, BookOpen, CalendarDays, Flame, Plus } from "lucide-react";
 
 import ProgressBar from "../components/ui/ProgressBar";
 import StateMessage from "../components/ui/StateMessage";
@@ -18,24 +17,33 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
   const locale = useLocale();
   const goal = useAsyncData(contentService.getCurrentGoal);
 
+  // ── No goal ──────────────────────────────────────────────────────────────
   if (!hasActiveGoal) {
     return (
-      <div className="pb-20 md:pb-0">
-        <section className="rounded-[8px] bg-white p-6 shadow-sm ring-1 ring-slate-200 md:p-8">
-          <div className="grid h-12 w-12 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
-            <BookOpen size={23} />
-          </div>
-          <h2 className="mt-4 max-w-2xl text-4xl font-semibold leading-tight text-slate-950">
-            {locale === "pt" ? "Nenhuma area de estudo ativa" : "No active study area"}
-          </h2>
-          <p className="mt-3 max-w-2xl text-lg font-medium leading-8 text-slate-600">
-            {locale === "pt" ? "Sua conta esta vazia agora. Crie uma area quando quiser para comecar um plano de idiomas." : "Your account is empty right now. Create an area whenever you want to start a language plan."}
-          </p>
-          <button type="button" onClick={onCreateArea} className="mt-6 inline-flex h-12 items-center justify-center gap-2 rounded-[8px] px-5 font-semibold text-white shadow-sm transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
-            <Plus size={18} />
-            {strings.actions.createArea}
-          </button>
-        </section>
+      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 pb-20 text-center md:pb-0">
+        <div
+          className="grid h-16 w-16 place-items-center rounded-full text-white"
+          style={{ background: "var(--area-primary)" }}
+        >
+          <BookOpen size={26} />
+        </div>
+        <h2 className="mt-6 text-2xl font-semibold text-slate-950">
+          {locale === "pt" ? "Nenhuma área ativa" : "No active area"}
+        </h2>
+        <p className="mt-3 max-w-xs text-base font-medium leading-7 text-slate-500">
+          {locale === "pt"
+            ? "Crie uma área de estudo para começar seu plano de idiomas."
+            : "Create a study area to start your language plan."}
+        </p>
+        <button
+          type="button"
+          onClick={onCreateArea}
+          className="mt-7 inline-flex h-12 items-center gap-2 rounded-[8px] px-6 font-semibold text-white transition hover:brightness-95"
+          style={{ background: "var(--area-primary)" }}
+        >
+          <Plus size={18} />
+          {strings.actions.createArea}
+        </button>
       </div>
     );
   }
@@ -43,123 +51,124 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
   if (goal.loading) return <StateMessage />;
   if (goal.error || !goal.data) return <StateMessage title={strings.states.empty} detail={strings.states.apiHint} />;
 
-  const remaining = Math.max(goal.data.duration_days - goal.data.completed_lessons, 0);
-  const sourceLanguage = getLanguageName(goal.data.source_language?.code, locale);
-  const targetLanguage = getLanguageName(goal.data.target_language?.code, locale);
-  const targetCode = goal.data.target_language?.code ?? "DE";
-  const hasRoutine = Boolean(goal.data.study_weekdays?.length);
-  const routine = hasRoutine ? strings.home.routine(formatWeekdays(goal.data.study_weekdays ?? [], locale), goal.data.session_minutes ?? 30) : strings.home.flexibleStudy;
+  const g = goal.data;
+  const remaining = Math.max(g.duration_days - g.completed_lessons, 0);
+  const targetLanguage = getLanguageName(g.target_language?.code, locale);
+  const sourceLanguage = getLanguageName(g.source_language?.code, locale);
+  const targetCode = g.target_language?.code ?? "DE";
+  const hasRoutine = Boolean(g.study_weekdays?.length);
+  const routine = hasRoutine
+    ? strings.home.routine(formatWeekdays(g.study_weekdays ?? [], locale), g.session_minutes ?? 30)
+    : strings.home.flexibleStudy;
   const nextStudyLabel = hasRoutine
-    ? goal.data.is_study_day_today ? strings.home.studyToday : strings.home.nextSession(formatDate(goal.data.next_study_date, locale))
+    ? g.is_study_day_today
+      ? strings.home.studyToday
+      : strings.home.nextSession(formatDate(g.next_study_date, locale))
     : strings.home.noFixedSchedule;
-  const plannedSessionsPerWeek = goal.data.study_weekdays?.length || 1;
-  const plannedWeeks = Math.max(1, Math.ceil(goal.data.duration_days / 7));
-  const expectedSessions = plannedSessionsPerWeek * plannedWeeks;
-  const pacePercent = Math.min(140, Math.round((goal.data.completed_lessons / Math.max(1, expectedSessions)) * 100));
-  const paceLabel = pacePercent >= 100
-    ? locale === "pt" ? "No ritmo ou adiantado" : "On pace or ahead"
-    : locale === "pt" ? "Ajuste o ritmo esta semana" : "Adjust your pace this week";
 
   return (
     <div className="pb-4 md:pb-0">
-      <section className="grid overflow-hidden rounded-[8px] bg-white shadow-sm ring-1 ring-slate-200 lg:grid-cols-[1fr_360px]">
-        <div className="p-4 md:p-8">
-          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
-            <PlayCircle size={16} />
-            {strings.home.eyebrow}
-          </div>
-          <h2 className="mt-4 max-w-2xl text-3xl font-semibold leading-tight text-slate-950 md:text-5xl">
-            {strings.home.headline}
-          </h2>
-          <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-slate-600 md:mt-4 md:text-lg md:leading-8">
-            {strings.home.subtitle}
-          </p>
 
-          <div className="mt-7 grid gap-3 sm:grid-cols-[auto_1fr] sm:items-center">
-            <button type="button" onClick={onStartToday} className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-[8px] px-5 font-semibold text-white shadow-sm transition hover:brightness-95 sm:w-auto" style={{ background: "var(--area-primary)" }}>
-              {strings.actions.startToday}
-              <ArrowRight size={19} />
-            </button>
-            <p className="text-sm font-semibold text-slate-500">{strings.home.keepGoing}</p>
-          </div>
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="rounded-[8px] bg-white p-5 ring-1 ring-slate-200 md:p-7">
+        <div className="flex items-center justify-between gap-3">
+          <span
+            className="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
+            style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}
+          >
+            {targetCode} · {g.current_level} → {g.target_level}
+          </span>
+          <span className="text-xl font-bold tabular-nums" style={{ color: "var(--area-primary)" }}>
+            {g.progress_percent}%
+          </span>
         </div>
 
-        <aside className="border-t border-slate-200 bg-slate-50 p-4 lg:border-l lg:border-t-0 md:p-8">
-          <p className="text-sm font-semibold uppercase text-slate-500">{strings.home.progress}</p>
-          <div className="mt-3 flex items-end justify-between gap-4">
-            <p className="text-4xl font-semibold text-slate-950 md:text-5xl">{goal.data.progress_percent}%</p>
-            <span className="rounded-[8px] px-3 py-2 text-sm font-bold" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
-              {targetCode} {goal.data.target_level}
-            </span>
-          </div>
-          <div className="mt-5">
-            <ProgressBar value={goal.data.progress_percent} />
-          </div>
-          <div className="mt-6 rounded-[8px] bg-white p-4 ring-1 ring-slate-200">
-            <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.home.nextLesson}</p>
-            <p className="mt-2 font-semibold text-slate-700">{routine}</p>
-            <p className="mt-1 text-sm font-bold" style={{ color: "var(--area-primary)" }}>{nextStudyLabel}</p>
-          </div>
-        </aside>
+        <h2 className="mt-4 text-3xl font-semibold leading-tight text-slate-950 md:text-4xl">
+          {targetLanguage}
+        </h2>
+        <p className="mt-1 text-sm font-medium text-slate-400">
+          {sourceLanguage} → {targetLanguage} · {g.target_level}
+        </p>
+
+        <div className="mt-5">
+          <ProgressBar value={g.progress_percent} />
+          <p className="mt-2 text-xs font-semibold text-slate-400">
+            {g.learned_phrases.toLocaleString()} / {g.total_phrases.toLocaleString()}{" "}
+            {locale === "pt" ? "frases" : "phrases"}
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={onStartToday}
+          className="mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-[8px] font-semibold text-white transition hover:brightness-95 active:scale-[0.99]"
+          style={{ background: "var(--area-primary)" }}
+        >
+          {strings.actions.startToday}
+          <ArrowRight size={18} />
+        </button>
       </section>
 
-      <div className="mt-4 grid grid-cols-3 gap-2 md:mt-5 md:gap-4">
-        <Stat icon={<Flame />} color="area" value={goal.data.streak_days} label={strings.home.streak} />
-        <Stat icon={<BookOpen />} color="bg-sky-100 text-sky-700" value={goal.data.completed_lessons} label={strings.home.lessons} />
-        <Stat icon={<CalendarDays />} color="bg-violet-100 text-violet-700" value={remaining} label={strings.home.remaining} />
+      {/* ── Stats ────────────────────────────────────────────────────────── */}
+      <div className="mt-3 grid grid-cols-3 overflow-hidden rounded-[8px] bg-slate-200" style={{ gap: 1 }}>
+        <StatCell
+          value={g.streak_days}
+          label={strings.home.streak}
+          icon={<Flame size={13} style={{ color: "var(--area-primary)" }} />}
+        />
+        <StatCell
+          value={g.completed_lessons}
+          label={strings.home.lessons}
+          icon={<BookOpen size={13} className="text-sky-500" />}
+        />
+        <StatCell
+          value={remaining}
+          label={strings.home.remaining}
+          icon={<CalendarDays size={13} className="text-violet-500" />}
+        />
       </div>
 
-      <section className="mt-5 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
-        <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
-          <div className="grid h-11 w-11 place-items-center rounded-[8px]" style={{ background: "var(--area-accent-soft)", color: "var(--area-primary-dark)" }}>
-            <Trophy size={21} />
-          </div>
-          <h3 className="mt-3 text-2xl font-semibold">{strings.home.recommendedPace}</h3>
-          <p className="mt-2 font-semibold text-slate-600">{strings.home.recommendedDetail}</p>
+      {/* ── Schedule + Goal ──────────────────────────────────────────────── */}
+      <div className="mt-3 overflow-hidden rounded-[8px] bg-white ring-1 ring-slate-200 divide-y divide-slate-100">
+        <div className="px-4 py-4 md:px-5">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            {strings.home.nextLesson}
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-slate-800">{routine}</p>
+          <p
+            className="mt-0.5 text-sm font-bold"
+            style={{ color: "var(--area-primary)" }}
+          >
+            {nextStudyLabel}
+          </p>
         </div>
-        <div className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
-          <div className="flex items-start gap-3">
-            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-[8px] bg-emerald-50 text-emerald-700">
-              <CheckCircle2 size={21} />
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase text-slate-500">{strings.home.activeGoal}</p>
-              <p className="mt-2 text-2xl font-semibold">
-                {strings.home.languagePath(sourceLanguage, targetLanguage, goal.data.target_level)}
-              </p>
-              <p className="mt-1 text-sm font-bold" style={{ color: "var(--area-primary)" }}>{routine}</p>
-            </div>
-          </div>
-          <p className="mt-2 font-semibold text-slate-600">{strings.home.learned(goal.data.learned_phrases, goal.data.total_phrases)}</p>
-        </div>
-      </section>
 
-      <section className="mt-5 rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div>
-            <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
-              <Gauge size={17} />
-              {locale === "pt" ? "Rota da meta" : "Goal route"}
-            </p>
-            <h3 className="mt-2 text-2xl font-semibold">
-              {locale === "pt" ? `Chegar em ${targetLanguage} ${goal.data.target_level} em ${goal.data.duration_days} dias` : `Reach ${targetLanguage} ${goal.data.target_level} in ${goal.data.duration_days} days`}
-            </h3>
-            <p className="mt-2 font-medium text-slate-500">
-              {locale === "pt" ? `${plannedSessionsPerWeek} sessoes por semana, cerca de ${expectedSessions} sessoes planejadas.` : `${plannedSessionsPerWeek} sessions per week, about ${expectedSessions} planned sessions.`}
-            </p>
-          </div>
-          <div className="rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200 md:min-w-64">
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-sm font-semibold uppercase text-slate-500">{locale === "pt" ? "Ritmo" : "Pace"}</p>
-              <p className="font-bold" style={{ color: pacePercent >= 100 ? "var(--area-primary)" : "#b45309" }}>{paceLabel}</p>
-            </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
-              <div className="h-full rounded-full transition-all" style={{ width: `${Math.min(100, pacePercent)}%`, background: pacePercent >= 100 ? "var(--area-primary)" : "#f59e0b" }} />
-            </div>
-            <p className="mt-2 text-sm font-semibold text-slate-500">{Math.min(100, pacePercent)}% {locale === "pt" ? "do ritmo esperado" : "of expected pace"}</p>
-          </div>
+        <div className="px-4 py-4 md:px-5">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+            {locale === "pt" ? "Meta" : "Goal"}
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-slate-800">
+            {strings.home.languagePath(sourceLanguage, targetLanguage, g.target_level)}
+          </p>
+          <p className="mt-0.5 text-sm font-medium text-slate-400">
+            {g.duration_days} {locale === "pt" ? "dias" : "days"} ·{" "}
+            {remaining} {locale === "pt" ? "restantes" : "remaining"}
+          </p>
         </div>
-      </section>
+      </div>
+
+    </div>
+  );
+}
+
+function StatCell({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) {
+  return (
+    <div className="bg-white px-3 py-4 md:px-5">
+      <p className="text-2xl font-semibold tabular-nums text-slate-950 md:text-3xl">{value}</p>
+      <div className="mt-1.5 flex items-center gap-1.5">
+        {icon}
+        <p className="text-[11px] font-bold leading-tight text-slate-500">{label}</p>
+      </div>
     </div>
   );
 }
@@ -182,20 +191,14 @@ function formatWeekdays(days: number[], locale: "pt" | "en") {
 
 function formatDate(value: string | null, locale: "pt" | "en") {
   if (!value) return locale === "pt" ? "sem data definida" : "no date set";
-  return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", { weekday: "long", day: "2-digit", month: "2-digit" }).format(new Date(`${value}T12:00:00`));
+  return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+  }).format(new Date(`${value}T12:00:00`));
 }
 
 function getLanguageName(code: string | undefined, locale: "pt" | "en") {
   if (!code) return locale === "pt" ? "Idioma" : "Language";
   return LANGUAGE_NAMES[locale][code] ?? code;
-}
-
-function Stat({ icon, color, value, label }: { icon: ReactNode; color: string; value: number; label: string }) {
-  return (
-    <div className="min-w-0 rounded-[8px] bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-5">
-      <div className={`grid h-9 w-9 place-items-center rounded-[8px] md:h-11 md:w-11 ${color === "area" ? "" : color}`} style={color === "area" ? { background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" } : undefined}>{icon}</div>
-      <p className="mt-3 text-2xl font-semibold md:mt-4 md:text-3xl">{value}</p>
-      <p className="mt-1 break-words text-[11px] font-bold leading-tight text-slate-500 md:text-sm">{label}</p>
-    </div>
-  );
 }

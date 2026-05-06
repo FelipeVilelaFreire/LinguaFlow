@@ -1,23 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 
 import AppLayout from "./components/layout/AppLayout";
+import { APP_NAME } from "./constants/app";
 import { getLocaleFromSourceLanguage, type AppLocale } from "./constants/strings";
 import { StringsProvider } from "./contexts/StringsContext";
-import { AUTH_PATHS, NAV_ITEMS, ROUTE_PATHS } from "./constants/routes";
+import { ADVENTURE_CHAPTER_BASE, AUTH_PATHS, NAV_ITEMS, ROUTE_PATHS } from "./constants/routes";
 import AccountScreen from "./screens/AccountScreen";
+import AdventureChapterScreen from "./screens/AdventureChapterScreen";
+import AdventureScreen from "./screens/AdventureScreen";
 import AuthScreen from "./screens/AuthScreen";
-import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OnboardingScreen from "./screens/OnboardingScreen";
-import ScenariosScreen from "./screens/ScenariosScreen";
-import TodayScreen from "./screens/TodayScreen";
+import StudyScreen from "./screens/StudyScreen";
 import VocabularyScreen from "./screens/VocabularyScreen";
 import { authService, type User } from "./services/authService";
 import { contentService } from "./services/contentService";
 import type { Goal } from "./types/content";
 import type { AppRoute } from "./types/navigation";
 
-const UI_LOCALE_KEY = "linguaflow_ui_locale";
+const UI_LOCALE_KEY = "talkly_ui_locale";
 
 export default function App() {
   const [route, setRoute] = useState<AppRoute>(() => routeFromPath(window.location.pathname));
@@ -73,14 +74,13 @@ export default function App() {
       return;
     }
     if (user && isAuthPath(window.location.pathname)) {
-      replacePath(ROUTE_PATHS[route]);
+      replacePath(ROUTE_PATHS[route as keyof typeof ROUTE_PATHS] ?? ROUTE_PATHS.home);
     }
   }, [booting, user, goal, route]);
 
   const screen = useMemo(() => {
-    if (route === "today") return <TodayScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} />;
-    if (route === "history") return <HistoryScreen />;
-    if (route === "scenarios") return <ScenariosScreen />;
+    if (route === "adventure") return <AdventureScreen />;
+    if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} />;
     if (route === "vocabulary") return <VocabularyScreen />;
     if (route === "account" && user) {
       return (
@@ -99,8 +99,8 @@ export default function App() {
 
   function navigate(nextRoute: AppRoute) {
     setRoute(nextRoute);
-    const nextPath = ROUTE_PATHS[nextRoute];
-    if (window.location.pathname !== nextPath) {
+    const nextPath = ROUTE_PATHS[nextRoute as keyof typeof ROUTE_PATHS];
+    if (nextPath && window.location.pathname !== nextPath) {
       window.history.pushState({}, "", nextPath);
     }
   }
@@ -152,7 +152,7 @@ export default function App() {
     window.localStorage.setItem(UI_LOCALE_KEY, locale);
   }
 
-  if (booting) return <div className="grid min-h-screen place-items-center bg-slate-50 font-semibold">Loading LinguaFlow...</div>;
+  if (booting) return <div className="grid min-h-screen place-items-center bg-slate-50 font-semibold">Loading {APP_NAME}...</div>;
   if (!user) {
     return (
       <StringsProvider locale="pt">
@@ -166,7 +166,7 @@ export default function App() {
           } catch {
             setGoal(null);
             setGoals([]);
-            navigate("account");
+            window.history.pushState({}, "", AUTH_PATHS.onboarding);
           }
         }} />
       </StringsProvider>
@@ -186,6 +186,15 @@ export default function App() {
 
   const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
 
+  if (route === "adventure-chapter") {
+    const chapterId = parseInt(window.location.pathname.split("/").pop() ?? "0");
+    return (
+      <StringsProvider locale={activeLocale}>
+        <AdventureChapterScreen chapterId={chapterId} onBack={() => navigate("adventure")} />
+      </StringsProvider>
+    );
+  }
+
   return (
     <StringsProvider locale={activeLocale}>
       <AppLayout activeRoute={route} activeGoal={goal} goals={goals} switchingAreaLabel={switchingAreaLabel} navItems={NAV_ITEMS} user={user} uiLocale={activeLocale} onDeleteGoal={deleteGoal} onLocaleChange={changeUiLocale} onLogout={logout} onSwitchGoal={switchGoal} onNavigate={navigate}>
@@ -196,6 +205,7 @@ export default function App() {
 }
 
 function routeFromPath(pathname: string): AppRoute {
+  if (pathname.startsWith(ADVENTURE_CHAPTER_BASE + "/")) return "adventure-chapter";
   const found = (Object.entries(ROUTE_PATHS) as Array<[AppRoute, string]>).find(([, path]) => path === pathname);
   return found?.[0] ?? "home";
 }

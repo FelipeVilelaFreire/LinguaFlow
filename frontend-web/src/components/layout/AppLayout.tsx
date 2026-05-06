@@ -32,7 +32,7 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
   const strings = useStrings();
   const activeTheme = getStudyAreaTheme(activeGoal);
   const activeArea = activeGoal ? activeTheme.label : uiLocale === "pt" ? "Nenhuma area ativa" : "No active area";
-  const mobileNavItems = navItems.filter((item) => ["home", "today", "history", "vocabulary", "account"].includes(item.route));
+  const mobileNavItems = navItems.filter((item) => ["home", "adventure", "today", "vocabulary", "account"].includes(item.route));
 
   return (
     <div className="min-h-screen text-slate-950 transition-colors duration-500" style={{ ...getStudyAreaThemeStyle(activeTheme), background: "var(--area-page)" }}>

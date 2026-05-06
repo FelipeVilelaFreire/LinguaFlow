@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api";
-const ACCESS_TOKEN_KEY = "linguaflow_access_token";
-const REFRESH_TOKEN_KEY = "linguaflow_refresh_token";
+const ACCESS_TOKEN_KEY = "talkly_access_token";
+const REFRESH_TOKEN_KEY = "talkly_refresh_token";
 
 export function getAuthToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY);

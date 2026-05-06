@@ -1,14 +1,17 @@
+import { APP_NAME, APP_TAGLINE_EN, APP_TAGLINE_PT } from "./app";
+
 export type AppLocale = "pt" | "en";
 
 const PT_STRINGS = {
   app: {
-    name: "LinguaFlow",
-    subtitle: "Estudo diario para situacoes reais",
-    loading: "Carregando LinguaFlow...",
+    name: APP_NAME,
+    subtitle: APP_TAGLINE_PT,
+    loading: `Carregando ${APP_NAME}...`,
   },
   nav: {
     home: "Home",
-    today: "Estudo Guiado",
+    adventure: "Aventura",
+    today: "Estudo",
     history: "Historico",
     scenarios: "Cenarios",
     vocabulary: "Vocabulario",
@@ -122,13 +125,14 @@ const PT_STRINGS = {
 
 const EN_STRINGS = {
   app: {
-    name: "LinguaFlow",
-    subtitle: "Daily study for real situations",
-    loading: "Loading LinguaFlow...",
+    name: APP_NAME,
+    subtitle: APP_TAGLINE_EN,
+    loading: `Loading ${APP_NAME}...`,
   },
   nav: {
     home: "Home",
-    today: "Guided Study",
+    adventure: "Adventure",
+    today: "Study",
     history: "History",
     scenarios: "Scenarios",
     vocabulary: "Vocabulary",
