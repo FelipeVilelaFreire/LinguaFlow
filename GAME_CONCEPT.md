@@ -1,108 +1,143 @@
-# LinguaFlow — Game Concept
+# Talkly — Game Concept
 
-## Visão Geral
+## Visão Central
 
-O LinguaFlow não é um app de estudo — é um **RPG onde aprender o idioma É o jogo**.
+O Talkly não é um app de estudo — é um **RPG completo onde o vocabulário É o mecanismo do jogo**.
 
-O jogador não "aprende alemão". Ele é um personagem preso num mundo onde só sobrevive quem domina a língua. A língua fica invisível; o que aparece é a aventura.
+O jogador não "aprende alemão". Ele é um personagem num mundo onde só sobrevive quem domina a língua. A língua fica invisível; o que aparece é a aventura.
 
----
-
-## Estrutura de Progressão
-
-Cada nível CEFR (A1, A2, B1...) é um **capítulo completo** com:
-
-- Sua própria história (começo, meio e fim)
-- Seu próprio visual e design (tema muda por capítulo)
-- Sub-fases internas (ex: A1 tem fases 1 a 9)
-- Um **boss final** derrotado com o vocabulário aprendido no capítulo
-- Uma **recompensa/tesouro** que carrega para o próximo capítulo como vantagem
+> **Princípio:** Você só tem poder sobre algo se souber o nome em alemão. O jogo não te dá a palavra — ele te força a aprender para sobreviver.
 
 ---
 
-## Exemplo de Fluxo
+## Estrutura de Progressão: Série → Temporada → Episódio
+
+Cada nível CEFR é uma **série completa** com história própria — começo, meio e fim. Não é um "capítulo curto": é uma jornada de meses, como o Duolingo real.
 
 ```
-A1 - Vila Medieval
-├── Fase 1-3: Você acorda sem memória, aprende o básico pra se comunicar
-├── Fase 4-6: Descobre que a vila está em perigo
-├── Fase 7-9: Aprende vocabulário de batalha e se prepara
-└── BOSS FINAL: Derrota o vilão usando as palavras que aprendeu
-         ↓
-    Recompensa: A Espada das Runas → carrega pro A2 como vantagem
+Série A1 — Vila Medieval (~50 episódios, ~50 horas de conteúdo)
+  ├── Temporada 1 — Chegada ao Vilarejo         (10 episódios)
+  ├── Temporada 2 — A Guilda dos Mercadores      (10 episódios)
+  ├── Temporada 3 — A Floresta das Runas         (10 episódios)
+  ├── Temporada 4 — A Fortaleza do Norte         (10 episódios)
+  └── Temporada 5 — O Boss Final                 (10 episódios + boss)
+           ↓
+      Recompensa: A Espada das Runas → carrega para A2
 
-A2 - Floresta Sombria
-├── Jogador entra com a Espada das Runas do A1
-├── A espada dá vantagem em certos desafios de A2
-├── Nova história, novo visual, novos personagens
-└── BOSS FINAL → novo item para o A3
+Série A2 — Floresta Sombria (~50 episódios)
+  ├── Entra com a Espada do A1 como vantagem
+  ├── Nova história, novos personagens, novo visual
+  └── Boss Final → novo item para A3
 ```
 
----
-
-## Mundos e Temas
-
-| Nível | Mundo | Visual | Narrativa |
-|-------|-------|--------|-----------|
-| A1 | Vila Medieval | Tons quentes, épico simples | Guerreiro amnésico aprende a língua pra sobreviver |
-| A2 | Floresta Sombria | Verde escuro, místico | Magia ligada às palavras, segredos da floresta |
-| B1 | Reino do Castelo | Roxo e dourado, grandioso | Intrigas políticas, você vira diplomata |
-| B2 | Porto Internacional | Azul oceano, vibrante | Espião/comerciante em missões secretas |
-| C1 | Ruínas Antigas | Preto e ouro, misterioso | Descobre a origem do idioma, virou mestre |
+**Volume por episódio:** ~30–40 frases, ~1 hora de conteúdo real.
+**Volume por série:** ~1.500–2.000 frases por nível CEFR.
+**Ritmo esperado:** 1 episódio/dia = 50 dias no A1. O jogador naturalmente fica meses em cada série.
 
 ---
 
-## Por Que Funciona
+## O Vocabulário Como Mecânica de Jogo
 
-- A pessoa termina A1 pra **pegar a espada**, não só pra aprender alemão
-- A recompensa do capítulo anterior cria **antecipação** para o próximo
-- O idioma é o **mecanismo do jogo**, não o objetivo explícito
-- Cada capítulo tem design diferente — nunca enjoa visualmente
-- O boss final dá **sensação de conquista real** ao completar um nível
+### Inventário vivo
+Quando você aprende uma palavra, o objeto aparece no seu inventário.
+
+- Aprende `Apfel` → maçã aparece no inventário → pode comer para recuperar HP
+- Aprende `Wasser` → água disponível → recupera energia entre batalhas
+- Aprende `Brot` → pão → sustento mais longo
+- Aprende `Schwert` → espada desbloqueada como arma
+- Aprende `Schild` → escudo defensivo disponível
+
+Você não recebe o item como recompensa — você **o invoca ao dominar o nome**. Não sabe a palavra? O item não existe para você.
+
+### Alimentação como vocabulário passivo
+Entre batalhas, o personagem tem fome e sede. Você escolhe o que consumir do inventário — os itens estão em alemão. Sem exercício formal, você memoriza `Milch`, `Fleisch`, `Käse`, `Wein` naturalmente, porque a sobrevivência do personagem depende disso.
+
+### Sistema de Poderes por Categoria Gramatical
+O tipo de palavra que você aprende define o tipo de poder:
+
+| Categoria | Exemplos | Poder desbloqueado |
+|-----------|----------|--------------------|
+| Verbos de ação | `laufen`, `kämpfen`, `springen` | Habilidades físicas e movimentos |
+| Substantivos de natureza | `Feuer`, `Wasser`, `Stein`, `Wind` | Magias elementais |
+| Cores e adjetivos | `stark`, `schnell`, `groß` | Buffs e melhorias de atributos |
+| Verbos sociais | `sprechen`, `helfen`, `fragen` | Habilidades diplomáticas e de persuasão |
+| Números e tempo | `jetzt`, `morgen`, `immer` | Poderes de previsão e tempo |
+
+### Batalha com Boss
+O boss ataca. Você precisa responder corretamente para defender ou atacar.
+- Acertou → causa dano, avança
+- Errou → perde HP
+- O nível de dificuldade do boss reflete o quanto você consolidou o vocabulário da temporada
+- Não dá para "furar" o boss na sorte — ele testa especificamente as palavras que você viu
 
 ---
 
-## Princípios de Design
+## Mundos e Narrativa por Série
 
-1. **A história força o vocabulário** — o jogador precisa das palavras pra avançar na narrativa
-2. **Continuidade entre capítulos** — itens e consequências carregam entre fases
-3. **Visual muda por capítulo** — cada mundo tem paleta, tipografia e estilo próprios
-4. **Boss como culminação** — o boss testa tudo que foi aprendido no capítulo
-5. **Recompensa com significado narrativo** — o item ganho tem papel na história seguinte
+| Série | Mundo | Visual | Arco Narrativo |
+|-------|-------|--------|----------------|
+| A1 | Vila Medieval | Tons quentes, âmbar, épico simples | Guerreiro amnésico aprende a língua pra sobreviver. Descobre sua origem. |
+| A2 | Floresta Sombria | Verde escuro, místico, névoa | Magia ligada às palavras. Criaturas que só entendem alemão puro. |
+| B1 | Reino do Castelo | Roxo e dourado, grandioso | Intrigas políticas. Você vira diplomata — palavras erradas têm consequências. |
+| B2 | Porto Internacional | Azul oceano, vibrante, cosmopolita | Espião/comerciante em missões. Dialetos e gírias entram em cena. |
+| C1 | Ruínas Antigas | Preto e ouro, misterioso | Descobre a origem do idioma. Você virou mestre — ensina outros personagens. |
 
 ---
 
-## Escopo Real de Implementação
+## Por Que Funciona Melhor Que o Duolingo
 
-### Princípio central
-> **O objetivo é a história, não o design.**
+| Duolingo | Talkly |
+|----------|--------|
+| Você aprende uma palavra pra ganhar XP | Você aprende uma palavra pra invocar um item que te salva |
+| A motivação é a streak (não perder) | A motivação é saber o que acontece na história |
+| Palavras são exercícios isolados | Palavras são poderes reais no mundo do jogo |
+| Você pode chutar e avançar | Boss não deixa passar sem dominar de verdade |
+| Visual não muda muito | Cada série tem visual completamente diferente |
 
-O que faz o jogador continuar não é um mapa animado ou sprites — é querer saber o que acontece depois. O design serve a história, não o contrário.
+---
 
-### Nível de complexidade escolhido: Seleção de Fases
-Tipo Mario Bros — simples de construir, poderoso na experiência:
+## Recompensas Entre Séries
 
-- Tela com nós conectados por um caminho (cada lição = um nó)
-- Nó completo = aceso / bloqueado = escuro com cadeado
-- Background com atmosfera do mundo atual (vila, floresta...)
-- Clica no nó, entra na missão com contexto narrativo
-- Final de capítulo = desafio do chefe com visual mais dramático
-- **Sem mapa interativo complexo, sem personagens animados**
+A recompensa do boss final de cada série **tem papel narrativo na próxima**:
 
-### O que cria a sensação de jogo de verdade
-- A narrativa de cada fase (o jogador quer saber o que vem depois)
-- A progressão visível no caminho de nós
-- O item/recompensa ao final do capítulo
-- A mudança de atmosfera entre capítulos
+- A1 → **Espada das Runas** → em A2, corta as trevas da floresta
+- A2 → **Grimório da Floresta** → em B1, permite ler documentos secretos do reino
+- B1 → **Selo Real** → em B2, abre portas em portos e alfândegas
+- B2 → **Mapa Estelar** → em C1, guia pelas ruínas antigas
 
-### Decisões Técnicas
+O jogador termina A1 pra **pegar a espada e ver o que ela faz em A2**, não só pra "subir de nível".
 
-**Stack do Frontend**
-- **React + Vite + TypeScript** — base atual, mantida
-- **Tailwind CSS** — estrutura de layout e espaçamento
-- **ReactBits** — efeitos visuais de atmosfera (backgrounds, transições, glow)
+---
 
-Tailwind cuida da estrutura, ReactBits cuida da vida visual.
+## Implementação Técnica Futura
 
-### Primeiro passo técnico
-Instalar o ReactBits e construir a tela de seleção de fases do A1 (Vila Medieval) com o caminho de nós e a atmosfera do mundo.
+### Novo modelo de dados necessário
+```
+AdventureChapter (Série/Level CEFR)
+  └── AdventureSeason (Temporada)
+        └── AdventurePhase (Episódio, ~1h)
+              └── Phrase (frase/exercício)
+```
+
+### Sistema de inventário (futuro)
+- `PlayerInventory` → itens desbloqueados por palavra aprendida
+- `ItemEffect` → tipo de efeito (cura, dano, buff, cosmético)
+- `VocabularyLink` → palavra que invoca o item
+
+### Sistema de atributos do personagem (futuro)
+- HP (Lebenspunkte) — recuperado com comida/descanso
+- Stamina — gasta em batalhas, recuperada com água
+- Power — cresce com verbos de ação dominados
+- Wisdom — cresce com substantivos abstratos
+
+---
+
+## Princípios de Design Imutáveis
+
+1. **Vocabulário = poder** — saber a palavra te dá controle sobre o objeto/ação no jogo
+2. **Não dá pra passar sem aprender** — boss testa de verdade, sem sorte
+3. **A história força o vocabulário** — o jogador precisa das palavras pra avançar na narrativa
+4. **Continuidade entre séries** — itens e consequências carregam entre níveis
+5. **Volume real** — 50 episódios/série, 1h cada, é um jogo completo por nível CEFR
+6. **Visual muda por série** — cada mundo tem paleta, tipografia e atmosfera próprias
+7. **Imersão total** — o idioma é invisível; o que aparece é aventura

@@ -171,7 +171,7 @@ export default function AdventureChapterScreen({ chapterId, onBack }: AdventureC
 
     return (
       <div
-        className="relative min-h-dvh overflow-hidden"
+        className="flex min-h-dvh flex-col"
         style={{
           background: "linear-gradient(180deg, #0a0200 0%, #1a0800 35%, #0f0400 65%, #1a0a00 100%)",
           animation: "immersiveReveal 350ms ease-out both",
@@ -179,114 +179,109 @@ export default function AdventureChapterScreen({ chapterId, onBack }: AdventureC
       >
         {/* Atmospheric glows */}
         <div className="pointer-events-none absolute inset-0">
-          <div
-            className="absolute"
-            style={{
-              top: "12%", left: "25%", width: 240, height: 240,
-              background: "radial-gradient(circle, rgba(217,119,6,0.07), transparent 70%)",
-              borderRadius: "50%",
-            }}
-          />
-          <div
-            className="absolute"
-            style={{
-              top: "58%", right: "10%", width: 180, height: 180,
-              background: "radial-gradient(circle, rgba(217,119,6,0.05), transparent 70%)",
-              borderRadius: "50%",
-            }}
-          />
+          <div className="absolute" style={{ top: "25%", left: "20%", width: 280, height: 280, background: "radial-gradient(circle, rgba(217,119,6,0.07), transparent 70%)", borderRadius: "50%" }} />
+          <div className="absolute" style={{ top: "65%", right: "8%", width: 200, height: 200, background: "radial-gradient(circle, rgba(217,119,6,0.05), transparent 70%)", borderRadius: "50%" }} />
         </div>
 
-        {/* Connecting path */}
-        <svg
-          className="absolute inset-0"
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
-          style={{ width: "100%", height: "100%", pointerEvents: "none" }}
-        >
-          <polyline
-            points="18,5 55,13 80,23 62,34 24,43 12,53 46,62 75,71 48,81 48,91"
-            fill="none"
-            stroke="#d97706"
-            strokeWidth="0.65"
-            strokeDasharray="3,2.5"
-            opacity="0.3"
-          />
-        </svg>
-
-        {/* Phase nodes */}
-        {chapter.phases.map((phase, i) => {
-          const pos = NODE_POS[i] ?? { x: 50, y: 50 };
-          const isCompleted = phase.is_completed;
-          const isCurrent = phase.number === currentPhaseNumber && !phase.is_completed;
-          const isLocked = !isCompleted && !isCurrent;
-          const isBoss = phase.is_boss;
-
-          let bg = "#1f2937";
-          if (isCompleted) bg = "#059669";
-          else if (isCurrent && isBoss) bg = "#991b1b";
-          else if (isCurrent) bg = "#d97706";
-          else if (!isCurrent && isBoss) bg = "#3b1212";
-
-          const size = isBoss ? 62 : 54;
-
-          return (
-            <button
-              key={phase.id}
-              type="button"
-              disabled={isLocked}
-              onClick={() => !isLocked && setSelectedPhase(phase)}
-              className={`absolute flex items-center justify-center rounded-full font-bold text-white transition ${
-                isLocked ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:brightness-110 active:scale-95"
-              }`}
-              style={{
-                left: `${pos.x}%`,
-                top: `${pos.y}%`,
-                transform: "translate(-50%, -50%)",
-                width: size,
-                height: size,
-                background: bg,
-                boxShadow: isCurrent
-                  ? `0 0 0 3px ${isBoss ? "#ef4444" : "#f59e0b"}, 0 0 24px ${isBoss ? "rgba(239,68,68,0.45)" : "rgba(245,158,11,0.45)"}`
-                  : isCompleted
-                    ? "0 0 0 2px #059669, 0 4px 12px rgba(0,0,0,0.5)"
-                    : "0 4px 14px rgba(0,0,0,0.55)",
-                animation: isCurrent ? "adventureBounce 1.4s ease-in-out infinite" : undefined,
-                zIndex: isCurrent ? 2 : 1,
-              }}
-              title={isLocked ? "Fase bloqueada" : phase.title}
-            >
-              {isCompleted ? (
-                <CheckCircle2 size={isBoss ? 23 : 20} />
-              ) : isLocked ? (
-                <Lock size={isBoss ? 21 : 17} />
-              ) : isBoss ? (
-                <Skull size={22} />
-              ) : (
-                <span className="text-[15px] font-bold">{phase.number}</span>
-              )}
-            </button>
-          );
-        })}
-
-        {/* Header */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 px-4 pt-4">
-          <div className="flex items-start justify-between">
-            <div className="ml-24">
-              <p className="text-[9px] font-bold uppercase tracking-widest text-amber-400">{chapter.level}</p>
-              <h2 className="text-sm font-semibold leading-tight text-white">{chapter.title}</h2>
-            </div>
-            <div className="rounded-[8px] bg-black/50 px-3 py-2 text-right backdrop-blur-sm">
-              <p className="text-[9px] font-bold uppercase text-amber-400">Progresso</p>
-              <p className="text-sm font-semibold text-white">
-                {completedCount}
-                <span className="text-amber-400/60">/{chapter.phases.length}</span>
-              </p>
-            </div>
+        {/* ── Header fixo (não scrolla) */}
+        <div className="relative z-10 flex shrink-0 items-center gap-3 px-4 pb-3 pt-4">
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex shrink-0 items-center gap-1.5 rounded-full bg-black/40 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-black/60 active:scale-95"
+          >
+            <ChevronLeft size={16} />
+            Sair
+          </button>
+          <div className="min-w-0 flex-1">
+            <p className="text-[9px] font-bold uppercase tracking-widest text-amber-400">{chapter.level}</p>
+            <h2 className="truncate text-sm font-semibold leading-tight text-white">{chapter.title}</h2>
+          </div>
+          <div className="shrink-0 rounded-[8px] bg-black/50 px-3 py-2 text-right backdrop-blur-sm">
+            <p className="text-[9px] font-bold uppercase text-amber-400">Fases</p>
+            <p className="text-sm font-semibold text-white">
+              {completedCount}
+              <span className="text-amber-400/60">/{chapter.phases.length}</span>
+            </p>
           </div>
         </div>
 
-        <BackButton onBack={onBack} />
+        {/* ── Área scrollável do mapa */}
+        <div className="relative z-10 flex-1 overflow-x-hidden overflow-y-auto">
+          <div className="relative" style={{ height: 700 }}>
+            {/* Connecting path */}
+            <svg
+              className="absolute inset-0"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              style={{ width: "100%", height: "100%", pointerEvents: "none" }}
+            >
+              <polyline
+                points="18,5 55,13 80,23 62,34 24,43 12,53 46,62 75,71 48,81 48,91"
+                fill="none"
+                stroke="#d97706"
+                strokeWidth="0.65"
+                strokeDasharray="3,2.5"
+                opacity="0.3"
+              />
+            </svg>
+
+            {/* Phase nodes */}
+            {chapter.phases.map((phase, i) => {
+              const pos = NODE_POS[i] ?? { x: 50, y: 50 };
+              const isCompleted = phase.is_completed;
+              const isCurrent = phase.number === currentPhaseNumber && !phase.is_completed;
+              const isLocked = !isCompleted && !isCurrent;
+              const isBoss = phase.is_boss;
+
+              let bg = "#1f2937";
+              if (isCompleted) bg = "#059669";
+              else if (isCurrent && isBoss) bg = "#991b1b";
+              else if (isCurrent) bg = "#d97706";
+              else if (!isCurrent && isBoss) bg = "#3b1212";
+
+              const size = isBoss ? 62 : 54;
+
+              return (
+                <button
+                  key={phase.id}
+                  type="button"
+                  disabled={isLocked}
+                  onClick={() => !isLocked && setSelectedPhase(phase)}
+                  className={`absolute flex items-center justify-center rounded-full font-bold text-white transition ${
+                    isLocked ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:brightness-110 active:scale-95"
+                  }`}
+                  style={{
+                    left: `${pos.x}%`,
+                    top: `${pos.y}%`,
+                    transform: "translate(-50%, -50%)",
+                    width: size,
+                    height: size,
+                    background: bg,
+                    boxShadow: isCurrent
+                      ? `0 0 0 3px ${isBoss ? "#ef4444" : "#f59e0b"}, 0 0 24px ${isBoss ? "rgba(239,68,68,0.45)" : "rgba(245,158,11,0.45)"}`
+                      : isCompleted
+                        ? "0 0 0 2px #059669, 0 4px 12px rgba(0,0,0,0.5)"
+                        : "0 4px 14px rgba(0,0,0,0.55)",
+                    animation: isCurrent ? "adventureBounce 1.4s ease-in-out infinite" : undefined,
+                    zIndex: isCurrent ? 2 : 1,
+                  }}
+                  title={isLocked ? "Fase bloqueada" : phase.title}
+                >
+                  {isCompleted ? (
+                    <CheckCircle2 size={isBoss ? 23 : 20} />
+                  ) : isLocked ? (
+                    <Lock size={isBoss ? 21 : 17} />
+                  ) : isBoss ? (
+                    <Skull size={22} />
+                  ) : (
+                    <span className="text-[15px] font-bold">{phase.number}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Phase bottom sheet */}
         {selectedPhase ? (

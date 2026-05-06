@@ -28,7 +28,11 @@ export default function AdventureScreen() {
 
   function enterChapter() {
     if (!chapter) return;
-    navigateImmersive(`${ADVENTURE_CHAPTER_BASE}/${chapter.id}`, { chapter });
+    navigateImmersive(
+      `${ADVENTURE_CHAPTER_BASE}/${chapter.id}`,
+      { chapter },
+      { title: chapter.title, subtitle: `${chapter.level} · Entrando no mundo` },
+    );
   }
 
   if (view === "loading") return <StateMessage />;
