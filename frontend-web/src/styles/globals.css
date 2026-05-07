@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -265,6 +267,29 @@ input {
   }
 }
 
+/* ── Card system ── */
+
+.card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 1px 8px rgba(15, 23, 42, 0.06);
+}
+
+.card-overflow {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 1px 8px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+/* ── Display numbers (Manrope) ── */
+
+.display-num {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
 .area-text-primary {
   color: var(--area-primary);
 }
@@ -484,7 +509,7 @@ input {
   width: 100%;
   max-width: 480px;
   max-height: 92dvh;
-  overflow-y: auto;
+  overflow: hidden;
   background: white;
   border-radius: 24px 24px 0 0;
   animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -658,6 +683,242 @@ input {
   border-color: var(--area-primary);
   background: var(--area-primary);
   color: white;
+}
+
+/* ── Home screen ── */
+
+.home-study-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--area-primary);
+  color: #ffffff;
+  animation: fadeIn 220ms ease-out;
+}
+
+.home-study-banner-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s;
+  flex-shrink: 0;
+}
+
+.home-study-banner-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ── History / EditProfile full-screen shell ── */
+
+.history-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.history-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: #f8fafc;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.history-back-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.history-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+}
+
+.history-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.history-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  border-radius: 8px;
+  padding: 6px 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  ring: 1px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
+}
+
+.history-month-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  flex: 1;
+}
+
+.history-month-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: none;
+  background: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  flex-shrink: 0;
+}
+
+.history-month-btn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* ── Study screen ── */
+
+.study-hero-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--area-primary);
+  transition: filter 0.15s ease;
+}
+
+.study-hero-card:hover {
+  filter: brightness(0.96);
+}
+
+.study-hero-card:active {
+  filter: brightness(0.92);
+}
+
+.study-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.study-hero-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--area-text-on-primary);
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+.study-hero-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--area-text-on-primary);
+}
+
+.study-hero-meta {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--area-text-on-primary);
+  opacity: 0.65;
+}
+
+.study-hero-meta-icon {
+  color: var(--area-text-on-primary);
+  opacity: 0.65;
+  flex-shrink: 0;
+}
+
+.study-hero-time {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--area-text-on-primary);
+  opacity: 0.75;
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.study-hero-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  background: var(--area-text-on-primary);
+  color: var(--area-primary);
+  transition: opacity 0.15s ease;
+  cursor: pointer;
+}
+
+.study-hero-btn:hover {
+  opacity: 0.9;
+}
+
+.study-season-bar {
+  height: 3px;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.study-season-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--area-primary);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

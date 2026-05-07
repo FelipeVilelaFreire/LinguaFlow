@@ -4,9 +4,12 @@ import AppLayout from "./components/layout/AppLayout";
 import { APP_NAME } from "./constants/app";
 import { getLocaleFromSourceLanguage, type AppLocale } from "./constants/strings";
 import { StringsProvider } from "./contexts/StringsContext";
-import { ADVENTURE_CHAPTER_BASE, AUTH_PATHS, NAV_ITEMS, ROUTE_PATHS } from "./constants/routes";
+import { adventureChapterPath, NAV_ITEMS, ROUTES } from "./constants/routes";
 import AccountScreen from "./screens/AccountScreen";
 import AdventureChapterScreen from "./screens/AdventureChapterScreen";
+import AdventureModule from "./screens/adventure/AdventureModule";
+import type { AdventureTab } from "./screens/adventure/AdventureModule";
+import EditProfileScreen from "./screens/EditProfileScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import AdventureScreen from "./screens/AdventureScreen";
 import AuthScreen from "./screens/AuthScreen";
@@ -16,10 +19,25 @@ import StudyScreen from "./screens/StudyScreen";
 import VocabularyScreen from "./screens/VocabularyScreen";
 import { authService, type User } from "./services/authService";
 import { contentService } from "./services/contentService";
+import { getStudyAreaTheme, getStudyAreaThemeStyle } from "./theme/studyAreaTheme";
 import type { Goal } from "./types/content";
 import type { AppRoute } from "./types/navigation";
 
 const UI_LOCALE_KEY = "talkly_ui_locale";
+
+// Maps AppRoute to a browser path (adventure-chapter is dynamic so omitted)
+const ROUTE_PATH: Partial<Record<AppRoute, string>> = {
+  home:               ROUTES.home,
+  adventure:          ROUTES.adventure,
+  "adventure-map":    ROUTES.adventureMap,
+  "adventure-mochila":ROUTES.adventureMochila,
+  "adventure-heroi":  ROUTES.adventureHeroi,
+  today:              ROUTES.today,
+  vocabulary:         ROUTES.vocabulary,
+  account:            ROUTES.account,
+  history:            ROUTES.history,
+  editprofile:        ROUTES.editProfile,
+};
 
 export default function App() {
   const [route, setRoute] = useState<AppRoute>(() => routeFromPath(window.location.pathname));
@@ -43,10 +61,7 @@ export default function App() {
 
   useEffect(() => {
     async function boot() {
-      if (!authService.getToken()) {
-        setBooting(false);
-        return;
-      }
+      if (!authService.getToken()) { setBooting(false); return; }
       try {
         const currentUser = await authService.me();
         setUser(currentUser);
@@ -70,22 +85,20 @@ export default function App() {
 
   useEffect(() => {
     if (booting) return;
-    if (!user && window.location.pathname !== AUTH_PATHS.login) {
-      replacePath(AUTH_PATHS.login);
+    if (!user && window.location.pathname !== ROUTES.login) {
+      replacePath(ROUTES.login);
       return;
     }
     if (user && isAuthPath(window.location.pathname)) {
-      replacePath(ROUTE_PATHS[route as keyof typeof ROUTE_PATHS] ?? ROUTE_PATHS.home);
+      replacePath(ROUTE_PATH[route] ?? ROUTES.home);
     }
   }, [booting, user, goal, route]);
 
   const screen = useMemo(() => {
     if (route === "adventure") return <AdventureScreen />;
-    if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} />;
+    if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} onNavigate={navigate} />;
     if (route === "vocabulary") return <VocabularyScreen />;
-    if (route === "history") {
-      return <HistoryScreen onBack={() => navigate("account")} />;
-    }
+    if (route === "history") return <HistoryScreen onBack={() => navigate("account")} />;
     if (route === "account" && user) {
       return (
         <AccountScreen
@@ -97,6 +110,7 @@ export default function App() {
           onLogout={logout}
           onSwitchGoal={switchGoal}
           onViewHistory={() => navigate("history")}
+          onEditProfile={() => navigate("editprofile")}
         />
       );
     }
@@ -105,7 +119,7 @@ export default function App() {
 
   function navigate(nextRoute: AppRoute) {
     setRoute(nextRoute);
-    const nextPath = ROUTE_PATHS[nextRoute as keyof typeof ROUTE_PATHS];
+    const nextPath = ROUTE_PATH[nextRoute];
     if (nextPath && window.location.pathname !== nextPath) {
       window.history.pushState({}, "", nextPath);
     }
@@ -117,7 +131,7 @@ export default function App() {
     setGoal(null);
     setGoals([]);
     setRoute("home");
-    replacePath(AUTH_PATHS.login);
+    replacePath(ROUTES.login);
   }
 
   async function handleGoalChanged(nextGoal: Goal) {
@@ -150,7 +164,7 @@ export default function App() {
     }
     setGoal(null);
     setRoute("account");
-    replacePath(ROUTE_PATHS.account);
+    replacePath(ROUTES.account);
   }
 
   function changeUiLocale(locale: AppLocale) {
@@ -158,7 +172,12 @@ export default function App() {
     window.localStorage.setItem(UI_LOCALE_KEY, locale);
   }
 
-  if (booting) return <div className="grid min-h-screen place-items-center bg-slate-50 font-semibold">Loading {APP_NAME}...</div>;
+  if (booting) return (
+    <div className="grid min-h-screen place-items-center bg-slate-50 font-semibold">
+      Loading {APP_NAME}...
+    </div>
+  );
+
   if (!user) {
     return (
       <StringsProvider locale="pt">
@@ -172,13 +191,14 @@ export default function App() {
           } catch {
             setGoal(null);
             setGoals([]);
-            window.history.pushState({}, "", AUTH_PATHS.onboarding);
+            window.history.pushState({}, "", ROUTES.onboarding);
           }
         }} />
       </StringsProvider>
     );
   }
-  if (window.location.pathname === AUTH_PATHS.onboarding) {
+
+  if (window.location.pathname === ROUTES.onboarding) {
     return (
       <StringsProvider locale="pt">
         <OnboardingScreen onComplete={(createdGoal) => {
@@ -191,19 +211,95 @@ export default function App() {
   }
 
   const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
+  const langCode = goal?.target_language?.code ?? "IT";
 
+  // ── Full-screen adventure chapter (exercise) ──────────────────────────────
   if (route === "adventure-chapter") {
     const chapterId = parseInt(window.location.pathname.split("/").pop() ?? "0");
     return (
       <StringsProvider locale={activeLocale}>
-        <AdventureChapterScreen chapterId={chapterId} onBack={() => navigate("adventure")} />
+        <AdventureChapterScreen
+          chapterId={chapterId}
+          onBack={() => navigate("adventure-map")}
+        />
       </StringsProvider>
     );
   }
 
+  // ── Full-screen adventure module (map / mochila / herói) ─────────────────
+  if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-heroi") {
+    const tabMap: Record<string, AdventureTab> = {
+      "adventure-map":     "map",
+      "adventure-mochila": "mochila",
+      "adventure-heroi":   "heroi",
+    };
+    return (
+      <StringsProvider locale={activeLocale}>
+        <AdventureModule
+          langCode={langCode}
+          initialTab={tabMap[route]}
+          onBack={() => navigate("adventure")}
+          onTabChange={(tab) => {
+            const r = `adventure-${tab}` as AppRoute;
+            navigate(r);
+          }}
+          onStartChapter={(chapterId) => {
+            window.history.pushState({}, "", adventureChapterPath(chapterId));
+            setRoute("adventure-chapter");
+          }}
+        />
+      </StringsProvider>
+    );
+  }
+
+  // ── Full-screen history ───────────────────────────────────────────────────
+  if (route === "history") {
+    const activeTheme = getStudyAreaTheme(goal);
+    return (
+      <StringsProvider locale={activeLocale}>
+        <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
+          <HistoryScreen onBack={() => navigate("account")} />
+        </div>
+      </StringsProvider>
+    );
+  }
+
+  // ── Full-screen edit profile ──────────────────────────────────────────────
+  if (route === "editprofile" && user) {
+    const activeTheme = getStudyAreaTheme(goal);
+    return (
+      <StringsProvider locale={activeLocale}>
+        <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
+          <EditProfileScreen
+            user={user}
+            uiLocale={activeLocale}
+            onBack={() => navigate("account")}
+            onLocaleChange={changeUiLocale}
+            onLogout={logout}
+          />
+        </div>
+      </StringsProvider>
+    );
+  }
+
+  // ── Main app with bottom nav ──────────────────────────────────────────────
   return (
     <StringsProvider locale={activeLocale}>
-      <AppLayout activeRoute={route} activeGoal={goal} goals={goals} switchingAreaLabel={switchingAreaLabel} navItems={NAV_ITEMS} user={user} uiLocale={activeLocale} onDeleteGoal={deleteGoal} onLocaleChange={changeUiLocale} onLogout={logout} onSwitchGoal={switchGoal} onNavigate={navigate}>
+      <AppLayout
+        activeRoute={route}
+        activeGoal={goal}
+        goals={goals}
+        switchingAreaLabel={switchingAreaLabel}
+        navItems={NAV_ITEMS}
+        user={user}
+        uiLocale={activeLocale}
+        onCreateGoal={handleGoalChanged}
+        onDeleteGoal={deleteGoal}
+        onLocaleChange={changeUiLocale}
+        onLogout={logout}
+        onSwitchGoal={switchGoal}
+        onNavigate={navigate}
+      >
         {screen}
       </AppLayout>
     </StringsProvider>
@@ -211,8 +307,12 @@ export default function App() {
 }
 
 function routeFromPath(pathname: string): AppRoute {
-  if (pathname.startsWith(ADVENTURE_CHAPTER_BASE + "/")) return "adventure-chapter";
-  const found = (Object.entries(ROUTE_PATHS) as Array<[AppRoute, string]>).find(([, path]) => path === pathname);
+  if (pathname.startsWith(ROUTES.adventureChapterBase + "/")) return "adventure-chapter";
+  if (pathname === ROUTES.adventureMap)     return "adventure-map";
+  if (pathname === ROUTES.adventureMochila) return "adventure-mochila";
+  if (pathname === ROUTES.adventureHeroi)   return "adventure-heroi";
+  const found = (Object.entries(ROUTE_PATH) as Array<[AppRoute, string]>)
+    .find(([, path]) => path === pathname);
   return found?.[0] ?? "home";
 }
 
@@ -223,5 +323,5 @@ function replacePath(path: string) {
 }
 
 function isAuthPath(pathname: string) {
-  return pathname === AUTH_PATHS.login || pathname === AUTH_PATHS.onboarding;
+  return pathname === ROUTES.login || pathname === ROUTES.onboarding;
 }

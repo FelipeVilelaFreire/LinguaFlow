@@ -25,11 +25,46 @@ Todo desenvolvimento prioriza mobile. Desktop é aprimoramento, não base.
 | `/vocabulario` | Vocabulário | Flashcards e favoritos |
 | `/perfil` | Perfil | Conta, metas e Histórico |
 
-### Modo Aventura (RPG)
-Cada nível CEFR é um capítulo com narrativa temática (Alemão = Germânicos):
-- A1 = Vila Medieval · A2 = Floresta Sombria · B1 = Reino do Castelo
-- B2 = Porto Internacional · C1 = Ruínas Antigas
-- Boss final ao completar cada capítulo + item de recompensa que carrega pro próximo
+### Modo Aventura (RPG) — Hierarquia obrigatória
+
+```
+SÉRIE  (nível CEFR — ex: A1)
+  └── TEMPORADA  (5 por série — badge T1…T5)
+        └── FASE  (25 por temporada — types: story | review | boss)
+              └── SEÇÃO  (6 por fase)
+                    1. Cotidiano      — fatia de vida, contexto do NPC
+                    2. Aquecimento    — revisão do vocabulário anterior
+                    3. Evento Principal — novo vocabulário via narrativa
+                    4. Decodificação  — padrão gramatical revelado
+                    5. Prática        — exercícios guiados
+                    6. Obstáculo      — gate Metroidvania (vocabulário como chave)
+```
+
+**Regras fixas — nunca quebrar:**
+- `"A1"` identifica a **SÉRIE inteira** (todas as 5 temporadas). Não é o nível de uma temporada.
+- Cada temporada mostra seu badge como **T1, T2, T3, T4, T5** — não A1/A2/B1/etc.
+- O contexto do arco (ex: "A1 · Il Viandante") aparece no header da série e do mapa, nunca repetido por temporada.
+- Fases 1–14 = história, Fases 15/20 = revisão narrativa, Fases 21–23 = checkpoints SRS, Fase 24 = pré-boss, Fase 25 = Boss.
+- Boss fecha sempre a temporada + desbloqueia recompensa que entra na Mochila.
+
+**MVP em produção: Italiano — "Il Viandante" (A1)**
+| T | Cenário | Boss |
+|---|---------|------|
+| T1 | Arrivo al Borgo | Il Condottiero |
+| T2 | Venezia dei Mercanti | Il Leone Alato |
+| T3 | La Toscana dei Medici | Il Magnifico |
+| T4 | Napoli e il Vesuvio | Il Vesuvio |
+| T5 | Roma Aeterna | L'Imperatore |
+
+**Arquivos-chave do modo aventura:**
+| Arquivo | Responsabilidade |
+|---------|-----------------|
+| `src/types/adventure.ts` | `AdventureChapter`, `AdventurePhase`, `PhaseType` |
+| `src/mocks/adventureItMock.ts` | Dados mock do "Il Viandante" (substituir por API no futuro) |
+| `src/theme/adventureColors.ts` | Paleta escura imersiva por idioma (`getAdventureColors`) |
+| `src/screens/AdventureScreen.tsx` | Landing da série (lista as 5 temporadas) |
+| `src/screens/adventure/AdventureMapScreen.tsx` | Mapa de nós da temporada (winding path, 25 nós, ~85 px entre nós) |
+| `src/screens/adventure/AdventureModule.tsx` | Container 3-abas: Mapa / Mochila / Herói |
 
 ## Stack
 - React + Vite + TypeScript

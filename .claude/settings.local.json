@@ -9,7 +9,14 @@
       "Bash(powershell -Command \"\\(Get-Content src/data/mockContent.ts\\) -replace 'linguaflow:favorites','talkly:favorites' | Set-Content src/data/mockContent.ts\")",
       "Bash(xargs grep -l \"primary\\\\|color\\\\|theme\")",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse -Name)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "Bash(Select-String -Pattern \"dependencies\" -A 30)",
+      "Bash(xargs grep -l \"class.*Item\\\\|class.*Inventory\\\\|class.*XP\\\\|class.*Reward\")",
+      "Bash(dir C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\backend\\\\content\\\\seeds\\\\ *)",
+      "Bash(dir \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" /b /s)",
+      "Bash(findstr \"adventure\\\\|types\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse | Where-Object { $_.Name -match \"adventure|types\" } | Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse | ForEach-Object { $_.FullName })"
     ]
   }
 }

@@ -12,7 +12,7 @@ export default function VideoCard({ duration, title, url }: VideoCardProps) {
   const strings = useStrings();
 
   return (
-    <section className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+    <section className="card p-5">
       <div className="grid h-11 w-11 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
         <Play size={19} />
       </div>

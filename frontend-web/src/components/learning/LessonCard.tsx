@@ -56,8 +56,8 @@ export default function LessonCard({
   if (isIntro) {
     return (
       <section className="relative">
-        <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[8px] bg-white/60 ring-1 ring-slate-200" style={{ animation: "stackLift 360ms ease-out both" }} />
-        <div className="relative rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: "studyCardIn 320ms ease-out both" }}>
+        <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[20px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
+        <div className="card relative p-4 md:p-7" style={{ animation: "studyCardIn 320ms ease-out both" }}>
           <p className="inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
             Aula do dia
           </p>
@@ -88,9 +88,9 @@ export default function LessonCard({
 
   return (
     <section className="relative">
-      <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[8px] bg-white/60 ring-1 ring-slate-200" style={{ animation: "stackLift 360ms ease-out both" }} />
-      <div className="absolute inset-x-8 -bottom-6 top-10 rounded-[8px] bg-white/40 ring-1 ring-slate-200" style={{ animation: "stackLift 420ms ease-out both" }} />
-      <div className="relative rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-7" style={{ animation: checked && feedback.quality !== "wrong" ? "lessonBounce 360ms ease-out both" : "studyCardIn 320ms ease-out both" }}>
+      <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[20px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
+      <div className="absolute inset-x-8 -bottom-6 top-10 rounded-[20px] bg-white/40 shadow-[0_1px_6px_rgba(15,23,42,0.04)]" style={{ animation: "stackLift 420ms ease-out both" }} />
+      <div className="card relative p-4 md:p-7" style={{ animation: checked && feedback.quality !== "wrong" ? "lessonBounce 360ms ease-out both" : "studyCardIn 320ms ease-out both" }}>
       <div className="flex items-start justify-between gap-3 md:gap-4">
         <div>
           <p className="inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>

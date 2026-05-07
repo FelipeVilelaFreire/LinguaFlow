@@ -66,7 +66,7 @@ export default function ScenariosScreen() {
           {phrases.data && (
             <div className="flex flex-col gap-2">
               {phrases.data.map((phrase) => (
-                <div key={phrase.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+                <div key={phrase.id} className="card p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-base font-bold text-slate-950">{phrase.target_text}</p>

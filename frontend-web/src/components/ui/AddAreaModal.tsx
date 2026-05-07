@@ -5,28 +5,27 @@ import { useStrings } from "../../contexts/StringsContext";
 import { contentService } from "../../services/contentService";
 import type { Goal } from "../../types/content";
 import BottomModal from "./BottomModal";
+import LangFlag from "./LangFlag";
 
 interface AddAreaModalProps {
   onClose: () => void;
   onCreated: (goal: Goal) => void;
 }
 
-// ── Dados estáticos ───────────────────────────────────────
-
 const SOURCE_LANGUAGES = [
-  { code: "PT", flag: "🇧🇷", labelKey: "PT" as const, detailKey: "sourceDetailPT" as const },
-  { code: "EN", flag: "🇺🇸", labelKey: "EN" as const, detailKey: "sourceDetailEN" as const },
+  { code: "PT", labelKey: "PT" as const, detail: "Explicações em português" },
+  { code: "EN", labelKey: "EN" as const, detail: "Explanations in English" },
 ];
 
 const TARGET_LANGUAGES = [
-  { code: "DE", flag: "🇩🇪", labelKey: "DE" as const, detail: "Vila Medieval · A história começa aqui", available: true },
-  { code: "ES", flag: "🇪🇸", labelKey: "ES" as const, detail: "Em breve", available: false },
+  { code: "DE", labelKey: "DE" as const, detail: "Vila Medieval · A história começa aqui", available: true },
+  { code: "ES", labelKey: "ES" as const, detail: "Em breve", available: false },
 ];
 
 const LEVELS = [
-  { code: "A1", labelKey: "levelIniciante" as const, detailKey: "levelInicianteDetail" as const },
-  { code: "A2", labelKey: "levelBasico" as const,    detailKey: "levelBasicoDetail" as const },
-  { code: "B1", labelKey: "levelBase" as const,      detailKey: "levelBaseDetail" as const },
+  { code: "A1", labelKey: "levelIniciante" as const },
+  { code: "A2", labelKey: "levelBasico" as const },
+  { code: "B1", labelKey: "levelBase" as const },
 ];
 
 const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
@@ -43,8 +42,6 @@ function formatMinutes(min: number) {
   if (min === 90) return "1h30";
   return `${min} min`;
 }
-
-// ── Componente ────────────────────────────────────────────
 
 export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) {
   const s = useStrings();
@@ -83,8 +80,19 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
     }
   }
 
+  const footer = (
+    <button
+      type="button"
+      onClick={submit}
+      disabled={loading || days.length === 0}
+      className="auth-submit"
+    >
+      {loading ? <LoadingDots /> : <>{s.onboarding.addAreaCta} <ArrowRight size={17} strokeWidth={2.5} /></>}
+    </button>
+  );
+
   return (
-    <BottomModal title={s.onboarding.addAreaTitle} onClose={onClose}>
+    <BottomModal title={s.onboarding.addAreaTitle} onClose={onClose} footer={footer}>
       <div className="flex flex-col gap-6">
 
         {/* Idioma de origem */}
@@ -93,9 +101,9 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
             {SOURCE_LANGUAGES.map((lang) => (
               <LangCard
                 key={lang.code}
-                flag={lang.flag}
+                code={lang.code}
                 name={s.languages[lang.labelKey]}
-                detail={lang.code === "PT" ? "Explicações em português" : "Explanations in English"}
+                detail={lang.detail}
                 selected={source.code === lang.code}
                 onClick={() => setSource(lang)}
               />
@@ -109,7 +117,7 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
             {TARGET_LANGUAGES.map((lang) => (
               <LangCard
                 key={lang.code}
-                flag={lang.flag}
+                code={lang.code}
                 name={s.languages[lang.labelKey]}
                 detail={lang.available ? lang.detail : s.onboarding.comingSoon}
                 selected={target.code === lang.code}
@@ -131,7 +139,10 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
                 onClick={() => setLevel(l)}
                 className={`onb-pill flex-1 py-2.5 text-center ${level.code === l.code ? "selected" : ""}`}
               >
-                <span className="block text-sm font-bold">{s.onboarding[l.labelKey as keyof typeof s.onboarding] as string ?? l.code}</span>
+                <span className="block text-sm font-bold">{l.code}</span>
+                <span className="block text-[11px] font-medium text-slate-500">
+                  {s.onboarding[l.labelKey as keyof typeof s.onboarding] as string ?? ""}
+                </span>
               </button>
             ))}
           </div>
@@ -154,9 +165,7 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
             ))}
           </div>
           {days.length === 0 && (
-            <p className="mt-2 text-xs font-semibold text-red-500">
-              {s.profile.statStreak === "dias streak" ? "Escolha pelo menos um dia" : "Choose at least one day"}
-            </p>
+            <p className="mt-2 text-xs font-semibold text-red-500">{s.profile.chooseDayError}</p>
           )}
         </ModalSection>
 
@@ -179,34 +188,17 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
         {/* Estimativa */}
         {months !== null && (
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <p className="text-sm font-semibold text-slate-950">
-              {s.onboarding.estimateMonths(months)}
-            </p>
+            <p className="text-sm font-semibold text-slate-950">{s.onboarding.estimateMonths(months)}</p>
             <p className="mt-1 text-xs font-medium text-slate-400">
               {s.onboarding.estimateDetail(days.length, formatMinutes(minutes))}
             </p>
           </div>
         )}
 
-        {/* CTA */}
-        <button
-          type="button"
-          onClick={submit}
-          disabled={loading || days.length === 0}
-          className="auth-submit"
-        >
-          {loading ? (
-            <LoadingDots />
-          ) : (
-            <>{s.onboarding.addAreaCta} <ArrowRight size={17} strokeWidth={2.5} /></>
-          )}
-        </button>
       </div>
     </BottomModal>
   );
 }
-
-// ── Helpers ───────────────────────────────────────────────
 
 function ModalSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -217,8 +209,8 @@ function ModalSection({ label, children }: { label: string; children: React.Reac
   );
 }
 
-function LangCard({ flag, name, detail, selected, disabled, badge, onClick }: {
-  flag: string;
+function LangCard({ code, name, detail, selected, disabled, badge, onClick }: {
+  code: string;
   name: string;
   detail: string;
   selected: boolean;
@@ -232,7 +224,7 @@ function LangCard({ flag, name, detail, selected, disabled, badge, onClick }: {
       onClick={onClick}
       className={`onb-select-card ${selected ? "selected" : ""} ${disabled ? "disabled" : ""}`}
     >
-      <span className="text-2xl">{flag}</span>
+      <LangFlag code={code} size="sm" className="shrink-0" />
       <div className="flex-1 text-left">
         <p className="text-sm font-bold text-slate-950">{name}</p>
         <p className="text-xs font-medium text-slate-500">{detail}</p>
@@ -242,9 +234,7 @@ function LangCard({ flag, name, detail, selected, disabled, badge, onClick }: {
           {badge}
         </span>
       )}
-      {selected && !disabled && (
-        <Check size={16} className="shrink-0 area-text-primary" />
-      )}
+      {selected && !disabled && <Check size={16} className="shrink-0 area-text-primary" />}
     </button>
   );
 }

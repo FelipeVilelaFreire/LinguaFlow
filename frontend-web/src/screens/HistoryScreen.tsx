@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import StateMessage from "../components/ui/StateMessage";
@@ -9,6 +9,7 @@ import { getStudyAreaTheme } from "../theme/studyAreaTheme";
 import type { Goal, HistoryDay } from "../types/content";
 
 const COMPLETED_COLOR = "#16a34a";
+const TODAY = new Date().toISOString().split("T")[0];
 
 interface HistoryScreenProps {
   onBack: () => void;
@@ -21,10 +22,16 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
     const today = new Date();
     return { year: today.getFullYear(), month: today.getMonth() + 1 };
   });
-  const history = useAsyncData(() => contentService.getHistory(cursor.year, cursor.month), [cursor.year, cursor.month]);
+  const history = useAsyncData(
+    () => contentService.getHistory(cursor.year, cursor.month),
+    [cursor.year, cursor.month]
+  );
 
   const monthLabel = useMemo(() => {
-    return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", { month: "long", year: "numeric" }).format(new Date(cursor.year, cursor.month - 1, 1));
+    return new Intl.DateTimeFormat(locale === "pt" ? "pt-BR" : "en-US", {
+      month: "long",
+      year: "numeric",
+    }).format(new Date(cursor.year, cursor.month - 1, 1));
   }, [cursor, locale]);
 
   function moveMonth(delta: number) {
@@ -32,243 +39,297 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
     setCursor({ year: next.getFullYear(), month: next.getMonth() + 1 });
   }
 
-  if (history.loading) return <StateMessage />;
-  if (history.error || !history.data) {
-    return <StateMessage title={locale === "pt" ? "Historico indisponivel." : "History unavailable."} detail={locale === "pt" ? "Confira se o backend esta rodando." : "Check if the backend is running."} />;
-  }
+  if (history.loading) return (
+    <div className="history-shell">
+      <StateMessage />
+    </div>
+  );
+
+  if (history.error || !history.data) return (
+    <div className="history-shell">
+      <StateMessage
+        title={locale === "pt" ? "Historico indisponivel." : "History unavailable."}
+        detail={locale === "pt" ? "Confira se o backend esta rodando." : "Check if the backend is running."}
+      />
+    </div>
+  );
 
   const summary = getMonthSummary(history.data.goals);
 
   return (
-    <div className="pb-4 md:pb-0">
+    <div className="history-shell" style={{ animation: "fadeIn 220ms ease-out" }}>
 
-      {/* Back */}
-      <button type="button" onClick={onBack} className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-slate-800">
-        <ArrowLeft size={16} />
-        {locale === "pt" ? "Voltar ao perfil" : "Back to profile"}
-      </button>
+      {/* Top bar */}
+      <div className="history-topbar">
+        <button type="button" onClick={onBack} className="history-back-btn">
+          <ArrowLeft size={18} />
+        </button>
+        <h1 className="history-title">
+          {locale === "pt" ? "Histórico" : "History"}
+        </h1>
+        <div className="w-9" />
+      </div>
 
-      <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
-        <p className="flex items-center gap-2 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>
-          <CalendarDays size={18} />
-          {locale === "pt" ? "Agenda mensal" : "Monthly calendar"}
-        </p>
-        <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-2xl font-semibold capitalize leading-tight md:text-4xl">{monthLabel}</h2>
-              <button type="button" onClick={() => setCursor({ year: new Date().getFullYear(), month: new Date().getMonth() + 1 })} className="h-9 rounded-[8px] bg-slate-50 px-3 text-xs font-semibold ring-1 ring-slate-200 transition hover:bg-slate-100 md:h-10 md:text-sm">
-                {locale === "pt" ? "Mes atual" : "Current month"}
-              </button>
-            </div>
-            <p className="mt-2 max-w-2xl font-medium text-slate-600">
-              {locale === "pt" ? "Veja seus dias planejados e concluidos por area de estudo." : "Review planned and completed days by study area."}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => moveMonth(-1)} className="grid h-11 w-11 place-items-center rounded-[8px] bg-white ring-1 ring-slate-200 transition hover:bg-slate-50">
-              <ChevronLeft size={19} />
-            </button>
-            <button type="button" onClick={() => moveMonth(1)} className="grid h-11 w-11 place-items-center rounded-[8px] bg-white ring-1 ring-slate-200 transition hover:bg-slate-50">
-              <ChevronRight size={19} />
-            </button>
-          </div>
+      <div className="history-content">
+
+        {/* Month navigation */}
+        <div className="history-month-nav">
+          <button type="button" onClick={() => moveMonth(-1)} className="history-month-btn">
+            <ChevronLeft size={18} />
+          </button>
+          <span className="history-month-label capitalize">{monthLabel}</span>
+          <button type="button" onClick={() => moveMonth(1)} className="history-month-btn">
+            <ChevronRight size={18} />
+          </button>
         </div>
 
-        <div className="mt-4 grid grid-cols-3 gap-2 md:mt-5 md:gap-3">
-          <CompactStat label={locale === "pt" ? "Maior streak" : "Best streak"} value={summary.bestStreak} />
-          <CompactStat label={locale === "pt" ? "Dias estudados" : "Study days"} value={summary.completedDays} />
-          <CompactStat label={locale === "pt" ? "Sessoes" : "Sessions"} value={summary.sessions} />
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-2">
+          <StatPill
+            value={summary.bestStreak}
+            label={locale === "pt" ? "Melhor streak" : "Best streak"}
+          />
+          <StatPill
+            value={summary.completedDays}
+            label={locale === "pt" ? "Dias" : "Days"}
+          />
+          <StatPill
+            value={summary.sessions}
+            label={locale === "pt" ? "Sessões" : "Sessions"}
+          />
         </div>
-      </section>
 
-      <div className="mt-5 rounded-[8px] bg-white p-2 shadow-sm ring-1 ring-slate-200">
-        <div className="grid grid-cols-2 gap-2">
-          <button type="button" onClick={() => setViewMode("all")} className={`h-11 rounded-[8px] text-sm font-semibold transition ${viewMode === "all" ? "text-white" : "text-slate-600 hover:bg-slate-50"}`} style={viewMode === "all" ? { background: "var(--area-primary)" } : undefined}>
+        {/* View toggle */}
+        <div className="grid grid-cols-2 gap-1 rounded-[8px] bg-slate-100 p-1">
+          <button
+            type="button"
+            onClick={() => setViewMode("all")}
+            className={`h-10 rounded-[6px] text-sm font-semibold transition ${viewMode === "all" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500"}`}
+          >
             {locale === "pt" ? "Tudo" : "All"}
           </button>
-          <button type="button" onClick={() => setViewMode("areas")} className={`h-11 rounded-[8px] text-sm font-semibold transition ${viewMode === "areas" ? "text-white" : "text-slate-600 hover:bg-slate-50"}`} style={viewMode === "areas" ? { background: "var(--area-primary)" } : undefined}>
-            {locale === "pt" ? "Por area" : "By area"}
+          <button
+            type="button"
+            onClick={() => setViewMode("areas")}
+            className={`h-10 rounded-[6px] text-sm font-semibold transition ${viewMode === "areas" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500"}`}
+          >
+            {locale === "pt" ? "Por área" : "By area"}
           </button>
         </div>
-      </div>
 
-      <div className="mt-4 grid gap-4 md:mt-5 md:gap-5">
+        {/* Calendars */}
         {viewMode === "all" ? (
-          <AllHistoryPanel goals={history.data.goals} locale={locale} />
+          <AllHistoryPanel
+            goals={history.data.goals}
+            locale={locale}
+            year={cursor.year}
+            month={cursor.month}
+          />
         ) : (
           history.data.goals.map((entry) => (
-            <GoalHistoryPanel key={entry.goal.id} goal={entry.goal} days={entry.days} locale={locale} />
+            <GoalHistoryPanel
+              key={entry.goal.id}
+              goal={entry.goal}
+              days={entry.days}
+              locale={locale}
+              year={cursor.year}
+              month={cursor.month}
+            />
           ))
         )}
+
       </div>
     </div>
   );
 }
 
-function AllHistoryPanel({ goals, locale }: { goals: Array<{ goal: Goal; days: HistoryDay[] }>; locale: "pt" | "en" }) {
-  const days = mergeGoalDays(goals);
-  const completedDays = days.filter((day) => day.completed).length;
-  const plannedDays = days.filter((day) => day.planned).length;
-  const bestStreak = getBestStreak(days);
+// ── Sub-components ────────────────────────────────────────
+
+function StatPill({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="card p-3 text-center">
+      <p className="display-num text-2xl text-slate-950">{value}</p>
+      <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-400">{label}</p>
+    </div>
+  );
+}
+
+function AllHistoryPanel({ goals, locale, year, month }: {
+  goals: Array<{ goal: Goal; days: HistoryDay[] }>;
+  locale: "pt" | "en";
+  year: number;
+  month: number;
+}) {
+  const dayMap = useMemo(() => mergeGoalDays(goals), [goals]);
 
   return (
-    <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{locale === "pt" ? "Todas as areas" : "All areas"}</p>
-          <h3 className="mt-1 text-2xl font-semibold">{locale === "pt" ? "Agenda geral" : "Overall calendar"}</h3>
-          <p className="mt-1 text-sm font-bold text-slate-500">
-            {locale === "pt" ? `${completedDays} dias concluidos | ${plannedDays} dias planejados` : `${completedDays} completed days | ${plannedDays} planned days`}
-          </p>
-        </div>
-        <span className="rounded-full px-3 py-1 text-sm font-semibold" style={{ background: "#dcfce7", color: "#166534" }}>
-          {locale === "pt" ? `${bestStreak} dias de streak` : `${bestStreak} day streak`}
-        </span>
+    <section className="card p-4">
+      <div className="mb-4 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
+        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluído" : "Completed"} />
+        <Legend color="#e2e8f0" label={locale === "pt" ? "Planejado" : "Planned"} />
+        <Legend color="transparent" label={locale === "pt" ? "Livre" : "Open"} border />
       </div>
-
-      <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-slate-500">
-        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluido" : "Completed"} />
-        <Legend color="#e2e8f0" label={locale === "pt" ? "Planejado" : "Planned"} textColor="text-slate-600" />
-        <Legend color="#ffffff" label={locale === "pt" ? "Livre" : "Open"} textColor="text-slate-600" />
-      </div>
-
-      <div className="mt-5 grid grid-cols-7 gap-1.5 md:gap-2">
-        {getWeekdays(locale).map((day) => (
-          <p key={day} className="text-center text-xs font-bold uppercase text-slate-400">{day}</p>
-        ))}
-        {getLeadingBlanks(days).map((item) => (
-          <div key={`blank-${item}`} className="aspect-square rounded-[8px]" />
-        ))}
-        {days.map((day) => (
-          <HistoryCell key={day.date} day={day} locale={locale} softColor="#e2e8f0" />
-        ))}
-      </div>
+      <CalendarGrid dayMap={dayMap} softColor="#cbd5e1" locale={locale} year={year} month={month} />
     </section>
   );
 }
 
-function GoalHistoryPanel({ goal, days, locale }: { goal: Goal; days: HistoryDay[]; locale: "pt" | "en" }) {
+function GoalHistoryPanel({ goal, days, locale, year, month }: {
+  goal: Goal;
+  days: HistoryDay[];
+  locale: "pt" | "en";
+  year: number;
+  month: number;
+}) {
   const theme = getStudyAreaTheme(goal);
-  const completedDays = days.filter((day) => day.completed).length;
-  const plannedDays = days.filter((day) => day.planned).length;
-  const bestStreak = getBestStreak(days);
+  const dayMap = useMemo(() => new Map(days.map((d) => [d.date, d])), [days]);
 
   return (
-    <section className="rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-        <div>
-          <p className="text-sm font-semibold uppercase" style={{ color: theme.primary }}>{locale === "pt" ? "Area" : "Area"}</p>
-          <h3 className="mt-1 text-2xl font-semibold">{formatGoal(goal, locale)}</h3>
-          <p className="mt-1 text-sm font-bold text-slate-500">
-            {locale === "pt" ? `${completedDays} dias concluidos | ${plannedDays} dias planejados` : `${completedDays} completed days | ${plannedDays} planned days`}
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <span className="rounded-full px-3 py-1 text-sm font-semibold" style={{ background: "#dcfce7", color: "#166534" }}>
-            {locale === "pt" ? `${bestStreak} dias de streak` : `${bestStreak} day streak`}
+    <section className="card p-4">
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-sm font-bold text-slate-950">{formatGoal(goal, locale)}</p>
+        {goal.is_active && (
+          <span className="rounded-full px-2.5 py-0.5 text-xs font-semibold" style={{ background: theme.primarySoft, color: theme.primaryDark }}>
+            {locale === "pt" ? "Ativa" : "Active"}
           </span>
-          {goal.is_active ? (
-            <span className="rounded-full px-3 py-1 text-sm font-semibold" style={{ background: theme.primarySoft, color: theme.primaryDark }}>
-              {locale === "pt" ? "Ativa" : "Active"}
-            </span>
-          ) : null}
-        </div>
+        )}
       </div>
-
-      <div className="mt-5 flex flex-wrap gap-3 text-sm font-semibold text-slate-500">
-        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluido" : "Completed"} />
-        <Legend color={theme.primarySoft} label={locale === "pt" ? "Planejado" : "Planned"} textColor="text-slate-600" />
-        <Legend color="#ffffff" label={locale === "pt" ? "Livre" : "Open"} textColor="text-slate-600" />
+      <div className="mb-4 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
+        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluído" : "Completed"} />
+        <Legend color={theme.primarySoft} label={locale === "pt" ? "Planejado" : "Planned"} />
+        <Legend color="transparent" label={locale === "pt" ? "Livre" : "Open"} border />
       </div>
-
-      <div className="mt-5 grid grid-cols-7 gap-1.5 md:gap-2">
-        {getWeekdays(locale).map((day) => (
-          <p key={day} className="text-center text-xs font-bold uppercase text-slate-400">{day}</p>
-        ))}
-        {getLeadingBlanks(days).map((item) => (
-          <div key={`blank-${item}`} className="aspect-square rounded-[8px]" />
-        ))}
-        {days.map((day) => (
-          <HistoryCell key={day.date} day={day} locale={locale} softColor={theme.primarySoft} />
-        ))}
-      </div>
+      <CalendarGrid dayMap={dayMap} softColor={theme.primarySoft} locale={locale} year={year} month={month} />
     </section>
   );
 }
 
-function CompactStat({ label, value }: { label: string; value: number }) {
+// ── Calendar ──────────────────────────────────────────────
+
+function CalendarGrid({ dayMap, softColor, locale, year, month }: {
+  dayMap: Map<string, HistoryDay>;
+  softColor: string;
+  locale: "pt" | "en";
+  year: number;
+  month: number;
+}) {
+  const weekdays = locale === "pt"
+    ? ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
+    : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const firstDayJs = new Date(year, month - 1, 1).getDay(); // 0=Sun
+  const leadingBlanks = (firstDayJs + 6) % 7; // Mon=0
+
   return (
-    <div className="min-w-0 rounded-[8px] bg-slate-50 p-2.5 ring-1 ring-slate-200 md:p-3">
-      <p className="break-words text-[10px] font-semibold uppercase leading-tight text-slate-500 md:text-xs">{label}</p>
-      <p className="mt-1 text-xl font-semibold text-slate-950 md:text-2xl">{value}</p>
+    <div className="grid grid-cols-7 gap-1">
+      {weekdays.map((d) => (
+        <p key={d} className="pb-1 text-center text-[10px] font-bold uppercase text-slate-400">{d}</p>
+      ))}
+      {Array.from({ length: leadingBlanks }, (_, i) => (
+        <div key={`blank-${i}`} className="aspect-square" />
+      ))}
+      {Array.from({ length: daysInMonth }, (_, i) => {
+        const day = i + 1;
+        const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const data = dayMap.get(dateStr);
+        return (
+          <HistoryCell
+            key={dateStr}
+            dateStr={dateStr}
+            dayNum={day}
+            data={data}
+            softColor={softColor}
+          />
+        );
+      })}
     </div>
   );
 }
 
-function Legend({ color, label, textColor = "text-slate-500" }: { color: string; label: string; textColor?: string }) {
+function HistoryCell({ dateStr, dayNum, data, softColor }: {
+  dateStr: string;
+  dayNum: number;
+  data: HistoryDay | undefined;
+  softColor: string;
+}) {
+  const isToday = dateStr === TODAY;
+  const completed = data?.completed ?? false;
+  const planned = data?.planned ?? false;
+  const count = data?.completion_count ?? 0;
+
+  let bgStyle: React.CSSProperties | undefined;
+  let cellClass = "aspect-square rounded-[8px] flex flex-col items-center justify-center transition-all ";
+
+  if (completed) {
+    bgStyle = { background: COMPLETED_COLOR };
+    cellClass += "text-white";
+  } else if (planned) {
+    bgStyle = { background: softColor };
+    cellClass += "text-slate-700";
+  } else if (isToday) {
+    cellClass += "ring-2 text-slate-950 font-bold";
+    bgStyle = { boxShadow: "inset 0 0 0 2px var(--area-primary)" };
+  } else {
+    cellClass += "text-slate-300";
+  }
+
   return (
-    <span className={`inline-flex items-center gap-2 ${textColor}`}>
-      <span className="h-3 w-3 rounded-full ring-1 ring-slate-200" style={{ background: color }} />
+    <div className={cellClass} style={bgStyle}>
+      <p className="text-xs font-semibold leading-none">{dayNum}</p>
+      {completed && count > 1 && (
+        <p className="mt-0.5 text-[8px] font-bold opacity-75">{count}×</p>
+      )}
+    </div>
+  );
+}
+
+function Legend({ color, label, border }: { color: string; label: string; border?: boolean }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span
+        className="h-2.5 w-2.5 rounded-full"
+        style={{
+          background: color,
+          boxShadow: border ? "inset 0 0 0 1.5px #cbd5e1" : undefined,
+        }}
+      />
       {label}
     </span>
   );
 }
 
-function HistoryCell({ day, locale, softColor }: { day: HistoryDay; locale: "pt" | "en"; softColor: string }) {
-  const date = new Date(`${day.date}T12:00:00`);
-  const title = day.lessons.length
-    ? day.lessons.map((lesson) => `${lesson.lesson_title} (${locale === "pt" ? "Dia" : "Day"} ${lesson.study_day})`).join("\n")
-    : day.planned ? (locale === "pt" ? "Dia planejado" : "Planned day") : "";
+// ── Data helpers ──────────────────────────────────────────
 
-  return (
-    <div
-      title={title}
-      className={`aspect-square rounded-[8px] p-1.5 ring-1 transition md:p-2 ${day.completed ? "text-white shadow-sm" : day.planned ? "bg-slate-50 text-slate-700 ring-slate-200" : "bg-white text-slate-400 ring-slate-100"}`}
-      style={day.completed ? { background: COMPLETED_COLOR, borderColor: COMPLETED_COLOR } : day.planned ? { background: softColor } : undefined}
-    >
-      <p className="text-xs font-semibold md:text-sm">{date.getDate()}</p>
-      {day.completion_count ? <p className="mt-1 text-xs font-bold">{day.completion_count}x</p> : null}
-    </div>
-  );
-}
-
-function getLeadingBlanks(days: HistoryDay[]) {
-  if (!days.length) return [];
-  const first = new Date(`${days[0].date}T12:00:00`);
-  const mondayFirstIndex = (first.getDay() + 6) % 7;
-  return Array.from({ length: mondayFirstIndex }, (_, index) => index);
-}
-
-function getBestStreak(days: HistoryDay[]) {
+function getBestStreak(dayMap: Map<string, HistoryDay>, year: number, month: number) {
+  const daysInMonth = new Date(year, month, 0).getDate();
   let current = 0;
   let best = 0;
-  for (const day of days) {
-    if (day.completed) {
-      current += 1;
-      best = Math.max(best, current);
-    } else {
-      current = 0;
-    }
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
+    const d = dayMap.get(dateStr);
+    current = d?.completed ? current + 1 : 0;
+    best = Math.max(best, current);
   }
   return best;
 }
 
 function getMonthSummary(goals: Array<{ days: HistoryDay[] }>) {
-  const completedDateKeys = new Set<string>();
+  const completedDates = new Set<string>();
   let sessions = 0;
   let bestStreak = 0;
   for (const goal of goals) {
-    sessions += goal.days.reduce((total, day) => total + day.completion_count, 0);
-    bestStreak = Math.max(bestStreak, getBestStreak(goal.days));
-    goal.days.forEach((day) => {
-      if (day.completed) completedDateKeys.add(day.date);
-    });
+    sessions += goal.days.reduce((t, d) => t + d.completion_count, 0);
+    const map = new Map(goal.days.map((d) => [d.date, d]));
+    const cursor = new Date();
+    const streak = getBestStreak(map, cursor.getFullYear(), cursor.getMonth() + 1);
+    bestStreak = Math.max(bestStreak, streak);
+    goal.days.forEach((d) => { if (d.completed) completedDates.add(d.date); });
   }
-  return { completedDays: completedDateKeys.size, sessions, bestStreak };
+  return { completedDays: completedDates.size, sessions, bestStreak };
 }
 
-function mergeGoalDays(goals: Array<{ days: HistoryDay[] }>): HistoryDay[] {
+function mergeGoalDays(goals: Array<{ days: HistoryDay[] }>): Map<string, HistoryDay> {
   const byDate = new Map<string, HistoryDay>();
   for (const goal of goals) {
     for (const day of goal.days) {
@@ -283,11 +344,7 @@ function mergeGoalDays(goals: Array<{ days: HistoryDay[] }>): HistoryDay[] {
       existing.lessons = [...existing.lessons, ...day.lessons];
     }
   }
-  return Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date));
-}
-
-function getWeekdays(locale: "pt" | "en") {
-  return locale === "pt" ? ["Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"] : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  return byDate;
 }
 
 function formatGoal(goal: Goal, locale: "pt" | "en") {
@@ -296,5 +353,5 @@ function formatGoal(goal: Goal, locale: "pt" | "en") {
     : { PT: "Portuguese", EN: "English", DE: "German", ES: "Spanish" };
   const source = names[goal.source_language?.code as keyof typeof names] ?? goal.source_language?.code ?? "";
   const target = names[goal.target_language?.code as keyof typeof names] ?? goal.target_language?.code ?? "";
-  return locale === "pt" ? `${source} para ${target} - ${goal.target_level}` : `${source} to ${target} - ${goal.target_level}`;
+  return locale === "pt" ? `${source} para ${target} · ${goal.target_level}` : `${source} to ${target} · ${goal.target_level}`;
 }

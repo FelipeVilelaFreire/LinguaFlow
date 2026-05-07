@@ -1,8 +1,10 @@
-import { CheckCircle2, ChevronRight, Flame, Languages, LogOut, Trash2, X } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronRight, Flame, Languages, LogOut, Plus, Trash2, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
 import { useStrings } from "../../contexts/StringsContext";
+import AddAreaModal from "../ui/AddAreaModal";
+import LangFlag from "../ui/LangFlag";
 import WarningModal from "../ui/WarningModal";
 import type { AppLocale } from "../../constants/strings";
 import type { User } from "../../services/authService";
@@ -20,14 +22,16 @@ interface AppLayoutProps {
   switchingAreaLabel: string | null;
   uiLocale: AppLocale;
   onLocaleChange: (locale: AppLocale) => void;
+  onCreateGoal: (goal: Goal) => void;
   onDeleteGoal: (goal: Goal) => void;
   onLogout: () => void;
   onSwitchGoal: (goal: Goal) => void;
   onNavigate: (route: AppRoute) => void;
 }
 
-export default function AppLayout({ activeRoute, activeGoal, children, goals, navItems, switchingAreaLabel, uiLocale, user, onDeleteGoal, onLocaleChange, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
+export default function AppLayout({ activeRoute, activeGoal, children, goals, navItems, switchingAreaLabel, uiLocale, user, onCreateGoal, onDeleteGoal, onLocaleChange, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
   const [isAreaModalOpen, setIsAreaModalOpen] = useState(false);
+  const [showAddArea, setShowAddArea] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
   const strings = useStrings();
   const activeTheme = getStudyAreaTheme(activeGoal);
@@ -36,21 +40,26 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
 
   return (
     <div className="min-h-screen text-slate-950 transition-colors duration-500" style={{ ...getStudyAreaThemeStyle(activeTheme), background: "var(--area-page)" }}>
-      <header className="safe-top sticky top-0 z-30 border-b border-slate-200 bg-white/95 px-4 pb-3 backdrop-blur md:hidden">
-        <div className="flex items-center justify-between gap-3">
-          <button type="button" onClick={() => onNavigate("home")} className="flex min-w-0 items-center gap-3 text-left">
-            <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
-              <Flame size={19} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-base font-semibold leading-tight">{strings.app.name}</p>
-              <p className="truncate text-xs font-bold text-slate-500">{activeArea}</p>
-            </div>
-          </button>
-          <button type="button" onClick={() => goals.length ? setIsAreaModalOpen(true) : onNavigate("account")} className="rounded-[8px] px-3 py-2 text-xs font-bold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)", borderColor: "var(--area-primary-soft)" }}>
-            {activeGoal ? `${activeGoal.progress_percent}%` : strings.actions.createArea}
-          </button>
-        </div>
+      <header className="safe-top sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur md:hidden">
+        <button
+          type="button"
+          onClick={() => setIsAreaModalOpen(true)}
+          className="flex w-full items-center gap-3 px-4 pb-3 text-left"
+        >
+          <div className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
+            <Flame size={16} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold leading-tight text-slate-950">{strings.app.name}</p>
+            <p className="truncate text-xs font-medium text-slate-500">{activeArea}</p>
+          </div>
+          {activeGoal && (
+            <span className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ background: activeTheme.primarySoft, color: activeTheme.primaryDark }}>
+              {activeGoal.current_level}
+            </span>
+          )}
+          <ChevronDown size={14} className="shrink-0 text-slate-400" />
+        </button>
       </header>
 
       <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-slate-200 bg-white px-4 py-5 md:block">
@@ -128,7 +137,7 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         <div key={activeRoute} className="mx-auto max-w-6xl animate-[fadeIn_220ms_ease-out]">{children}</div>
       </main>
 
-      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 px-2 pt-2 shadow-[0_-10px_24px_rgba(15,23,42,0.10)] backdrop-blur md:hidden">
+      <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white px-2 pt-2 shadow-[0_-10px_24px_rgba(15,23,42,0.12)] backdrop-blur md:hidden">
         <div className="mx-auto grid max-w-md grid-cols-5 items-end gap-1">
         {mobileNavItems.map((item) => {
           const isActive = activeRoute === item.route;
@@ -149,71 +158,94 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
       </nav>
 
       {isAreaModalOpen ? (
-        <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0">
-          <section className="max-h-[88vh] w-full max-w-lg animate-[fadeIn_180ms_ease-out] overflow-y-auto rounded-[8px] bg-white p-4 shadow-xl ring-1 ring-slate-200 md:p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.layout.switchArea}</p>
-                <h2 className="mt-1 text-2xl font-semibold">{strings.layout.chooseActiveStudy}</h2>
+        <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0" onClick={() => setIsAreaModalOpen(false)}>
+          <section className="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-[20px] bg-white shadow-xl md:max-h-[70vh]" style={{ animation: "sheetSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1)" }} onClick={(e) => e.stopPropagation()}>
+
+            {/* Scrollable body */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.layout.switchArea}</p>
+                  <h2 className="mt-1 text-2xl font-semibold">{strings.layout.chooseActiveStudy}</h2>
+                </div>
+                <button type="button" onClick={() => setIsAreaModalOpen(false)} className="grid h-9 w-9 shrink-0 place-items-center rounded-[8px] text-slate-500 transition hover:bg-slate-100">
+                  <X size={18} />
+                </button>
               </div>
-              <button type="button" onClick={() => setIsAreaModalOpen(false)} className="grid h-9 w-9 place-items-center rounded-[8px] text-slate-500 transition hover:bg-slate-100">
-                <X size={18} />
+
+              <div className="mt-4 grid gap-2">
+                {!goals.length ? (
+                  <div className="rounded-[8px] border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
+                    <p className="font-semibold">{uiLocale === "pt" ? "Nenhuma area criada" : "No areas yet"}</p>
+                    <p className="mt-1 text-sm font-medium text-slate-500">{uiLocale === "pt" ? "Adicione uma area abaixo." : "Add an area below."}</p>
+                  </div>
+                ) : null}
+                {goals.map((goal) => {
+                  const theme = getStudyAreaTheme(goal);
+                  return (
+                    <article
+                      key={goal.id}
+                      className={`rounded-[12px] p-3 text-left transition ${goal.is_active ? "" : "bg-slate-50 hover:bg-slate-100"}`}
+                      style={goal.is_active ? { background: theme.primarySoft, boxShadow: `inset 0 0 0 1.5px ${theme.primary}` } : undefined}
+                    >
+                      <div className="flex items-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => { setIsAreaModalOpen(false); onSwitchGoal(goal); }}
+                          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                        >
+                          <LangFlag code={goal.target_language?.code ?? ""} size="md" className="shrink-0" />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-slate-950">{theme.label}</p>
+                              <span className="rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: theme.primarySoft, color: theme.primaryDark }}>
+                                {goal.current_level}
+                              </span>
+                            </div>
+                            <p className="mt-0.5 text-xs font-medium text-slate-500">{goal.progress_percent}% {strings.layout.completed}</p>
+                          </div>
+                        </button>
+                        <div className="flex shrink-0 items-center gap-2">
+                          {goal.is_active ? <CheckCircle2 style={{ color: theme.primary }} size={18} /> : null}
+                          <button
+                            type="button"
+                            onClick={() => setGoalToDelete(goal)}
+                            className="grid h-8 w-8 place-items-center rounded-[8px] bg-white text-red-500 ring-1 ring-red-100 transition hover:bg-red-50"
+                            title={strings.actions.delete}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Sticky footer */}
+            <div className="shrink-0 border-t border-slate-100 p-4">
+              <button
+                type="button"
+                onClick={() => setShowAddArea(true)}
+                className="flex h-12 w-full items-center justify-center gap-2 rounded-[10px] font-semibold text-white transition hover:brightness-95"
+                style={{ background: "var(--area-primary)" }}
+              >
+                <Plus size={16} />
+                {strings.profile.addArea}
               </button>
             </div>
 
-            <div className="mt-5 grid gap-3">
-              {!goals.length ? (
-                <div className="rounded-[8px] border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
-                  <p className="font-semibold">{uiLocale === "pt" ? "Nenhuma area criada" : "No areas yet"}</p>
-                  <p className="mt-1 text-sm font-medium text-slate-500">{uiLocale === "pt" ? "Va para o perfil para criar sua primeira area de estudo." : "Go to profile to create your first study area."}</p>
-                </div>
-              ) : null}
-              {goals.map((goal) => {
-                const theme = getStudyAreaTheme(goal);
-                return (
-                  <article
-                    key={goal.id}
-                    className={`rounded-[8px] p-4 text-left ring-1 transition ${goal.is_active ? "" : "bg-white ring-slate-200 hover:bg-slate-50"}`}
-                    style={goal.is_active ? { background: theme.primarySoft, boxShadow: `inset 0 0 0 1px ${theme.primary}` } : undefined}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsAreaModalOpen(false);
-                          onSwitchGoal(goal);
-                        }}
-                        className="min-w-0 flex-1 text-left"
-                      >
-                        <p className="font-semibold">{theme.label}</p>
-                        <p className="mt-0.5 text-sm font-medium" style={{ color: theme.primaryDark }}>{theme.name}</p>
-                        <p className="mt-1 text-sm font-medium text-slate-500">{goal.progress_percent}% {strings.layout.completed}</p>
-                      </button>
-                      <div className="flex items-center gap-2">
-                        {goal.is_active ? <CheckCircle2 style={{ color: theme.primary }} size={20} /> : null}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setGoalToDelete(goal);
-                          }}
-                          className="grid h-9 w-9 place-items-center rounded-[8px] bg-white text-red-700 ring-1 ring-red-100 transition hover:bg-red-50"
-                          title={strings.actions.delete}
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-
-            <button type="button" onClick={() => { setIsAreaModalOpen(false); onNavigate("account"); }} className="mt-4 h-11 w-full rounded-[8px] px-4 font-semibold text-white transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
-              {strings.actions.manageInProfile}
-            </button>
           </section>
         </div>
       ) : null}
+
+      {showAddArea && (
+        <AddAreaModal
+          onClose={() => setShowAddArea(false)}
+          onCreated={(goal) => { onCreateGoal(goal); setShowAddArea(false); setIsAreaModalOpen(false); }}
+        />
+      )}
 
       {goalToDelete ? (
         <WarningModal

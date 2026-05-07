@@ -86,7 +86,7 @@ export default function VocabularyScreen() {
       {filtered.length > 0 && (
         <div className="flex flex-col gap-2">
           {filtered.map((fav) => (
-            <div key={fav.id} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div key={fav.id} className="card p-4">
               <p className="text-base font-bold text-slate-950">{fav.phrase.target_text}</p>
               <p className="mt-1 text-sm font-medium text-slate-500">{fav.phrase.source_text}</p>
               <div className="mt-3 flex items-center justify-between">
@@ -125,7 +125,7 @@ function HeaderSkeleton() {
 
 function CardSkeleton() {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="card p-4">
       <div className="h-5 w-3/4 animate-pulse rounded-lg bg-slate-100" />
       <div className="mt-2 h-4 w-1/2 animate-pulse rounded-full bg-slate-100" />
       <div className="mt-4 flex justify-between">

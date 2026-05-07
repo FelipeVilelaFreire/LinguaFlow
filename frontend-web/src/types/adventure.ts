@@ -5,6 +5,8 @@ export interface AdventureProgress {
   completed_at: string | null;
 }
 
+export type PhaseType = "story" | "review" | "boss";
+
 export interface AdventurePhase {
   id: number;
   number: number;
@@ -14,6 +16,11 @@ export interface AdventurePhase {
   key_words: string[];
   scenario_slug: string;
   phrase_count: number;
+  section_count: number;       // always 6
+  completed_sections: number;  // 0–6, how many sections are done
+  phase_type: PhaseType;
+  npc_name: string;
+  vocab_gate?: string[];    // Metroidvania: words required to unlock
   is_boss: boolean;
   is_completed: boolean;
   score: number | null;

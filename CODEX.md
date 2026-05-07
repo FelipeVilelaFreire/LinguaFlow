@@ -1,18 +1,53 @@
-# LinguaFlow - Regras de Implementacao
+# Talkly - Regras de Implementacao
 
 Este arquivo define as regras que devem guiar novas alteracoes no projeto.
 
 ## Objetivo do Produto
 
-LinguaFlow e uma plataforma de estudo diario de idiomas baseada em areas de estudo.
+Talkly e uma plataforma de aprendizado de idiomas via narrativa RPG e estudo guiado diario.
 
-Cada usuario pode ter varias areas, por exemplo:
+Cada usuario pode ter varias areas de estudo, por exemplo:
 
+- PT -> IT A1
 - PT -> DE A1
 - PT -> ES A1
-- PT -> EN A1
 
 Cada area deve manter progresso, streak, meta e conteudo separados.
+
+## Modo Aventura — Hierarquia de Conteudo
+
+Esta hierarquia e a espinha dorsal do produto. Nunca confundir os niveis.
+
+```
+SERIE   = nivel CEFR completo (ex: A1 Italiano)
+           ↳ 5 TEMPORADAS por serie
+                ↳ 25 FASES por temporada (badges T1…T5, nao A1/A2/B1…)
+                     ↳ 6 SECOES por fase
+```
+
+As 6 secoes de cada fase (em ordem):
+1. Cotidiano      — contexto do dia, apresenta o NPC
+2. Aquecimento    — revisao do vocabulario anterior (SRS)
+3. Evento Principal — historia avanca, vocabulario novo introduzido
+4. Decodificacao  — padrao gramatical revelado em contexto
+5. Pratica        — exercicios guiados com o novo vocabulario
+6. Obstaculo      — gate Metroidvania: requer dominar palavras-chave para passar
+
+Tipos de fase (campo `phase_type` em `AdventurePhase`):
+- `"story"`  — fases normais (1–14, 16–19, 24)
+- `"review"` — checkpoints SRS (15, 20, 21, 22, 23) — icone livro, cor dourada
+- `"boss"`   — sempre a Fase 25, fecha a temporada
+
+Regras que nunca devem ser quebradas:
+- `"A1"` identifica a SERIE inteira, nao uma temporada individual.
+- Badges de temporada sao T1, T2, T3, T4, T5 — nunca A1/A2/B1/B2/C1.
+- O label "A1" aparece apenas no header da serie e no header do mapa.
+- Boss e sempre a ultima fase (Fase 25) e desbloqueia um item para a Mochila.
+- Cada fase tem exatamente `section_count: 6`.
+
+MVP ativo: Italiano — "Il Viandante" (Serie A1)
+- T1 Arrivo al Borgo → T2 Venezia → T3 Toscana → T4 Napoli → T5 Roma Aeterna
+- Mock em: `frontend-web/src/mocks/adventureItMock.ts`
 
 ## Stack
 

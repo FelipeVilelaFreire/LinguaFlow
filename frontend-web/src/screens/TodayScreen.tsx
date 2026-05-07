@@ -28,7 +28,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
 
   if (study.completed) {
     return (
-      <section className="relative overflow-hidden rounded-[8px] bg-white p-6 text-center shadow-sm ring-1 ring-slate-200 md:p-8">
+      <section className="card relative overflow-hidden p-6 text-center md:p-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-center gap-5">
           {[0, 1, 2, 3, 4, 5].map((item) => (
             <span
@@ -65,7 +65,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
 
   return (
     <div className="pb-4 md:pb-0">
-      <header className="mb-4 rounded-[8px] bg-white p-4 shadow-sm ring-1 ring-slate-200 md:mb-6 md:p-6">
+      <header className="card mb-4 p-4 md:mb-6 md:p-6">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
@@ -107,7 +107,7 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
         />
         <div className="grid content-start gap-4">
           <VideoCard title={today.lesson.video_title} duration={today.lesson.video_duration} url={today.lesson.video_url} />
-          <aside className="rounded-[8px] bg-white p-5 shadow-sm ring-1 ring-slate-200">
+          <aside className="card p-5">
             <div className="grid h-11 w-11 place-items-center rounded-[8px]" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
               <Lightbulb size={20} />
             </div>

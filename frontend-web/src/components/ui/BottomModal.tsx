@@ -5,9 +5,10 @@ interface BottomModalProps {
   title: string;
   onClose: () => void;
   children: ReactNode;
+  footer?: ReactNode;
 }
 
-export default function BottomModal({ title, onClose, children }: BottomModalProps) {
+export default function BottomModal({ title, onClose, children, footer }: BottomModalProps) {
   function stopProp(e: MouseEvent) {
     e.stopPropagation();
   }
@@ -18,7 +19,7 @@ export default function BottomModal({ title, onClose, children }: BottomModalPro
         <div className="bottom-modal-handle" />
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 pt-4 pb-0">
+        <div className="flex shrink-0 items-center justify-between px-6 pt-4 pb-0">
           <p className="text-lg font-bold text-slate-950">{title}</p>
           <button
             type="button"
@@ -29,10 +30,17 @@ export default function BottomModal({ title, onClose, children }: BottomModalPro
           </button>
         </div>
 
-        {/* Conteúdo */}
-        <div className="flex-1 overflow-y-auto px-6 pt-5 pb-8">
+        {/* Scrollable content */}
+        <div className={`flex-1 overflow-y-auto px-6 pt-5 ${footer ? "pb-4" : "pb-8"}`}>
           {children}
         </div>
+
+        {/* Sticky footer */}
+        {footer && (
+          <div className="shrink-0 border-t border-slate-100 px-6 pb-8 pt-4">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   );
