@@ -1,6 +1,7 @@
 import { Lock, Trophy, Zap } from "lucide-react";
 
 import { getAdventureColors } from "../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../theme/adventureColors";
 
 // Reward items match the Italian seeds: Sigillo → Mappa → Codice → Pietra → Corona
 const ITEMS = [
@@ -33,10 +34,11 @@ const HERO = {
 
 interface AdventureHeroScreenProps {
   langCode: string;
+  themeMode: AdventureThemeMode;
 }
 
-export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenProps) {
-  const c = getAdventureColors(langCode);
+export default function AdventureHeroScreen({ langCode, themeMode }: AdventureHeroScreenProps) {
+  const c = getAdventureColors(langCode, themeMode);
   const xpPct = Math.round((HERO.xp / HERO.xpNext) * 100);
 
   return (
@@ -74,7 +76,7 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
       {/* ── XP bar ───────────────────────────────────────────────── */}
       <div
         className="mb-4 rounded-xl p-4"
-        style={{ background: "rgba(0,0,0,0.35)", border: `1px solid ${c.pathColor}25` }}
+        style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}25` }}
       >
         <div className="mb-2 flex items-center justify-between">
           <div className="flex items-center gap-1.5">
@@ -87,7 +89,7 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
             {HERO.xp.toLocaleString()} / {HERO.xpNext.toLocaleString()}
           </span>
         </div>
-        <div className="h-2.5 overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.08)" }}>
+        <div className="h-2.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
           <div
             className="h-full rounded-full transition-all"
             style={{
@@ -106,7 +108,7 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
         </p>
         <div
           className="flex flex-col gap-3 rounded-xl p-4"
-          style={{ background: "rgba(0,0,0,0.35)", border: `1px solid ${c.pathColor}25` }}
+          style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}25` }}
         >
           {HERO.attributes.map(({ label, value }) => (
             <div key={label}>
@@ -114,7 +116,7 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
                 <span className="text-xs font-semibold" style={{ color: `${c.parchment}80` }}>{label}</span>
                 <span className="text-xs font-bold" style={{ color: c.goldAccent }}>{value}%</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,0.06)" }}>
+              <div className="h-2 overflow-hidden rounded-full" style={{ background: c.surface }}>
                 <div
                   className="h-full rounded-full"
                   style={{
@@ -142,23 +144,23 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
                 key={item.key}
                 className="flex flex-1 flex-col items-center gap-1.5 rounded-xl py-3"
                 style={{
-                  background: unlocked ? `${c.seasonBadgeBg}25` : "rgba(255,255,255,0.04)",
-                  border: `1px solid ${unlocked ? c.seasonBadgeBg + "40" : "rgba(255,255,255,0.06)"}`,
+                  background: unlocked ? `${c.seasonBadgeBg}25` : c.surface,
+                  border: `1px solid ${unlocked ? c.seasonBadgeBg + "40" : c.borderFaint}`,
                 }}
               >
                 <span
                   className="text-xl"
-                  style={{ filter: unlocked ? "none" : "grayscale(1)", opacity: unlocked ? 1 : 0.25 }}
+                  style={{ filter: unlocked ? "none" : "grayscale(1)", opacity: unlocked ? 1 : 0.30 }}
                 >
                   {item.emoji}
                 </span>
                 <span
                   className="text-[9px] font-bold uppercase tracking-wide"
-                  style={{ color: unlocked ? c.goldAccent : `${c.parchment}25` }}
+                  style={{ color: unlocked ? c.goldAccent : c.textFaint }}
                 >
                   {item.name}
                 </span>
-                {!unlocked && <Lock size={9} style={{ color: `${c.parchment}20` }} />}
+                {!unlocked && <Lock size={9} style={{ color: c.textFaint }} />}
               </div>
             );
           })}
@@ -175,7 +177,7 @@ export default function AdventureHeroScreen({ langCode }: AdventureHeroScreenPro
             <div
               key={label}
               className="flex items-center gap-3 rounded-xl p-3"
-              style={{ background: "rgba(0,0,0,0.30)", border: `1px solid ${c.pathColor}20` }}
+              style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}20` }}
             >
               <span className="text-xl">{icon}</span>
               <div>

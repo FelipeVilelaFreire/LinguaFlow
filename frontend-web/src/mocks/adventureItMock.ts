@@ -2,7 +2,7 @@ import type { AdventureChapter, PhaseType } from "../types/adventure";
 
 /**
  * Mock data — Italian adventure "Il Viandante" — 25 phases per season.
- * T1 = 3 fases concluídas (fase 4 = atual), T2–T5 = bloqueadas.
+ * T1 = fase 1 = atual (nenhuma fase concluída), T2–T5 = bloqueadas.
  * To switch to real API: remove import in AdventureMapScreen and restore adventureService.listChapters().
  */
 
@@ -20,6 +20,7 @@ function phase(
   npcName: string = "",
   phaseType: PhaseType = "story",
   chSlug: string = "it-t1",
+  completedSections?: number,
 ): AdventureChapter["phases"][number] {
   return {
     id,
@@ -31,6 +32,7 @@ function phase(
     scenario_slug: `${chSlug}-f${number}`,
     phrase_count: phraseCount,
     section_count: 6,
+    completed_sections: completedSections ?? (isCompleted ? 6 : 0),
     phase_type: phaseType,
     npc_name: npcName,
     is_boss: isBoss,
@@ -46,19 +48,19 @@ const T1_PHASES: AdventureChapter["phases"] = [
     "Você acorda sozinho num campo de trigo dourado. Não sabe seu nome, não sabe de onde veio. Uma voz ao longe grita: 'Ehi, straniero! Stai bene?' Você precisa responder.",
     "Você aprendeu as primeiras palavras. O camponês sorri e aponta para o vilarejo ao longe.",
     ["ciao", "buongiorno", "come stai", "bene", "grazie"],
-    8, false, true, 7, "Giovanni il Contadino"),
+    8, false, false, null, "Giovanni il Contadino"),
 
   phase(102, 2, "A Entrada no Vilarejo",
     "O Borgo Antico se ergue diante de você: pedras antigas, o cheiro de pão fresco, crianças correndo. A dona de uma taverna se aproxima. 'Cerchi qualcosa?' Você precisa dizer que procura ajuda.",
     "A taverna abriu suas portas para você. Pela primeira vez, alguém te chama pelo nome que você mesmo inventou.",
     ["aiuto", "per favore", "dove", "taverna", "mangiare"],
-    8, false, true, 6, "Ostessa Carmela"),
+    8, false, false, null, "Ostessa Carmela"),
 
   phase(103, 3, "A Primeira Refeição",
     "Fome. Muita fome. O taberneiro mostra o cardápio rabiscado num pedaço de couro. Ele pergunta: 'Cosa vuoi mangiare?' Você precisa pedir algo — qualquer coisa.",
     "O pão com azeite e azeitonas chegou. Nunca uma refeição simples pareceu tão importante.",
     ["pane", "acqua", "vino", "formaggio", "buono"],
-    8, false, true, 8, "Oste Stefano"),
+    8, false, false, null, "Oste Stefano"),
 
   phase(104, 4, "O Ferreiro Fala",
     "Na praça central, o ferreiro Marcello marreta com força num pedaço de ferro em brasa. Ele para ao te ver e fala devagar: 'Da dove vieni, amico?' De onde você vem? Essa é a pergunta que você não consegue responder — ainda.",
@@ -195,31 +197,157 @@ const T1_PHASES: AdventureChapter["phases"] = [
 
 // ── T2 · A2 — Venezia dei Mercanti (25 fases) ────────────────────────────────
 
-const T2_TITLES = [
-  "A Chegada pelo Canal", "O Mercado de Rialto", "A Guilda dos Vidraceiros",
-  "O Baile das Máscaras", "A Biblioteca Secreta", "Revisão · Chegada a Venezia",
-  "O Espião Florentino", "A Gondola Noturna", "O Palácio dos Doges",
-  "A Trança de Vidro", "O Canal dos Assassinos", "Revisão · A Cidade das Águas",
-  "A Festa dei Santi", "A Jovem Pintora", "O Nobre Endividado",
-  "A Carta Cifrada", "O Fogo no Arsenal", "Revisão · Intrigas em Venezia",
-  "A Testemunha Muda", "O Mercador Árabe", "A Traição do Gondoleiro",
-  "Revisão · O Conflito Final", "O Julgamento no Palácio",
-  "A Fuga pelos Telhados", "Il Leone Alato — Boss",
-];
+const T2_PHASES: AdventureChapter["phases"] = [
+  phase(201, 1, "A Chegada pelo Canal",
+    "Uma gondola desliza silenciosa pelo Canal Grande ao entardecer. O gondoleiro Matteo canta baixinho enquanto você observa palácios refletidos na água escura. 'Benvenuto a Venezia, straniero,' ele diz sem olhar. 'Questa città ha occhi dappertutto.' Esta cidade tem olhos em todo lugar.",
+    "Matteo te deixou no cais de Rialto sem cobrar nada. Isso te preocupou mais do que se tivesse cobrado demais.",
+    ["canale", "gondola", "palazzo", "benvenuto", "straniero"],
+    10, false, false, null, "Gondoliere Matteo"),
 
-const T2_PHASES: AdventureChapter["phases"] = Array.from({ length: 25 }, (_, i) => {
-  const title = T2_TITLES[i];
-  const isBoss = i === 24;
-  const isReview = title.startsWith("Revisão");
-  const type: PhaseType = isBoss ? "boss" : isReview ? "review" : "story";
-  return phase(
-    200 + i + 1, i + 1, title,
-    "Uma nova fase aguarda em Venezia...",
-    "Mais um passo na jornada.",
-    [], isBoss ? 15 : isReview ? 8 : 10, isBoss, false, null,
-    "", type, "it-t2",
-  );
-});
+  phase(202, 2, "O Mercado de Rialto",
+    "O Mercato di Rialto é um caos glorioso. Especiarias do Oriente, tecidos de Firenze, peixes ainda vivos nos balcões. Messer Alvise grita os preços e ri do seu italiano hesitante. 'Cosa vuoi comprare, forestiero? Parla più forte!'",
+    "Você saiu com pão, queijo e a certeza de que Alvise cobrou o dobro. Mas ele te ensinou mais italiano do que cobrou em moedas.",
+    ["mercato", "spezie", "comprare", "prezzo", "forestiero"],
+    10, false, false, null, "Messer Alvise"),
+
+  phase(203, 3, "A Guilda dos Vidraceiros",
+    "A ilha de Murano cheira a areia derretida e fogo. Maestro Giacomo sopra vidro incandescente com maestria incomparável. Ele para e empurra o tubo para você: 'Soffia — ma piano, piano.' Sopre — mas devagar, devagar. É um teste ou um convite?",
+    "'I difetti la rendono unica,' Giacomo disse guardando a esfera imperfeita que você criou. Os defeitos a tornam única. Ele a colocou numa prateleira de honra.",
+    ["vetro", "fuoco", "soffiare", "artigiano", "isola"],
+    10, false, false, null, "Maestro Giacomo"),
+
+  phase(204, 4, "O Baile das Máscaras",
+    "Uma máscara dourada em forma de sol cobre seu rosto. A Contessa Isabella se inclina e sussurra: 'Qui tutti hanno un segreto. Anche tu.' Todos têm um segredo aqui — você também. Para dançar neste baile é preciso falar de aparências, verdades e mentiras.",
+    "A Contessa desapareceu antes que você pudesse agradecê-la. Mas há um bilhete na sua manga: 'Fidati di Matteo. Non ti abbandonerà.' Confie em Matteo.",
+    ["maschera", "ballo", "segreto", "nascondersi", "fidarsi"],
+    10, false, false, null, "Contessa Isabella"),
+
+  phase(205, 5, "A Biblioteca Secreta",
+    "Uma porta oculta atrás de um tapiz leva à biblioteca privada do Doge. Fra' Benedetto cataloga manuscritos com mãos cuidadosas. Ele te olha por cima dos óculos: 'Lei sa leggere il latino? O almeno l'italiano antico?' Você sabe ler latim? Ou ao menos italiano antigo?",
+    "Fra' Benedetto não respondeu nada sobre o brasão. Mas marcou uma página com uma pena antes de sair — e isso não foi por acidente.",
+    ["biblioteca", "manoscritto", "leggere", "antico", "pagina"],
+    10, false, false, null, "Fra' Benedetto"),
+
+  phase(206, 6, "Revisão · Chegada a Venezia",
+    "O sussurro dos canais traz de volta cada momento. Gondola. Mercato. Murano. Il ballo. La biblioteca. As palavras se sobrepõem como reflexos na água verde do canal.",
+    "Venezia já está em você. Mas as palavras importantes precisam ser fixadas antes que a maré as carregue.",
+    ["canale", "maschera", "vetro", "mercato", "segreto"],
+    8, false, false, null, "", "review"),
+
+  phase(207, 7, "O Espião Florentino",
+    "Ele te segue desde Rialto — você percebeu há dois dias mas ficou calado. Agora Lorenzo il Sottile senta à sua mesa e sorri: 'Sei meglio di quanto pensassi.' Você é melhor do que eu pensava. Um espião ou um aliado? Você precisa descobrir sem revelar o que sabe.",
+    "Lorenzo revelou apenas que serve 'interessi fiorentini'. E que o Sigillo del Borgo que você carrega vale muito mais do que imagina.",
+    ["spia", "seguire", "scoprire", "fiducia", "pericoloso"],
+    10, false, false, null, "Lorenzo il Sottile"),
+
+  phase(208, 8, "A Gondola Noturna",
+    "Às duas da madrugada, Dario aparece no seu cais. 'Ho qualcosa da mostrarti. Vieni.' Tenho algo para te mostrar. Uma gondola sem luz desce por um canal tão estreito que as paredes quase se tocam. Você sente que pode ser uma armadilha — mas sente também que não tem escolha.",
+    "Dario te mostrou um depósito secreto embaixo de um palácio. Caixas com o mesmo brasão da sua medalha. Alguém está procurando algo — ou alguém.",
+    ["notte", "buio", "nascosto", "mostrare", "paura"],
+    10, false, false, null, "Gondoliere Dario"),
+
+  phase(209, 9, "O Palácio dos Doges",
+    "O Palazzo Ducale resplandece ao sol da manhã. O Capitão Marco cruza a lança na entrada: 'Il Doge non riceve stranieri senza presentazione formale.' O Doge não recebe estranhos sem apresentação formal. Você precisa convencê-lo ou encontrar outra entrada.",
+    "Marco te deixou passar pela entrada dos escribas. 'Dieci minuti,' ele disse. Dez minutos. Você aproveitou cada segundo.",
+    ["palazzo", "guardia", "permesso", "entrare", "formale"],
+    10, false, false, null, "Capitano Marco"),
+
+  phase(210, 10, "A Trança de Vidro",
+    "Chiara fabrica colares de vidro para a Contessa, cantando enquanto trabalha. Cada cor tem um nome e uma superstição veneziana. Ela te empurra um colar e pergunta: 'Dimmi — che colore è questo?' Diga-me — que cor é esta?",
+    "'Azzurro come il Canal Grande,' você respondeu. Chiara sorriu: 'Esatto.' Ela embrulhou o colar azul para você levar.",
+    ["collana", "colore", "azzurro", "regalo", "chiaro"],
+    10, false, false, null, "Chiara la Muranesa"),
+
+  phase(211, 11, "O Canal dos Assassinos",
+    "Vincenzo te encontra nervoso à beira do Rio degli Assassini. 'Stanotte han trovato un corpo nel canale.' Esta noite encontraram um corpo. O morto carregava um documento com seu nome. Você precisa descobrir quem matou — antes de ser o próximo.",
+    "O assassino fugiu pelos telhados. Mas Vincenzo confirmou: o documento era falso. Alguém está construindo uma história sobre você.",
+    ["pericolo", "morto", "canale", "scappare", "documento"],
+    10, false, false, null, "Sbirro Vincenzo"),
+
+  phase(212, 12, "Revisão · A Cidade das Águas",
+    "Os canais espelham tudo que você viveu: o espião, o assassino, a gondola noturna, o palácio. Venezia não perdoa quem esquece.",
+    "Memória consolidada. Venezia registrou tudo — e você também.",
+    ["spia", "guardia", "notte", "palazzo", "canale"],
+    8, false, false, null, "", "review"),
+
+  phase(213, 13, "A Festa dei Santi",
+    "A cidade inteira parou para a Festa dei Santi. Incenso, procissões, velas. O velho Piero te puxa para a fila e vai sussurrando os nomes de cada santo que passa. 'Sai pregare in italiano?' Você sabe rezar em italiano?",
+    "Você aprendeu mais palavras de tempo e calendário naquela procissão do que em duas semanas. Piero sorriu: 'La fede insegna molto.'",
+    ["festa", "santo", "chiesa", "pregare", "candela"],
+    10, false, false, null, "Nonno Piero"),
+
+  phase(214, 14, "A Jovem Pintora",
+    "Lena pinta em cima de uma ponte, ignorando todos ao redor. Sua tela mostra o Canal Grande — mas com um detalhe que não existe na realidade: um homem com o rosto coberto. 'È lei,' ela diz sem olhar. 'Non so chi sia — qualcuno mi ha chiesto di dipingere questo.' Não sei quem é — mas alguém me pediu.",
+    "O nome de quem encomendou estava raspado. Mas Lena lembrou um detalhe: ele falava italiano com sotaque romano.",
+    ["dipingere", "quadro", "artista", "misterioso", "ritratto"],
+    10, false, false, null, "Lena la Pittrice"),
+
+  phase(215, 15, "O Nobre Endividado",
+    "Giovanni Dandolo perdeu tudo no jogo — palácio, reputação e família. Ele te aborda no cais com olhos vermelhos: 'Ho bisogno di un favore urgente.' Preciso de um favor urgente. Em troca de informações sobre o brasão, ele quer ajuda para recuperar uma caixa roubada.",
+    "A caixa estava vazia. Mas Dandolo, como prometido, te disse onde o brasão foi visto pela última vez: nos arquivos secretos do Arsenal.",
+    ["nobile", "debito", "favore", "promessa", "archivio"],
+    10, false, false, null, "Nobile Dandolo"),
+
+  phase(216, 16, "A Carta Cifrada",
+    "Fra' Benedetto aparece na sua janela de madrugada, apavorado. Ele te entrega uma carta com símbolos estranhos: 'Non riesco a decifrare questo — ma tu sì, ne sono certo.' Não consigo decifrar — mas você consegue, tenho certeza. A carta mistura italiano com latim e parece falar sobre você.",
+    "A carta dizia que 'Il Viandante' é o nome de uma missão — não de uma pessoa. Missão de quê, ainda não está claro.",
+    ["lettera", "codice", "decifrare", "missione", "cifra"],
+    10, false, false, null, "Fra' Benedetto"),
+
+  phase(217, 17, "O Fogo no Arsenal",
+    "O Arsenal de Venezia — a maior fábrica de navios do mundo — está em chamas. Mastro Calafato grita ordens desesperadas: 'Aiuto! Portate secchi d'acqua! Veloce, veloce!' Você é o único livre para agir.",
+    "O fogo foi controlado. Calafato apertou sua mão com força: 'Hai rischiato la vita per noi.' Dentro do Arsenal queimado: o mesmo brasão, gravado num barco inacabado.",
+    ["fuoco", "arsenale", "aiuto", "rischio", "secchio"],
+    10, false, false, null, "Mastro Calafato"),
+
+  phase(218, 18, "Revisão · Intrigas em Venezia",
+    "Fra' Benedetto. Dandolo. Lena. O fogo. A carta cifrada. Os fios começam a se conectar — mas o revisor de Venezia não vai deixar você avançar sem fixar cada nó.",
+    "Os fios viraram uma rede. Você está no centro dela — queira ou não.",
+    ["spia", "lettera", "missione", "fuoco", "nobile"],
+    8, false, false, null, "", "review"),
+
+  phase(219, 19, "A Testemunha Muda",
+    "Crippa não fala — nunca falou. Mas comunica com gestos precisos e um caderninho rabiscado. Ele viu quem ateou fogo ao Arsenal. Para entender o que Crippa viu, você precisa aprender a se comunicar além das palavras.",
+    "O desenho de Crippa mostrava um homem de capuz — com um detalhe: luvas brancas. O sinal da Contessa Isabella.",
+    ["silenzio", "gesto", "testimone", "disegno", "capire"],
+    10, false, false, null, "Crippa il Muto"),
+
+  phase(220, 20, "O Mercador Árabe",
+    "Karim chegou do Egito com especiarias e informações. Ele fala italiano com sotaque denso e ri da sua pronúncia. 'Siamo tutti stranieri qui, amico.' Todos somos estrangeiros aqui. Ele tem informações sobre o brasão — mas quer praticar italiano primeiro.",
+    "'Vai a Roma, amico,' Karim disse por fim. 'La risposta è lì.' A resposta está em Roma. Ele pagou a conta sem que você pedisse.",
+    ["straniero", "mercante", "spezie", "risposta", "lontano"],
+    10, false, false, null, "Karim al-Rashid"),
+
+  phase(221, 21, "A Traição do Gondoleiro",
+    "Dario te encontra perto do Arsenal — mas desta vez com guardas da Contessa atrás dele. 'Mi dispiace tanto, amico.' Me desculpe muito. Ele te vendeu. As palavras que você precisa agora são de fuga, defesa e sobrevivência.",
+    "Você escapou pelos canais secundários. Dario desapareceu. A Contessa quer o Sigillo del Borgo — e agora tem seu rastro.",
+    ["tradimento", "scappare", "guardia", "prigione", "libertà"],
+    10, false, false, null, "Gondoliere Dario"),
+
+  phase(222, 22, "Revisão · O Conflito Final",
+    "Traição. Fuga pelo canal escuro. Cada palavra que você aprendeu em Venezia foi testada esta noite. O revisor final não tem misericórdia.",
+    "Você passou. Mas o teste real vem agora.",
+    ["tradimento", "libertà", "segreto", "scappare", "missione"],
+    8, false, false, null, "", "review"),
+
+  phase(223, 23, "O Julgamento no Palácio",
+    "Você foi capturado. O julgamento é rápido — Venezia não perde tempo com estrangeiros. O Avvocato Sebastiano sussurra: 'Ho bisogno che lei dica esattamente quello che le dico.' Preciso que diga exatamente o que eu disser. Um julgamento num idioma que você aprendeu mês a mês — é o teste supremo.",
+    "O Doge ouviu. Não te libertou completamente — concedeu 'libertà condizionata.' Liberdade condicional. Suficiente para fugir.",
+    ["tribunale", "giustizia", "difesa", "giudice", "innocente"],
+    10, false, false, null, "Avvocato Sebastiano"),
+
+  phase(224, 24, "A Fuga pelos Telhados",
+    "Matteo estava esperando no telhado — ele sabia desde o começo. 'Ti ho aspettato,' disse sorrindo. Os telhados de Venezia formam uma cidade acima da cidade, e você precisa cruzá-la inteira sem ser visto. Cada passo errado é uma queda nos canais.",
+    "A gondola esperava no canal externo. Matteo remou sem dizer nada. Quando o sol surgiu, Venezia estava atrás de você. À frente: a Toscana.",
+    ["tetto", "correre", "nascondersi", "libertà", "partire"],
+    10, false, false, null, "Gondoliere Matteo"),
+
+  phase(225, 25, "Il Leone Alato — Boss",
+    "A estátua do Leão Alado de São Marcos não é uma estátua — esta noite os olhos se movem. 'Nessuno lascia Venezia senza rispondere delle sue azioni.' Ninguém sai sem responder por suas ações. Cada frase que você aprendeu aqui será testada. O Leão conhece tudo que aconteceu.",
+    "'Hai parlato la nostra lingua. Sei libero.' Você falou nossa língua. Está livre. Nos seus bolsos agora: a Mappa di Venezia, com os canais secretos para a Toscana.",
+    ["leone", "alato", "onore", "libertà", "venezia"],
+    15, true, false, null, "Il Leone Alato", "boss"),
+];
 
 // ── T3 · B1 — La Toscana dei Medici (25 fases) ───────────────────────────────
 
@@ -322,7 +450,7 @@ export const ADVENTURE_IT_MOCK: AdventureChapter[] = [
     reward_name: "Sigillo del Borgo",
     reward_description: "O selo antigo que prova que você sobreviveu ao Borgo Antico. Abre portas em Venezia.",
     phases: T1_PHASES,
-    progress: { current_phase: 4, reward_unlocked: false, started_at: "2025-01-01", completed_at: null },
+    progress: { current_phase: 1, reward_unlocked: false, started_at: "2025-01-01", completed_at: null },
   },
   {
     id: 2,

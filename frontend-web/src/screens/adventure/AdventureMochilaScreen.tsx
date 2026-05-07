@@ -2,6 +2,7 @@ import { Package } from "lucide-react";
 import { useState } from "react";
 
 import { getAdventureColors } from "../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../theme/adventureColors";
 
 type Rarity = "comum" | "raro" | "epico";
 
@@ -30,21 +31,30 @@ const MOCK_CARDS: WordCard[] = [
   { id: 12, word: "gondola",    translation: "gôndola",      category: "Lugares",    rarity: "raro",  stars: 2 },
 ];
 
-const RARITY_STYLE: Record<Rarity, { bg: string; badge: string; label: string }> = {
+const RARITY_CONFIG: Record<Rarity, { darkBg: string; lightBg: string; darkText: string; lightText: string; badge: string; label: string }> = {
   comum: {
-    bg:    "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-    badge: "#475569",
-    label: "Comum",
+    darkBg:   "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+    lightBg:  "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
+    darkText: "#f8fafc",
+    lightText:"#1e293b",
+    badge:    "#475569",
+    label:    "Comum",
   },
   raro: {
-    bg:    "linear-gradient(135deg, #1e3a5f 0%, #0c1a2e 100%)",
-    badge: "#3b82f6",
-    label: "Raro",
+    darkBg:   "linear-gradient(135deg, #1e3a5f 0%, #0c1a2e 100%)",
+    lightBg:  "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
+    darkText: "#f8fafc",
+    lightText:"#1e3a8a",
+    badge:    "#3b82f6",
+    label:    "Raro",
   },
   epico: {
-    bg:    "linear-gradient(135deg, #3b1f5e 0%, #1a0a2e 100%)",
-    badge: "#a855f7",
-    label: "Épico",
+    darkBg:   "linear-gradient(135deg, #3b1f5e 0%, #1a0a2e 100%)",
+    lightBg:  "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)",
+    darkText: "#f8fafc",
+    lightText:"#581c87",
+    badge:    "#a855f7",
+    label:    "Épico",
   },
 };
 
@@ -57,13 +67,24 @@ const FILTERS: Array<{ id: Rarity | "todos"; label: string }> = [
 
 interface AdventureMochilaScreenProps {
   langCode: string;
+  themeMode: AdventureThemeMode;
 }
 
-export default function AdventureMochilaScreen({ langCode }: AdventureMochilaScreenProps) {
-  const c = getAdventureColors(langCode);
+export default function AdventureMochilaScreen({ langCode, themeMode }: AdventureMochilaScreenProps) {
+  const c = getAdventureColors(langCode, themeMode);
   const [filter, setFilter] = useState<Rarity | "todos">("todos");
 
   const cards = filter === "todos" ? MOCK_CARDS : MOCK_CARDS.filter((card) => card.rarity === filter);
+
+  function getRarityStyle(rarity: Rarity) {
+    const cfg = RARITY_CONFIG[rarity];
+    return {
+      bg:    themeMode === "dark" ? cfg.darkBg  : cfg.lightBg,
+      text:  themeMode === "dark" ? cfg.darkText : cfg.lightText,
+      badge: cfg.badge,
+      label: cfg.label,
+    };
+  }
 
   return (
     <div className="px-3 pt-4 pb-4">
@@ -83,7 +104,7 @@ export default function AdventureMochilaScreen({ langCode }: AdventureMochilaScr
       {/* Filter bar */}
       <div
         className="mb-4 flex gap-1 rounded-xl p-1"
-        style={{ background: "rgba(0,0,0,0.35)" }}
+        style={{ background: c.surfaceMid }}
       >
         {FILTERS.map(({ id, label }) => {
           const active = filter === id;
@@ -108,7 +129,7 @@ export default function AdventureMochilaScreen({ langCode }: AdventureMochilaScr
       {/* Card grid */}
       <div className="grid grid-cols-3 gap-2">
         {cards.map((card) => {
-          const style = RARITY_STYLE[card.rarity];
+          const style = getRarityStyle(card.rarity);
           return (
             <div
               key={card.id}
@@ -130,11 +151,13 @@ export default function AdventureMochilaScreen({ langCode }: AdventureMochilaScr
               {/* Word */}
               <p
                 className="mt-auto text-sm font-bold leading-tight"
-                style={{ color: "#f8fafc" }}
+                style={{ color: style.text }}
               >
                 {card.word}
               </p>
-              <p className="text-[10px] font-medium text-slate-400">{card.translation}</p>
+              <p className="text-[10px] font-medium" style={{ color: `${style.text}99` }}>
+                {card.translation}
+              </p>
 
               {/* Stars */}
               <div className="mt-1.5 flex gap-0.5">
@@ -142,7 +165,7 @@ export default function AdventureMochilaScreen({ langCode }: AdventureMochilaScr
                   <span
                     key={s}
                     className="text-[10px]"
-                    style={{ opacity: s <= card.stars ? 1 : 0.2 }}
+                    style={{ color: style.badge, opacity: s <= card.stars ? 1 : 0.2 }}
                   >
                     ★
                   </span>

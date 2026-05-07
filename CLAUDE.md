@@ -1,5 +1,30 @@
 # Talkly — Diretrizes para Claude Code
 
+## Regra crítica — nunca hardcodar strings de UI
+
+**Todo texto visível ao usuário deve vir de `src/constants/strings.ts` via `useStrings()`.**
+
+Isso é especialmente obrigatório porque o Talkly é um **app de idiomas** — hardcodar nomes de idiomas, labels de ações ou textos de interface é uma contradição direta com o produto.
+
+```ts
+// ❌ NUNCA
+<button>Começar</button>
+subtitle: `Fase ${n} · Italiano`
+
+// ✅ SEMPRE
+const s = useStrings();
+<button>{s.adventure.phaseStart}</button>
+subtitle: `${s.adventure.phaseLabel(n)} · ${s.languages[langCode]}`
+```
+
+Arquivos de strings:
+- `src/constants/strings.ts` — PT_STRINGS + EN_STRINGS, exporta `AppStrings`
+- `src/contexts/StringsContext.tsx` — `useStrings()` hook
+
+Ao adicionar qualquer texto novo, adicionar em **ambos** PT_STRINGS e EN_STRINGS antes de usar no componente.
+
+---
+
 ## Nome e identidade
 - **App name:** `Talkly` — definido em `src/constants/app.ts` (APP_NAME)
 - **Tagline PT:** `Aprenda idiomas vivendo a historia` (APP_TAGLINE_PT)
@@ -56,12 +81,32 @@ SÉRIE  (nível CEFR — ex: A1)
 | T4 | Napoli e il Vesuvio | Il Vesuvio |
 | T5 | Roma Aeterna | L'Imperatore |
 
+**Tema dual — dark / light:**
+
+O modo aventura suporta dois temas por idioma. O toggle sun/moon vive em `AdventureMapScreen` como estado local (`themeMode: "dark" | "light"`).
+
+- `getAdventureColors(langCode, mode?)` — segundo parâmetro opcional, padrão `"dark"`
+- `adventureColors.ts` exporta `AdventureThemeMode = "dark" | "light"`
+- Estrutura interna: `ADVENTURE_COLORS[lang].dark` e `ADVENTURE_COLORS[lang].light`
+- Tokens neutros em `AdventureColorTokens` (evitar rgba hardcoded nos componentes):
+  | Token | Dark | Light |
+  |-------|------|-------|
+  | `surface` | rgba(255,255,255,0.08) | rgba(0,0,0,0.04) |
+  | `surfaceMid` | rgba(0,0,0,0.35) | rgba(0,0,0,0.06) |
+  | `textOnBg` | rgba(255,255,255,0.70) | rgba(0,0,0,0.60) |
+  | `textFaint` | rgba(255,255,255,0.18) | rgba(0,0,0,0.28) |
+  | `borderFaint` | rgba(255,255,255,0.06) | rgba(0,0,0,0.08) |
+
+**Roadmap planejado:** adicionar `time_of_day: "dawn" | "day" | "dusk" | "night"` em `AdventurePhase` e derivar o modo automaticamente a partir da fase — por enquanto o toggle é manual.
+
+**Regra:** nunca usar `rgba(255,255,255,...)` ou `rgba(0,0,0,...)` hardcoded em componentes de aventura. Usar sempre os tokens acima.
+
 **Arquivos-chave do modo aventura:**
 | Arquivo | Responsabilidade |
 |---------|-----------------|
 | `src/types/adventure.ts` | `AdventureChapter`, `AdventurePhase`, `PhaseType` |
 | `src/mocks/adventureItMock.ts` | Dados mock do "Il Viandante" (substituir por API no futuro) |
-| `src/theme/adventureColors.ts` | Paleta escura imersiva por idioma (`getAdventureColors`) |
+| `src/theme/adventureColors.ts` | Paleta dark+light por idioma (`getAdventureColors(lang, mode?)`) |
 | `src/screens/AdventureScreen.tsx` | Landing da série (lista as 5 temporadas) |
 | `src/screens/adventure/AdventureMapScreen.tsx` | Mapa de nós da temporada (winding path, 25 nós, ~85 px entre nós) |
 | `src/screens/adventure/AdventureModule.tsx` | Container 3-abas: Mapa / Mochila / Herói |

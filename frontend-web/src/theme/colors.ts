@@ -18,7 +18,7 @@ export const STUDY_AREA_COLORS: Record<string, StudyAreaColorTokens> = {
     accent: "#dc2626",
     accentSoft: "#fef2f2",
     page: "#f8fafc",
-    textOnPrimary: "#0f172a",
+    textOnPrimary: "#ffffff",
   },
   IT: {
     name: "Italiano",

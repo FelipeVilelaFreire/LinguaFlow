@@ -62,78 +62,102 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         </button>
       </header>
 
-      <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-slate-200 bg-white px-4 py-5 md:block">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="grid h-11 w-11 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
-            <Flame size={21} />
+      <aside className="fixed inset-y-0 left-0 hidden w-80 flex-col border-r border-slate-200 bg-white md:flex">
+        {/* Logo + nav */}
+        <div className="flex-1 px-3 pb-3 pt-4">
+          <div className="mb-5 flex items-center gap-2.5 px-1">
+            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
+              <Flame size={16} />
+            </div>
+            <div className="min-w-0">
+              <h1 className="truncate text-base font-bold leading-tight">{strings.app.name}</h1>
+              <p className="truncate text-[10px] font-semibold text-slate-400">{strings.app.subtitle}</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-semibold">{strings.app.name}</h1>
-            <p className="mt-0.5 text-xs font-bold text-slate-500">{strings.app.subtitle}</p>
-          </div>
+
+          <nav className="space-y-0.5">
+            {navItems.map((item) => (
+              <button
+                key={item.route}
+                type="button"
+                onClick={() => onNavigate(item.route)}
+                className={`flex h-10 w-full items-center justify-between rounded-[8px] px-3 text-left text-sm font-semibold transition ${
+                  activeRoute === item.route
+                    ? "text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100"
+                }`}
+                style={activeRoute === item.route ? { background: "var(--area-primary)" } : undefined}
+              >
+                <span className="flex items-center gap-2.5">
+                  <item.icon size={16} />
+                  {strings.nav[item.labelKey]}
+                </span>
+                {activeRoute === item.route ? <ChevronRight size={14} /> : null}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        <nav className="space-y-2">
-          {navItems.map((item) => (
-            <button
-              key={item.route}
-              type="button"
-              onClick={() => onNavigate(item.route)}
-              className={`flex h-12 w-full items-center justify-between rounded-[8px] px-3 text-left text-sm font-semibold transition ${
-                activeRoute === item.route
-                  ? "text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-              style={activeRoute === item.route ? { background: "var(--area-primary)" } : undefined}
-            >
-              <span className="flex items-center gap-3">
-                <item.icon size={18} />
-                {strings.nav[item.labelKey]}
-              </span>
-              {activeRoute === item.route ? <ChevronRight size={16} /> : null}
-            </button>
-          ))}
-        </nav>
+        {/* Footer compacto — sem scrollbar */}
+        <div className="shrink-0 space-y-1.5 border-t border-slate-100 px-3 py-3">
 
-        <div className="absolute inset-x-4 bottom-5 space-y-3">
-          <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3">
-            <p className="flex items-center gap-2 text-xs font-semibold uppercase text-slate-500">
-              <Languages size={14} />
-              {strings.layout.interfaceLanguage}
-            </p>
-            <div className="mt-3 grid grid-cols-2 gap-2">
+          {/* Idioma — chips inline */}
+          <div className="flex items-center gap-1.5 px-1">
+            <Languages size={11} className="shrink-0 text-slate-400" />
+            <span className="flex-1 text-[10px] font-semibold uppercase text-slate-400">{strings.layout.interfaceLanguage}</span>
+            <div className="flex gap-1">
               {(["pt", "en"] as AppLocale[]).map((locale) => (
                 <button
                   key={locale}
                   type="button"
                   onClick={() => onLocaleChange(locale)}
-                  className={`h-10 rounded-[8px] text-sm font-semibold ring-1 transition ${
-                    uiLocale === locale ? "text-white shadow-sm" : "bg-white text-slate-600 ring-slate-200 hover:bg-slate-100"
+                  className={`h-6 rounded-[5px] px-2 text-[11px] font-bold transition ${
+                    uiLocale === locale ? "text-white shadow-sm" : "text-slate-500 hover:bg-slate-100"
                   }`}
-                  style={uiLocale === locale ? { background: "var(--area-primary)", borderColor: "var(--area-primary)" } : undefined}
+                  style={uiLocale === locale ? { background: "var(--area-primary)" } : undefined}
                 >
-                  {locale === "pt" ? strings.layout.portuguese : strings.layout.english}
+                  {locale.toUpperCase()}
                 </button>
               ))}
             </div>
           </div>
-          <button type="button" onClick={() => goals.length ? setIsAreaModalOpen(true) : onNavigate("account")} className="w-full rounded-[8px] p-3 text-left ring-1 transition hover:brightness-[0.98]" style={{ background: "var(--area-primary-soft)", borderColor: "var(--area-primary-soft)" }}>
-            <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary-dark)" }}>{strings.layout.activeArea}</p>
-            <p className="mt-1 truncate font-semibold text-slate-950">{activeArea}</p>
-            <p className="mt-1 text-xs font-medium text-slate-500">{activeGoal ? `${activeGoal.progress_percent}% ${strings.layout.completed}` : uiLocale === "pt" ? "Crie uma area no perfil" : "Create an area in profile"}</p>
+
+          {/* Área ativa — linha compacta */}
+          <button
+            type="button"
+            onClick={() => goals.length ? setIsAreaModalOpen(true) : onNavigate("account")}
+            className="flex w-full items-center gap-2 rounded-[8px] px-2 py-1.5 text-left transition hover:brightness-[0.97]"
+            style={{ background: "var(--area-primary-soft)" }}
+          >
+            <div className="h-2 w-2 shrink-0 rounded-full" style={{ background: "var(--area-primary)" }} />
+            <p className="flex-1 truncate text-xs font-semibold text-slate-700">{activeArea}</p>
+            {activeGoal && (
+              <span className="shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-bold" style={{ color: "var(--area-primary-dark)" }}>
+                {activeGoal.current_level}
+              </span>
+            )}
           </button>
-          <div className="rounded-[8px] border border-slate-200 bg-slate-50 p-3">
-            <p className="text-xs font-semibold uppercase text-slate-500">{strings.layout.loggedAs}</p>
-            <p className="truncate font-semibold">{user.username}</p>
-            <button type="button" onClick={onLogout} className="mt-3 flex w-full items-center justify-center gap-2 rounded-[8px] bg-white px-3 py-2 text-sm font-semibold text-slate-700 ring-1 ring-slate-200 transition hover:bg-slate-100">
-              <LogOut size={16} />
-              {strings.actions.logout}
+
+          {/* Usuário + logout — linha única */}
+          <div className="flex items-center gap-2 px-1 py-0.5">
+            <div className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white" style={{ background: "var(--area-primary)" }}>
+              {user.username.charAt(0).toUpperCase()}
+            </div>
+            <p className="flex-1 truncate text-sm font-semibold text-slate-700">{user.username}</p>
+            <button
+              type="button"
+              onClick={onLogout}
+              className="shrink-0 grid h-7 w-7 place-items-center rounded-[6px] text-slate-400 ring-1 ring-slate-200 transition hover:bg-red-50 hover:text-red-500 hover:ring-red-200"
+              title={strings.actions.logout}
+            >
+              <LogOut size={13} />
             </button>
           </div>
+
         </div>
       </aside>
 
-      <main className="min-h-screen px-3 pb-32 pt-3 md:ml-72 md:px-8 md:py-8">
+      <main className="min-h-screen px-3 pb-32 pt-3 md:ml-80 md:px-8 md:py-8">
         <div key={activeRoute} className="mx-auto max-w-6xl animate-[fadeIn_220ms_ease-out]">{children}</div>
       </main>
 

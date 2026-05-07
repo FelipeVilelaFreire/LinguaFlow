@@ -1,9 +1,10 @@
-import { BookOpen, CheckCircle2, ChevronLeft, Lock, Skull, Star, Swords, X } from "lucide-react";
+import { BookOpen, CheckCircle2, Lock, Skull, Swords, Star } from "lucide-react";
 import { useState } from "react";
 
-import LangFlag from "../../components/ui/LangFlag";
+import { useStrings } from "../../contexts/StringsContext";
 import { ADVENTURE_IT_MOCK } from "../../mocks/adventureItMock";
 import { getAdventureColors } from "../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../theme/adventureColors"; // prop type only
 import type { AdventureChapter, AdventurePhase } from "../../types/adventure";
 
 // ── Winding path positions (x%, y px) — 25 nodes, ~85 px spacing ─────────────
@@ -77,6 +78,160 @@ function ItalianDivider({ index, color }: { index: number; color: string }) {
   );
 }
 
+// ── Section ring SVG — thin circular progress for the current phase node ──────
+function SectionRing({
+  completed,
+  total,
+  size,
+  strokeWidth = 2,
+  c,
+}: {
+  completed: number;
+  total: number;
+  size: number;
+  strokeWidth?: number;
+  c: ReturnType<typeof getAdventureColors>;
+}) {
+  if (total <= 0) return null;
+  const r = size / 2 - strokeWidth / 2 - 1;
+  const circumference = 2 * Math.PI * r;
+  const dashOffset = circumference * (1 - (completed / total));
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      className="pointer-events-none absolute inset-0"
+      style={{ transform: "rotate(-90deg)" }}
+    >
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke={c.textFaint}
+        strokeWidth={strokeWidth}
+      />
+      {completed > 0 && (
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={c.nodeActive}
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={dashOffset}
+          strokeLinecap="round"
+        />
+      )}
+    </svg>
+  );
+}
+
+// ── Floating phase entry card (Duolingo-style, anchored below the node) ──────
+function PhaseEntry({
+  phase,
+  nodeRect,
+  c,
+  onClose,
+  onStart,
+}: {
+  phase: AdventurePhase;
+  nodeRect: DOMRect;
+  c: ReturnType<typeof getAdventureColors>;
+  onClose: () => void;
+  onStart: () => void;
+}) {
+  const s        = useStrings();
+  const isBoss   = phase.is_boss;
+  const isReview = phase.phase_type === "review";
+  const ctaBg    = isBoss ? c.bossColor : c.ctaBg;
+
+  const currentSection = (phase.completed_sections ?? 0) + 1;
+  const totalSections  = phase.section_count ?? 6;
+
+  const label = isBoss
+    ? s.adventure.bossLabel
+    : isReview
+    ? `${s.adventure.reviewLabel} · ${s.adventure.sectionLabel(currentSection, totalSections)}`
+    : `${s.adventure.phaseLabel(phase.number)} · ${s.adventure.sectionLabel(currentSection, totalSections)}`;
+
+  const ctaLabel = isBoss
+    ? s.adventure.phaseStartBoss
+    : isReview
+    ? s.adventure.phaseStartReview
+    : s.adventure.phaseStart;
+
+  const CARD_W   = Math.min(272, window.innerWidth - 32);
+  const cx       = nodeRect.left + nodeRect.width / 2;
+  const cardLeft = Math.max(16, Math.min(cx - CARD_W / 2, window.innerWidth - CARD_W - 16));
+  const cardTop  = nodeRect.bottom + 12;
+  const arrowLeft = Math.max(12, Math.min(cx - cardLeft, CARD_W - 12));
+
+  return (
+    <div className="fixed inset-0 z-40" onClick={onClose}>
+      <div
+        className="absolute"
+        style={{
+          left: cardLeft,
+          top: cardTop,
+          width: CARD_W,
+          animation: "fadeIn 120ms ease-out both",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Arrow pointing UP toward the node */}
+        <div
+          className="absolute"
+          style={{
+            top: 0,
+            left: arrowLeft - 8,
+            transform: "translateY(-100%)",
+            width: 0,
+            height: 0,
+            borderLeft: "8px solid transparent",
+            borderRight: "8px solid transparent",
+            borderBottom: `8px solid ${c.bgMid}`,
+          }}
+        />
+
+        {/* Card */}
+        <div
+          className="rounded-2xl px-4 pt-3.5 pb-4"
+          style={{
+            background: `linear-gradient(160deg, ${c.bgMid} 0%, ${c.bgFrom} 100%)`,
+            border: `1px solid ${c.parchmentBorder}`,
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+          }}
+        >
+          <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
+            {label}
+          </p>
+          <p className="mt-1 text-sm font-bold leading-snug" style={{ color: c.parchment }}>
+            {phase.title}
+          </p>
+          {phase.npc_name && !isBoss && (
+            <p className="mt-0.5 text-[11px]" style={{ color: c.textOnBg }}>
+              {phase.npc_name}
+            </p>
+          )}
+
+          <button
+            type="button"
+            onClick={onStart}
+            className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition active:scale-[0.98]"
+            style={{ background: ctaBg, color: "#fff" }}
+          >
+            {isBoss ? <Skull size={15} /> : <Swords size={15} />}
+            {ctaLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Season header ─────────────────────────────────────────────────────────────
 function SeasonHeader({
   chapter,
@@ -94,8 +249,8 @@ function SeasonHeader({
     <div
       className="mx-4 mb-2 mt-6 rounded-xl p-4"
       style={{
-        background: isLocked ? "rgba(0,0,0,0.35)" : `${c.seasonBadgeBg}22`,
-        border: `1px solid ${isLocked ? "rgba(255,255,255,0.06)" : c.seasonBadgeBg + "44"}`,
+        background: isLocked ? c.surfaceMid : `${c.seasonBadgeBg}22`,
+        border: `1px solid ${isLocked ? c.borderFaint : c.seasonBadgeBg + "44"}`,
       }}
     >
       <div className="flex items-center justify-between gap-3">
@@ -104,7 +259,7 @@ function SeasonHeader({
             className="rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
             style={
               isLocked
-                ? { background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.3)" }
+                ? { background: c.surface, color: c.textFaint }
                 : { background: c.seasonBadgeBg, color: c.seasonBadgeText }
             }
           >
@@ -112,21 +267,21 @@ function SeasonHeader({
           </span>
           <span
             className="text-[10px] font-semibold uppercase tracking-widest"
-            style={{ color: isLocked ? "rgba(255,255,255,0.18)" : `${c.parchment}60` }}
+            style={{ color: isLocked ? c.textFaint : `${c.parchment}60` }}
           >
             A1 · Il Viandante
           </span>
         </div>
-        {isLocked && <Lock size={13} style={{ color: "rgba(255,255,255,0.2)" }} />}
+        {isLocked && <Lock size={13} style={{ color: c.textFaint }} />}
       </div>
       <p
         className="mt-1 text-base font-semibold leading-tight"
-        style={{ color: isLocked ? "rgba(255,255,255,0.25)" : c.parchment }}
+        style={{ color: isLocked ? c.textOnBg : c.parchment }}
       >
         {chapter.title}
       </p>
       {!isLocked && (
-        <p className="mt-1 text-xs font-medium" style={{ color: c.parchmentSubtext }}>
+        <p className="mt-1 text-xs font-medium" style={{ color: c.textOnBg }}>
           {chapter.phases.filter(p => p.is_completed).length}/{chapter.phases.length} fases concluídas
         </p>
       )}
@@ -146,7 +301,7 @@ function PhaseNode({
   pos: { x: number; y: number };
   currentPhaseNumber: number;
   c: ReturnType<typeof getAdventureColors>;
-  onClick: () => void;
+  onClick: (rect: DOMRect) => void;
 }) {
   const isCompleted = phase.is_completed;
   const isCurrent   = phase.number === currentPhaseNumber && !phase.is_completed;
@@ -154,57 +309,86 @@ function PhaseNode({
   const isBoss      = phase.is_boss;
   const isReview    = phase.phase_type === "review";
 
-  const size   = isBoss ? 64 : 54;
-  const bg     = isCompleted ? c.nodeCompleted
-               : isCurrent && isBoss   ? c.bossColor
-               : isCurrent && isReview ? c.goldAccent
-               : isCurrent             ? c.nodeActive
-               : isLocked && isBoss    ? "#2a0d0d"
-               : isLocked && isReview  ? "#1a1200"
-               : c.nodeLocked;
+  const size     = isBoss ? 64 : 54;
+  const ringSize = size + 14;
+
+  const bg = isCompleted ? c.nodeCompleted
+           : isCurrent && isBoss   ? c.bossColor
+           : isCurrent && isReview ? c.goldAccent
+           : isCurrent             ? c.nodeActive
+           : c.nodeLocked;
 
   const activeColor = isBoss ? c.bossColor : isReview ? c.goldAccent : c.nodeActive;
   const boxShadow = isCurrent
     ? `0 0 0 3px ${activeColor}, 0 0 28px ${isBoss ? c.bossGlow : c.nodeActiveGlow}`
     : isCompleted
-    ? `0 0 0 2px ${c.nodeCompleted}80, 0 4px 12px rgba(0,0,0,0.5)`
-    : "0 4px 14px rgba(0,0,0,0.55)";
+    ? `0 0 0 2px ${c.nodeCompleted}80, 0 4px 12px rgba(0,0,0,0.18)`
+    : "0 4px 14px rgba(0,0,0,0.15)";
+
+  const sectionCount       = phase.section_count ?? 6;
+  const completedSections  = phase.completed_sections ?? 0;
+  const showRing = isCurrent;
 
   return (
-    <button
-      type="button"
-      disabled={isLocked}
-      onClick={onClick}
-      className="absolute flex items-center justify-center rounded-full font-bold text-white transition"
+    <div
+      className="absolute"
       style={{
         left: `${pos.x}%`,
         top: pos.y,
         transform: "translate(-50%, -50%)",
-        width: size,
-        height: size,
-        background: bg,
-        boxShadow,
-        animation: isCurrent ? "adventureBounce 1.4s ease-in-out infinite" : undefined,
+        width: ringSize,
+        height: ringSize,
         zIndex: isCurrent ? 2 : 1,
         opacity: isLocked ? 0.45 : 1,
-        cursor: isLocked ? "not-allowed" : "pointer",
+        animation: isCurrent ? "adventureBounce 1.4s ease-in-out infinite" : undefined,
       }}
     >
-      {isCompleted ? (
-        <CheckCircle2 size={isBoss ? 24 : 20} />
-      ) : isLocked ? (
-        <Lock size={isBoss ? 22 : 17} />
-      ) : isBoss ? (
-        <Skull size={22} />
-      ) : isReview ? (
-        <BookOpen size={17} />
-      ) : (
-        <span className="text-[15px] font-bold tabular-nums">{phase.number}</span>
+      {/* Section progress ring — current phase only */}
+      {showRing && (
+        <SectionRing
+          completed={completedSections}
+          total={sectionCount}
+          size={ringSize}
+          strokeWidth={2}
+          c={c}
+        />
       )}
+
+      {/* Phase button */}
+      <button
+        type="button"
+        disabled={isLocked}
+        onClick={(e) => onClick((e.currentTarget as HTMLElement).getBoundingClientRect())}
+        className="absolute left-1/2 top-1/2 flex items-center justify-center rounded-full font-bold transition"
+        style={{
+          transform: "translate(-50%, -50%)",
+          width: size,
+          height: size,
+          background: bg,
+          boxShadow,
+          cursor: isLocked ? "not-allowed" : "pointer",
+          color: isLocked ? c.textOnBg : "#ffffff",
+        }}
+      >
+        {isCompleted ? (
+          <CheckCircle2 size={isBoss ? 24 : 20} />
+        ) : isLocked ? (
+          <Lock size={isBoss ? 22 : 17} />
+        ) : isBoss ? (
+          <Skull size={22} />
+        ) : isReview ? (
+          <BookOpen size={17} />
+        ) : (
+          <span className="text-[15px] font-bold tabular-nums">{phase.number}</span>
+        )}
+      </button>
 
       {/* Stars on completed nodes */}
       {isCompleted && !isBoss && (
-        <span className="absolute -bottom-5 flex gap-0.5">
+        <span
+          className="absolute flex gap-0.5"
+          style={{ bottom: -6, left: "50%", transform: "translateX(-50%)" }}
+        >
           {[1, 2, 3].map((s) => (
             <Star
               key={s}
@@ -216,136 +400,6 @@ function PhaseNode({
           ))}
         </span>
       )}
-    </button>
-  );
-}
-
-// ── Phase bottom sheet ────────────────────────────────────────────────────────
-function PhaseSheet({
-  phase,
-  chapter,
-  c,
-  onClose,
-  onStart,
-}: {
-  phase: AdventurePhase;
-  chapter: AdventureChapter;
-  c: ReturnType<typeof getAdventureColors>;
-  onClose: () => void;
-  onStart: () => void;
-}) {
-  return (
-    <div
-      className="fixed inset-0 z-40 flex items-end"
-      style={{ background: "rgba(0,0,0,0.70)" }}
-      onClick={onClose}
-    >
-      <div
-        className="w-full rounded-t-2xl p-5 pb-8"
-        style={{
-          background: `linear-gradient(180deg, ${c.bgMid} 0%, ${c.bgFrom} 100%)`,
-          border: `1px solid ${c.pathColor}30`,
-          borderBottom: "none",
-          animation: "sheetSlideUp 220ms ease-out both",
-          maxHeight: "80vh",
-          overflowY: "auto",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="mb-4 flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <p
-                className="text-xs font-bold uppercase tracking-wide"
-                style={{
-                  color: phase.is_boss ? c.bossColor
-                       : phase.phase_type === "review" ? c.goldAccent
-                       : c.goldAccent,
-                }}
-              >
-                {phase.is_boss ? "⚔️ Fase Boss"
-                : phase.phase_type === "review" ? "📚 Revisão"
-                : `Fase ${phase.number} · ${chapter.level}`}
-              </p>
-              {phase.npc_name && phase.phase_type === "story" && (
-                <span className="text-[11px] font-medium" style={{ color: `${c.parchment}55` }}>
-                  com {phase.npc_name}
-                </span>
-              )}
-            </div>
-            <h3 className="mt-1 text-xl font-semibold" style={{ color: c.parchment }}>
-              {phase.title}
-            </h3>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full transition"
-            style={{ background: "rgba(255,255,255,0.08)", color: c.parchment }}
-          >
-            <X size={17} />
-          </button>
-        </div>
-
-        {/* Narrative snippet */}
-        <div
-          className="rounded-xl p-4"
-          style={{ background: c.parchment + "14", border: `1px solid ${c.parchmentBorder}` }}
-        >
-          <p className="text-sm font-medium leading-6" style={{ color: `${c.parchment}CC` }}>
-            {phase.narrative_intro}
-          </p>
-        </div>
-
-        {/* Keywords */}
-        {phase.key_words?.length ? (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {phase.key_words.map((kw) => (
-              <span
-                key={kw}
-                className="rounded-full px-3 py-1 text-[11px] font-semibold"
-                style={{ background: c.goldAccentSoft, color: c.goldAccent }}
-              >
-                {kw}
-              </span>
-            ))}
-          </div>
-        ) : null}
-
-        {/* Meta */}
-        <p className="mt-3 text-xs font-semibold" style={{ color: `${c.parchment}50` }}>
-          {phase.phrase_count} frases
-          {phase.is_completed && phase.score !== null
-            ? ` · Concluída · ${phase.score} pts`
-            : phase.is_completed
-            ? " · Concluída"
-            : ""}
-        </p>
-
-        {/* CTA */}
-        <button
-          type="button"
-          onClick={onStart}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl px-5 py-4 text-base font-semibold transition active:scale-[0.98]"
-          style={{
-            background: phase.is_completed
-              ? "rgba(255,255,255,0.12)"
-              : phase.is_boss
-              ? c.bossColor
-              : c.ctaBg,
-            color: c.ctaText,
-          }}
-        >
-          {phase.is_completed ? (
-            <><Star size={18} /> Jogar novamente</>
-          ) : phase.is_boss ? (
-            <><Skull size={18} /> Enfrentar o Chefe</>
-          ) : (
-            <><Swords size={18} /> Iniciar Fase</>
-          )}
-        </button>
-      </div>
     </div>
   );
 }
@@ -353,56 +407,19 @@ function PhaseSheet({
 // ── Main screen ───────────────────────────────────────────────────────────────
 interface AdventureMapScreenProps {
   langCode: string;
-  onBack: () => void;
-  onStartChapter: (chapterId: number) => void;
+  themeMode: AdventureThemeMode;
+  onStartChapter: (chapterId: number, phaseTitle: string, phaseNumber: number, chapterLevel: string) => void;
 }
 
-export default function AdventureMapScreen({ langCode, onBack, onStartChapter }: AdventureMapScreenProps) {
-  // TODO: replace mock with real API — adventureService.listChapters()
-  // When using mock, derive language from the mock data itself (not from the active goal)
+export default function AdventureMapScreen({ langCode, themeMode, onStartChapter }: AdventureMapScreenProps) {
+  const s = useStrings();
   const chapters = ADVENTURE_IT_MOCK;
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
-  const c = getAdventureColors(effectiveLangCode);
-  const [selectedPhase, setSelectedPhase] = useState<{ phase: AdventurePhase; chapter: AdventureChapter } | null>(null);
+  const c = getAdventureColors(effectiveLangCode, themeMode);
+  const [entry, setEntry] = useState<{ phase: AdventurePhase; chapter: AdventureChapter; nodeRect: DOMRect } | null>(null);
 
   return (
     <div className="relative pb-8">
-      {/* Fixed top header */}
-      <div
-        className="sticky top-0 z-20 flex items-center gap-3 px-4 py-3"
-        style={{
-          background: `${c.bgFrom}e8`,
-          backdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${c.pathColor}20`,
-        }}
-      >
-        <button
-          type="button"
-          onClick={onBack}
-          className="flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition"
-          style={{ background: "rgba(255,255,255,0.08)", color: c.parchment }}
-        >
-          <ChevronLeft size={15} />
-          Sair
-        </button>
-        <div className="flex flex-1 min-w-0 items-center gap-2">
-          <LangFlag code={effectiveLangCode} size="xs" />
-          <div className="min-w-0">
-            <p className="truncate text-sm font-bold leading-tight" style={{ color: c.parchment }}>Il Viandante</p>
-            <p className="text-[10px] font-semibold uppercase tracking-wider leading-tight" style={{ color: `${c.parchment}55` }}>A1 · Italiano</p>
-          </div>
-        </div>
-        <div
-          className="shrink-0 rounded-lg px-3 py-1.5 text-right"
-          style={{ background: "rgba(0,0,0,0.35)" }}
-        >
-          <p className="text-[9px] font-bold uppercase tracking-wide" style={{ color: c.goldAccent }}>Progresso</p>
-          <p className="text-sm font-bold" style={{ color: c.parchment }}>
-            {chapters.reduce((s, ch) => s + ch.phases.filter(p => p.is_completed).length, 0)}
-            <span style={{ color: `${c.parchment}50` }}>/{chapters.reduce((s, ch) => s + ch.phases.length, 0)}</span>
-          </p>
-        </div>
-      </div>
 
       {/* Ambient top glow */}
       <div
@@ -465,9 +482,9 @@ export default function AdventureMapScreen({ langCode, onBack, onStartChapter }:
                     pos={pos}
                     currentPhaseNumber={currentPhaseNumber}
                     c={c}
-                    onClick={() => {
-                      if (!phase.is_completed && phase.number !== currentPhaseNumber) return;
-                      setSelectedPhase({ phase, chapter });
+                    onClick={(rect) => {
+                      if (phase.is_completed || phase.number !== currentPhaseNumber) return;
+                      setEntry({ phase, chapter, nodeRect: rect });
                     }}
                   />
                 );
@@ -484,16 +501,16 @@ export default function AdventureMapScreen({ langCode, onBack, onStartChapter }:
         );
       })}
 
-      {/* Phase bottom sheet */}
-      {selectedPhase && (
-        <PhaseSheet
-          phase={selectedPhase.phase}
-          chapter={selectedPhase.chapter}
+      {/* Phase entry confirmation */}
+      {entry && (
+        <PhaseEntry
+          phase={entry.phase}
+          nodeRect={entry.nodeRect}
           c={c}
-          onClose={() => setSelectedPhase(null)}
+          onClose={() => setEntry(null)}
           onStart={() => {
-            setSelectedPhase(null);
-            onStartChapter(selectedPhase.chapter.id);
+            setEntry(null);
+            onStartChapter(entry.chapter.id, entry.phase.title, entry.phase.number, entry.chapter.level);
           }}
         />
       )}

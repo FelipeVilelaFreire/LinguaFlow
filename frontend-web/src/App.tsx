@@ -238,14 +238,11 @@ export default function App() {
         <AdventureModule
           langCode={langCode}
           initialTab={tabMap[route]}
+          chapterPath={adventureChapterPath}
           onBack={() => navigate("adventure")}
           onTabChange={(tab) => {
             const r = `adventure-${tab}` as AppRoute;
             navigate(r);
-          }}
-          onStartChapter={(chapterId) => {
-            window.history.pushState({}, "", adventureChapterPath(chapterId));
-            setRoute("adventure-chapter");
           }}
         />
       </StringsProvider>
@@ -258,7 +255,9 @@ export default function App() {
     return (
       <StringsProvider locale={activeLocale}>
         <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
-          <HistoryScreen onBack={() => navigate("account")} />
+          <div className="mx-auto md:max-w-2xl">
+            <HistoryScreen onBack={() => navigate("account")} />
+          </div>
         </div>
       </StringsProvider>
     );
@@ -270,13 +269,15 @@ export default function App() {
     return (
       <StringsProvider locale={activeLocale}>
         <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
-          <EditProfileScreen
-            user={user}
-            uiLocale={activeLocale}
-            onBack={() => navigate("account")}
-            onLocaleChange={changeUiLocale}
-            onLogout={logout}
-          />
+          <div className="mx-auto md:max-w-2xl">
+            <EditProfileScreen
+              user={user}
+              uiLocale={activeLocale}
+              onBack={() => navigate("account")}
+              onLocaleChange={changeUiLocale}
+              onLogout={logout}
+            />
+          </div>
         </div>
       </StringsProvider>
     );
