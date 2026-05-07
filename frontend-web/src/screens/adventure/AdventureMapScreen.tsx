@@ -1,5 +1,5 @@
-import { BookOpen, CheckCircle2, Lock, Skull, Swords, Star } from "lucide-react";
-import { useState } from "react";
+import { BookOpen, CheckCircle2, Lock, Skull, Star, Swords } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { useStrings } from "../../contexts/StringsContext";
 import { ADVENTURE_IT_MOCK } from "../../mocks/adventureItMock";
@@ -129,16 +129,12 @@ function SectionRing({
   );
 }
 
-// ── Floating phase entry card (Duolingo-style, anchored below the node) ──────
+// ── Phase entry card (bottom-sheet or floating) ───────────────────────────────
 function PhaseEntry({
-  phase,
-  nodeRect,
-  c,
-  onClose,
-  onStart,
+  phase, nodeRect, c, onClose, onStart,
 }: {
   phase: AdventurePhase;
-  nodeRect: DOMRect;
+  nodeRect: DOMRect | null;
   c: ReturnType<typeof getAdventureColors>;
   onClose: () => void;
   onStart: () => void;
@@ -147,56 +143,79 @@ function PhaseEntry({
   const isBoss   = phase.is_boss;
   const isReview = phase.phase_type === "review";
   const ctaBg    = isBoss ? c.bossColor : c.ctaBg;
-
-  const currentSection = (phase.completed_sections ?? 0) + 1;
-  const totalSections  = phase.section_count ?? 6;
-
-  const label = isBoss
+  const cur      = (phase.completed_sections ?? 0) + 1;
+  const tot      = phase.section_count ?? 6;
+  const label    = isBoss
     ? s.adventure.bossLabel
     : isReview
-    ? `${s.adventure.reviewLabel} · ${s.adventure.sectionLabel(currentSection, totalSections)}`
-    : `${s.adventure.phaseLabel(phase.number)} · ${s.adventure.sectionLabel(currentSection, totalSections)}`;
-
-  const ctaLabel = isBoss
-    ? s.adventure.phaseStartBoss
-    : isReview
-    ? s.adventure.phaseStartReview
+    ? `${s.adventure.reviewLabel} · ${s.adventure.sectionLabel(cur, tot)}`
+    : `${s.adventure.phaseLabel(phase.number)} · ${s.adventure.sectionLabel(cur, tot)}`;
+  const ctaLabel = isBoss ? s.adventure.phaseStartBoss
+    : isReview ? s.adventure.phaseStartReview
     : s.adventure.phaseStart;
 
-  const CARD_W   = Math.min(272, window.innerWidth - 32);
-  const cx       = nodeRect.left + nodeRect.width / 2;
-  const cardLeft = Math.max(16, Math.min(cx - CARD_W / 2, window.innerWidth - CARD_W - 16));
-  const cardTop  = nodeRect.bottom + 12;
+  const inner = (
+    <>
+      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>{label}</p>
+      <p className="mt-1 text-sm font-bold leading-snug" style={{ color: c.parchment }}>{phase.title}</p>
+      {phase.npc_name && !isBoss && (
+        <p className="mt-0.5 text-[11px]" style={{ color: c.textOnBg }}>{phase.npc_name}</p>
+      )}
+      <button
+        type="button"
+        onClick={onStart}
+        className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition active:scale-[0.98]"
+        style={{ background: ctaBg, color: "#fff" }}
+      >
+        {isBoss ? <Skull size={15} /> : <Swords size={15} />}
+        {ctaLabel}
+      </button>
+    </>
+  );
+
+  if (!nodeRect) {
+    return (
+      <div className="fixed inset-0 z-40" onClick={onClose}>
+        <div
+          className="absolute inset-x-0 bottom-0 rounded-t-2xl px-5 pb-10 pt-4"
+          style={{
+            background: `linear-gradient(160deg, ${c.bgMid} 0%, ${c.bgFrom} 100%)`,
+            borderTop: `1px solid ${c.parchmentBorder}`,
+            boxShadow: "0 -8px 32px rgba(0,0,0,0.25)",
+            animation: "sheetSlideUp 220ms ease-out both",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="mx-auto mb-4 h-1 w-10 rounded-full" style={{ background: c.textFaint }} />
+          {inner}
+        </div>
+      </div>
+    );
+  }
+
+  const CARD_W    = Math.min(272, window.innerWidth - 32);
+  const cx        = nodeRect.left + nodeRect.width / 2;
+  const cardLeft  = Math.max(16, Math.min(cx - CARD_W / 2, window.innerWidth - CARD_W - 16));
+  const cardTop   = nodeRect.bottom + 12;
   const arrowLeft = Math.max(12, Math.min(cx - cardLeft, CARD_W - 12));
 
   return (
     <div className="fixed inset-0 z-40" onClick={onClose}>
       <div
         className="absolute"
-        style={{
-          left: cardLeft,
-          top: cardTop,
-          width: CARD_W,
-          animation: "fadeIn 120ms ease-out both",
-        }}
+        style={{ left: cardLeft, top: cardTop, width: CARD_W, animation: "fadeIn 120ms ease-out both" }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Arrow pointing UP toward the node */}
         <div
           className="absolute"
           style={{
-            top: 0,
-            left: arrowLeft - 8,
-            transform: "translateY(-100%)",
-            width: 0,
-            height: 0,
+            top: 0, left: arrowLeft - 8, transform: "translateY(-100%)",
+            width: 0, height: 0,
             borderLeft: "8px solid transparent",
             borderRight: "8px solid transparent",
             borderBottom: `8px solid ${c.bgMid}`,
           }}
         />
-
-        {/* Card */}
         <div
           className="rounded-2xl px-4 pt-3.5 pb-4"
           style={{
@@ -205,27 +224,7 @@ function PhaseEntry({
             boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
           }}
         >
-          <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-            {label}
-          </p>
-          <p className="mt-1 text-sm font-bold leading-snug" style={{ color: c.parchment }}>
-            {phase.title}
-          </p>
-          {phase.npc_name && !isBoss && (
-            <p className="mt-0.5 text-[11px]" style={{ color: c.textOnBg }}>
-              {phase.npc_name}
-            </p>
-          )}
-
-          <button
-            type="button"
-            onClick={onStart}
-            className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-bold transition active:scale-[0.98]"
-            style={{ background: ctaBg, color: "#fff" }}
-          >
-            {isBoss ? <Skull size={15} /> : <Swords size={15} />}
-            {ctaLabel}
-          </button>
+          {inner}
         </div>
       </div>
     </div>
@@ -294,12 +293,14 @@ function PhaseNode({
   phase,
   pos,
   currentPhaseNumber,
+  themeMode,
   c,
   onClick,
 }: {
   phase: AdventurePhase;
   pos: { x: number; y: number };
   currentPhaseNumber: number;
+  themeMode: AdventureThemeMode;
   c: ReturnType<typeof getAdventureColors>;
   onClick: (rect: DOMRect) => void;
 }) {
@@ -308,6 +309,7 @@ function PhaseNode({
   const isLocked    = !isCompleted && !isCurrent;
   const isBoss      = phase.is_boss;
   const isReview    = phase.phase_type === "review";
+  const isLight     = themeMode === "light";
 
   const size     = isBoss ? 64 : 54;
   const ringSize = size + 14;
@@ -325,6 +327,10 @@ function PhaseNode({
     ? `0 0 0 2px ${c.nodeCompleted}80, 0 4px 12px rgba(0,0,0,0.18)`
     : "0 4px 14px rgba(0,0,0,0.15)";
 
+  const border = isLight
+    ? `2px solid ${isCompleted ? c.nodeCompleted : isCurrent ? activeColor : c.pathColor}80`
+    : undefined;
+
   const sectionCount       = phase.section_count ?? 6;
   const completedSections  = phase.completed_sections ?? 0;
   const showRing = isCurrent;
@@ -339,7 +345,7 @@ function PhaseNode({
         width: ringSize,
         height: ringSize,
         zIndex: isCurrent ? 2 : 1,
-        opacity: isLocked ? 0.45 : 1,
+        opacity: isLocked ? (isLight ? 0.6 : 0.45) : 1,
         animation: isCurrent ? "adventureBounce 1.4s ease-in-out infinite" : undefined,
       }}
     >
@@ -358,6 +364,7 @@ function PhaseNode({
       <button
         type="button"
         disabled={isLocked}
+        data-current-phase={isCurrent ? "true" : undefined}
         onClick={(e) => onClick((e.currentTarget as HTMLElement).getBoundingClientRect())}
         className="absolute left-1/2 top-1/2 flex items-center justify-center rounded-full font-bold transition"
         style={{
@@ -366,6 +373,7 @@ function PhaseNode({
           height: size,
           background: bg,
           boxShadow,
+          border,
           cursor: isLocked ? "not-allowed" : "pointer",
           color: isLocked ? c.textOnBg : "#ffffff",
         }}
@@ -416,7 +424,22 @@ export default function AdventureMapScreen({ langCode, themeMode, onStartChapter
   const chapters = ADVENTURE_IT_MOCK;
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
   const c = getAdventureColors(effectiveLangCode, themeMode);
-  const [entry, setEntry] = useState<{ phase: AdventurePhase; chapter: AdventureChapter; nodeRect: DOMRect } | null>(null);
+
+  const [entry, setEntry] = useState<{ phase: AdventurePhase; chapter: AdventureChapter; nodeRect: DOMRect | null } | null>(null);
+
+  useEffect(() => {
+    for (const chapter of chapters) {
+      const cur = chapter.progress?.current_phase ?? 1;
+      const phase = chapter.phases.find((p) => p.number === cur && !p.is_completed);
+      if (phase) {
+        const el = document.querySelector("[data-current-phase='true']");
+        const nodeRect = el ? (el as HTMLElement).getBoundingClientRect() : null;
+        setEntry({ phase, chapter, nodeRect });
+        break;
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative pb-8">
@@ -481,6 +504,7 @@ export default function AdventureMapScreen({ langCode, themeMode, onStartChapter
                     phase={phase}
                     pos={pos}
                     currentPhaseNumber={currentPhaseNumber}
+                    themeMode={themeMode}
                     c={c}
                     onClick={(rect) => {
                       if (phase.is_completed || phase.number !== currentPhaseNumber) return;
@@ -501,7 +525,6 @@ export default function AdventureMapScreen({ langCode, themeMode, onStartChapter
         );
       })}
 
-      {/* Phase entry confirmation */}
       {entry && (
         <PhaseEntry
           phase={entry.phase}

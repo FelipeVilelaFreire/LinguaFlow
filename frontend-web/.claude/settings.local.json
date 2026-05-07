@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "Bash(npx vite *)"
+      "Bash(npx vite *)",
+      "Bash(sed -i 's/Conta Talkly/Conta Fluenci/g; s/Talkly Account/Fluenci Account/g' src/constants/strings.ts)",
+      "Bash(sed -i 's/talkly_ui_locale/fluenci_ui_locale/g' src/App.tsx)",
+      "Bash(sed -i 's/talkly:favorites/fluenci:favorites/g' src/data/mockContent.ts)",
+      "Bash(sed -i 's/talkly_opening_it/fluenci_opening_it/g' src/screens/adventure/AdventureModule.tsx)",
+      "Bash(sed -i 's/talkly_access_token/fluenci_access_token/g; s/talkly_refresh_token/fluenci_refresh_token/g' src/services/api.ts)"
     ]
   }
 }

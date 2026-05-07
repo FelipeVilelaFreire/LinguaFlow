@@ -1,264 +1,279 @@
-import { useState } from "react";
-import { ChevronLeft, Star, Trophy } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { useStrings } from "../../contexts/StringsContext";
 import { getAdventureColors } from "../../theme/adventureColors";
 
 type Colors = ReturnType<typeof getAdventureColors>;
 
-// ── Section type interfaces ───────────────────────────────────────────────────
+// ── Beat types — Cotidiano only ────────────────────────────────────────────────
 
-interface CotidianoSection {
-  type: "cotidiano";
-  scene: string;
-  narrative: string;
-  npc: string;
-  npcLine: string;
-  npcTranslation: string;
-}
-interface AquecimentoSection {
-  type: "aquecimento";
-  narrative: string;
-  vocab: Array<{ it: string; pt: string }>;
-}
-interface EventoPrincipalSection {
-  type: "evento-principal";
-  narrative: string;
-  npc: string;
-  npcLine: string;
-  npcTranslation: string;
-  highlight: { phrase: string; meaning: string };
-}
-interface DecodificacaoSection {
-  type: "decodificacao";
-  narrative: string;
-  pattern: { formula: string; example: string; translation: string; note: string };
-}
-interface PraticaSection {
-  type: "pratica";
-  narrative: string;
-  npc: string;
-  npcLine: string;
-  npcTranslation: string;
-  exercise: { phrase: string; answer: string };
-}
-interface ObstaculoSection {
-  type: "obstaculo";
-  narrative: string;
-  npc: string;
-  npcLine: string;
-  npcTranslation: string;
-  challenge: { question: string; options: Array<{ id: string; text: string }>; correct: string };
-}
+export type CotidianoBeat =
+  | { kind: "scene";     text: string }
+  | { kind: "narrative"; text: string }
+  | { kind: "npc";       npc: string; line: string; translation?: string }
+  | { kind: "player";    text: string };
 
-type PhaseSection =
+// ── Step types — all step-based sections ──────────────────────────────────────
+
+export type SectionStep =
+  | { kind: "narrative";       text: string }
+  | { kind: "scene";           text: string }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string }
+  | { kind: "player_react";    text: string }
+  | { kind: "reveal";          phrase: string; meaning: string; note?: string }
+  | { kind: "pattern";         parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
+  | { kind: "vocab_list";      items: Array<{ target: string; native: string }> }
+  | { kind: "multiple_choice"; question: string; options: Array<{ id: string; text: string }>; correct: string; explanation?: string }
+  | { kind: "fill_blank";      prompt: string; answer: string }
+  | { kind: "translate";       source: string; answer: string };
+
+// ── Section types (backend architecture — not shown to player) ─────────────────
+
+export interface CotidianoSection   { type: "cotidiano";   beats: CotidianoBeat[]; exercises?: SectionStep[] }
+export interface VocabularioSection { type: "vocabulario"; steps: SectionStep[] }
+export interface PraticaSection     { type: "pratica";     steps: SectionStep[] }
+export interface DialogoSection     { type: "dialogo";     steps: SectionStep[] }
+export interface GramaticaSection   { type: "gramatica";   steps: SectionStep[] }
+export interface ObstaculoSection   { type: "obstaculo";   steps: SectionStep[] }
+
+export type PhaseSection =
   | CotidianoSection
-  | AquecimentoSection
-  | EventoPrincipalSection
-  | DecodificacaoSection
+  | VocabularioSection
   | PraticaSection
+  | DialogoSection
+  | GramaticaSection
   | ObstaculoSection;
 
-// ── Mock sections — Phase 1, Italian T1 ──────────────────────────────────────
+// ── Sub-components ─────────────────────────────────────────────────────────────
 
-const MOCK_SECTIONS: PhaseSection[] = [
-  {
-    type: "cotidiano",
-    npc: "Giovanni il Contadino",
-    scene: "Um campo de trigo ao amanhecer. O sol nasce por trás das colinas.",
-    narrative:
-      "Você acorda sozinho num campo de trigo dourado. Não sabe seu nome, não sabe de onde veio. Uma figura se aproxima.",
-    npcLine: "Ehi, straniero! Stai bene?",
-    npcTranslation: "Ei, forasteiro! Você está bem?",
-  },
-  {
-    type: "aquecimento",
-    narrative: "Giovanni te ensina as primeiras palavras. Leia cada uma em voz alta:",
-    vocab: [
-      { it: "ciao",       pt: "olá / tchau" },
-      { it: "buongiorno", pt: "bom dia" },
-      { it: "come stai?", pt: "como vai você?" },
-      { it: "bene",       pt: "bem" },
-      { it: "grazie",     pt: "obrigado/a" },
-    ],
-  },
-  {
-    type: "evento-principal",
-    npc: "Giovanni il Contadino",
-    narrative: "Giovanni para diante de você. Coloca a mão no peito e fala com orgulho:",
-    npcLine: "Mi chiamo Giovanni. E tu, come ti chiami?",
-    npcTranslation: "Meu nome é Giovanni. E você, como se chama?",
-    highlight: { phrase: "Mi chiamo...", meaning: "Meu nome é..." },
-  },
-  {
-    type: "decodificacao",
-    narrative: "Você acabou de aprender o padrão mais importante para se apresentar em italiano:",
-    pattern: {
-      formula: "Mi chiamo + [nome]",
-      example: "Mi chiamo Marco.",
-      translation: "Meu nome é Marco.",
-      note: "'Chiamarsi' é reflexivo — 'mi' indica que a ação recai sobre você mesmo.",
-    },
-  },
-  {
-    type: "pratica",
-    npc: "Giovanni il Contadino",
-    narrative: "Giovanni aponta para você, curioso:",
-    npcLine: "E tu? Come ti chiami?",
-    npcTranslation: "E você? Como se chama?",
-    exercise: { phrase: "Mi chiamo...", answer: "Meu nome é..." },
-  },
-  {
-    type: "obstaculo",
-    npc: "Guarda del Borgo",
-    narrative:
-      "O portão do vilarejo está fechado. O guarda cruza os braços e te barra a passagem.",
-    npcLine: "Come stai, forestiero?",
-    npcTranslation: "Como vai, forasteiro?",
-    challenge: {
-      question: "O que significa 'Come stai'?",
-      options: [
-        { id: "a", text: "Como se chama?" },
-        { id: "b", text: "Como vai você?" },
-        { id: "c", text: "Onde está?" },
-        { id: "d", text: "O que quer?" },
-      ],
-      correct: "b",
-    },
-  },
-];
-
-// ── NPC speech bubble ─────────────────────────────────────────────────────────
-
-function NpcSpeech({ npc, line, translation, c }: {
-  npc: string;
-  line: string;
-  translation: string;
-  c: Colors;
-}) {
+function SceneBar({ text, c }: { text: string; c: Colors }) {
   return (
     <div
-      className="rounded-2xl p-4"
-      style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+      className="flex items-center gap-2 rounded-xl px-3 py-2.5"
+      style={{ background: c.surface, border: `1px solid ${c.borderFaint}`, animation: "narrativeFadeIn 300ms ease-out both" }}
     >
-      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-        {npc}
-      </p>
-      <p className="text-base font-semibold italic leading-relaxed" style={{ color: c.parchment }}>
-        "{line}"
-      </p>
-      <p className="mt-1.5 text-xs font-medium" style={{ color: c.textOnBg }}>
-        {translation}
-      </p>
+      <p className="text-xs font-medium italic" style={{ color: c.textFaint }}>{text}</p>
     </div>
   );
 }
 
-// ── Props ─────────────────────────────────────────────────────────────────────
+function NpcBubble({ npc, line, translation, c }: {
+  npc: string; line: string; translation?: string; c: Colors;
+}) {
+  const initial = npc.charAt(0).toUpperCase();
+  return (
+    <div className="flex items-start gap-3" style={{ animation: "narrativeFadeIn 300ms ease-out both" }}>
+      <div
+        className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold"
+        style={{ background: c.ctaBg, color: "#fff" }}
+      >{initial}</div>
+      <div className="flex min-w-0 flex-col gap-1">
+        <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: c.goldAccent }}>{npc}</p>
+        <div className="rounded-2xl rounded-tl-sm px-4 py-3" style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}>
+          <p className="text-base font-semibold italic leading-relaxed" style={{ color: c.parchment }}>"{line}"</p>
+          {translation && (
+            <p className="mt-1.5 text-xs font-medium" style={{ color: c.textOnBg }}>{translation}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlayerBubble({ text, c }: { text: string; c: Colors }) {
+  return (
+    <div className="flex items-end justify-end gap-2.5" style={{ animation: "narrativeFadeIn 300ms ease-out both" }}>
+      <div
+        className="rounded-2xl rounded-br-sm px-4 py-3"
+        style={{ background: `${c.nodeActive}22`, border: `1px solid ${c.nodeActive}50`, maxWidth: "78%" }}
+      >
+        <p className="text-base italic leading-relaxed" style={{ color: c.parchment }}>{text}</p>
+      </div>
+      <div
+        className="mb-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold"
+        style={{ background: `${c.nodeActive}40`, color: c.parchment }}
+      >Eu</div>
+    </div>
+  );
+}
+
+// ── Props & fallback ───────────────────────────────────────────────────────────
+
+const FALLBACK_SECTION: PhaseSection = {
+  type: "cotidiano",
+  beats: [
+    { kind: "scene", text: "Borgo · Manhã" },
+    { kind: "npc", npc: "Giovanni", line: "Ciao, forestiero!", translation: "Olá, forasteiro!" },
+  ],
+  exercises: [],
+};
 
 export interface AdventureChapterSectionsProps {
+  section?: PhaseSection;
+  sectionNumber?: number;
+  totalSections?: number;
   phaseNumber: number;
   langCode: string;
+  onComplete?: () => void;
   onBack: () => void;
 }
 
-// ── Component — fills its container (parent sets height + bg) ─────────────────
+// ── Component ─────────────────────────────────────────────────────────────────
 
 export default function AdventureChapterSections({
+  section = FALLBACK_SECTION,
+  sectionNumber = 1,
+  totalSections = 6,
   phaseNumber,
   langCode,
+  onComplete = () => {},
   onBack,
 }: AdventureChapterSectionsProps) {
   const s = useStrings();
   const c = getAdventureColors(langCode, "dark");
 
-  const [sectionIdx,       setSectionIdx]       = useState(0);
-  const [practiceRevealed, setPracticeRevealed] = useState(false);
-  const [chosenOption,     setChosenOption]      = useState<string | null>(null);
-  const [phaseComplete,    setPhaseComplete]     = useState(false);
+  const [beatIdx,        setBeatIdx]        = useState(0);
+  const [inExercises,    setInExercises]    = useState(false);
+  const [exerciseIdx,    setExerciseIdx]    = useState(0);
 
-  const sections = MOCK_SECTIONS;
-  const section  = sections[sectionIdx];
-  const total    = sections.length;
+  const [stepIdx,   setStepIdx]   = useState(0);
+  const [answer,    setAnswer]    = useState<string | null>(null);
+  const [revealed,  setRevealed]  = useState(false);
 
-  function advance() {
-    setPracticeRevealed(false);
-    setChosenOption(null);
-    if (sectionIdx >= total - 1) {
-      setPhaseComplete(true);
-    } else {
-      setSectionIdx((i) => i + 1);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  function nextDialogueOrLast(beats: CotidianoBeat[], from: number): number {
+    for (let i = from; i < beats.length; i++) {
+      if (beats[i].kind === "npc" || beats[i].kind === "player") return i;
     }
+    return beats.length - 1;
   }
 
-  const typeLabels: Record<PhaseSection["type"], string> = {
-    "cotidiano":         s.adventure.sectionTypeCotidiano,
-    "aquecimento":       s.adventure.sectionTypeAquecimento,
-    "evento-principal":  s.adventure.sectionTypeEventoP,
-    "decodificacao":     s.adventure.sectionTypeDecodificacao,
-    "pratica":           s.adventure.sectionTypePratica,
-    "obstaculo":         s.adventure.sectionTypeObstaculo,
-  };
+  // Returns the last scene/narrative beat before the first npc/player beat.
+  // This lets the opening context appear automatically; first tap reveals the NPC.
+  function lastContextBeat(beats: CotidianoBeat[]): number {
+    for (let i = 0; i < beats.length; i++) {
+      if (beats[i].kind === "npc" || beats[i].kind === "player") return Math.max(0, i - 1);
+    }
+    return beats.length - 1;
+  }
 
-  // ── Phase complete ────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (section.type === "cotidiano") {
+      setBeatIdx(lastContextBeat(section.beats));
+      setInExercises(false);
+      setExerciseIdx(0);
+    } else {
+      setStepIdx(0);
+    }
+    setAnswer(null);
+    setRevealed(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [section]);
 
-  if (phaseComplete) {
+  useEffect(() => {
+    if (section.type === "cotidiano" && !inExercises && contentRef.current) {
+      contentRef.current.scrollTo({ top: contentRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [beatIdx, inExercises, section.type]);
+
+  const isCotidiano  = section.type === "cotidiano";
+  const cotExercises = isCotidiano ? (section.exercises ?? []) : [];
+
+  // Unified "active step" — cotidiano exercise phase OR section steps
+  const hasSteps    = "steps" in section;
+  const steps       = hasSteps ? section.steps : [];
+  const activeStep: SectionStep | null = isCotidiano
+    ? (inExercises ? (cotExercises[exerciseIdx] ?? null) : null)
+    : (steps[stepIdx] ?? null);
+  const activeStepCount: number | null = isCotidiano
+    ? (inExercises ? cotExercises.length : null)
+    : steps.length;
+  const activeStepIdx = isCotidiano ? exerciseIdx : stepIdx;
+
+  const canContinue = (() => {
+    if (isCotidiano && !inExercises) return true;
+    if (!activeStep) return true;
+    if (activeStep.kind === "fill_blank" || activeStep.kind === "translate") return revealed;
+    if (activeStep.kind === "multiple_choice") {
+      return section.type === "obstaculo" ? answer === activeStep.correct : answer !== null;
+    }
+    return true;
+  })();
+
+  function advance() {
+    if (isCotidiano) {
+      if (inExercises) {
+        if (exerciseIdx >= cotExercises.length - 1) { onComplete(); return; }
+        setExerciseIdx(i => i + 1);
+        setAnswer(null);
+        setRevealed(false);
+        return;
+      }
+      if (beatIdx >= section.beats.length - 1) {
+        if (cotExercises.length > 0) { setInExercises(true); setAnswer(null); setRevealed(false); return; }
+        onComplete();
+        return;
+      }
+      setBeatIdx(nextDialogueOrLast(section.beats, beatIdx + 1));
+      return;
+    }
+    if (stepIdx >= steps.length - 1) { onComplete(); return; }
+    setStepIdx(i => i + 1);
+    setAnswer(null);
+    setRevealed(false);
+  }
+
+  // ── Shared multiple-choice renderer ─────────────────────────────────────────
+
+  function renderChoice(opts: {
+    question: string;
+    options: Array<{ id: string; text: string }>;
+    correct: string;
+    explanation?: string;
+    currentAnswer: string | null;
+    onPick: (id: string) => void;
+    gated: boolean;
+    animKey: string;
+  }) {
+    const { question, options, correct, explanation, currentAnswer, onPick, gated, animKey } = opts;
+    const isCorrect = currentAnswer === correct;
     return (
-      <div className="relative flex h-full flex-col items-center justify-center overflow-hidden p-6 text-center">
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{ background: `radial-gradient(ellipse at 50% 25%, ${c.nodeActiveGlow}, transparent 60%)` }}
-        />
-        <div className="relative z-10 flex flex-col items-center">
-          <div
-            className="grid h-24 w-24 place-items-center rounded-full shadow-2xl"
-            style={{
-              background: `linear-gradient(135deg, ${c.nodeActive}, ${c.ctaBg})`,
-              boxShadow: `0 0 40px ${c.nodeActiveGlow}`,
-              animation: "successPop 420ms ease-out both",
-            }}
-          >
-            <Trophy size={40} color="#fff" />
-          </div>
-
-          <p className="mt-5 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-            {s.adventure.phaseComplete}
-          </p>
-          <p className="mt-2 text-3xl font-bold" style={{ color: c.parchment }}>
-            {s.adventure.phaseLabel(phaseNumber)}
-          </p>
-
-          <div className="mt-5 flex gap-3">
-            {[1, 2, 3].map((i) => (
-              <Star
-                key={i}
-                size={34}
-                fill={c.goldAccent}
-                stroke={c.goldAccent}
-                style={{ animation: `successPop ${200 + i * 150}ms ease-out both` }}
-              />
-            ))}
-          </div>
-
-          <button
-            type="button"
-            onClick={onBack}
-            className="mt-10 flex h-14 w-full max-w-xs items-center justify-center rounded-2xl text-base font-bold"
-            style={{ background: c.ctaBg, color: "#fff" }}
-          >
-            {s.adventure.backToMap}
-          </button>
+      <div key={animKey} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
+        <p className="px-1 text-base font-semibold leading-snug" style={{ color: c.parchment }}>{question}</p>
+        <div className="flex flex-col gap-2">
+          {options.map(({ id, text }) => {
+            const chosen  = currentAnswer === id;
+            const isRight = id === correct;
+            let bg = c.surfaceMid, border = c.borderFaint, color = c.textOnBg;
+            if (chosen  && isRight)  { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
+            if (chosen  && !isRight) { bg = "#dc262622"; border = "#dc262680"; color = "#f87171"; }
+            if (!chosen && currentAnswer && isRight) { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => { if (gated ? currentAnswer !== correct : !currentAnswer) onPick(id); }}
+                className="w-full rounded-xl px-4 py-3.5 text-left text-sm font-semibold transition active:scale-[0.98]"
+                style={{ background: bg, border: `1px solid ${border}`, color }}
+              >{text}</button>
+            );
+          })}
         </div>
+        {currentAnswer && (
+          <p
+            className="px-1 text-sm font-semibold"
+            style={{ color: isCorrect ? "#4ade80" : "#f87171", animation: "fadeIn 180ms ease-out both" }}
+          >
+            {isCorrect
+              ? (explanation ?? s.adventure.obstacleCorrect)
+              : s.adventure.obstacleWrong}
+          </p>
+        )}
       </div>
     );
   }
-
-  // ── Can continue? ─────────────────────────────────────────────────────────
-
-  const canContinue =
-    section.type === "obstaculo" ? chosenOption === section.challenge.correct :
-    section.type === "pratica"   ? practiceRevealed :
-    true;
 
   return (
     <div className="flex h-full flex-col">
@@ -275,203 +290,227 @@ export default function AdventureChapterSections({
             <ChevronLeft size={15} />
             {s.adventure.exit}
           </button>
-          <p className="text-xs font-bold" style={{ color: c.goldAccent }}>
-            {s.adventure.phaseLabel(phaseNumber)} · {s.adventure.sectionLabel(sectionIdx + 1, total)}
-          </p>
+          <div className="flex flex-col gap-0.5">
+            <p className="text-xs font-bold" style={{ color: c.goldAccent }}>
+              {s.adventure.phaseLabel(phaseNumber)} · {s.adventure.sectionLabel(sectionNumber, totalSections)}
+            </p>
+            {activeStepCount != null && (
+              <p className="text-[10px] font-semibold" style={{ color: c.textFaint }}>
+                {activeStepIdx + 1} / {activeStepCount}
+              </p>
+            )}
+          </div>
         </div>
+
+        {/* Section progress */}
         <div className="flex gap-1.5">
-          {sections.map((_, i) => (
+          {Array.from({ length: totalSections }, (_, i) => (
             <div
               key={i}
               className="h-1.5 flex-1 rounded-full transition-all duration-300"
               style={{
                 background:
-                  i < sectionIdx  ? c.nodeCompleted :
-                  i === sectionIdx ? c.nodeActive :
+                  i < sectionNumber - 1  ? c.nodeCompleted :
+                  i === sectionNumber - 1 ? c.nodeActive :
                   c.surface,
               }}
             />
           ))}
         </div>
+
+        {/* Step progress within section */}
+        {activeStepCount != null && (
+          <div className="mt-1.5 flex gap-1">
+            {Array.from({ length: activeStepCount }, (_, i) => (
+              <div
+                key={i}
+                className="h-1 flex-1 rounded-full transition-all duration-300"
+                style={{
+                  background:
+                    i < activeStepIdx  ? c.nodeCompleted :
+                    i === activeStepIdx ? c.goldAccent :
+                    c.surface,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </header>
 
-      {/* Section type pill */}
-      <div className="shrink-0 px-4 py-2">
-        <span
-          className="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest"
-          style={{ background: c.surfaceMid, color: c.goldAccent }}
-        >
-          {typeLabels[section.type]}
-        </span>
-      </div>
+      {/* Content */}
+      <div ref={contentRef} className="flex-1 overflow-y-auto px-4 pb-4 pt-3">
 
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-4 pb-4 pt-2">
-
-        {section.type === "cotidiano" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-xs italic" style={{ color: c.textFaint }}>{section.scene}</p>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <NpcSpeech npc={section.npc} line={section.npcLine} translation={section.npcTranslation} c={c} />
+        {/* ── Cotidiano — accumulated chat (beat phase only) ────────────────── */}
+        {isCotidiano && !inExercises && (
+          <div className="flex flex-col gap-4">
+            {section.beats.slice(0, beatIdx + 1).map((beat, i) => {
+              const delay = `${i * 160}ms`;
+              if (beat.kind === "scene") return (
+                <div key={i} style={{ animationDelay: delay }}><SceneBar text={beat.text} c={c} /></div>
+              );
+              if (beat.kind === "narrative") return (
+                <div
+                  key={i}
+                  className="flex flex-col gap-3 px-1"
+                  style={{ animation: "narrativeFadeIn 350ms ease-out both", animationDelay: delay }}
+                >
+                  {beat.text.split("\n\n").map((para, j) => (
+                    <p key={j} className="text-base leading-relaxed" style={{ color: c.textOnBg }}>{para}</p>
+                  ))}
+                </div>
+              );
+              if (beat.kind === "npc") return (
+                <NpcBubble key={i} npc={beat.npc} line={beat.line} translation={beat.translation} c={c} />
+              );
+              if (beat.kind === "player") return <PlayerBubble key={i} text={beat.text} c={c} />;
+              return null;
+            })}
           </div>
         )}
 
-        {section.type === "aquecimento" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <div className="flex flex-col gap-2">
-              {section.vocab.map(({ it, pt }) => (
+        {/* ── Active step — exercises (cotidiano phase 2) OR section steps ─── */}
+        {activeStep && (() => {
+          const step = activeStep;
+          const key  = `${sectionNumber}-${activeStepIdx}`;
+
+          if (step.kind === "scene") return <SceneBar key={key} text={step.text} c={c} />;
+
+          if (step.kind === "narrative") return (
+            <div key={key} className="flex flex-col gap-3 px-1" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              {step.text.split("\n\n").map((para, j) => (
+                <p key={j} className="text-base leading-relaxed" style={{ color: c.textOnBg }}>{para}</p>
+              ))}
+            </div>
+          );
+
+          if (step.kind === "npc_speak") return (
+            <NpcBubble key={key} npc={step.npc} line={step.line} translation={step.translation} c={c} />
+          );
+
+          if (step.kind === "player_react") return (
+            <PlayerBubble key={key} text={step.text} c={c} />
+          );
+
+          if (step.kind === "reveal") return (
+            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              <div
+                className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 text-center"
+                style={{ background: `${c.goldAccent}18`, border: `1px solid ${c.goldAccent}45` }}
+              >
+                <p className="text-3xl font-bold italic" style={{ color: c.parchment }}>{step.phrase}</p>
+                <p className="text-lg font-semibold" style={{ color: c.goldAccent }}>{step.meaning}</p>
+              </div>
+              {step.note && (
+                <p className="px-2 text-xs italic leading-relaxed" style={{ color: c.textFaint }}>💡 {step.note}</p>
+              )}
+            </div>
+          );
+
+          if (step.kind === "pattern") return (
+            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              <div className="flex flex-col gap-4 rounded-2xl p-4" style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}>
+                <div>
+                  <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
+                    {s.adventure.patternFormula}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {step.parts.map((part, i) =>
+                      part.isKey ? (
+                        <span key={i} className="rounded-lg px-3 py-1.5 text-sm font-bold"
+                          style={{ background: `${c.goldAccent}20`, color: c.goldAccent, border: `1px solid ${c.goldAccent}45` }}
+                        >{part.text}</span>
+                      ) : (
+                        <span key={i} className="text-sm font-semibold" style={{ color: c.textFaint }}>{part.text}</span>
+                      )
+                    )}
+                  </div>
+                </div>
+                <div className="rounded-xl px-4 py-3" style={{ background: c.surface }}>
+                  <p className="text-base font-bold italic" style={{ color: c.parchment }}>{step.example}</p>
+                  <p className="mt-0.5 text-sm font-medium" style={{ color: c.textOnBg }}>{step.translation}</p>
+                </div>
+                <p className="text-xs italic leading-relaxed" style={{ color: c.textFaint }}>💡 {step.note}</p>
+              </div>
+            </div>
+          );
+
+          if (step.kind === "vocab_list") return (
+            <div key={key} className="flex flex-col gap-2" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              {step.items.map(({ target, native }, i) => (
                 <div
-                  key={it}
+                  key={target}
                   className="flex items-center justify-between rounded-xl px-4 py-3"
-                  style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                  style={{
+                    background: c.surfaceMid,
+                    border: `1px solid ${c.borderFaint}`,
+                    animation: `narrativeFadeIn 250ms ease-out ${i * 70}ms both`,
+                  }}
                 >
-                  <span className="text-lg font-bold" style={{ color: c.parchment }}>{it}</span>
-                  <span className="text-sm font-medium" style={{ color: c.textOnBg }}>{pt}</span>
+                  <span className="text-base font-bold italic" style={{ color: c.parchment }}>{target}</span>
+                  <span className="text-sm font-medium" style={{ color: c.textOnBg }}>{native}</span>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          );
 
-        {section.type === "evento-principal" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <NpcSpeech npc={section.npc} line={section.npcLine} translation={section.npcTranslation} c={c} />
-            <div
-              className="flex items-center justify-between rounded-xl px-4 py-3"
-              style={{ background: `${c.seasonBadgeBg}18`, border: `1px solid ${c.seasonBadgeBg}40` }}
-            >
-              <span className="text-base font-bold italic" style={{ color: c.parchment }}>
-                {section.highlight.phrase}
-              </span>
-              <span className="text-sm font-semibold" style={{ color: c.goldAccent }}>
-                {section.highlight.meaning}
-              </span>
-            </div>
-          </div>
-        )}
+          if (step.kind === "multiple_choice") return renderChoice({
+            question:      step.question,
+            options:       step.options,
+            correct:       step.correct,
+            explanation:   step.explanation,
+            currentAnswer: answer,
+            onPick:        (id) => { if (!answer || (section.type === "obstaculo" && answer !== step.correct)) setAnswer(id); },
+            gated:         section.type === "obstaculo",
+            animKey:       key,
+          });
 
-        {section.type === "decodificacao" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <div
-              className="flex flex-col gap-3 rounded-2xl p-4"
-              style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
-            >
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-                  Fórmula
-                </p>
-                <p className="mt-1 text-base font-bold" style={{ color: c.parchment }}>
-                  {section.pattern.formula}
-                </p>
-              </div>
-              <div className="rounded-xl px-3 py-2.5" style={{ background: c.surface }}>
-                <p className="text-base italic" style={{ color: c.parchment }}>{section.pattern.example}</p>
-                <p className="text-sm" style={{ color: c.textOnBg }}>{section.pattern.translation}</p>
-              </div>
-              <p className="text-xs italic leading-relaxed" style={{ color: c.textFaint }}>
-                {section.pattern.note}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {section.type === "pratica" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <NpcSpeech npc={section.npc} line={section.npcLine} translation={section.npcTranslation} c={c} />
-            <div
-              className="flex flex-col items-center gap-3 rounded-2xl p-5 text-center"
-              style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
-            >
-              <p className="text-2xl font-bold italic" style={{ color: c.parchment }}>
-                {section.exercise.phrase}
-              </p>
-              {practiceRevealed ? (
-                <p
-                  className="text-base font-semibold"
-                  style={{ color: c.goldAccent, animation: "fadeIn 200ms ease-out both" }}
-                >
-                  {section.exercise.answer}
-                </p>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setPracticeRevealed(true)}
-                  className="rounded-xl px-4 py-2 text-sm font-bold"
-                  style={{ background: c.surface, color: c.textOnBg }}
-                >
-                  {s.adventure.practiceReveal}
-                </button>
-              )}
-            </div>
-          </div>
-        )}
-
-        {section.type === "obstaculo" && (
-          <div className="flex flex-col gap-4" style={{ animation: "fadeIn 200ms ease-out both" }}>
-            <p className="text-base font-medium leading-relaxed" style={{ color: c.textOnBg }}>
-              {section.narrative}
-            </p>
-            <NpcSpeech npc={section.npc} line={section.npcLine} translation={section.npcTranslation} c={c} />
-            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-              {s.adventure.obstaclePrompt}
-            </p>
-            <p className="text-base font-semibold" style={{ color: c.parchment }}>
-              {section.challenge.question}
-            </p>
-            <div className="flex flex-col gap-2">
-              {section.challenge.options.map(({ id, text }) => {
-                const isChosen  = chosenOption === id;
-                const isCorrect = id === section.challenge.correct;
-
-                let bg     = c.surfaceMid;
-                let border = c.borderFaint;
-                let color  = c.textOnBg;
-
-                if (isChosen && isCorrect)  { bg = "#16a34a30"; border = "#16a34a"; color = "#4ade80"; }
-                else if (isChosen)          { bg = "#dc262630"; border = "#dc2626"; color = "#f87171"; }
-
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setChosenOption(id)}
-                    className="w-full rounded-xl px-4 py-3.5 text-left text-sm font-semibold transition active:scale-[0.98]"
-                    style={{ background: bg, border: `1px solid ${border}`, color }}
-                  >
-                    {text}
-                  </button>
-                );
-              })}
-            </div>
-            {chosenOption !== null && (
-              <p
-                className="text-sm font-bold"
-                style={{
-                  color: chosenOption === section.challenge.correct ? "#4ade80" : "#f87171",
-                  animation: "fadeIn 180ms ease-out both",
-                }}
+          if (step.kind === "fill_blank") return (
+            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              <div
+                className="flex flex-col items-center gap-5 rounded-2xl px-5 py-10 text-center"
+                style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
               >
-                {chosenOption === section.challenge.correct
-                  ? s.adventure.obstacleCorrect
-                  : s.adventure.obstacleWrong}
-              </p>
-            )}
-          </div>
-        )}
+                <p className="text-2xl font-bold italic" style={{ color: c.parchment }}>{step.prompt}</p>
+                {revealed ? (
+                  <p className="text-sm font-semibold leading-relaxed"
+                    style={{ color: c.goldAccent, animation: "fadeIn 200ms ease-out both" }}
+                  >{step.answer}</p>
+                ) : (
+                  <button type="button" onClick={() => setRevealed(true)}
+                    className="rounded-xl px-5 py-2.5 text-sm font-bold transition active:scale-[0.98]"
+                    style={{ background: c.surface, color: c.textOnBg, border: `1px solid ${c.borderFaint}` }}
+                  >{s.adventure.practiceReveal}</button>
+                )}
+              </div>
+            </div>
+          );
+
+          if (step.kind === "translate") return (
+            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
+              <div
+                className="flex flex-col items-center gap-5 rounded-2xl px-5 py-10 text-center"
+                style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+              >
+                <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  {s.adventure.translatePrompt}
+                </p>
+                <p className="text-xl font-semibold" style={{ color: c.parchment }}>{step.source}</p>
+                {revealed ? (
+                  <p className="text-base font-bold italic"
+                    style={{ color: c.goldAccent, animation: "fadeIn 200ms ease-out both" }}
+                  >{step.answer}</p>
+                ) : (
+                  <button type="button" onClick={() => setRevealed(true)}
+                    className="rounded-xl px-5 py-2.5 text-sm font-bold transition active:scale-[0.98]"
+                    style={{ background: c.surface, color: c.textOnBg, border: `1px solid ${c.borderFaint}` }}
+                  >{s.adventure.practiceReveal}</button>
+                )}
+              </div>
+            </div>
+          );
+
+          return null;
+        })()}
 
       </div>
 
@@ -482,10 +521,7 @@ export default function AdventureChapterSections({
           disabled={!canContinue}
           onClick={advance}
           className="flex h-14 w-full items-center justify-center rounded-2xl text-base font-bold transition"
-          style={{
-            background: canContinue ? c.ctaBg : c.surface,
-            color: canContinue ? "#fff" : c.textFaint,
-          }}
+          style={{ background: canContinue ? c.ctaBg : c.surface, color: canContinue ? "#fff" : c.textFaint }}
         >
           {s.actions.continue}
         </button>

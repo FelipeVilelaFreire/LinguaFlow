@@ -1,36 +1,24 @@
-import { Lock, Trophy, Zap } from "lucide-react";
+import { Award, Flame, Swords, Zap } from "lucide-react";
 
 import { getAdventureColors } from "../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../theme/adventureColors";
 
-// Reward items match the Italian seeds: Sigillo → Mappa → Codice → Pietra → Corona
-const ITEMS = [
-  { key: "sigillo", name: "Sigillo",  emoji: "📜", season: 1 },
-  { key: "mappa",   name: "Mappa",    emoji: "🗺️",  season: 2 },
-  { key: "codice",  name: "Codice",   emoji: "📖", season: 3 },
-  { key: "pietra",  name: "Pietra",   emoji: "💎", season: 4 },
-  { key: "corona",  name: "Corona",   emoji: "👑", season: 5 },
+const USER_NAME  = "Felipe";
+const USER_PHOTO = "";
+
+const JOURNEY_ITEMS = [
+  { key: "sigillo", emoji: "📜", seasonBadge: "T1" },
+  { key: "mappa",   emoji: "🗺️",  seasonBadge: "T2" },
+  { key: "codice",  emoji: "📖", seasonBadge: "T3" },
+  { key: "pietra",  emoji: "💎", seasonBadge: "T4" },
+  { key: "corona",  emoji: "👑", seasonBadge: "T5" },
 ];
 
-// Placeholder stats — will come from backend
-const HERO = {
-  name:       "Il Viandante",
-  title:      "Viaggiatore",
-  level:      3,
-  xp:         1240,
-  xpNext:     2000,
-  attributes: [
-    { label: "Vocabulário", value: 68 },
-    { label: "Gramática",   value: 42 },
-    { label: "Fluência",    value: 31 },
-  ],
-  unlockedSeasons: 1,
-  achievements: [
-    { icon: "⚔️", label: "Primeira Batalha",  desc: "Completou a fase 1" },
-    { icon: "🔥", label: "Em Chamas",         desc: "7 dias seguidos" },
-    { icon: "📚", label: "Leitor de Runas",   desc: "50 frases aprendidas" },
-  ],
-};
+const ATTRIBUTES = [
+  { label: "Vocabulário" },
+  { label: "Gramática"   },
+  { label: "Fluência"    },
+];
 
 interface AdventureHeroScreenProps {
   langCode: string;
@@ -38,157 +26,160 @@ interface AdventureHeroScreenProps {
 }
 
 export default function AdventureHeroScreen({ langCode, themeMode }: AdventureHeroScreenProps) {
-  const c = getAdventureColors(langCode, themeMode);
-  const xpPct = Math.round((HERO.xp / HERO.xpNext) * 100);
+  const c       = getAdventureColors(langCode, themeMode);
+  const initial = USER_NAME.charAt(0).toUpperCase();
 
   return (
-    <div className="px-4 pb-6 pt-4">
-      {/* ── Avatar + title ───────────────────────────────────────── */}
-      <div className="flex flex-col items-center py-6 text-center">
+    <div className="px-4 pb-10 pt-6">
+
+      {/* ── Avatar + identity ───────────────────────────────────────── */}
+      <div className="mb-6 flex flex-col items-center text-center">
         <div
-          className="grid h-24 w-24 place-items-center rounded-full text-4xl shadow-xl"
-          style={{
-            background: `linear-gradient(135deg, ${c.nodeActive}, ${c.ctaBg})`,
-            boxShadow: `0 0 32px ${c.nodeActiveGlow}`,
-          }}
+          className="relative grid h-24 w-24 place-items-center rounded-full shadow-lg"
+          style={{ background: `linear-gradient(135deg, ${c.nodeActive}, ${c.ctaBg})` }}
         >
-          ⚔️
-        </div>
-        <p
-          className="mt-4 text-2xl font-bold tracking-tight"
-          style={{ color: c.parchment }}
-        >
-          {HERO.name}
-        </p>
-        <div className="mt-1 flex items-center gap-2">
+          {USER_PHOTO ? (
+            <img src={USER_PHOTO} alt={USER_NAME} className="h-full w-full rounded-full object-cover" />
+          ) : (
+            <span className="text-3xl font-bold" style={{ color: "#fff" }}>{initial}</span>
+          )}
           <span
-            className="rounded-full px-3 py-0.5 text-xs font-bold uppercase tracking-wider"
-            style={{ background: c.seasonBadgeBg, color: c.seasonBadgeText }}
+            className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold"
+            style={{ background: c.goldAccent, color: c.seasonBadgeText }}
           >
-            Nível {HERO.level}
-          </span>
-          <span className="text-xs font-semibold" style={{ color: `${c.parchment}60` }}>
-            {HERO.title}
+            1
           </span>
         </div>
-      </div>
 
-      {/* ── XP bar ───────────────────────────────────────────────── */}
-      <div
-        className="mb-4 rounded-xl p-4"
-        style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}25` }}
-      >
-        <div className="mb-2 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <Zap size={13} style={{ color: c.goldAccent }} />
-            <span className="text-xs font-bold uppercase tracking-wide" style={{ color: c.goldAccent }}>
-              XP
-            </span>
-          </div>
-          <span className="text-xs font-semibold" style={{ color: `${c.parchment}70` }}>
-            {HERO.xp.toLocaleString()} / {HERO.xpNext.toLocaleString()}
-          </span>
-        </div>
-        <div className="h-2.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
-          <div
-            className="h-full rounded-full transition-all"
-            style={{
-              width: `${xpPct}%`,
-              background: `linear-gradient(90deg, ${c.nodeActive}, ${c.goldAccent})`,
-              boxShadow: `0 0 8px ${c.nodeActiveGlow}`,
-            }}
-          />
-        </div>
-      </div>
-
-      {/* ── Attributes ───────────────────────────────────────────── */}
-      <section className="mb-4">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: `${c.parchment}50` }}>
-          Atributos
+        <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: c.goldAccent }}>
+          Il Viandante · A1
         </p>
+        <h2 className="mt-1 text-xl font-bold" style={{ color: c.parchment }}>
+          Forasteiro {USER_NAME}
+        </h2>
+        <p className="mt-0.5 text-xs" style={{ color: c.textFaint }}>Italiano · Nível 1</p>
+
+        {/* Stats row */}
         <div
-          className="flex flex-col gap-3 rounded-xl p-4"
-          style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}25` }}
+          className="mt-4 flex w-full divide-x rounded-xl overflow-hidden"
+          style={{ background: c.surfaceMid, borderColor: c.borderFaint }}
         >
-          {HERO.attributes.map(({ label, value }) => (
-            <div key={label}>
-              <div className="mb-1 flex items-center justify-between">
-                <span className="text-xs font-semibold" style={{ color: `${c.parchment}80` }}>{label}</span>
-                <span className="text-xs font-bold" style={{ color: c.goldAccent }}>{value}%</span>
-              </div>
-              <div className="h-2 overflow-hidden rounded-full" style={{ background: c.surface }}>
-                <div
-                  className="h-full rounded-full"
-                  style={{
-                    width: `${value}%`,
-                    background: c.pathColor,
-                    opacity: 0.75,
-                  }}
-                />
+          {[
+            { Icon: Swords, label: "Fases",     value: "0"  },
+            { Icon: Zap,    label: "XP",        value: "0"  },
+            { Icon: Flame,  label: "Sequência", value: "0d" },
+          ].map(({ Icon, label, value }) => (
+            <div key={label} className="flex flex-1 flex-col items-center gap-0.5 py-3">
+              <span className="text-base font-bold" style={{ color: c.parchment }}>{value}</span>
+              <div className="flex items-center gap-1">
+                <Icon size={10} style={{ color: c.textFaint }} />
+                <span className="text-[9px] uppercase tracking-wide" style={{ color: c.textFaint }}>{label}</span>
               </div>
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* ── Collected items (season rewards) ─────────────────────── */}
-      <section className="mb-4">
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: `${c.parchment}50` }}>
-          Itens Coletados
-        </p>
-        <div className="flex gap-2">
-          {ITEMS.map((item) => {
-            const unlocked = item.season <= HERO.unlockedSeasons;
-            return (
+      {/* ── Body ───────────────────────────────────────────────────── */}
+      <div>
+
+        {/* XP progress */}
+        <div
+          className="mb-5 rounded-2xl p-4"
+          style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}25` }}
+        >
+          <div className="mb-2.5 flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <Zap size={12} style={{ color: c.goldAccent }} />
+              <span className="text-xs font-bold uppercase tracking-wide" style={{ color: c.goldAccent }}>
+                XP · Nível 1
+              </span>
+            </div>
+            <span className="text-xs font-semibold tabular-nums" style={{ color: c.textFaint }}>0 / 1 000</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full" style={{ background: c.surface }}>
+            <div
+              className="h-full w-0 rounded-full"
+              style={{ background: `linear-gradient(90deg, ${c.nodeActive}, ${c.goldAccent})` }}
+            />
+          </div>
+        </div>
+
+        {/* Attributes */}
+        <section className="mb-5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
+            Atributos
+          </p>
+          <div
+            className="overflow-hidden rounded-2xl"
+            style={{ border: `1px solid ${c.borderFaint}` }}
+          >
+            {ATTRIBUTES.map(({ label }, i) => (
               <div
-                key={item.key}
-                className="flex flex-1 flex-col items-center gap-1.5 rounded-xl py-3"
+                key={label}
+                className="px-4 py-3"
                 style={{
-                  background: unlocked ? `${c.seasonBadgeBg}25` : c.surface,
-                  border: `1px solid ${unlocked ? c.seasonBadgeBg + "40" : c.borderFaint}`,
+                  background: c.surfaceMid,
+                  borderBottom: i < ATTRIBUTES.length - 1 ? `1px solid ${c.borderFaint}` : undefined,
                 }}
               >
-                <span
-                  className="text-xl"
-                  style={{ filter: unlocked ? "none" : "grayscale(1)", opacity: unlocked ? 1 : 0.30 }}
-                >
+                <div className="mb-1.5 flex items-center justify-between">
+                  <span className="text-xs font-semibold" style={{ color: c.textOnBg }}>{label}</span>
+                  <span className="text-xs font-bold tabular-nums" style={{ color: c.textFaint }}>0%</span>
+                </div>
+                <div className="h-1.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
+                  <div className="h-full w-0 rounded-full" style={{ background: c.pathColor }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Journey items */}
+        <section className="mb-5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
+            Itens da Jornada
+          </p>
+          <div className="grid grid-cols-5 gap-2">
+            {JOURNEY_ITEMS.map((item) => (
+              <div
+                key={item.key}
+                className="flex flex-col items-center gap-1.5 rounded-xl pb-3 pt-3.5"
+                style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
+              >
+                <span className="text-2xl leading-none" style={{ filter: "grayscale(1)", opacity: 0.22 }}>
                   {item.emoji}
                 </span>
                 <span
-                  className="text-[9px] font-bold uppercase tracking-wide"
-                  style={{ color: unlocked ? c.goldAccent : c.textFaint }}
+                  className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide"
+                  style={{ background: c.surfaceMid, color: c.textFaint }}
                 >
-                  {item.name}
+                  {item.seasonBadge}
                 </span>
-                {!unlocked && <Lock size={9} style={{ color: c.textFaint }} />}
               </div>
-            );
-          })}
-        </div>
-      </section>
+            ))}
+          </div>
+          <p className="mt-2 text-center text-[10px]" style={{ color: c.textFaint }}>
+            Derrote o boss de cada temporada para desbloquear
+          </p>
+        </section>
 
-      {/* ── Achievements ─────────────────────────────────────────── */}
-      <section>
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: `${c.parchment}50` }}>
-          Conquistas Recentes
-        </p>
-        <div className="flex flex-col gap-2">
-          {HERO.achievements.map(({ icon, label, desc }) => (
-            <div
-              key={label}
-              className="flex items-center gap-3 rounded-xl p-3"
-              style={{ background: c.surfaceMid, border: `1px solid ${c.pathColor}20` }}
-            >
-              <span className="text-xl">{icon}</span>
-              <div>
-                <p className="text-sm font-bold" style={{ color: c.parchment }}>{label}</p>
-                <p className="text-xs font-medium" style={{ color: `${c.parchment}55` }}>{desc}</p>
-              </div>
-              <Trophy size={14} className="ml-auto shrink-0" style={{ color: c.goldAccent }} />
-            </div>
-          ))}
-        </div>
-      </section>
+        {/* Achievements */}
+        <section>
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
+            Conquistas
+          </p>
+          <div
+            className="flex flex-col items-center gap-2 rounded-2xl py-10 text-center"
+            style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+          >
+            <Award size={32} style={{ color: c.textFaint }} />
+            <p className="text-sm font-semibold" style={{ color: c.textFaint }}>Nenhuma conquista ainda</p>
+            <p className="text-xs" style={{ color: c.textFaint }}>Complete fases para desbloquear</p>
+          </div>
+        </section>
+
+      </div>
     </div>
   );
 }

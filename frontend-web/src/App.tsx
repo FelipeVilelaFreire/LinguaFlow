@@ -19,11 +19,10 @@ import StudyScreen from "./screens/StudyScreen";
 import VocabularyScreen from "./screens/VocabularyScreen";
 import { authService, type User } from "./services/authService";
 import { contentService } from "./services/contentService";
-import { getStudyAreaTheme, getStudyAreaThemeStyle } from "./theme/studyAreaTheme";
 import type { Goal } from "./types/content";
 import type { AppRoute } from "./types/navigation";
 
-const UI_LOCALE_KEY = "talkly_ui_locale";
+const UI_LOCALE_KEY = "fluenci_ui_locale";
 
 // Maps AppRoute to a browser path (adventure-chapter is dynamic so omitted)
 const ROUTE_PATH: Partial<Record<AppRoute, string>> = {
@@ -50,6 +49,9 @@ export default function App() {
   });
   const [switchingAreaLabel, setSwitchingAreaLabel] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
+
+  const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
+  const langCode = goal?.target_language?.code ?? "IT";
 
   useEffect(() => {
     function handlePopState() {
@@ -98,7 +100,22 @@ export default function App() {
     if (route === "adventure") return <AdventureScreen />;
     if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} onNavigate={navigate} />;
     if (route === "vocabulary") return <VocabularyScreen />;
-    if (route === "history") return <HistoryScreen onBack={() => navigate("account")} />;
+    if (route === "history") return (
+      <div className="md:max-w-2xl md:mx-auto">
+        <HistoryScreen onBack={() => navigate("account")} />
+      </div>
+    );
+    if (route === "editprofile" && user) return (
+      <div className="md:max-w-2xl md:mx-auto">
+        <EditProfileScreen
+          user={user}
+          uiLocale={activeLocale}
+          onBack={() => navigate("account")}
+          onLocaleChange={changeUiLocale}
+          onLogout={logout}
+        />
+      </div>
+    );
     if (route === "account" && user) {
       return (
         <AccountScreen
@@ -115,7 +132,7 @@ export default function App() {
       );
     }
     return <HomeScreen hasActiveGoal={Boolean(goal)} onCreateArea={() => navigate("account")} onStartToday={() => navigate("today")} />;
-  }, [route, user, goal, goals]);
+  }, [route, user, goal, goals, activeLocale]);
 
   function navigate(nextRoute: AppRoute) {
     setRoute(nextRoute);
@@ -210,9 +227,6 @@ export default function App() {
     );
   }
 
-  const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
-  const langCode = goal?.target_language?.code ?? "IT";
-
   // ── Full-screen adventure chapter (exercise) ──────────────────────────────
   if (route === "adventure-chapter") {
     const chapterId = parseInt(window.location.pathname.split("/").pop() ?? "0");
@@ -249,39 +263,6 @@ export default function App() {
     );
   }
 
-  // ── Full-screen history ───────────────────────────────────────────────────
-  if (route === "history") {
-    const activeTheme = getStudyAreaTheme(goal);
-    return (
-      <StringsProvider locale={activeLocale}>
-        <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
-          <div className="mx-auto md:max-w-2xl">
-            <HistoryScreen onBack={() => navigate("account")} />
-          </div>
-        </div>
-      </StringsProvider>
-    );
-  }
-
-  // ── Full-screen edit profile ──────────────────────────────────────────────
-  if (route === "editprofile" && user) {
-    const activeTheme = getStudyAreaTheme(goal);
-    return (
-      <StringsProvider locale={activeLocale}>
-        <div className="min-h-screen" style={getStudyAreaThemeStyle(activeTheme)}>
-          <div className="mx-auto md:max-w-2xl">
-            <EditProfileScreen
-              user={user}
-              uiLocale={activeLocale}
-              onBack={() => navigate("account")}
-              onLocaleChange={changeUiLocale}
-              onLogout={logout}
-            />
-          </div>
-        </div>
-      </StringsProvider>
-    );
-  }
 
   // ── Main app with bottom nav ──────────────────────────────────────────────
   return (
@@ -294,6 +275,7 @@ export default function App() {
         navItems={NAV_ITEMS}
         user={user}
         uiLocale={activeLocale}
+        fullWidth={route === "adventure"}
         onCreateGoal={handleGoalChanged}
         onDeleteGoal={deleteGoal}
         onLocaleChange={changeUiLocale}

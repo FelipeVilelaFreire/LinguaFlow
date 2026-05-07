@@ -21,6 +21,7 @@ interface AppLayoutProps {
   goals: Goal[];
   switchingAreaLabel: string | null;
   uiLocale: AppLocale;
+  fullWidth?: boolean;
   onLocaleChange: (locale: AppLocale) => void;
   onCreateGoal: (goal: Goal) => void;
   onDeleteGoal: (goal: Goal) => void;
@@ -29,7 +30,7 @@ interface AppLayoutProps {
   onNavigate: (route: AppRoute) => void;
 }
 
-export default function AppLayout({ activeRoute, activeGoal, children, goals, navItems, switchingAreaLabel, uiLocale, user, onCreateGoal, onDeleteGoal, onLocaleChange, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
+export default function AppLayout({ activeRoute, activeGoal, children, fullWidth, goals, navItems, switchingAreaLabel, uiLocale, user, onCreateGoal, onDeleteGoal, onLocaleChange, onLogout, onSwitchGoal, onNavigate }: AppLayoutProps) {
   const [isAreaModalOpen, setIsAreaModalOpen] = useState(false);
   const [showAddArea, setShowAddArea] = useState(false);
   const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
@@ -157,8 +158,8 @@ export default function AppLayout({ activeRoute, activeGoal, children, goals, na
         </div>
       </aside>
 
-      <main className="min-h-screen px-3 pb-32 pt-3 md:ml-80 md:px-8 md:py-8">
-        <div key={activeRoute} className="mx-auto max-w-6xl animate-[fadeIn_220ms_ease-out]">{children}</div>
+      <main className={`min-h-screen px-3 pb-32 pt-3 md:ml-80 ${fullWidth ? "md:p-0" : "md:px-8 md:py-8"}`}>
+        <div key={activeRoute} className={`animate-[fadeIn_220ms_ease-out] ${fullWidth ? "h-full" : "mx-auto max-w-6xl"}`}>{children}</div>
       </main>
 
       <nav className="safe-bottom fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white px-2 pt-2 shadow-[0_-10px_24px_rgba(15,23,42,0.12)] backdrop-blur md:hidden">

@@ -1,4 +1,4 @@
-import { ArrowRight, Lock, RotateCcw, Sword } from "lucide-react";
+import { ArrowRight, BookOpen, Lock, RotateCcw, Sword } from "lucide-react";
 import { useState } from "react";
 
 import { useStrings } from "../contexts/StringsContext";
@@ -72,14 +72,24 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
                   ~{NEXT_PHASE.estimatedMin} min
                 </div>
               </div>
-              <button
-                type="button"
-                className="study-hero-btn"
-                onClick={(e) => { e.stopPropagation(); onNavigate("adventure"); }}
-              >
-                {s.study.continueAdventureBtn}
-                <ArrowRight size={16} strokeWidth={2.5} />
-              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  className="study-hero-btn-secondary"
+                  onClick={(e) => { e.stopPropagation(); onNavigate("adventure"); }}
+                >
+                  <Sword size={15} strokeWidth={2} />
+                  {s.study.continueAdventureBtn}
+                </button>
+                <button
+                  type="button"
+                  className="study-hero-btn"
+                  onClick={(e) => { e.stopPropagation(); }}
+                >
+                  {s.study.studyNowBtn}
+                  <BookOpen size={15} strokeWidth={2.5} />
+                </button>
+              </div>
             </div>
           </div>
 

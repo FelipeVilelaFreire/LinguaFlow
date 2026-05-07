@@ -38,11 +38,8 @@ export default function AdventureScreen() {
 
   return (
     <div
-      className="-mx-3 -mt-3 relative overflow-hidden md:-mx-8 md:-mt-8"
-      style={{
-        background: `linear-gradient(180deg, ${c.bgFrom} 0%, ${c.bgMid} 60%, ${c.bgTo} 100%)`,
-        minHeight: "calc(100dvh - 3.5rem)",
-      }}
+      className="-mx-3 -mt-3 overflow-hidden h-[calc(100dvh-3.5rem)] md:mx-0 md:mt-0 md:h-dvh"
+      style={{ background: `linear-gradient(180deg, ${c.bgFrom} 0%, ${c.bgMid} 60%, ${c.bgTo} 100%)` }}
     >
       {/* Glows */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -51,15 +48,14 @@ export default function AdventureScreen() {
       </div>
 
       {/*
-       * Layout:
-       * Mobile  → coluna única com padding normal
-       * Desktop → flex-row: painel esquerdo (sidebar) + painel direito (temporadas)
+       * Mobile  → flex-col: painel hero (fixo) + lista de temporadas (scroll)
+       * Desktop → flex-row: sidebar (fixo) + temporadas (scroll)
        */}
-      <div className="relative z-10 md:flex md:min-h-[calc(100dvh-3.5rem)]">
+      <div className="relative z-10 flex h-full flex-col md:flex-row">
 
-        {/* ── Painel esquerdo (sidebar no desktop) ──────────────────── */}
+        {/* ── Painel hero ────────────────────────────────────────────── */}
         <div
-          className="flex flex-col px-6 pt-6 pb-8 md:w-[340px] md:shrink-0 md:border-r md:px-8 md:py-10"
+          className="flex shrink-0 flex-col px-6 pt-6 pb-4 md:w-[340px] md:border-r md:px-8 md:py-10 md:pb-8"
           style={{ borderColor: `${c.pathColor}22` }}
         >
           {/* Badge */}
@@ -74,23 +70,23 @@ export default function AdventureScreen() {
           </div>
 
           {/* Título */}
-          <div className="mt-4">
+          <div className="mt-3">
             <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: `${c.parchment}40` }}>
               A história de
             </p>
             <h1
-              className="mt-1 text-5xl font-bold leading-none tracking-tight"
+              className="mt-0.5 text-4xl font-bold leading-none tracking-tight md:text-5xl"
               style={{ color: c.parchment, textShadow: `0 2px 24px ${c.pathGlow}` }}
             >
               Il Viandante
             </h1>
-            <p className="mt-2.5 text-sm font-medium leading-relaxed" style={{ color: `${c.parchment}65` }}>
+            <p className="mt-2 text-sm font-medium leading-relaxed" style={{ color: `${c.parchment}65` }}>
               Um viajante sem memória acorda na Itália medieval. A única forma de descobrir quem é — aprender o idioma que esqueceu.
             </p>
           </div>
 
           {/* Progresso */}
-          <div className="mt-5">
+          <div className="mt-4">
             <div className="mb-1.5 flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: `${c.parchment}40` }}>
                 Progresso
@@ -111,8 +107,8 @@ export default function AdventureScreen() {
             </div>
           </div>
 
-          {/* Espaçador — empurra fase+CTA para o fundo no desktop */}
-          <div className="hidden md:block flex-1" />
+          {/* Espaçador — empurra fase+CTA para o fundo só no desktop */}
+          <div className="hidden flex-1 md:block" />
 
           {/* Fase atual */}
           <div
@@ -149,11 +145,11 @@ export default function AdventureScreen() {
             </div>
           </div>
 
-          {/* CTA — largura total */}
+          {/* CTA */}
           <button
             type="button"
             onClick={enter}
-            className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-4 text-base font-bold shadow-xl transition active:scale-[0.98]"
+            className="mt-3 flex w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3.5 text-base font-bold shadow-xl transition active:scale-[0.98]"
             style={{
               background: `linear-gradient(135deg, ${c.ctaBg}, ${c.nodeActive})`,
               color: c.ctaText,
@@ -165,11 +161,10 @@ export default function AdventureScreen() {
           </button>
         </div>
 
-        {/* ── Painel direito: temporadas ─────────────────────────────── */}
-        <div className="flex-1 px-6 pb-8 md:overflow-y-auto md:px-10 md:py-10">
-
+        {/* ── Lista de temporadas (scroll interno) ───────────────────── */}
+        <div className="flex-1 overflow-y-auto px-6 pb-6 md:px-10 md:py-10">
           <p
-            className="mb-4 text-[10px] font-bold uppercase tracking-widest md:mb-6"
+            className="mb-3 pt-5 text-[10px] font-bold uppercase tracking-widest md:pt-0"
             style={{ color: `${c.parchment}40` }}
           >
             Temporadas
@@ -190,7 +185,6 @@ export default function AdventureScreen() {
                   className={`relative flex w-full items-center gap-4 py-4 text-left transition ${isUnlocked ? "hover:brightness-110 active:scale-[0.99]" : ""}`}
                   style={{ borderBottom: `1px solid ${c.borderFaint}` }}
                 >
-                  {/* Indicador lateral de ativa */}
                   {isCurrent && (
                     <div
                       className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full"
@@ -198,7 +192,6 @@ export default function AdventureScreen() {
                     />
                   )}
 
-                  {/* Badge de nível */}
                   <span
                     className="shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider"
                     style={
@@ -210,7 +203,6 @@ export default function AdventureScreen() {
                     {ch.level}
                   </span>
 
-                  {/* Título + subtítulo + dots */}
                   <div className="min-w-0 flex-1">
                     <p
                       className="truncate text-sm font-semibold leading-tight md:text-base"
@@ -244,7 +236,6 @@ export default function AdventureScreen() {
                     )}
                   </div>
 
-                  {/* Estado direito */}
                   {!isUnlocked ? (
                     <Lock size={13} style={{ color: "rgba(255,255,255,0.15)", flexShrink: 0 }} />
                   ) : done === ch.phases.length ? (

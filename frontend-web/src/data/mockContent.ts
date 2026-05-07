@@ -100,7 +100,7 @@ function phrase(id: number, scenarioSlug: string, sourceText: string, targetText
 
 function readFavoriteIds(): number[] {
   if (typeof window === "undefined") return [];
-  const rawValue = window.localStorage.getItem("talkly:favorites");
+  const rawValue = window.localStorage.getItem("fluenci:favorites");
   if (!rawValue) return [];
   try {
     return JSON.parse(rawValue) as number[];
@@ -111,5 +111,5 @@ function readFavoriteIds(): number[] {
 
 function writeFavoriteIds(ids: number[]): void {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem("talkly:favorites", JSON.stringify(ids));
+  window.localStorage.setItem("fluenci:favorites", JSON.stringify(ids));
 }

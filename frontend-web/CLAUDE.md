@@ -75,19 +75,23 @@ subtitle: `${s.adventure.phaseLabel(n)} · ${s.languages[langCode]}`
 SÉRIE  (nível CEFR — ex: A1)
   └── TEMPORADA  (5 por série — badge T1…T5)
         └── FASE  (25 por temporada — types: story | review | boss)
-              └── SEÇÃO  (6 por fase)
-                    1. Cotidiano
-                    2. Aquecimento
-                    3. Evento Principal
-                    4. Decodificação
-                    5. Prática
-                    6. Obstáculo (gate Metroidvania)
+              └── SEÇÃO  (6 por fase — cada seção = 1 visita ao mapa)
+                    1. narrativa         →  4 exercícios
+                    2. revisao_srs       → 12 exercícios (revisão SRS dinâmica)
+                    3. pratica_aplicada  → 10 exercícios
+                    4. gramatica_narrativa→  8 exercícios
+                    5. reforco           →  6 exercícios
+                    6. obstaculo         → 10 exercícios gated
+                    Total: 50 exercícios por fase
 ```
 
 **Regras fixas:**
 - `"A1"` = SÉRIE inteira (5 temporadas). Não é nível de temporada.
 - Badges por temporada: **T1, T2, T3, T4, T5** — nunca A1/A2/B1.
 - Fases 1–14 = história, 15/20 = revisão, 21–23 = checkpoints SRS, 24 = pré-boss, 25 = boss.
+- Cada seção = 1 visita ao mapa. Completar → voltar ao mapa → anel SVG preenche 1/6.
+- Número de steps por seção é variável (determinado pelo conteúdo). Cada step = 1 tela.
+- Seção 2 da primeira fase de cada temporada: sem histórico SRS → aquecimento contextual.
 
 **MVP: Italiano "Il Viandante" (A1)**
 | T | Cenário | Boss |
@@ -168,6 +172,43 @@ AdventureModule
 ```
 
 **Roadmap:** adicionar `time_of_day: "dawn"|"day"|"dusk"|"night"` em `AdventurePhase` (backend) e derivar `themeMode` automaticamente. Por enquanto o toggle é manual (botão sol/lua no header do mapa).
+
+---
+
+## Seções — arquitetura e regras críticas
+
+**Separação obrigatória de responsabilidades:**
+
+| Componente | Responsabilidade |
+|-----------|-----------------|
+| `AdventurePhaseRunner` | Gerencia o fluxo das 6 seções de uma fase + tela de fase completa. **Contém os dados de conteúdo** (mock ou futuro: API). Passa uma seção por vez para o renderer. |
+| `AdventureChapterSections` | Renderiza **uma única seção** com seus steps internos. **Não sabe nada sobre as outras seções.** Recebe `section`, `sectionNumber`, `totalSections`, `phaseNumber`, `onComplete`, `onBack`. |
+
+**Regra de conteúdo — nunca quebrar:**
+- Nenhum texto de história, fala de NPC, narrativa ou vocab pode estar hardcoded no código do componente.
+- Todo conteúdo vem de dados: hoje `PHASE_1_SECTIONS` em `AdventurePhaseRunner`, futuramente da API.
+- `AdventureChapterSections` é um renderer genérico — seu código não muda quando o conteúdo muda.
+
+**Comportamento do botão Continuar:**
+- Seção 1 (`narrativa`): beats `scene`/`narrative` aparecem automaticamente. Botão só em `npc_speak`/`player_react`. Após os beats, exercícios aparecem um a um (step normal).
+- Todas as seções com steps: um step por vez. `canContinue` por tipo:
+  - `fill_blank` / `translate`: só após revelar
+  - `multiple_choice` em `obstaculo`: só resposta correta (gated — trava)
+  - `multiple_choice` em outras seções: qualquer resposta avança (mostra feedback)
+  - Demais (`narrative`, `vocab_list`, etc.): sempre liberado
+- Número de steps por seção é variável — não fixo em 5.
+
+**Seção Cotidiano — regras específicas:**
+- É uma história guiada beat a beat: cena → narrativa → diálogos → reações do jogador.
+- Beats `scene` e `narrative` do início aparecem automaticamente (sem Continue button) — são contexto, não diálogo.
+- O Continue button só aparece em beats `npc` e `player` (e no último beat).
+- Falas do NPC aparecem **sem tradução** — o jogador não entende o idioma, e isso é intencional.
+- Bolhas do NPC: avatar + balão à esquerda. Reações do jogador: balão à direita com avatar "Eu".
+- A história do Cotidiano sempre deve ser contextualmente coerente (ex: Fase 1 começa dentro do vilarejo, logo após entrar pelo portão da cinemática de abertura).
+
+**`AdventureChapterScreen` (mobile) e `AdventureModule` (desktop) ambos usam `AdventurePhaseRunner`:**
+- Mobile: `navigateImmersive` → `/aventura/capitulo/:id` → `AdventureChapterScreen` → `AdventurePhaseRunner`
+- Desktop: `setChapterView` inline → `AdventurePhaseRunner` no `AdventureModule`
 
 ---
 

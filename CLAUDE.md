@@ -56,14 +56,95 @@ Todo desenvolvimento prioriza mobile. Desktop é aprimoramento, não base.
 SÉRIE  (nível CEFR — ex: A1)
   └── TEMPORADA  (5 por série — badge T1…T5)
         └── FASE  (25 por temporada — types: story | review | boss)
-              └── SEÇÃO  (6 por fase)
-                    1. Cotidiano      — fatia de vida, contexto do NPC
-                    2. Aquecimento    — revisão do vocabulário anterior
-                    3. Evento Principal — novo vocabulário via narrativa
-                    4. Decodificação  — padrão gramatical revelado
-                    5. Prática        — exercícios guiados
-                    6. Obstáculo      — gate Metroidvania (vocabulário como chave)
+              └── SEÇÃO  (6 por fase — 5 steps cada)
 ```
+
+### Seções — modelo definitivo de produto
+
+**Frontend é um renderer estático. Backend define o conteúdo.**
+O frontend nunca muda — ele apenas renderiza o que o backend (hoje: mocks) fornece. Adicionar uma nova fase, temporada ou idioma = mudar o seed, nunca o código do componente.
+
+**Separação obrigatória de responsabilidades:**
+
+| Componente | Responsabilidade |
+|-----------|-----------------|
+| `AdventurePhaseRunner` | Gerencia o fluxo das 6 seções de uma fase + tela de conclusão. Contém os dados (`PHASE_1_SECTIONS`, futuramente API). Passa uma seção por vez ao renderer. |
+| `AdventureChapterSections` | Renderiza **uma única seção**, step a step. Não conhece as outras seções. Recebe `section`, `sectionNumber`, `totalSections`, `phaseNumber`, `onComplete`, `onBack`. |
+
+**Regra de conteúdo — nunca quebrar:**
+- Nenhum texto de história, fala de NPC, narrativa ou vocab pode estar hardcoded no componente.
+- Todo conteúdo vem de dados. O renderer é genérico — seu código não muda quando o conteúdo muda.
+
+---
+
+### As 6 seções — modelo definitivo de produto
+
+Os nomes internos das seções são **arquitetura de backend — nunca visíveis ao jogador**.
+
+**Cada step = 1 tela/atividade** (uma pergunta, um bloco narrativo, uma lista de vocab). Número de steps por seção é variável — determinado pelo conteúdo, não fixo. Mínimo 3 exercícios por seção em qualquer fase.
+
+| # | Tipo interno | Perfil | Exercícios | Tipo de conteúdo |
+|---|---|---|---|---|
+| 1 | `narrativa` | Imersão + prática leve do vocab ouvido | 4 | Beats narrativos acumulados → 4 exercícios de reconhecimento |
+| 2 | `revisao_srs` | Revisão SRS — fase(s) anterior(es) | 12 | Conteúdo dinâmico gerado pelo algoritmo (não fixo no mock) |
+| 3 | `pratica_aplicada` | Narrativa avança + prática intensa | 10 | Novos beats narrativos → 10 exercícios usando o vocab praticado |
+| 4 | `gramatica_narrativa` | NPC ensina gramática via história | 8 | Narrativa → NPC apresenta padrão → 8 exercícios com palavras novas |
+| 5 | `reforco` | Padrão explícito + reforço | 6 | Pattern card → NPC demonstra → 6 exercícios focados no padrão |
+| 6 | `obstaculo` | Gate final — produção ativa | 10 gated | Cena → NPC desafia → 10 exercícios travados (errar trava) |
+| | **Total por fase** | | **50** | |
+
+**Fluxo pedagógico (por que essa ordem):**
+- Seção 1: ouvir o vocab **em contexto** sem entender ainda — imersão intencional
+- Seção 2: revisar o que veio **antes** — SRS mantém retenção de longo prazo
+- Seção 3: narrativa avança + praticar o vocab **recém-aprendido** em uso
+- Seções 4–5: apresentar e reforçar a **gramática** nova via personagem
+- Seção 6: usar **tudo junto** sob pressão — o único gate real da fase
+
+**Regra especial — primeira fase de cada temporada:**
+A seção 2 (`revisao_srs`) não tem histórico anterior. Nesse caso ela vira aquecimento contextual (apresentação do cenário, vocabulário de sobrevivência do novo arco). O backend pode sinalizar com `is_first_of_season: true` na fase.
+
+---
+
+### Step types — contrato frontend/backend
+
+**Cada step = 1 tela.** O frontend renderiza qualquer combinação válida. O backend só precisa enviar steps válidos — o renderer não muda quando o conteúdo muda.
+
+```ts
+type SectionStep =
+  | { kind: "narrative";       text: string }
+  | { kind: "scene";           text: string }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string }
+  | { kind: "player_react";    text: string }
+  | { kind: "reveal";          phrase: string; meaning: string; note?: string }
+  | { kind: "pattern";         parts: PatternPart[]; example: string; translation: string; note: string }
+  | { kind: "vocab_list";      items: Array<{ target: string; native: string }> }
+  | { kind: "multiple_choice"; question: string; options: Option[]; correct: string; explanation?: string }
+  | { kind: "fill_blank";      prompt: string; answer: string }
+  | { kind: "translate";       source: string; answer: string };
+```
+
+---
+
+### Regras de comportamento — nunca quebrar
+
+**Seção 1 — cotidiano acumulado:**
+- Beats narrativos (`scene`, `narrative`, `npc_speak`, `player_react`) renderizam em modo chat acumulado.
+- `scene` e `narrative` aparecem automaticamente (sem tap). Botão Continuar só em `npc_speak` e `player_react`.
+- Falas do NPC **sem tradução** — imersão intencional, o player não entende ainda.
+- Após os beats, os exercícios da seção aparecem um a um (step normal).
+
+**Todas as seções com steps:**
+- Um step por vez, foco total em cada tela.
+- `canContinue` por tipo:
+  - `fill_blank` / `translate`: só após revelar a resposta
+  - `multiple_choice` em `obstaculo`: só com resposta **correta** (gated — trava até acertar)
+  - `multiple_choice` em outras seções: qualquer resposta avança (mostra certo/errado + explicação)
+  - Demais tipos (`narrative`, `npc_speak`, `vocab_list`, etc.): sempre liberado
+
+**Seção 6 (`obstaculo`) é o único gate real:**
+- Errar trava. O player deve acertar para passar.
+- Todas as outras seções ensinam com feedback — errar não impede progressão.
+- Completar o Obstáculo = fase concluída = recompensa desbloqueada (loot pool da temporada).
 
 **Regras fixas — nunca quebrar:**
 - `"A1"` identifica a **SÉRIE inteira** (todas as 5 temporadas). Não é o nível de uma temporada.

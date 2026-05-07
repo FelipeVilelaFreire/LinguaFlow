@@ -1,5 +1,5 @@
 import { Backpack, ChevronLeft, Map, Moon, Shield, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import LangFlag from "../../components/ui/LangFlag";
 import { useStrings } from "../../contexts/StringsContext";
@@ -7,13 +7,32 @@ import { useImmersiveNav } from "../../hooks/useImmersiveNav";
 import { ADVENTURE_IT_MOCK } from "../../mocks/adventureItMock";
 import { getAdventureColors } from "../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../theme/adventureColors";
-import AdventureChapterSections from "./AdventureChapterSections";
+import AdventurePhaseRunner from "./AdventurePhaseRunner";
 import AdventureHeroScreen from "./AdventureHeroScreen";
 import AdventureMapScreen from "./AdventureMapScreen";
 import AdventureMochilaScreen from "./AdventureMochilaScreen";
 import AdventureOpeningCinematic from "./AdventureOpeningCinematic";
 
 export type AdventureTab = "map" | "mochila" | "heroi";
+
+const PROGRESS_KEY = "talkly_it_progress";
+
+function loadChaptersWithProgress() {
+  const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "{}") as Record<string, number>;
+  return ADVENTURE_IT_MOCK.map(ch => ({
+    ...ch,
+    phases: ch.phases.map(p => {
+      const completedSections = saved[String(p.id)] ?? p.completed_sections;
+      return { ...p, completed_sections: completedSections, is_completed: completedSections >= p.section_count };
+    }),
+  }));
+}
+
+function savePhaseProgress(phaseId: number, newCount: number) {
+  const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? "{}") as Record<string, number>;
+  saved[String(phaseId)] = newCount;
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(saved));
+}
 
 interface AdventureModuleProps {
   langCode: string;
@@ -32,8 +51,9 @@ export default function AdventureModule({
 }: AdventureModuleProps) {
   const s = useStrings();
   const [themeMode,   setThemeMode]   = useState<AdventureThemeMode>("dark");
-  const [chapterView, setChapterView] = useState<{ phaseNumber: number } | null>(null);
-  const [openingDone, setOpeningDone] = useState(() => Boolean(localStorage.getItem("talkly_opening_it")));
+  const [chapterView, setChapterView] = useState<{ phaseNumber: number; phaseId: number; startSectionIdx: number } | null>(null);
+  const [openingDone, setOpeningDone] = useState(() => Boolean(localStorage.getItem("fluenci_opening_it")));
+  const [chapters,    setChapters]    = useState(loadChaptersWithProgress);
   const { navigateImmersive } = useImmersiveNav();
 
   // Redirect to map if opening not yet seen and user lands on mochila/heroi directly
@@ -44,7 +64,27 @@ export default function AdventureModule({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const chapters          = ADVENTURE_IT_MOCK;
+  // Refresh chapters when returning from mobile immersive chapter screen
+  useEffect(() => {
+    function onPopState() { setChapters(loadChaptersWithProgress()); }
+    function onSectionComplete(e: Event) {
+      const { phaseId, newCount } = (e as CustomEvent<{ phaseId: number; newCount: number }>).detail;
+      setChapters(prev => prev.map(ch => ({
+        ...ch,
+        phases: ch.phases.map(p => p.id !== phaseId ? p : {
+          ...p,
+          completed_sections: newCount,
+          is_completed: newCount >= p.section_count,
+        }),
+      })));
+    }
+    window.addEventListener("popstate", onPopState);
+    window.addEventListener("talkly:section_complete", onSectionComplete);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("talkly:section_complete", onSectionComplete);
+    };
+  }, []);
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
   const c                 = getAdventureColors(effectiveLangCode, themeMode);
   const totalPhases       = chapters.reduce((n, ch) => n + ch.phases.length, 0);
@@ -58,14 +98,21 @@ export default function AdventureModule({
     { id: "heroi"   as AdventureTab, label: s.adventure.tabHero, Icon: Shield  },
   ];
 
+  const handleSectionComplete = useCallback((phaseId: number, newCount: number) => {
+    savePhaseProgress(phaseId, newCount);
+    setChapters(loadChaptersWithProgress());
+  }, []);
+
   const contentProps = {
     langCode: effectiveLangCode,
     themeMode,
     onStartChapter: (chapterId: number, phaseTitle: string, phaseNumber: number, chapterLevel: string) => {
+      const phase = chapters.flatMap(ch => ch.phases).find(p => p.id === chapterId);
+      const startSectionIdx = phase?.completed_sections ?? 0;
       if (window.innerWidth >= 768) {
-        setChapterView({ phaseNumber });
+        setChapterView({ phaseNumber, phaseId: chapterId, startSectionIdx });
       } else {
-        navigateImmersive(chapterPath(chapterId), { phaseNumber, langCode: effectiveLangCode }, {
+        navigateImmersive(chapterPath(chapterId), { phaseNumber, langCode: effectiveLangCode, chapterId, startSectionIdx }, {
           title: phaseTitle,
           subtitle: `${chapterLevel} · ${s.adventure.phaseLabel(phaseNumber)} · ${langName}`,
           langCode: effectiveLangCode,
@@ -140,8 +187,8 @@ export default function AdventureModule({
             </div>
           </div>
 
-          {/* Tab navigation */}
-          <nav className="mt-6 space-y-1 px-3">
+          {/* Tab navigation — hidden during opening cinematic */}
+          <nav className={`mt-6 space-y-1 px-3 ${(!openingDone && initialTab === "map") ? "hidden" : ""}`}>
             {TABS.map(({ id, label, Icon }) => {
               const active = id === initialTab;
               return (
@@ -279,24 +326,32 @@ export default function AdventureModule({
           {/* Tab content / inline chapter / opening cinematic */}
           <div className="flex-1 overflow-hidden">
             {chapterView ? (
-              <AdventureChapterSections
+              <AdventurePhaseRunner
                 phaseNumber={chapterView.phaseNumber}
                 langCode={effectiveLangCode}
+                startSectionIdx={chapterView.startSectionIdx}
+                onSectionComplete={(n) => handleSectionComplete(chapterView.phaseId, n)}
                 onBack={() => setChapterView(null)}
               />
             ) : !openingDone && initialTab === "map" ? (
               <AdventureOpeningCinematic
                 langCode={effectiveLangCode}
                 onComplete={() => {
-                  localStorage.setItem("talkly_opening_it", "1");
+                  localStorage.setItem("fluenci_opening_it", "1");
                   setOpeningDone(true);
                 }}
               />
             ) : (
-              <div className="h-full overflow-y-auto">
-                {initialTab === "map" && (
-                  <AdventureMapScreen {...contentProps} />
-                )}
+              <div
+                className="adventure-scroll h-full overflow-y-auto"
+                style={{
+                  "--adv-thumb":       `${c.pathColor}80`,
+                  "--adv-thumb-hover": `${c.goldAccent}cc`,
+                  "--adv-track":       c.surface,
+                  "--adv-glow":        c.nodeActiveGlow,
+                } as React.CSSProperties}
+              >
+                {initialTab === "map" && <AdventureMapScreen {...contentProps} />}
                 {initialTab === "mochila" && (
                   <AdventureMochilaScreen langCode={effectiveLangCode} themeMode={themeMode} />
                 )}
