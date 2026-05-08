@@ -16,7 +16,16 @@
       "Bash(dir \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" /b /s)",
       "Bash(findstr \"adventure\\\\|types\")",
       "PowerShell(Get-ChildItem \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse | Where-Object { $_.Name -match \"adventure|types\" } | Select-Object FullName)",
-      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse | ForEach-Object { $_.FullName })"
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\src\" -Recurse -Force | Where-Object { -not $_.PSIsContainer } | ForEach-Object { $_.FullName } | Sort-Object)",
+      "PowerShell(Test-Path \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\"; Get-ChildItem -Path \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\" -Recurse -Force | Where-Object { -not $_.PSIsContainer } | ForEach-Object { $_.FullName } | Sort-Object)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\\\\screens\\\\adventure\\\\abas\\\\mapa\\\\components\\\\AdventurePhaseRunner.tsx\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\\\\screens\\\\adventure\\\\abas\\\\mapa\\\\components\\\\AdventureChapterSections.tsx\" -Force)",
+      "Bash(Write-Host \"Deleted old files\")",
+      "Bash(Get-ChildItem -Path . -Recurse -Name)",
+      "Bash(Select-Object -First 30)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

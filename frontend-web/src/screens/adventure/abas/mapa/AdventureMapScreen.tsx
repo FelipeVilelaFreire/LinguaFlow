@@ -1,11 +1,10 @@
 import { BookOpen, CheckCircle2, Lock, Skull, Star, Swords } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { useStrings } from "../../contexts/StringsContext";
-import { ADVENTURE_IT_MOCK } from "../../mocks/adventureItMock";
-import { getAdventureColors } from "../../theme/adventureColors";
-import type { AdventureThemeMode } from "../../theme/adventureColors"; // prop type only
-import type { AdventureChapter, AdventurePhase } from "../../types/adventure";
+import { useStrings } from "../../../../contexts/StringsContext";
+import { getAdventureColors } from "../../../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../../../theme/adventureColors"; // prop type only
+import type { AdventureChapter, AdventurePhase } from "../../../../types/adventure";
 
 // ── Winding path positions (x%, y px) — 25 nodes, ~85 px spacing ─────────────
 const WINDING: Array<{ x: number; y: number }> = [
@@ -149,7 +148,7 @@ function PhaseEntry({
     ? s.adventure.bossLabel
     : isReview
     ? `${s.adventure.reviewLabel} · ${s.adventure.sectionLabel(cur, tot)}`
-    : `${s.adventure.phaseLabel(phase.number)} · ${s.adventure.sectionLabel(cur, tot)}`;
+    : s.adventure.sectionLabel(cur, tot);
   const ctaLabel = isBoss ? s.adventure.phaseStartBoss
     : isReview ? s.adventure.phaseStartReview
     : s.adventure.phaseStart;
@@ -416,12 +415,12 @@ function PhaseNode({
 interface AdventureMapScreenProps {
   langCode: string;
   themeMode: AdventureThemeMode;
+  chapters: AdventureChapter[];
   onStartChapter: (chapterId: number, phaseTitle: string, phaseNumber: number, chapterLevel: string) => void;
 }
 
-export default function AdventureMapScreen({ langCode, themeMode, onStartChapter }: AdventureMapScreenProps) {
+export default function AdventureMapScreen({ langCode, themeMode, chapters, onStartChapter }: AdventureMapScreenProps) {
   const s = useStrings();
-  const chapters = ADVENTURE_IT_MOCK;
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
   const c = getAdventureColors(effectiveLangCode, themeMode);
 
@@ -533,7 +532,7 @@ export default function AdventureMapScreen({ langCode, themeMode, onStartChapter
           onClose={() => setEntry(null)}
           onStart={() => {
             setEntry(null);
-            onStartChapter(entry.chapter.id, entry.phase.title, entry.phase.number, entry.chapter.level);
+            onStartChapter(entry.phase.id, entry.phase.title, entry.phase.number, entry.chapter.level);
           }}
         />
       )}

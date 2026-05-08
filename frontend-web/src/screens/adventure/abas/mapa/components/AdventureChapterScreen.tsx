@@ -1,5 +1,5 @@
-import { getAdventureColors } from "../theme/adventureColors";
-import AdventurePhaseRunner from "./adventure/AdventurePhaseRunner";
+import { getAdventureColors } from "../../../../../theme/adventureColors";
+import AdventurePhaseRunner from "./AdventurePhaseRunner/AdventurePhaseRunner";
 
 const PROGRESS_KEY = "talkly_it_progress";
 
@@ -11,6 +11,7 @@ interface AdventureChapterScreenProps {
 export default function AdventureChapterScreen({ onBack }: AdventureChapterScreenProps) {
   const phaseNumber     = (window.history.state?.phaseNumber     as number | undefined) ?? 1;
   const langCode        = (window.history.state?.langCode        as string | undefined) ?? "IT";
+  const sourceLangCode  = (window.history.state?.sourceLangCode  as string | undefined) ?? "PT";
   const chapterId       = (window.history.state?.chapterId       as number | undefined) ?? 1;
   const startSectionIdx = (window.history.state?.startSectionIdx as number | undefined) ?? 0;
   const c               = getAdventureColors(langCode, "dark");
@@ -28,6 +29,7 @@ export default function AdventureChapterScreen({ onBack }: AdventureChapterScree
       <AdventurePhaseRunner
         phaseNumber={phaseNumber}
         langCode={langCode}
+        sourceLangCode={sourceLangCode}
         startSectionIdx={startSectionIdx}
         onSectionComplete={handleSectionComplete}
         onBack={onBack}

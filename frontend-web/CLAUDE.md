@@ -76,13 +76,13 @@ SÉRIE  (nível CEFR — ex: A1)
   └── TEMPORADA  (5 por série — badge T1…T5)
         └── FASE  (25 por temporada — types: story | review | boss)
               └── SEÇÃO  (6 por fase — cada seção = 1 visita ao mapa)
-                    1. narrativa         →  4 exercícios
-                    2. revisao_srs       → 12 exercícios (revisão SRS dinâmica)
-                    3. pratica_aplicada  → 10 exercícios
-                    4. gramatica_narrativa→  8 exercícios
-                    5. reforco           →  6 exercícios
-                    6. obstaculo         → 10 exercícios gated
-                    Total: 50 exercícios por fase
+                    1. narrativa          →  5 exercícios
+                    2. revisao_srs        → 12 exercícios
+                    3. gramatica_narrativa →  8 exercícios
+                    4. pratica_aplicada   → 10 exercícios
+                    5. reforco            →  6 exercícios
+                    6. obstaculo          → 10 exercícios gated
+                    Total: 51 exercícios por fase
 ```
 
 **Regras fixas:**
@@ -92,6 +92,19 @@ SÉRIE  (nível CEFR — ex: A1)
 - Cada seção = 1 visita ao mapa. Completar → voltar ao mapa → anel SVG preenche 1/6.
 - Número de steps por seção é variável (determinado pelo conteúdo). Cada step = 1 tela.
 - Seção 2 da primeira fase de cada temporada: sem histórico SRS → aquecimento contextual.
+
+**O chat conversacional é o fio condutor de todas as 6 seções — regra inviolável:**
+
+O NPC está sempre presente, sempre falando dentro da história. Não existem "exercícios soltos" — cada pergunta é o NPC conduzindo uma situação real. A diferença entre as seções é só o balanço entre beats narrativos e exercícios, nunca a ausência do personagem.
+
+| Seção | Propósito | Balanço |
+|-------|-----------|---------|
+| **1 · narrativa** | Imersão — vocab novo aparece sem explicação | Muitos beats, poucos exercícios. Na Fase 1 de cada temporada: pura introdução |
+| **2 · revisao_srs** | Narrativa avança + pratica vocab da **fase anterior** (SRS disfarçado de conversa) | Menos beats, mais exercícios — NPC conduz cada um |
+| **3 · gramatica_narrativa** | NPC ensina o conteúdo novo **explicitamente** dentro da história | Beats explicativos intercalados com exercícios |
+| **4 · pratica_aplicada** | Prática intensa — poucos beats, NPC presente em cada exercício | Quase sem beats, exercícios são a conversa |
+| **5 · reforco** | História usa o que foi ensinado na Seção 3 — mais orgânico, menos "aula" | Beats + exercícios, o vocab novo vive na narrativa |
+| **6 · obstaculo** | Fechamento do arco da fase — narrativa forte + gate | Beats de conclusão + exercícios mistos (novo > revisão) |
 
 **MVP: Italiano "Il Viandante" (A1)**
 | T | Cenário | Boss |
@@ -195,8 +208,9 @@ AdventureModule
   - `fill_blank` / `translate`: só após revelar
   - `multiple_choice` em `obstaculo`: só resposta correta (gated — trava)
   - `multiple_choice` em outras seções: qualquer resposta avança (mostra feedback)
-  - Demais (`narrative`, `vocab_list`, etc.): sempre liberado
-- Número de steps por seção é variável — não fixo em 5.
+  - Demais (`narrative`, `npc_speak`, `pattern`, etc.): sempre liberado
+- Número de steps por seção é variável — não fixo.
+- Errar fora do `obstaculo` não bloqueia — os erros são acumulados e voltam na próxima revisão SRS.
 
 **Seção Cotidiano — regras específicas:**
 - É uma história guiada beat a beat: cena → narrativa → diálogos → reações do jogador.
@@ -209,6 +223,68 @@ AdventureModule
 **`AdventureChapterScreen` (mobile) e `AdventureModule` (desktop) ambos usam `AdventurePhaseRunner`:**
 - Mobile: `navigateImmersive` → `/aventura/capitulo/:id` → `AdventureChapterScreen` → `AdventurePhaseRunner`
 - Desktop: `setChapterView` inline → `AdventurePhaseRunner` no `AdventureModule`
+
+---
+
+## Sistema de Maestria de Palavras
+
+Cada palavra do vocabulário tem um **tier de maestria** por usuário. O tier determina o tipo de exercício — mais difícil conforme o player avança.
+
+### Tiers
+
+| Tier | Exercício | Como subir |
+|------|-----------|-----------|
+| 🟤 Bronze | Múltipla escolha — 4 opções | 3 acertos corretos |
+| ⚪ Prata | Múltipla escolha — distratores difíceis | 5 acertos corretos |
+| 🟡 Ouro | Múltipla escolha — sem contexto extra na pergunta | 5 acertos corretos |
+| 💎 Diamante | `write_word` — escrever a palavra do zero | 5 vezes seguidas |
+| 💚 Esmeralda | Maestria confirmada — exercício Diamante permanente | — |
+
+Errar **não baixa** o tier — reinicia apenas o streak de acertos do tier atual.
+
+### Como o tier flui durante as seções
+
+- **Seção 1 (`narrativa`):** exercícios de compreensão contextual — sem tier, pois o player ainda não conhece as palavras
+- **Seção 2 (`revisao_srs`):** principal responsável por surfaçar palavras no tier atual de cada usuário
+- **Seções 3–5:** palavras revisitadas — ao acertar, o streak do tier avança
+- **Seção 6 (`obstaculo`):** exige Ouro+ — quem ainda está em Bronze/Prata recebe múltipla escolha difícil
+
+### Contrato frontend / backend
+
+O backend injeta `word_id` e `tier` em cada exercício que testa uma palavra específica. O renderer usa `tier` para decidir o tipo de UI:
+
+```ts
+// Exercício de vocabulário (tem word_id + tier):
+{ kind: "multiple_choice", word_id: "it_ciao", tier: "bronze", ... }
+{ kind: "write_word",       word_id: "it_ciao", tier: "diamante", ... }
+
+// Exercício de gramática ou dedução contextual (sem word_id):
+{ kind: "multiple_choice", question: "O que 'mi' indica nessa frase?", ... }
+```
+
+### Padrão de `word_id`
+
+`{lang_code}_{palavra_base}` — tudo minúsculo, sem espaços:
+
+| Palavra | word_id |
+|---------|---------|
+| ciao | `it_ciao` |
+| buongiorno | `it_buongiorno` |
+| come stai? | `it_come_stai` |
+| bene | `it_bene` |
+| grazie | `it_grazie` |
+| forestiero | `it_forestiero` |
+| contadino | `it_contadino` |
+| mi chiamo | `it_mi_chiamo` |
+| amico | `it_amico` |
+| piacere | `it_piacere` |
+| benvenuto | `it_benvenuto` |
+
+### No mock
+
+- Todas as palavras da Fase 1 começam em `tier: "bronze"` — primeira exposição
+- Exercícios de gramática e dedução contextual não levam `word_id`
+- Backend (futuro): tabela `word_mastery` — `user_id | word_id | tier | streak | last_seen_at`
 
 ---
 

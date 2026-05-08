@@ -1,8 +1,8 @@
 import { Package } from "lucide-react";
 import { useState } from "react";
 
-import { getAdventureColors } from "../../theme/adventureColors";
-import type { AdventureThemeMode } from "../../theme/adventureColors";
+import { getAdventureColors } from "../../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../../theme/adventureColors";
 
 type Rarity = "comum" | "raro" | "epico";
 

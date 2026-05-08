@@ -7,10 +7,10 @@ import { useImmersiveNav } from "../../hooks/useImmersiveNav";
 import { ADVENTURE_IT_MOCK } from "../../mocks/adventureItMock";
 import { getAdventureColors } from "../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../theme/adventureColors";
-import AdventurePhaseRunner from "./AdventurePhaseRunner";
-import AdventureHeroScreen from "./AdventureHeroScreen";
-import AdventureMapScreen from "./AdventureMapScreen";
-import AdventureMochilaScreen from "./AdventureMochilaScreen";
+import AdventurePhaseRunner from "./abas/mapa/components/AdventurePhaseRunner/AdventurePhaseRunner";
+import AdventureHeroScreen from "./abas/AdventureHeroScreen";
+import AdventureMapScreen from "./abas/mapa/AdventureMapScreen";
+import AdventureMochilaScreen from "./abas/AdventureMochilaScreen";
 import AdventureOpeningCinematic from "./AdventureOpeningCinematic";
 
 export type AdventureTab = "map" | "mochila" | "heroi";
@@ -36,6 +36,7 @@ function savePhaseProgress(phaseId: number, newCount: number) {
 
 interface AdventureModuleProps {
   langCode: string;
+  sourceLangCode: string;
   initialTab: AdventureTab;
   chapterPath: (chapterId: number) => string;
   onBack: () => void;
@@ -44,6 +45,7 @@ interface AdventureModuleProps {
 
 export default function AdventureModule({
   langCode,
+  sourceLangCode,
   initialTab,
   chapterPath,
   onBack,
@@ -106,13 +108,14 @@ export default function AdventureModule({
   const contentProps = {
     langCode: effectiveLangCode,
     themeMode,
+    chapters,
     onStartChapter: (chapterId: number, phaseTitle: string, phaseNumber: number, chapterLevel: string) => {
       const phase = chapters.flatMap(ch => ch.phases).find(p => p.id === chapterId);
       const startSectionIdx = phase?.completed_sections ?? 0;
       if (window.innerWidth >= 768) {
         setChapterView({ phaseNumber, phaseId: chapterId, startSectionIdx });
       } else {
-        navigateImmersive(chapterPath(chapterId), { phaseNumber, langCode: effectiveLangCode, chapterId, startSectionIdx }, {
+        navigateImmersive(chapterPath(chapterId), { phaseNumber, langCode: effectiveLangCode, sourceLangCode, chapterId, startSectionIdx }, {
           title: phaseTitle,
           subtitle: `${chapterLevel} · ${s.adventure.phaseLabel(phaseNumber)} · ${langName}`,
           langCode: effectiveLangCode,
@@ -258,7 +261,7 @@ export default function AdventureModule({
           </div>
 
           {/* Theme toggle */}
-          <div className="px-4 pb-5 pt-3">
+          <div className="px-4 pb-2 pt-3">
             <button
               type="button"
               onClick={() => setThemeMode(m => m === "dark" ? "light" : "dark")}
@@ -269,6 +272,21 @@ export default function AdventureModule({
               <span style={{ color: c.textOnBg }}>
                 {themeMode === "dark" ? "Modo dia" : "Modo noite"}
               </span>
+            </button>
+          </div>
+
+          {/* DEV — reset progress */}
+          <div className="px-4 pb-5">
+            <button
+              type="button"
+              onClick={() => {
+                localStorage.removeItem("talkly_it_progress");
+                setChapters(loadChaptersWithProgress());
+              }}
+              className="flex w-full items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
+              style={{ background: c.surfaceMid, color: c.textFaint }}
+            >
+              DEV · resetar progresso
             </button>
           </div>
         </aside>
@@ -329,6 +347,7 @@ export default function AdventureModule({
               <AdventurePhaseRunner
                 phaseNumber={chapterView.phaseNumber}
                 langCode={effectiveLangCode}
+                sourceLangCode={sourceLangCode}
                 startSectionIdx={chapterView.startSectionIdx}
                 onSectionComplete={(n) => handleSectionComplete(chapterView.phaseId, n)}
                 onBack={() => setChapterView(null)}

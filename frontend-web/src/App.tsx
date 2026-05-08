@@ -6,7 +6,7 @@ import { getLocaleFromSourceLanguage, type AppLocale } from "./constants/strings
 import { StringsProvider } from "./contexts/StringsContext";
 import { adventureChapterPath, NAV_ITEMS, ROUTES } from "./constants/routes";
 import AccountScreen from "./screens/AccountScreen";
-import AdventureChapterScreen from "./screens/AdventureChapterScreen";
+import AdventureChapterScreen from "./screens/adventure/abas/mapa/components/AdventureChapterScreen";
 import AdventureModule from "./screens/adventure/AdventureModule";
 import type { AdventureTab } from "./screens/adventure/AdventureModule";
 import EditProfileScreen from "./screens/EditProfileScreen";
@@ -251,6 +251,7 @@ export default function App() {
       <StringsProvider locale={activeLocale}>
         <AdventureModule
           langCode={langCode}
+          sourceLangCode={goal?.source_language?.code ?? "PT"}
           initialTab={tabMap[route]}
           chapterPath={adventureChapterPath}
           onBack={() => navigate("adventure")}

@@ -1,7 +1,7 @@
 import { Award, Flame, Swords, Zap } from "lucide-react";
 
-import { getAdventureColors } from "../../theme/adventureColors";
-import type { AdventureThemeMode } from "../../theme/adventureColors";
+import { getAdventureColors } from "../../../theme/adventureColors";
+import type { AdventureThemeMode } from "../../../theme/adventureColors";
 
 const USER_NAME  = "Felipe";
 const USER_PHOTO = "";

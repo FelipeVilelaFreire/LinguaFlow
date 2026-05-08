@@ -1,49 +1,12 @@
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { useStrings } from "../../contexts/StringsContext";
-import { getAdventureColors } from "../../theme/adventureColors";
+import { useStrings } from "../../../../../../../contexts/StringsContext";
+import { PLAYER_PRONOUN } from "../../../../../../../constants/playerPronoun";
+import { getAdventureColors } from "../../../../../../../theme/adventureColors";
+import type { NarrativaBeat, PhaseSection, SectionStep } from "../../../../../../../types/sections";
 
 type Colors = ReturnType<typeof getAdventureColors>;
-
-// ── Beat types — Cotidiano only ────────────────────────────────────────────────
-
-export type CotidianoBeat =
-  | { kind: "scene";     text: string }
-  | { kind: "narrative"; text: string }
-  | { kind: "npc";       npc: string; line: string; translation?: string }
-  | { kind: "player";    text: string };
-
-// ── Step types — all step-based sections ──────────────────────────────────────
-
-export type SectionStep =
-  | { kind: "narrative";       text: string }
-  | { kind: "scene";           text: string }
-  | { kind: "npc_speak";       npc: string; line: string; translation?: string }
-  | { kind: "player_react";    text: string }
-  | { kind: "reveal";          phrase: string; meaning: string; note?: string }
-  | { kind: "pattern";         parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
-  | { kind: "vocab_list";      items: Array<{ target: string; native: string }> }
-  | { kind: "multiple_choice"; question: string; options: Array<{ id: string; text: string }>; correct: string; explanation?: string }
-  | { kind: "fill_blank";      prompt: string; answer: string }
-  | { kind: "translate";       source: string; answer: string };
-
-// ── Section types (backend architecture — not shown to player) ─────────────────
-
-export interface CotidianoSection   { type: "cotidiano";   beats: CotidianoBeat[]; exercises?: SectionStep[] }
-export interface VocabularioSection { type: "vocabulario"; steps: SectionStep[] }
-export interface PraticaSection     { type: "pratica";     steps: SectionStep[] }
-export interface DialogoSection     { type: "dialogo";     steps: SectionStep[] }
-export interface GramaticaSection   { type: "gramatica";   steps: SectionStep[] }
-export interface ObstaculoSection   { type: "obstaculo";   steps: SectionStep[] }
-
-export type PhaseSection =
-  | CotidianoSection
-  | VocabularioSection
-  | PraticaSection
-  | DialogoSection
-  | GramaticaSection
-  | ObstaculoSection;
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
@@ -81,7 +44,7 @@ function NpcBubble({ npc, line, translation, c }: {
   );
 }
 
-function PlayerBubble({ text, c }: { text: string; c: Colors }) {
+function PlayerBubble({ text, label, c }: { text: string; label: string; c: Colors }) {
   return (
     <div className="flex items-end justify-end gap-2.5" style={{ animation: "narrativeFadeIn 300ms ease-out both" }}>
       <div
@@ -93,57 +56,52 @@ function PlayerBubble({ text, c }: { text: string; c: Colors }) {
       <div
         className="mb-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold"
         style={{ background: `${c.nodeActive}40`, color: c.parchment }}
-      >Eu</div>
+      >{label}</div>
     </div>
   );
 }
 
-// ── Props & fallback ───────────────────────────────────────────────────────────
-
-const FALLBACK_SECTION: PhaseSection = {
-  type: "cotidiano",
-  beats: [
-    { kind: "scene", text: "Borgo · Manhã" },
-    { kind: "npc", npc: "Giovanni", line: "Ciao, forestiero!", translation: "Olá, forasteiro!" },
-  ],
-  exercises: [],
-};
+// ── Props ─────────────────────────────────────────────────────────────────────
 
 export interface AdventureChapterSectionsProps {
-  section?: PhaseSection;
+  section: PhaseSection;
   sectionNumber?: number;
   totalSections?: number;
   phaseNumber: number;
   langCode: string;
-  onComplete?: () => void;
+  sourceLangCode: string;
+  onComplete?: (mistakes: number) => void;
   onBack: () => void;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function AdventureChapterSections({
-  section = FALLBACK_SECTION,
+  section,
   sectionNumber = 1,
   totalSections = 6,
   phaseNumber,
   langCode,
-  onComplete = () => {},
+  sourceLangCode,
+  onComplete = (_mistakes: number) => {},
   onBack,
 }: AdventureChapterSectionsProps) {
   const s = useStrings();
   const c = getAdventureColors(langCode, "dark");
+  const playerLabel = PLAYER_PRONOUN[sourceLangCode.toUpperCase()] ?? sourceLangCode;
 
   const [beatIdx,        setBeatIdx]        = useState(0);
   const [inExercises,    setInExercises]    = useState(false);
   const [exerciseIdx,    setExerciseIdx]    = useState(0);
 
-  const [stepIdx,   setStepIdx]   = useState(0);
-  const [answer,    setAnswer]    = useState<string | null>(null);
-  const [revealed,  setRevealed]  = useState(false);
+  const [stepIdx,         setStepIdx]         = useState(0);
+  const [answer,          setAnswer]          = useState<string | null>(null);
+  const [sectionMistakes, setSectionMistakes] = useState(0);
+  const [revealed,        setRevealed]        = useState(false);
 
   const contentRef = useRef<HTMLDivElement>(null);
 
-  function nextDialogueOrLast(beats: CotidianoBeat[], from: number): number {
+  function nextDialogueOrLast(beats: NarrativaBeat[], from: number): number {
     for (let i = from; i < beats.length; i++) {
       if (beats[i].kind === "npc" || beats[i].kind === "player") return i;
     }
@@ -152,7 +110,7 @@ export default function AdventureChapterSections({
 
   // Returns the last scene/narrative beat before the first npc/player beat.
   // This lets the opening context appear automatically; first tap reveals the NPC.
-  function lastContextBeat(beats: CotidianoBeat[]): number {
+  function lastContextBeat(beats: NarrativaBeat[]): number {
     for (let i = 0; i < beats.length; i++) {
       if (beats[i].kind === "npc" || beats[i].kind === "player") return Math.max(0, i - 1);
     }
@@ -160,7 +118,7 @@ export default function AdventureChapterSections({
   }
 
   useEffect(() => {
-    if (section.type === "cotidiano") {
+    if (section.type === "narrativa") {
       setBeatIdx(lastContextBeat(section.beats));
       setInExercises(false);
       setExerciseIdx(0);
@@ -168,58 +126,62 @@ export default function AdventureChapterSections({
       setStepIdx(0);
     }
     setAnswer(null);
+    setSectionMistakes(0);
     setRevealed(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section]);
 
   useEffect(() => {
-    if (section.type === "cotidiano" && !inExercises && contentRef.current) {
+    if (section.type === "narrativa" && !inExercises && contentRef.current) {
       contentRef.current.scrollTo({ top: contentRef.current.scrollHeight, behavior: "smooth" });
     }
   }, [beatIdx, inExercises, section.type]);
 
-  const isCotidiano  = section.type === "cotidiano";
-  const cotExercises = isCotidiano ? (section.exercises ?? []) : [];
+  const isNarrativa   = section.type === "narrativa";
+  const narrExercises = isNarrativa ? (section.exercises ?? []) : [];
 
-  // Unified "active step" — cotidiano exercise phase OR section steps
+  // Unified "active step" — narrativa exercise phase OR section steps
   const hasSteps    = "steps" in section;
   const steps       = hasSteps ? section.steps : [];
-  const activeStep: SectionStep | null = isCotidiano
-    ? (inExercises ? (cotExercises[exerciseIdx] ?? null) : null)
+  const activeStep: SectionStep | null = isNarrativa
+    ? (inExercises ? (narrExercises[exerciseIdx] ?? null) : null)
     : (steps[stepIdx] ?? null);
-  const activeStepCount: number | null = isCotidiano
-    ? (inExercises ? cotExercises.length : null)
+  const activeStepCount: number | null = isNarrativa
+    ? (inExercises ? narrExercises.length : null)
     : steps.length;
-  const activeStepIdx = isCotidiano ? exerciseIdx : stepIdx;
+  const activeStepIdx = isNarrativa ? exerciseIdx : stepIdx;
 
   const canContinue = (() => {
-    if (isCotidiano && !inExercises) return true;
+    if (isNarrativa && !inExercises) return true;
     if (!activeStep) return true;
     if (activeStep.kind === "fill_blank" || activeStep.kind === "translate") return revealed;
     if (activeStep.kind === "multiple_choice") {
-      return section.type === "obstaculo" ? answer === activeStep.correct : answer !== null;
+      // TODO(mochila): palavras com flag "mastery_required" vão exigir acerto para
+      // desbloquear habilidade na mochila — por enquanto todos os erros só contam para SRS
+      if (section.type === "obstaculo") return answer === activeStep.correct;
+      return answer !== null; // seções 1–5: qualquer resposta libera, erros contam para SRS
     }
     return true;
   })();
 
   function advance() {
-    if (isCotidiano) {
+    if (isNarrativa) {
       if (inExercises) {
-        if (exerciseIdx >= cotExercises.length - 1) { onComplete(); return; }
+        if (exerciseIdx >= narrExercises.length - 1) { onComplete(sectionMistakes); return; }
         setExerciseIdx(i => i + 1);
         setAnswer(null);
         setRevealed(false);
         return;
       }
       if (beatIdx >= section.beats.length - 1) {
-        if (cotExercises.length > 0) { setInExercises(true); setAnswer(null); setRevealed(false); return; }
-        onComplete();
+        if (narrExercises.length > 0) { setInExercises(true); setAnswer(null); setRevealed(false); return; }
+        onComplete(sectionMistakes);
         return;
       }
       setBeatIdx(nextDialogueOrLast(section.beats, beatIdx + 1));
       return;
     }
-    if (stepIdx >= steps.length - 1) { onComplete(); return; }
+    if (stepIdx >= steps.length - 1) { onComplete(sectionMistakes); return; }
     setStepIdx(i => i + 1);
     setAnswer(null);
     setRevealed(false);
@@ -239,6 +201,15 @@ export default function AdventureChapterSections({
   }) {
     const { question, options, correct, explanation, currentAnswer, onPick, gated, animKey } = opts;
     const isCorrect = currentAnswer === correct;
+
+    let feedbackMsg: string | null = null;
+    let feedbackColor = "#f87171";
+    if (currentAnswer !== null) {
+      if (isCorrect) { feedbackMsg = explanation ?? s.adventure.obstacleCorrect; feedbackColor = "#4ade80"; }
+      else if (gated) { feedbackMsg = s.adventure.obstacleWrong; }
+      else { feedbackMsg = explanation ?? null; } // seções 1–5: mostra explicação mesmo errando
+    }
+
     return (
       <div key={animKey} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
         <p className="px-1 text-base font-semibold leading-snug" style={{ color: c.parchment }}>{question}</p>
@@ -247,28 +218,27 @@ export default function AdventureChapterSections({
             const chosen  = currentAnswer === id;
             const isRight = id === correct;
             let bg = c.surfaceMid, border = c.borderFaint, color = c.textOnBg;
-            if (chosen  && isRight)  { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
-            if (chosen  && !isRight) { bg = "#dc262622"; border = "#dc262680"; color = "#f87171"; }
-            if (!chosen && currentAnswer && isRight) { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
+            if (chosen && isRight)   { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
+            if (chosen && !isRight)  { bg = "#dc262622"; border = "#dc262680"; color = "#f87171"; }
+            // revela o correto após resposta (exceto no gate — não entrega a resposta)
+            if (!chosen && !gated && currentAnswer && isRight) { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
             return (
               <button
                 key={id}
                 type="button"
-                onClick={() => { if (gated ? currentAnswer !== correct : !currentAnswer) onPick(id); }}
+                onClick={() => { if (!currentAnswer || (gated && !isCorrect)) onPick(id); }}
                 className="w-full rounded-xl px-4 py-3.5 text-left text-sm font-semibold transition active:scale-[0.98]"
                 style={{ background: bg, border: `1px solid ${border}`, color }}
               >{text}</button>
             );
           })}
         </div>
-        {currentAnswer && (
+        {feedbackMsg && (
           <p
             className="px-1 text-sm font-semibold"
-            style={{ color: isCorrect ? "#4ade80" : "#f87171", animation: "fadeIn 180ms ease-out both" }}
+            style={{ color: feedbackColor, animation: "fadeIn 180ms ease-out both" }}
           >
-            {isCorrect
-              ? (explanation ?? s.adventure.obstacleCorrect)
-              : s.adventure.obstacleWrong}
+            {feedbackMsg}
           </p>
         )}
       </div>
@@ -292,7 +262,7 @@ export default function AdventureChapterSections({
           </button>
           <div className="flex flex-col gap-0.5">
             <p className="text-xs font-bold" style={{ color: c.goldAccent }}>
-              {s.adventure.phaseLabel(phaseNumber)} · {s.adventure.sectionLabel(sectionNumber, totalSections)}
+              {s.adventure.sectionLabel(sectionNumber, totalSections)}
             </p>
             {activeStepCount != null && (
               <p className="text-[10px] font-semibold" style={{ color: c.textFaint }}>
@@ -340,8 +310,8 @@ export default function AdventureChapterSections({
       {/* Content */}
       <div ref={contentRef} className="flex-1 overflow-y-auto px-4 pb-4 pt-3">
 
-        {/* ── Cotidiano — accumulated chat (beat phase only) ────────────────── */}
-        {isCotidiano && !inExercises && (
+        {/* ── Narrativa — accumulated chat (beat phase only) ───────────────── */}
+        {isNarrativa && !inExercises && (
           <div className="flex flex-col gap-4">
             {section.beats.slice(0, beatIdx + 1).map((beat, i) => {
               const delay = `${i * 160}ms`;
@@ -362,13 +332,13 @@ export default function AdventureChapterSections({
               if (beat.kind === "npc") return (
                 <NpcBubble key={i} npc={beat.npc} line={beat.line} translation={beat.translation} c={c} />
               );
-              if (beat.kind === "player") return <PlayerBubble key={i} text={beat.text} c={c} />;
+              if (beat.kind === "player") return <PlayerBubble key={i} text={beat.text} label={playerLabel} c={c} />;
               return null;
             })}
           </div>
         )}
 
-        {/* ── Active step — exercises (cotidiano phase 2) OR section steps ─── */}
+        {/* ── Active step — exercises (narrativa phase 2) OR section steps ─── */}
         {activeStep && (() => {
           const step = activeStep;
           const key  = `${sectionNumber}-${activeStepIdx}`;
@@ -388,7 +358,7 @@ export default function AdventureChapterSections({
           );
 
           if (step.kind === "player_react") return (
-            <PlayerBubble key={key} text={step.text} c={c} />
+            <PlayerBubble key={key} text={step.text} label={playerLabel} c={c} />
           );
 
           if (step.kind === "reveal") return (
@@ -459,9 +429,14 @@ export default function AdventureChapterSections({
             correct:       step.correct,
             explanation:   step.explanation,
             currentAnswer: answer,
-            onPick:        (id) => { if (!answer || (section.type === "obstaculo" && answer !== step.correct)) setAnswer(id); },
-            gated:         section.type === "obstaculo",
-            animKey:       key,
+            onPick: (id) => {
+              setAnswer(id);
+              if (id !== step.correct && section.type !== "obstaculo") {
+                setSectionMistakes(n => n + 1);
+              }
+            },
+            gated:   section.type === "obstaculo",
+            animKey: key,
           });
 
           if (step.kind === "fill_blank") return (
