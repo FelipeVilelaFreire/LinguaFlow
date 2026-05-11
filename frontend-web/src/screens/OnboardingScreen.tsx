@@ -1,30 +1,26 @@
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { APP_NAME } from "../constants/app";
+import { useStrings } from "../contexts/StringsContext";
+import { adventureService } from "../services/adventureService";
 import { contentService } from "../services/contentService";
+import type { AvailableLanguage } from "../types/adventure";
 import type { Goal } from "../types/content";
 
 interface OnboardingScreenProps {
   onComplete: (goal: Goal) => void;
 }
 
-// ── Dados ────────────────────────────────────────────────
-
 const SOURCE_LANGUAGES = [
-  { code: "PT", flag: "🇧🇷", label: "Português", detail: "Explicações em português" },
-  { code: "EN", flag: "🇺🇸", label: "English", detail: "Explanations in English" },
-];
-
-const TARGET_LANGUAGES = [
-  { code: "DE", flag: "🇩🇪", label: "Alemão", detail: "Vila Medieval · A história começa aqui", available: true },
-  { code: "ES", flag: "🇪🇸", label: "Espanhol", detail: "Em breve", available: false },
+  { code: "PT", detail: "Explicações em português" },
+  { code: "EN", detail: "Explanations in English" },
 ];
 
 const LEVELS = [
-  { code: "A1", label: "Iniciante", detail: "Começando do zero" },
-  { code: "A2", label: "Básico", detail: "Sei algumas palavras" },
-  { code: "B1", label: "Tenho base", detail: "Consigo me virar" },
+  { code: "A1", labelKey: "levelIniciante" as const, detailKey: "levelA1Detail" as const },
+  { code: "A2", labelKey: "levelBasico"    as const, detailKey: "levelA2Detail" as const },
+  { code: "B1", labelKey: "levelBase"      as const, detailKey: "levelB1Detail" as const },
 ];
 
 const WEEKDAYS = [
@@ -39,42 +35,39 @@ const WEEKDAYS = [
 
 const SESSION_OPTIONS = [15, 30, 45, 60, 90];
 
-// Meses estimados para A1 baseado em sessões por semana × minutos
 function estimateMonths(days: number[], minutes: number) {
   if (days.length === 0) return null;
-  const hoursPerWeek = (days.length * minutes) / 60;
-  const totalHoursNeeded = 80; // referência para A1
-  const weeks = totalHoursNeeded / hoursPerWeek;
-  const months = Math.round(weeks / 4.3);
-  return Math.max(1, months);
+  const weeks = 80 / ((days.length * minutes) / 60);
+  return Math.max(1, Math.round(weeks / 4.3));
 }
 
-// ── Componente principal ──────────────────────────────────
-
 export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
+  const s = useStrings();
   const [step, setStep] = useState<1 | 2>(1);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
-  // Step 1
   const [sourceLanguage, setSourceLanguage] = useState(SOURCE_LANGUAGES[0]);
-  const [targetLanguage, setTargetLanguage] = useState(TARGET_LANGUAGES[0]);
+  const [targetLanguage, setTargetLanguage] = useState<AvailableLanguage | null>(null);
   const [level, setLevel] = useState(LEVELS[0]);
 
-  // Step 2
-  const [studyDays, setStudyDays] = useState([0, 2, 4]); // Seg, Qua, Sex
+  const [studyDays, setStudyDays] = useState([0, 2, 4]);
   const [sessionMinutes, setSessionMinutes] = useState(30);
-
   const [loading, setLoading] = useState(false);
 
-  function goToStep2() {
-    setDirection("forward");
-    setStep(2);
-  }
+  const [availableTargets, setAvailableTargets] = useState<AvailableLanguage[]>([]);
+  const [loadingLanguages, setLoadingLanguages] = useState(true);
 
-  function goToStep1() {
-    setDirection("back");
-    setStep(1);
-  }
+  useEffect(() => {
+    adventureService.listAvailableLanguages()
+      .then((langs) => {
+        setAvailableTargets(langs);
+        if (langs.length > 0) setTargetLanguage(langs[0]);
+      })
+      .finally(() => setLoadingLanguages(false));
+  }, []);
+
+  function goToStep2() { setDirection("forward"); setStep(2); }
+  function goToStep1() { setDirection("back"); setStep(1); }
 
   function toggleDay(day: number) {
     setStudyDays((curr) =>
@@ -83,7 +76,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
   }
 
   async function finish() {
-    if (studyDays.length === 0) return;
+    if (studyDays.length === 0 || !targetLanguage) return;
     setLoading(true);
     try {
       const goal = await contentService.createGoal({
@@ -105,13 +98,9 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center bg-white px-4 py-10">
-
-      {/* Ambient glow */}
       <div aria-hidden className="auth-glow z-0" />
-
       <div className="relative z-10 flex w-full max-w-[440px] flex-col gap-6">
 
-        {/* Logo + progresso */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <span className="text-base font-bold tracking-tight text-slate-950">{APP_NAME}</span>
@@ -122,15 +111,17 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
           </div>
         </div>
 
-        {/* Card de step */}
         <div
           key={step}
           className={`w-full rounded-2xl border border-slate-200 bg-white p-7 shadow-[0_2px_4px_rgba(0,0,0,0.03),0_8px_24px_rgba(0,0,0,0.06)] ${animClass}`}
         >
           {step === 1 ? (
             <Step1
+              s={s}
               sourceLanguage={sourceLanguage}
               targetLanguage={targetLanguage}
+              availableTargets={availableTargets}
+              loadingLanguages={loadingLanguages}
               level={level}
               onSelectSource={setSourceLanguage}
               onSelectTarget={setTargetLanguage}
@@ -146,32 +137,27 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
             />
           )}
 
-          {/* Navegação */}
           <div className="mt-6 flex gap-3">
             {step === 2 && (
               <button
                 type="button"
                 onClick={goToStep1}
-                className="flex h-13 w-13 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50"
+                className="flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50"
                 style={{ minWidth: "52px", height: "52px" }}
               >
                 <ArrowLeft size={18} />
               </button>
             )}
-
             <button
               type="button"
               onClick={step === 1 ? goToStep2 : finish}
-              disabled={loading || (step === 2 && studyDays.length === 0)}
+              disabled={loading || (step === 2 && studyDays.length === 0) || (step === 1 && !targetLanguage)}
               className="auth-submit flex-1"
             >
-              {loading ? (
-                <LoadingDots />
-              ) : step === 1 ? (
-                <>Próximo <ArrowRight size={17} strokeWidth={2.5} /></>
-              ) : (
-                <>Começar <ArrowRight size={17} strokeWidth={2.5} /></>
-              )}
+              {loading ? <LoadingDots /> : step === 1
+                ? <>Próximo <ArrowRight size={17} strokeWidth={2.5} /></>
+                : <>{s.onboarding.start} <ArrowRight size={17} strokeWidth={2.5} /></>
+              }
             </button>
           </div>
         </div>
@@ -180,17 +166,18 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
   );
 }
 
-// ── Step 1: Idiomas + Nível ───────────────────────────────
-
 function Step1({
-  sourceLanguage, targetLanguage, level,
+  s, sourceLanguage, targetLanguage, availableTargets, loadingLanguages, level,
   onSelectSource, onSelectTarget, onSelectLevel,
 }: {
+  s: ReturnType<typeof useStrings>;
   sourceLanguage: typeof SOURCE_LANGUAGES[number];
-  targetLanguage: typeof TARGET_LANGUAGES[number];
+  targetLanguage: AvailableLanguage | null;
+  availableTargets: AvailableLanguage[];
+  loadingLanguages: boolean;
   level: typeof LEVELS[number];
   onSelectSource: (l: typeof SOURCE_LANGUAGES[number]) => void;
-  onSelectTarget: (l: typeof TARGET_LANGUAGES[number]) => void;
+  onSelectTarget: (l: AvailableLanguage) => void;
   onSelectLevel: (l: typeof LEVELS[number]) => void;
 }) {
   return (
@@ -200,7 +187,6 @@ function Step1({
         <p className="mt-1 text-sm font-medium text-slate-500">Escolha os idiomas e seu ponto de partida</p>
       </div>
 
-      {/* Origem */}
       <Section label="Você fala...">
         <div className="flex flex-col gap-2">
           {SOURCE_LANGUAGES.map((lang) => (
@@ -210,48 +196,43 @@ function Step1({
               onClick={() => onSelectSource(lang)}
               className={`onb-select-card ${sourceLanguage.code === lang.code ? "selected" : ""}`}
             >
-              <span className="text-2xl">{lang.flag}</span>
+              <LangFlag code={lang.code} />
               <div className="flex-1 text-left">
-                <p className="text-sm font-bold text-slate-950">{lang.label}</p>
+                <p className="text-sm font-bold text-slate-950">{s.languages[lang.code as keyof typeof s.languages] ?? lang.code}</p>
                 <p className="text-xs font-medium text-slate-500">{lang.detail}</p>
               </div>
-              {sourceLanguage.code === lang.code && (
-                <Check size={16} className="shrink-0 area-text-primary" />
-              )}
+              {sourceLanguage.code === lang.code && <Check size={16} className="shrink-0 area-text-primary" />}
             </button>
           ))}
         </div>
       </Section>
 
-      {/* Destino */}
       <Section label="Você quer aprender...">
-        <div className="flex flex-col gap-2">
-          {TARGET_LANGUAGES.map((lang) => (
-            <button
-              key={lang.code}
-              type="button"
-              onClick={() => lang.available && onSelectTarget(lang)}
-              className={`onb-select-card ${!lang.available ? "disabled" : ""} ${targetLanguage.code === lang.code ? "selected" : ""}`}
-            >
-              <span className="text-2xl">{lang.flag}</span>
-              <div className="flex-1 text-left">
-                <p className="text-sm font-bold text-slate-950">{lang.label}</p>
-                <p className="text-xs font-medium text-slate-500">{lang.detail}</p>
-              </div>
-              {!lang.available && (
-                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-400">
-                  Em breve
-                </span>
-              )}
-              {lang.available && targetLanguage.code === lang.code && (
-                <Check size={16} className="shrink-0 area-text-primary" />
-              )}
-            </button>
-          ))}
-        </div>
+        {loadingLanguages ? (
+          <div className="flex items-center gap-2 py-4 text-sm text-slate-400">
+            <LoadingDots /> Carregando idiomas...
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {availableTargets.map((lang) => (
+              <button
+                key={lang.code}
+                type="button"
+                onClick={() => onSelectTarget(lang)}
+                className={`onb-select-card ${targetLanguage?.code === lang.code ? "selected" : ""}`}
+              >
+                <LangFlag code={lang.code} />
+                <div className="flex-1 text-left">
+                  <p className="text-sm font-bold text-slate-950">{s.languages[lang.code as keyof typeof s.languages] ?? lang.code}</p>
+                  <p className="text-xs font-medium text-slate-500">{lang.chapter_subtitle || lang.chapter_title}</p>
+                </div>
+                {targetLanguage?.code === lang.code && <Check size={16} className="shrink-0 area-text-primary" />}
+              </button>
+            ))}
+          </div>
+        )}
       </Section>
 
-      {/* Nível */}
       <Section label="Seu nível inicial">
         <div className="flex gap-2">
           {LEVELS.map((l) => (
@@ -262,8 +243,9 @@ function Step1({
               className={`onb-pill flex-1 text-center ${level.code === l.code ? "selected" : ""}`}
               style={{ padding: "10px 8px" }}
             >
-              <span className="block text-sm font-bold">{l.label}</span>
-              <span className="block text-[11px] font-medium opacity-70">{l.detail}</span>
+              <span className="block text-base font-bold">{l.code}</span>
+              <span className="block text-[11px] font-semibold opacity-80">{s.onboarding[l.labelKey]}</span>
+              <span className="block text-[10px] font-medium opacity-60">{s.onboarding[l.detailKey]}</span>
             </button>
           ))}
         </div>
@@ -272,11 +254,8 @@ function Step1({
   );
 }
 
-// ── Step 2: Rotina ────────────────────────────────────────
-
 function Step2({
-  studyDays, sessionMinutes, months,
-  onToggleDay, onSelectMinutes,
+  studyDays, sessionMinutes, months, onToggleDay, onSelectMinutes,
 }: {
   studyDays: number[];
   sessionMinutes: number;
@@ -291,7 +270,6 @@ function Step2({
         <p className="mt-1 text-sm font-medium text-slate-500">Você pode estudar qualquer dia — vamos te lembrar nesses</p>
       </div>
 
-      {/* Dias */}
       <Section label="Dias de estudo">
         <div className="flex justify-between gap-1">
           {WEEKDAYS.map((day) => (
@@ -310,7 +288,6 @@ function Step2({
         )}
       </Section>
 
-      {/* Duração */}
       <Section label="Duração da sessão">
         <div className="flex flex-wrap gap-2">
           {SESSION_OPTIONS.map((opt) => (
@@ -326,7 +303,6 @@ function Step2({
         </div>
       </Section>
 
-      {/* Estimativa */}
       {months !== null && (
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
           <p className="text-sm font-semibold text-slate-950">
@@ -342,7 +318,19 @@ function Step2({
   );
 }
 
-// ── Helpers ───────────────────────────────────────────────
+function LangFlag({ code }: { code: string }) {
+  const countryCode = code === "PT" ? "br" : code === "EN" ? "us" : code.toLowerCase();
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${countryCode}.png`}
+      srcSet={`https://flagcdn.com/w80/${countryCode}.png 2x`}
+      alt={`${code} flag`}
+      width={26}
+      height={17}
+      className="shrink-0 rounded object-cover shadow-sm ring-1 ring-black/[0.08]"
+    />
+  );
+}
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (

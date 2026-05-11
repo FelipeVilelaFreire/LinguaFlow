@@ -28,6 +28,7 @@ export default function AdventureChapterScreen({ onBack }: AdventureChapterScree
     <div className="h-dvh" style={{ background: bg }}>
       <AdventurePhaseRunner
         phaseNumber={phaseNumber}
+        phaseId={chapterId}
         langCode={langCode}
         sourceLangCode={sourceLangCode}
         startSectionIdx={startSectionIdx}

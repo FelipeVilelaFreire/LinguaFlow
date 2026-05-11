@@ -1,16 +1,80 @@
 import { apiRequest } from "./api";
-import type { AdventureChapter } from "../types/adventure";
+import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserInventoryItem, AvailableLanguage, EarnedItemData, StreakData } from "../types/adventure";
 import type { Phrase } from "../types/content";
+import type { PhaseSection } from "../types/sections";
 
 export const adventureService = {
+  listAvailableLanguages: () =>
+    apiRequest<AvailableLanguage[]>("/adventure/chapters/languages/"),
+
   getChapter: (slug: string) =>
-    apiRequest<AdventureChapter>(`/adventure/chapters/${slug}/`),
+    apiRequest<ApiAdventureChapter>(`/adventure/chapters/${slug}/`),
 
   listChapters: () =>
-    apiRequest<AdventureChapter[]>("/adventure/chapters/"),
+    apiRequest<ApiAdventureChapter[]>("/adventure/chapters/"),
+
+  listCharacters: (chapterSlug?: string) =>
+    apiRequest<ApiAdventureCharacter[]>(
+      `/adventure/characters/${chapterSlug ? `?chapter=${chapterSlug}` : ""}`,
+    ),
+
+  listItems: (chapterSlug?: string) =>
+    apiRequest<ApiAdventureItem[]>(
+      `/adventure/items/${chapterSlug ? `?chapter=${chapterSlug}` : ""}`,
+    ),
+
+  listInventory: () =>
+    apiRequest<ApiUserInventoryItem[]>("/adventure/inventory/"),
+
+  useInventoryItem: (itemId: number) =>
+    apiRequest<ApiUserInventoryItem>(`/adventure/inventory/${itemId}/use/`, { method: "POST" }),
 
   getPhrasesForPhase: (phaseId: number) =>
     apiRequest<Phrase[]>(`/adventure/phases/${phaseId}/phrases/`),
+
+  getSections: (phaseId: number) =>
+    apiRequest<PhaseSection[]>(`/adventure/phases/${phaseId}/sections/`),
+
+  listLearnedWords: (langCode?: string) =>
+    apiRequest<{ word_id: string; target: string; native: string; tier: string }[]>(
+      `/adventure/vocabulary/${langCode ? `?lang=${langCode}` : ""}`,
+    ),
+
+  recordWordAnswer: (payload: {
+    word_id:    string;
+    correct:    boolean;
+    target?:    string;
+    native?:    string;
+    lang_code?: string;
+  }) =>
+    apiRequest<{ word_id: string; target: string; native: string; tier: string; streak: number; promoted: boolean; created: boolean }>(
+      "/adventure/vocabulary/record/",
+      { method: "POST", body: JSON.stringify(payload) },
+    ),
+
+  meetCharacterByName: (name: string) =>
+    apiRequest<{ character_id: number; slug: string; name: string; created: boolean }>(
+      "/adventure/characters/meet-by-name/",
+      { method: "POST", body: JSON.stringify({ name }) },
+    ),
+
+  devJumpToPhase: (chapterSlug: string, phaseNumber: number, sectionNumber: number) =>
+    apiRequest<{
+      chapter:          string;
+      current_phase:    number;
+      current_section:  number;
+      completed_phases: number;
+      met_characters:   number;
+      words_unlocked:   number;
+      items_unlocked:   number;
+    }>("/adventure/dev/jump-to-phase/", {
+      method: "POST",
+      body: JSON.stringify({
+        chapter_slug:   chapterSlug,
+        phase_number:   phaseNumber,
+        section_number: sectionNumber,
+      }),
+    }),
 
   completePhase: (phaseId: number, score: number) =>
     apiRequest<{
@@ -20,6 +84,10 @@ export const adventureService = {
       reward_unlocked: boolean;
       current_phase: number;
       chapter_completed: boolean;
+      earned_item:  EarnedItemData | null;
+      earned_items: EarnedItemData[];
+      key_words:    string[];
+      streak:       StreakData;
     }>(`/adventure/phases/${phaseId}/complete/`, {
       method: "POST",
       body: JSON.stringify({ score }),

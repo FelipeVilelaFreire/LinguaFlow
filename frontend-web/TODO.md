@@ -1,30 +1,38 @@
 # TODO
 
-## Mock — Phase 1 sections precisam de revisão completa
+## Modelo conversacional — regras definitivas
 
-A ordem das seções está errada e o conteúdo precisa ser reescrito para refletir o modelo definitivo.
+Todo exercício do Talkly segue um único padrão:
 
-### Ordem correta das seções (CLAUDE.md já atualizado)
+```
+NPC fala → jogador escolhe o que DIZER → NPC reage
+```
 
-1. `narrativa` — imersão, vocab aparece sem explicação
-2. `revisao_srs` — narrativa + prática do vocab da fase anterior
-3. `gramatica_narrativa` — NPC ensina explicitamente (estava na posição 4)
-4. `pratica_aplicada` — prática intensa com NPC presente (estava na posição 3)
-5. `reforco` — narrativa usa o que foi ensinado na S3
-6. `obstaculo` — fechamento do arco + gate
+### Regras invioláveis
 
-### Arco narrativo correto para Fase 1
+- Todo `multiple_choice` tem `npc` (quem fala) e `npc_reaction` (reação ao acerto)
+- Opções são sempre o que o jogador DIRIA — nunca traduções soltas
+- **Exceção S1 (narrativa)**: exercícios de compreensão inicial — opções em português porque o player ainda não sabe o idioma
+- Sem `fill_blank`, `translate`, `reveal` como exercícios — apenas como elementos narrativos se necessário
+- O NPC nunca desaparece — todas as 6 seções são conversação
 
-- S1: Você chega, Giovanni te aborda, ouve palavras sem entender
-- S2: Giovanni passeia com você pelo borgo, revisa o vocab em conversa
-- S3: Giovanni para na praça e ENSINA 'mi chiamo' explicitamente
-- S4: Você vai ao mercado e USA 'mi chiamo' com Lucia (aplica o que aprendeu em S3)
-- S5: Encontra Marco e Sofia nas ruas — gramática flui naturalmente
-- S6: Guarda no portão — fechamento + gate
+### Ordem das seções (definitiva)
 
-### Regras que o mock deve seguir
+1. `narrativa` — imersão, você OUVE sem entender, exercícios de compreensão
+2. `revisao_srs` — NPC passeia com você, revisa vocab anterior em conversa
+3. `gramatica_narrativa` — NPC ENSINA explicitamente na história
+4. `pratica_aplicada` — você USA o que aprendeu com pessoas novas
+5. `reforco` — gramática flui naturalmente, menos aula, mais vida
+6. `obstaculo` — fechamento do arco + gate (errar trava)
 
-- Sem `fill_blank`, `translate`, `reveal` como exercícios
-- Todo exercício = NPC fala → jogador responde ou demonstra compreensão
-- Chat conversacional em TODAS as seções (o NPC nunca desaparece)
-- `word_id` + `tier: "bronze"` nos exercícios de vocabulário
+### Próximas fases a escrever
+
+- Fase 2: Ostessa Carmela — aiuto, per favore, dove, taverna, mangiare — Grammar: dov'è
+- Fase 3: Oste Stefano — pane, acqua, vino, formaggio, buono — Grammar: vorrei
+- ... (fases 4–25 seguem o mesmo modelo conversacional)
+
+### Fases automáticas vs. manuscritas
+
+- `adventurePhaseMock.ts` = fases manuscritas (ricas, conversacionais)
+- `phaseContentMock.ts` = fases 2–25 geradas automaticamente (protótipo)
+- Quando uma fase for escrita manualmente, adicionar em `PHASES_CONTENT` em `adventurePhaseMock.ts`

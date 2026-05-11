@@ -4,6 +4,7 @@ from django.db import models
 class Language(models.Model):
     code = models.CharField(max_length=2, unique=True)
     name = models.CharField(max_length=80)
+    is_ready = models.BooleanField(default=False)
 
     class Meta:
         db_table = "content_language"

@@ -24,7 +24,45 @@ class AdventureChapter(models.Model):
         return f"{self.language.code} {self.level} — {self.title}"
 
 
+class PhaseSection(models.Model):
+    TYPE_NARRATIVA          = "narrativa"
+    TYPE_REVISAO_SRS        = "revisao_srs"
+    TYPE_PRATICA_APLICADA   = "pratica_aplicada"
+    TYPE_GRAMATICA_NARRATIVA = "gramatica_narrativa"
+    TYPE_REFORCO            = "reforco"
+    TYPE_OBSTACULO          = "obstaculo"
+    TYPE_CHOICES = [
+        (TYPE_NARRATIVA,           "Narrativa"),
+        (TYPE_REVISAO_SRS,         "Revisão SRS"),
+        (TYPE_PRATICA_APLICADA,    "Prática Aplicada"),
+        (TYPE_GRAMATICA_NARRATIVA, "Gramática Narrativa"),
+        (TYPE_REFORCO,             "Reforço"),
+        (TYPE_OBSTACULO,           "Obstáculo"),
+    ]
+
+    phase          = models.ForeignKey("AdventurePhase", related_name="sections", on_delete=models.CASCADE)
+    section_number = models.PositiveSmallIntegerField()
+    section_type   = models.CharField(max_length=25, choices=TYPE_CHOICES)
+    content        = models.JSONField()
+
+    class Meta:
+        ordering = ["section_number"]
+        unique_together = ("phase", "section_number")
+
+    def __str__(self):
+        return f"{self.phase} — Seção {self.section_number} ({self.section_type})"
+
+
 class AdventurePhase(models.Model):
+    PHASE_TYPE_STORY  = "story"
+    PHASE_TYPE_REVIEW = "review"
+    PHASE_TYPE_BOSS   = "boss"
+    PHASE_TYPE_CHOICES = [
+        (PHASE_TYPE_STORY,  "Story"),
+        (PHASE_TYPE_REVIEW, "Review"),
+        (PHASE_TYPE_BOSS,   "Boss"),
+    ]
+
     chapter = models.ForeignKey(AdventureChapter, related_name="phases", on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     title = models.CharField(max_length=140)
@@ -33,6 +71,7 @@ class AdventurePhase(models.Model):
     key_words = models.JSONField(default=list)
     scenario_slug = models.CharField(max_length=60)
     phrase_count = models.PositiveIntegerField(default=6)
+    phase_type = models.CharField(max_length=10, choices=PHASE_TYPE_CHOICES, default=PHASE_TYPE_STORY)
     is_boss = models.BooleanField(default=False)
 
     class Meta:
@@ -42,6 +81,10 @@ class AdventurePhase(models.Model):
     def __str__(self):
         label = "BOSS" if self.is_boss else f"Fase {self.number}"
         return f"{self.chapter} — {label}: {self.title}"
+
+    def save(self, *args, **kwargs):
+        self.is_boss = self.phase_type == self.PHASE_TYPE_BOSS
+        super().save(*args, **kwargs)
 
     def get_phrases(self, source_language_code: str):
         return (
@@ -56,13 +99,148 @@ class AdventurePhase(models.Model):
         )
 
 
+# ─── Characters ───────────────────────────────────────────────────────────────
+
+class AdventureCharacter(models.Model):
+    """
+    Any person the player encounters in the adventure.
+    character_type defines their role — never use separate classes per type.
+    """
+    TYPE_MAIN    = "main"     # protagonistas da história principal
+    TYPE_ALLY    = "ally"     # aliados/guias (podem falar a língua do player)
+    TYPE_BOSS    = "boss"     # antagonista final de cada temporada
+    TYPE_NPC     = "npc"      # personagens de suporte (lojista, guarda, etc.)
+    TYPE_CHOICES = [
+        (TYPE_MAIN, "Main"),
+        (TYPE_ALLY, "Ally"),
+        (TYPE_BOSS, "Boss"),
+        (TYPE_NPC,  "NPC"),
+    ]
+
+    chapter        = models.ForeignKey(AdventureChapter, related_name="characters", on_delete=models.CASCADE)
+    slug           = models.SlugField(max_length=80)
+    name           = models.CharField(max_length=120)
+    role           = models.CharField(max_length=120)   # occupation/title in target language, e.g. "Campesino"
+    emoji          = models.CharField(max_length=10)
+    character_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default=TYPE_NPC)
+    quote          = models.TextField()                 # memorable quote
+    lang_bridge    = models.BooleanField(default=False) # speaks the player's native language
+    first_phase    = models.ForeignKey(
+        AdventurePhase, related_name="introduced_characters",
+        on_delete=models.SET_NULL, null=True, blank=True,
+    )
+    order          = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        ordering = ["order"]
+        unique_together = ("chapter", "slug")
+
+    def __str__(self):
+        return f"{self.chapter} — {self.name} ({self.get_character_type_display()})"
+
+
+class UserCharacterMet(models.Model):
+    user      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="characters_met", on_delete=models.CASCADE)
+    character = models.ForeignKey(AdventureCharacter, related_name="met_by", on_delete=models.CASCADE)
+    met_at    = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "character")
+        ordering = ["met_at"]
+
+    def __str__(self):
+        return f"{self.user} met {self.character.name}"
+
+
+# ─── Items / Inventory ────────────────────────────────────────────────────────
+
+class AdventureItem(models.Model):
+    RARITY_COMUM    = "comum"
+    RARITY_RARO     = "raro"
+    RARITY_EPICO    = "epico"
+    RARITY_LENDARIO = "lendario"
+    RARITY_CHOICES  = [
+        (RARITY_COMUM,    "Comum"),
+        (RARITY_RARO,     "Raro"),
+        (RARITY_EPICO,    "Épico"),
+        (RARITY_LENDARIO, "Lendário"),
+    ]
+
+    ACTION_EXAMINAR = "examinar"
+    ACTION_ENTREGAR = "entregar"
+    ACTION_USAR     = "usar"
+    ACTION_EQUIPAR  = "equipar"
+    ACTION_CHOICES  = [
+        (ACTION_EXAMINAR, "Examinar"),
+        (ACTION_ENTREGAR, "Entregar"),
+        (ACTION_USAR,     "Usar"),
+        (ACTION_EQUIPAR,  "Equipar"),
+    ]
+
+    chapter      = models.ForeignKey(AdventureChapter, related_name="items", on_delete=models.CASCADE)
+    slug         = models.SlugField(max_length=80)
+    emoji        = models.CharField(max_length=10)
+    name         = models.CharField(max_length=120)
+    lore         = models.TextField()
+    rarity       = models.CharField(max_length=10, choices=RARITY_CHOICES, default=RARITY_COMUM)
+    action       = models.CharField(max_length=10, choices=ACTION_CHOICES, default=ACTION_EXAMINAR)
+    source_phase = models.ForeignKey(
+        AdventurePhase, related_name="reward_items",
+        on_delete=models.SET_NULL, null=True, blank=True,
+    )
+    source_character = models.ForeignKey(
+        AdventureCharacter, related_name="given_items",
+        on_delete=models.SET_NULL, null=True, blank=True,
+    )
+    order = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        ordering = ["order"]
+        unique_together = ("chapter", "slug")
+
+    def __str__(self):
+        return f"{self.chapter} — {self.name} ({self.rarity})"
+
+
+class UserInventoryItem(models.Model):
+    user      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="inventory", on_delete=models.CASCADE)
+    item      = models.ForeignKey(AdventureItem, related_name="owned_by", on_delete=models.CASCADE)
+    earned_at = models.DateTimeField(auto_now_add=True)
+    is_used   = models.BooleanField(default=False)
+    used_at   = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ("user", "item")
+        ordering = ["earned_at"]
+
+    def __str__(self):
+        return f"{self.user} — {self.item.name}"
+
+
+# ─── Section-level progress ───────────────────────────────────────────────────
+
+class AdventureSectionProgress(models.Model):
+    user               = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="section_progress", on_delete=models.CASCADE)
+    phase              = models.ForeignKey(AdventurePhase, related_name="section_progress", on_delete=models.CASCADE)
+    completed_sections = models.PositiveSmallIntegerField(default=0)  # 0–6
+    updated_at         = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("user", "phase")
+
+    def __str__(self):
+        return f"{self.user} — phase {self.phase_id}: {self.completed_sections}/6"
+
+
+# ─── User progress (existing) ─────────────────────────────────────────────────
+
 class AdventureProgress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="adventure_progress", on_delete=models.CASCADE)
-    chapter = models.ForeignKey(AdventureChapter, related_name="progress_entries", on_delete=models.CASCADE)
-    current_phase = models.PositiveIntegerField(default=1)
+    user           = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="adventure_progress", on_delete=models.CASCADE)
+    chapter        = models.ForeignKey(AdventureChapter, related_name="progress_entries", on_delete=models.CASCADE)
+    current_phase  = models.PositiveIntegerField(default=1)
     reward_unlocked = models.BooleanField(default=False)
-    started_at = models.DateTimeField(auto_now_add=True)
-    completed_at = models.DateTimeField(null=True, blank=True)
+    started_at     = models.DateTimeField(auto_now_add=True)
+    completed_at   = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         unique_together = ("user", "chapter")
@@ -72,9 +250,9 @@ class AdventureProgress(models.Model):
 
 
 class AdventurePhaseCompletion(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="phase_completions", on_delete=models.CASCADE)
-    phase = models.ForeignKey(AdventurePhase, related_name="completions", on_delete=models.CASCADE)
-    score = models.PositiveIntegerField(default=0)
+    user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="phase_completions", on_delete=models.CASCADE)
+    phase        = models.ForeignKey(AdventurePhase, related_name="completions", on_delete=models.CASCADE)
+    score        = models.PositiveIntegerField(default=0)
     completed_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

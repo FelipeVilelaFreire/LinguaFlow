@@ -28,9 +28,11 @@ const UI_LOCALE_KEY = "fluenci_ui_locale";
 const ROUTE_PATH: Partial<Record<AppRoute, string>> = {
   home:               ROUTES.home,
   adventure:          ROUTES.adventure,
-  "adventure-map":    ROUTES.adventureMap,
-  "adventure-mochila":ROUTES.adventureMochila,
-  "adventure-heroi":  ROUTES.adventureHeroi,
+  "adventure-map":      ROUTES.adventureMap,
+  "adventure-mochila":      ROUTES.adventureMochila,
+  "adventure-palavras":     ROUTES.adventurePalavras,
+  "adventure-heroi":        ROUTES.adventureHeroi,
+  "adventure-personagens":  ROUTES.adventurePersonagens,
   today:              ROUTES.today,
   vocabulary:         ROUTES.vocabulary,
   account:            ROUTES.account,
@@ -51,7 +53,7 @@ export default function App() {
   const [booting, setBooting] = useState(true);
 
   const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
-  const langCode = goal?.target_language?.code ?? "IT";
+  const langCode = goal?.target_language?.code ?? "ES";
 
   useEffect(() => {
     function handlePopState() {
@@ -97,7 +99,7 @@ export default function App() {
   }, [booting, user, goal, route]);
 
   const screen = useMemo(() => {
-    if (route === "adventure") return <AdventureScreen />;
+    if (route === "adventure") return <AdventureScreen langCode={langCode} />;
     if (route === "today") return <StudyScreen onCompleted={() => contentService.getCurrentGoal().then(setGoal)} onNavigate={navigate} />;
     if (route === "vocabulary") return <VocabularyScreen />;
     if (route === "history") return (
@@ -241,11 +243,13 @@ export default function App() {
   }
 
   // ── Full-screen adventure module (map / mochila / herói) ─────────────────
-  if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-heroi") {
+  if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-palavras" || route === "adventure-heroi" || route === "adventure-personagens") {
     const tabMap: Record<string, AdventureTab> = {
-      "adventure-map":     "map",
-      "adventure-mochila": "mochila",
-      "adventure-heroi":   "heroi",
+      "adventure-map":          "map",
+      "adventure-mochila":      "mochila",
+      "adventure-palavras":     "palavras",
+      "adventure-heroi":        "heroi",
+      "adventure-personagens":  "personagens",
     };
     return (
       <StringsProvider locale={activeLocale}>
@@ -256,8 +260,7 @@ export default function App() {
           chapterPath={adventureChapterPath}
           onBack={() => navigate("adventure")}
           onTabChange={(tab) => {
-            const r = `adventure-${tab}` as AppRoute;
-            navigate(r);
+            navigate(`adventure-${tab}` as AppRoute);
           }}
         />
       </StringsProvider>
@@ -292,9 +295,11 @@ export default function App() {
 
 function routeFromPath(pathname: string): AppRoute {
   if (pathname.startsWith(ROUTES.adventureChapterBase + "/")) return "adventure-chapter";
-  if (pathname === ROUTES.adventureMap)     return "adventure-map";
-  if (pathname === ROUTES.adventureMochila) return "adventure-mochila";
-  if (pathname === ROUTES.adventureHeroi)   return "adventure-heroi";
+  if (pathname === ROUTES.adventureMap)      return "adventure-map";
+  if (pathname === ROUTES.adventureMochila)     return "adventure-mochila";
+  if (pathname === ROUTES.adventurePalavras)    return "adventure-palavras";
+  if (pathname === ROUTES.adventureHeroi)       return "adventure-heroi";
+  if (pathname === ROUTES.adventurePersonagens) return "adventure-personagens";
   const found = (Object.entries(ROUTE_PATH) as Array<[AppRoute, string]>)
     .find(([, path]) => path === pathname);
   return found?.[0] ?? "home";

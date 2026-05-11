@@ -1,3 +1,49 @@
+// ─── Available languages (from /adventure/chapters/languages/) ───────────────
+
+export interface AvailableLanguage {
+  code: string;
+  chapter_title: string;
+  chapter_subtitle: string;
+}
+
+// ─── API shapes (what the backend actually serializes) ────────────────────────
+// These lack frontend-only fields (section_count, completed_sections, etc.)
+// that are hydrated locally in useAdventureChapters.
+
+export interface ApiAdventurePhase {
+  id: number;
+  number: number;
+  title: string;
+  narrative_intro: string;
+  narrative_outro: string;
+  key_words: string[];
+  scenario_slug: string;
+  phrase_count: number;
+  phase_type: "story" | "review" | "boss";
+  is_boss: boolean;
+  is_completed: boolean;
+  score: number | null;
+}
+
+export interface ApiAdventureChapter {
+  id: number;
+  slug: string;
+  language_code: string;
+  level: string;
+  order: number;
+  title: string;
+  subtitle: string;
+  background: string;
+  boss_name: string;
+  boss_intro: string;
+  reward_name: string;
+  reward_description: string;
+  phases: ApiAdventurePhase[];
+  progress: AdventureProgress | null;
+}
+
+// ─── Frontend-hydrated shapes ──────────────────────────────────────────────────
+
 export interface AdventureProgress {
   current_phase: number;
   reward_unlocked: boolean;
@@ -41,4 +87,71 @@ export interface AdventureChapter {
   reward_description: string;
   phases: AdventurePhase[];
   progress: AdventureProgress | null;
+}
+
+// ─── Characters ──────────────────────────────────────────────────────────────
+
+export interface ApiAdventureCharacter {
+  id: number;
+  slug: string;
+  name: string;
+  role: string;           // in target language
+  emoji: string;
+  character_type: "main" | "ally" | "boss" | "npc";
+  quote: string;
+  lang_bridge: boolean;
+  order: number;
+  is_met: boolean;        // server-computed per authenticated user
+}
+
+// ─── Items / Inventory ────────────────────────────────────────────────────────
+
+export type ItemRarity = "comum" | "raro" | "epico" | "lendario";
+export type ItemAction = "examinar" | "entregar" | "usar" | "equipar";
+
+export interface ApiAdventureItem {
+  id: number;
+  slug: string;
+  emoji: string;
+  name: string;
+  lore: string;
+  rarity: ItemRarity;
+  action: ItemAction;
+  order: number;
+  source_phase_number: number | null;
+  source_character_name: string | null;
+}
+
+export interface ApiUserInventoryItem {
+  id: number;
+  item: ApiAdventureItem;
+  earned_at: string;
+  is_used: boolean;
+  used_at: string | null;
+}
+
+export interface StreakData {
+  current:       number;
+  longest:       number;
+  updated_today: boolean;
+}
+
+export interface EarnedItemData {
+  slug?:  string;
+  emoji:  string;
+  name:   string;
+  lore:   string;
+  rarity: ItemRarity;
+  action: ItemAction;
+}
+
+// ─── Word mastery ─────────────────────────────────────────────────────────────
+
+export type WordTier = "bronze" | "prata" | "ouro" | "diamante" | "esmeralda";
+
+export interface ApiWordMastery {
+  word_id: string;
+  tier: WordTier;
+  streak: number;
+  last_seen_at: string | null;
 }

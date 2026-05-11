@@ -1,181 +1,327 @@
-import { Package } from "lucide-react";
-import { useState } from "react";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 
+import { useStrings } from "../../../contexts/StringsContext";
+import { adventureService } from "../../../services/adventureService";
 import { getAdventureColors } from "../../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../../theme/adventureColors";
-
-type Rarity = "comum" | "raro" | "epico";
-
-interface WordCard {
-  id: number;
-  word: string;
-  translation: string;
-  category: string;
-  rarity: Rarity;
-  stars: number;
-}
-
-const MOCK_CARDS: WordCard[] = [];
-
-const RARITY_CONFIG: Record<Rarity, { darkBg: string; lightBg: string; darkText: string; lightText: string; badge: string; label: string }> = {
-  comum: {
-    darkBg:   "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-    lightBg:  "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
-    darkText: "#f8fafc",
-    lightText:"#1e293b",
-    badge:    "#475569",
-    label:    "Comum",
-  },
-  raro: {
-    darkBg:   "linear-gradient(135deg, #1e3a5f 0%, #0c1a2e 100%)",
-    lightBg:  "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
-    darkText: "#f8fafc",
-    lightText:"#1e3a8a",
-    badge:    "#3b82f6",
-    label:    "Raro",
-  },
-  epico: {
-    darkBg:   "linear-gradient(135deg, #3b1f5e 0%, #1a0a2e 100%)",
-    lightBg:  "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)",
-    darkText: "#f8fafc",
-    lightText:"#581c87",
-    badge:    "#a855f7",
-    label:    "Épico",
-  },
-};
-
-const FILTERS: Array<{ id: Rarity | "todos"; label: string }> = [
-  { id: "todos", label: "Todos" },
-  { id: "comum", label: "Comum" },
-  { id: "raro",  label: "Raro" },
-  { id: "epico", label: "Épico" },
-];
+import type { ApiAdventureItem, ApiUserInventoryItem, ItemRarity } from "../../../types/adventure";
 
 interface AdventureMochilaScreenProps {
   langCode: string;
   themeMode: AdventureThemeMode;
+  chapterSlug?: string;
 }
 
-export default function AdventureMochilaScreen({ langCode, themeMode }: AdventureMochilaScreenProps) {
+const RARITY_CONFIG: Record<ItemRarity, { label: string; color: string; glow: string; border: string }> = {
+  comum:    { label: "Comum",    color: "#94a3b8", glow: "#94a3b820", border: "#94a3b830" },
+  raro:     { label: "Raro",     color: "#60a5fa", glow: "#60a5fa20", border: "#60a5fa35" },
+  epico:    { label: "Épico",    color: "#c084fc", glow: "#c084fc25", border: "#c084fc40" },
+  lendario: { label: "Lendário", color: "#fbbf24", glow: "#fbbf2430", border: "#fbbf2450" },
+};
+
+export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlug }: AdventureMochilaScreenProps) {
+  const s = useStrings();
   const c = getAdventureColors(langCode, themeMode);
-  const [filter, setFilter] = useState<Rarity | "todos">("todos");
 
-  const cards = filter === "todos" ? MOCK_CARDS : MOCK_CARDS.filter((card) => card.rarity === filter);
+  const [inventory, setInventory] = useState<ApiUserInventoryItem[]>([]);
+  const [chapterItems, setChapterItems] = useState<ApiAdventureItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState<number | null>(null);
 
-  function getRarityStyle(rarity: Rarity) {
-    const cfg = RARITY_CONFIG[rarity];
-    return {
-      bg:    themeMode === "dark" ? cfg.darkBg  : cfg.lightBg,
-      text:  themeMode === "dark" ? cfg.darkText : cfg.lightText,
-      badge: cfg.badge,
-      label: cfg.label,
+  useEffect(() => {
+    if (!chapterSlug) return;
+    setLoading(true);
+    Promise.all([
+      adventureService.listInventory(),
+      adventureService.listItems(chapterSlug),
+    ])
+      .then(([inv, items]) => { setInventory(inv); setChapterItems(items); })
+      .finally(() => setLoading(false));
+  }, [chapterSlug]);
+
+  const earnedItemIds = new Set(inventory.map(i => i.item.id));
+  const locked = chapterItems.filter(i => !earnedItemIds.has(i.id));
+  const expandedEntry = inventory.find(e => e.item.id === expanded);
+
+  async function handleUseItem(itemId: number) {
+    try {
+      const updated = await adventureService.useInventoryItem(itemId);
+      setInventory(prev => prev.map(e => e.item.id === itemId ? updated : e));
+    } catch {
+      // non-blocking
+    }
+    setExpanded(null);
+  }
+
+  function actionLabel(action: string): string {
+    const map: Record<string, string> = {
+      examinar: s.adventure.actionExaminar,
+      entregar: s.adventure.actionEntregar,
+      usar:     s.adventure.actionUsar,
+      equipar:  s.adventure.actionEquipar,
     };
+    return map[action] ?? action;
+  }
+
+  if (!chapterSlug || loading) {
+    return (
+      <div className="flex h-full items-center justify-center">
+        <p className="animate-pulse text-sm font-semibold" style={{ color: c.textOnBg }}>
+          Carregando inventário...
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="px-3 pt-4 pb-4">
-      {/* Header */}
-      <div className="mb-4 px-1">
-        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-          Coleção
+    <div className="px-4 pb-8 pt-5 md:px-8 md:pt-7">
+
+      <div className="mb-5">
+        <p className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: c.textFaint }}>
+          {s.adventure.inventoryLabel}
         </p>
-        <h2 className="mt-0.5 text-2xl font-bold" style={{ color: c.parchment }}>
-          Mochila
+        <h2 className="mt-0.5 text-xl font-bold leading-tight md:text-2xl" style={{ color: c.parchment }}>
+          {s.adventure.tabBag}
         </h2>
-        <p className="mt-0.5 text-xs font-medium" style={{ color: c.textFaint }}>
-          {MOCK_CARDS.length > 0 ? `${MOCK_CARDS.length} cards coletados` : "Vazia"}
+        <p className="mt-1 text-sm" style={{ color: c.textOnBg }}>
+          {s.adventure.itemsCollected(inventory.length)}
         </p>
       </div>
 
-      {/* Filter bar — only when there are cards */}
-      {MOCK_CARDS.length > 0 && (
+      {inventory.length === 0 ? (
         <div
-          className="mb-4 flex gap-1 rounded-xl p-1"
-          style={{ background: c.surfaceMid }}
+          className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 text-center"
+          style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
         >
-          {FILTERS.map(({ id, label }) => {
-            const active = filter === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setFilter(id as Rarity | "todos")}
-                className="flex-1 rounded-lg py-2 text-xs font-bold uppercase tracking-wider transition"
-                style={
-                  active
-                    ? { background: c.ctaBg, color: c.ctaText }
-                    : { color: `${c.parchment}55` }
-                }
-              >
-                {label}
-              </button>
-            );
-          })}
+          <p className="text-3xl">🎒</p>
+          <p className="text-sm font-semibold" style={{ color: c.textOnBg }}>
+            {s.adventure.bagEmpty}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+          {inventory.map(entry => (
+            <ItemCard
+              key={entry.item.id}
+              item={entry.item}
+              isUsed={entry.is_used}
+              expanded={expanded === entry.item.id}
+              onToggle={() => setExpanded(prev => prev === entry.item.id ? null : entry.item.id)}
+              c={c}
+              itemUsedLabel={s.adventure.itemUsed}
+            />
+          ))}
         </div>
       )}
 
-      {/* Card grid */}
-      <div className="grid grid-cols-3 gap-2">
-        {cards.map((card) => {
-          const style = getRarityStyle(card.rarity);
-          return (
-            <div
-              key={card.id}
-              className="flex flex-col rounded-xl p-2.5"
+      {locked.length > 0 && (
+        <>
+          <p className="mb-3 mt-7 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: c.textFaint }}>
+            {s.adventure.toDiscover}
+          </p>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {locked.map(item => {
+              const r = RARITY_CONFIG[item.rarity];
+              return (
+                <div
+                  key={item.id}
+                  className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center opacity-30"
+                  style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
+                >
+                  <div
+                    className="flex h-16 w-16 items-center justify-center rounded-full text-3xl grayscale"
+                    style={{ background: c.surfaceMid, border: `2px solid ${c.borderFaint}` }}
+                  >
+                    {item.emoji}
+                  </div>
+                  <div className="min-w-0 w-full">
+                    <p className="truncate text-sm font-bold leading-tight" style={{ color: c.parchment }}>???</p>
+                    {item.source_character_name && (
+                      <p className="mt-0.5 truncate text-xs" style={{ color: c.textFaint }}>
+                        {item.source_character_name}
+                      </p>
+                    )}
+                  </div>
+                  <span
+                    className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+                    style={{ background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }}
+                  >
+                    {r.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {expandedEntry && (
+        <ItemDetailOverlay
+          entry={expandedEntry}
+          c={c}
+          onClose={() => setExpanded(null)}
+          onUse={() => void handleUseItem(expandedEntry.item.id)}
+          actionLabel={actionLabel(expandedEntry.item.action)}
+          itemUsedLabel={s.adventure.itemUsed}
+        />
+      )}
+
+    </div>
+  );
+}
+
+function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabel }: {
+  entry: ApiUserInventoryItem;
+  c: ReturnType<typeof getAdventureColors>;
+  onClose: () => void;
+  onUse: () => void;
+  actionLabel: string;
+  itemUsedLabel: string;
+}) {
+  const r          = RARITY_CONFIG[entry.item.rarity];
+  const paragraphs = (entry.item.lore || "").split("\n\n").filter(Boolean);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex flex-col"
+      style={{ background: "rgba(0,0,0,0.95)", animation: "narrativeFadeIn 300ms ease-out both" }}
+      onClick={onClose}
+    >
+      <div
+        className="flex flex-1 flex-col overflow-hidden md:m-auto md:h-auto md:max-h-[85vh] md:w-full md:max-w-lg md:rounded-3xl"
+        style={{
+          background: c.surfaceMid,
+          border: `1px solid ${r.border}`,
+          boxShadow: `0 16px 48px ${r.glow}`,
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="relative flex shrink-0 items-start gap-4 px-6 pb-4 pt-6">
+          <div
+            className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-5xl"
+            style={{ background: r.glow, border: `2px solid ${r.border}`, opacity: entry.is_used ? 0.45 : 1 }}
+          >
+            {entry.item.emoji}
+          </div>
+          <div className="min-w-0 flex-1 pt-1">
+            <p className="text-lg font-bold leading-tight md:text-xl" style={{ color: c.parchment }}>
+              {entry.item.name}
+            </p>
+            {entry.item.source_character_name && (
+              <p className="mt-1 text-xs" style={{ color: c.textFaint }}>
+                {entry.item.source_character_name}
+              </p>
+            )}
+            <div className="mt-2 flex items-center gap-2">
+              <span
+                className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+                style={{ background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }}
+              >
+                {r.label}
+              </span>
+              {entry.is_used && (
+                <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  {itemUsedLabel}
+                </span>
+              )}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+            style={{ background: c.surface, color: c.parchment }}
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 pb-6">
+          {paragraphs.map((para, i) => (
+            <p
+              key={i}
+              className="text-[15px] leading-[1.7] md:text-base"
               style={{
-                background: style.bg,
-                border: `1px solid ${style.badge}30`,
-                minHeight: 110,
+                color: c.textOnBg,
+                marginBottom: i < paragraphs.length - 1 ? "0.9rem" : 0,
               }}
             >
-              {/* Rarity badge */}
-              <span
-                className="self-start rounded-full px-2 py-0.5 text-[9px] font-bold uppercase"
-                style={{ background: style.badge + "30", color: style.badge }}
-              >
-                {style.label}
-              </span>
-
-              {/* Word */}
-              <p
-                className="mt-auto text-sm font-bold leading-tight"
-                style={{ color: style.text }}
-              >
-                {card.word}
-              </p>
-              <p className="text-[10px] font-medium" style={{ color: `${style.text}99` }}>
-                {card.translation}
-              </p>
-
-              {/* Stars */}
-              <div className="mt-1.5 flex gap-0.5">
-                {[1, 2, 3].map((s) => (
-                  <span
-                    key={s}
-                    className="text-[10px]"
-                    style={{ color: style.badge, opacity: s <= card.stars ? 1 : 0.2 }}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Empty state */}
-      {cards.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
-          <Package size={44} style={{ color: c.textFaint }} />
-          <p className="mt-4 text-base font-bold" style={{ color: c.textOnBg }}>
-            Sua mochila está vazia
-          </p>
-          <p className="mt-1.5 text-xs font-medium leading-relaxed" style={{ color: c.textFaint }}>
-            Complete fases para colecionar palavras{"\n"}e desbloquear cards raros
-          </p>
+              {para}
+            </p>
+          ))}
         </div>
-      )}
+
+        {entry.item.action === "usar" && !entry.is_used && (
+          <div className="shrink-0 px-6 pb-6">
+            <button
+              type="button"
+              onClick={onUse}
+              className="w-full rounded-2xl py-3.5 text-base font-bold transition active:scale-[0.97]"
+              style={{
+                background: r.color,
+                color: "#0a0a0a",
+              }}
+            >
+              {actionLabel}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
+  );
+}
+
+function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel }: {
+  item: ApiAdventureItem;
+  isUsed: boolean;
+  expanded: boolean;
+  onToggle: () => void;
+  c: ReturnType<typeof getAdventureColors>;
+  itemUsedLabel: string;
+}) {
+  const r = RARITY_CONFIG[item.rarity];
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center transition active:scale-[0.97]"
+      style={{
+        background: expanded ? c.surfaceMid : c.surface,
+        border: `1px solid ${expanded ? r.color + "60" : r.border}`,
+        boxShadow: expanded ? `0 0 16px ${r.glow}` : "none",
+      }}
+    >
+      <div
+        className="flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+        style={{
+          background: r.glow,
+          border: `2px solid ${r.border}`,
+          opacity: isUsed ? 0.5 : 1,
+        }}
+      >
+        {item.emoji}
+      </div>
+      <div className="min-w-0 w-full">
+        <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment }}>
+          {item.name}
+        </p>
+        {item.source_character_name && (
+          <p className="mt-0.5 truncate text-xs" style={{ color: c.textFaint }}>
+            {item.source_character_name}
+          </p>
+        )}
+      </div>
+      <span
+        className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+        style={
+          isUsed
+            ? { background: c.surface, color: c.textFaint, border: `1px solid ${c.borderFaint}` }
+            : { background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }
+        }
+      >
+        {isUsed ? itemUsedLabel : r.label}
+      </span>
+    </button>
   );
 }

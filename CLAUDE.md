@@ -56,8 +56,28 @@ Todo desenvolvimento prioriza mobile. Desktop é aprimoramento, não base.
 SÉRIE  (nível CEFR — ex: A1)
   └── TEMPORADA  (5 por série — badge T1…T5)
         └── FASE  (25 por temporada — types: story | review | boss)
-              └── SEÇÃO  (6 por fase — 5 steps cada)
+              └── SEÇÃO  (6 por fase — steps variáveis por seção, total ~50/fase)
 ```
+
+### ⚠️ REGRA ABSOLUTAMENTE CRÍTICA — SÉRIE = CEFR
+
+**SÉRIE = nível CEFR. Toda série tem exatamente 5 temporadas (T1–T5).**
+
+As 5 temporadas de uma série **NÃO representam níveis CEFR diferentes**. Elas aprofundam o **mesmo nível CEFR** progressivamente. Quem conclui as 5 temporadas do A1 **sai no A1**.
+
+```
+SÉRIE A1  →  T1 · T2 · T3 · T4 · T5   ← todas A1, mesmo nível (~65h)
+SÉRIE A2  →  T1 · T2 · T3 · T4 · T5   ← todas A2, outra história
+SÉRIE B1  →  T1 · T2 · T3 · T4 · T5   ← todas B1, outra história
+SÉRIE B2  →  T1 · T2 · T3 · T4 · T5   ← todas B2, outra história
+SÉRIE C1  →  T1 · T2 · T3 · T4 · T5   ← todas C1, outra história
+```
+
+**Nunca quebrar:**
+- Badge de temporada = sempre **T1/T2/T3/T4/T5** — jamais A1/A2/B1/B2/C1
+- Slug de temporada = sempre prefixado pela série: `it-a1-*` para todas as temporadas do A1 italiano
+- O label "A1" aparece no header da série — nunca repetido por temporada
+- MVP: SÉRIE A1 italiano = "Il Viandante" (T1 Borgo · T2 Venezia · T3 Toscana · T4 Napoli · T5 Roma)
 
 ### Seções — modelo definitivo de produto
 
@@ -68,7 +88,7 @@ O frontend nunca muda — ele apenas renderiza o que o backend (hoje: mocks) for
 
 | Componente | Responsabilidade |
 |-----------|-----------------|
-| `AdventurePhaseRunner` | Gerencia o fluxo das 6 seções de uma fase + tela de conclusão. Contém os dados (`PHASE_1_SECTIONS`, futuramente API). Passa uma seção por vez ao renderer. |
+| `AdventurePhaseRunner` | Gerencia o fluxo das 6 seções de uma fase + tela de conclusão. Importa dados de `src/mocks/phaseContentMock.ts` via `PHASE_SECTIONS_MAP[phaseNumber]`. Passa uma seção por vez ao renderer. |
 | `AdventureChapterSections` | Renderiza **uma única seção**, step a step. Não conhece as outras seções. Recebe `section`, `sectionNumber`, `totalSections`, `phaseNumber`, `onComplete`, `onBack`. |
 
 **Regra de conteúdo — nunca quebrar:**
@@ -83,13 +103,13 @@ Os nomes internos das seções são **arquitetura de backend — nunca visíveis
 
 **Cada step = 1 tela/atividade** (uma pergunta, um bloco narrativo, uma lista de vocab). Número de steps por seção é variável — determinado pelo conteúdo, não fixo. Mínimo 3 exercícios por seção em qualquer fase.
 
-| # | Tipo interno | Perfil | Exercícios | Tipo de conteúdo |
+| # | Tipo interno (`type`) | Perfil | Exercícios | Tipo de conteúdo |
 |---|---|---|---|---|
-| 1 | `narrativa` | Imersão + prática leve do vocab ouvido | 4 | Beats narrativos acumulados → 4 exercícios de reconhecimento |
-| 2 | `revisao_srs` | Revisão SRS — fase(s) anterior(es) | 12 | Conteúdo dinâmico gerado pelo algoritmo (não fixo no mock) |
-| 3 | `pratica_aplicada` | Narrativa avança + prática intensa | 10 | Novos beats narrativos → 10 exercícios usando o vocab praticado |
-| 4 | `gramatica_narrativa` | NPC ensina gramática via história | 8 | Narrativa → NPC apresenta padrão → 8 exercícios com palavras novas |
-| 5 | `reforco` | Padrão explícito + reforço | 6 | Pattern card → NPC demonstra → 6 exercícios focados no padrão |
+| 1 | `cotidiano` | Imersão narrativa + prática leve | 4 | Beats acumulados (scene/npc/player) → 4 exercícios de reconhecimento |
+| 2 | `revisao_srs` | Revisão SRS — fase(s) anterior(es) | 12 | Exercícios dinâmicos do algoritmo SRS |
+| 3 | `pratica` | Prática intensa do vocab novo | 10 | Exercícios variados usando o vocab praticado |
+| 4 | `gramatica_narrativa` | NPC ensina gramática via história | 8 | Narrativa → NPC apresenta padrão → 8 exercícios |
+| 5 | `reforco` | Pattern card + reforço explícito | 6 | Pattern card → NPC demonstra → 6 exercícios focados no padrão |
 | 6 | `obstaculo` | Gate final — produção ativa | 10 gated | Cena → NPC desafia → 10 exercícios travados (errar trava) |
 | | **Total por fase** | | **50** | |
 
@@ -99,6 +119,149 @@ Os nomes internos das seções são **arquitetura de backend — nunca visíveis
 - Seção 3: narrativa avança + praticar o vocab **recém-aprendido** em uso
 - Seções 4–5: apresentar e reforçar a **gramática** nova via personagem
 - Seção 6: usar **tudo junto** sob pressão — o único gate real da fase
+
+---
+
+### ⚠️ Padrão conversacional obrigatório — todo exercício é um turno de diálogo
+
+**Regra inviolável: o NPC é o fio condutor de TODAS as seções, do começo ao fim.**
+
+Não existe "exercício solto". Toda pergunta acontece dentro de uma situação real conduzida pelo NPC. O jogador nunca vê uma `multiple_choice` flutuando sem contexto narrativo.
+
+**Padrão de cada exercício:**
+
+```
+npc_speak     → NPC fala dentro de uma situação real (com tradução)
+multiple_choice (com `npc` + `npc_reaction`) → o jogador responde,
+                NPC reage ao acerto
+```
+
+OU equivalente: a própria `multiple_choice` carrega o NPC via campos `npc` + `npc_reaction`, dispensando o `npc_speak` separado.
+
+**O que NUNCA fazer:**
+
+```
+// ❌ NUNCA — exercício sterilizado
+{ kind: "multiple_choice", question: "Como se diz 'olá' em espanhol?",
+  options: [...], correct: "a" }
+
+// ❌ NUNCA — narrative + lista de exercícios sem NPC
+{ kind: "narrative", text: "Vamos praticar saudações." }
+{ kind: "multiple_choice", question: "Qual é 'bom dia'?", ... }
+```
+
+**O que SEMPRE fazer:**
+
+```
+// ✅ Padrão A — npc_speak antes do exercício
+{ kind: "npc_speak",
+  npc: "Don Miguel",
+  line: "Es la mañana. ¿Cómo saludas?",
+  translation: "É de manhã. Como você cumprimenta?" }
+{ kind: "multiple_choice",
+  npc: "Don Miguel",
+  question: "O sol acabou de subir. Você diz:",
+  options: [...], correct: "a",
+  word_id: "es_buenos_dias",
+  npc_reaction: "Bueno. 'Buenos días' até o meio-dia." }
+
+// ✅ Padrão B — multiple_choice carrega o NPC sozinho
+{ kind: "multiple_choice",
+  npc: "Don Miguel",
+  question: "'Te dieron un pan. ¿Qué dices?'",
+  options: [Gracias, Hola, Bien, Adiós],
+  correct: "a", word_id: "es_gracias",
+  npc_reaction: "Eso. Básico." }
+```
+
+**Por seção, o balanço entre beats narrativos e exercícios muda — mas o NPC nunca some.**
+
+| Seção | Balanço |
+|-------|---------|
+| 1 · narrativa            | Muitos beats, poucos exercícios. Vocab aparece sem explicação |
+| 2 · revisao_srs          | NPC passeia/conduz situações, cada exercício é uma pergunta dele |
+| 3 · gramatica_narrativa  | NPC ensina explicitamente, intercalando beats com exercícios |
+| 4 · pratica_aplicada     | Quase sem beats, NPC firing rapid-fire em cada exercício |
+| 5 · reforco              | NPC demonstra o padrão completo em conversa real |
+| 6 · obstaculo            | NPC vira examinador — cada exercício é um desafio dele (gated) |
+
+**Diretriz de redação narrativa:**
+
+- Falas do NPC em `npc_speak` curtas, com tradução
+- `question` dentro de `multiple_choice` descreve a **situação**, não pede definição: "Você encontra um vizinho. Você diz:" ≠ "Como se diz olá?"
+- `question` **evoca** o estado interno do jogador via sensação física/ambiente — **não declara**:
+  - ❌ "Você está cansado. Don Miguel pergunta '¿Cómo estás?'"
+  - ✅ "Seus pés doem, suas pálpebras pesam. Don Miguel: '¿Cómo estás?'"
+  - Detalhes sensoriais (corpo, clima, objetos) > rótulo emocional ("você está triste")
+- `npc_reaction` curto, na voz do personagem ("Eso.", "Bien hecho.", "Sigue.")
+- Player react curto e concreto (ação física, não interpretação emocional)
+
+---
+
+### Phase Template — contrato narrativo de toda fase
+
+**Toda fase é um pequeno dia/jornada com 3 atos mapeados nas 6 seções.**
+Fase 1 ES ("O Despertar no Campo") é a **referência canônica** — qualquer fase nova segue esse molde.
+
+**Estrutura em 3 atos:**
+
+| Ato | Seções | Função |
+|-----|--------|--------|
+| **1. Set up** | Seção 1 (narrativa) + Seção 2 (narrativa + passeio) | Ancora lugar/hora, apresenta vocab novo sem traduzir, abre o mundo com cameo |
+| **2. Intensivo + Encontro** | Seção 3 (exercícios fortes) + Seção 4 (narrativa, intro novo NPC) + Seção 5 (narrativa, convivência com novo NPC) | Prática concentrada da Seção 3, depois 2 seções narrativas pra introduzir e desenvolver um personagem novo |
+| **3. Resolution** | Seção 6 (obstáculo + closing) | Gate final + closing beat narrativo que faz transição pra próxima fase |
+
+**Distribuição de exercícios por seção (alvo):**
+
+| Seção | Exercícios | Estilo |
+|-------|-----------|--------|
+| 1 (narrativa) | 4 | recognition contextual após beats |
+| 2 (narrativa + passeio) | ~6 | encadeados com cameo do NPC novo |
+| 3 (intensivo) | ~12-15 | concentração de prática — onde mora o "esforço" da fase |
+| 4 (intro novo NPC) | 2-3 | narrativa-heavy, exercícios servem o encontro |
+| 5 (convivência) | 2-3 | mais narrativa, NPC ensina algo sobre o mundo |
+| 6 (obstáculo) | 10 gated | teste final + closing pra posada/transição |
+
+Total ~40 exercícios por fase. Antes era ~50 distribuído, mas concentrar em 3 e 6 dá ritmo melhor (narrativa não fica fragmentada em mini-quizzes).
+
+**Regra 80/20 — vocab novo vs revisão (Fase 2 em diante):**
+
+- **20% palavras novas:** 2-3 palavras por fase, máximo. Introduzidas na Seção 1 e Seção 4 (encontro com NPC novo)
+- **80% revisão:** o resto do conteúdo (Seções 2, 3, 5, 6) revisita vocab das fases anteriores em contextos novos
+- Exceção: **Fase 1** introduz toda a base (~12 palavras) — é o único caso de "100% novo"
+
+**Regras transversais — toda fase precisa ter:**
+
+| Dimensão | Regra |
+|----------|-------|
+| **NPCs** | 1 NPC principal (recorrente) + ≥1 NPC cameo **nomeado** novo. NPCs de fases anteriores podem reaparecer |
+| **Lugares** | ≥2 locais distintos. Seção 3 = lugar íntimo/parado. Seção 6 = lugar de limiar (porta, plaza, posada) |
+| **Transição** | Toda fase termina num beat de descanso/transição. A fase seguinte abre nesse mesmo lugar (continuidade) |
+| **Itens** | 2-4 itens cotidianos (`comum`), cada um amarrado a um beat. Raros/épicos só em marcos (fase 5, 10, 15, 20). Lendário só na fase 25 (boss) |
+| **Vocab** | 8-12 palavras novas, amarradas ao cenário. 1-3 estruturas gramaticais ensinadas na Seção 3 |
+| **Arco emocional** | A fase tem um sentimento de chegada → partida. Ex: Fase 1 = "perdido → seguro" (posada como resolução) |
+
+**Checklist obrigatório antes de escrever conteúdo de uma fase nova:**
+
+1. **Narrativo:** que momento da história essa fase é?
+2. **Pedagógico:** que vocab + gramática novos entram?
+3. **Emocional:** como o jogador começa e termina?
+4. **NPCs:** quem é o principal + quem é o cameo novo?
+5. **Lugares:** quais 2-3 lugares aparecem?
+6. **Itens:** que 2-4 itens cotidianos amarram aos beats?
+7. **Transição:** como termina e onde a próxima fase começa?
+
+Se algum dos 7 ficar em branco, a fase ainda não está pronta pra virar seed.
+
+**Fase 1 ES — referência canônica:**
+
+- Narrativo: chegada ao pueblo de San Cristóbal
+- Pedagógico: hola, buenos días, buenas tardes, gracias, de nada, ¿cómo te llamas?, me llamo, ¿cómo estás?, bien/mal, forastero, campesino
+- Emocional: perdido (chegada) → seguro (posada)
+- NPCs: Don Miguel (principal) + Rosa la Panadera (cameo na Seção 2)
+- Lugares: portão/parede de adobe → ruas do pueblo → casa de Rosa → plaza/posada
+- Itens: pan_fresco, manzana_del_campo, agua_del_pozo, moneda_de_cobre
+- Transição: termina caminhando com Don Miguel até la posada; próxima fase abre nesse mesmo lugar
 
 **Regra especial — primeira fase de cada temporada:**
 A seção 2 (`revisao_srs`) não tem histórico anterior. Nesse caso ela vira aquecimento contextual (apresentação do cenário, vocabulário de sobrevivência do novo arco). O backend pode sinalizar com `is_first_of_season: true` na fase.

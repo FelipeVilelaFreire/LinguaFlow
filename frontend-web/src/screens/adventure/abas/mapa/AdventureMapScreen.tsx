@@ -117,7 +117,7 @@ function SectionRing({
           cy={size / 2}
           r={r}
           fill="none"
-          stroke={c.nodeActive}
+          stroke={c.goldAccent}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={dashOffset}
@@ -155,7 +155,17 @@ function PhaseEntry({
 
   const inner = (
     <>
-      <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>{label}</p>
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>{label}</p>
+        {!isBoss && (
+          <span
+            className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+            style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}35` }}
+          >
+            Dia {phase.number}
+          </span>
+        )}
+      </div>
       <p className="mt-1 text-sm font-bold leading-snug" style={{ color: c.parchment }}>{phase.title}</p>
       {phase.npc_name && !isBoss && (
         <p className="mt-0.5 text-[11px]" style={{ color: c.textOnBg }}>{phase.npc_name}</p>
@@ -263,12 +273,14 @@ function SeasonHeader({
           >
             {chapter.level}
           </span>
-          <span
-            className="text-[10px] font-semibold uppercase tracking-widest"
-            style={{ color: isLocked ? c.textFaint : `${c.parchment}60` }}
-          >
-            A1 · Il Viandante
-          </span>
+          {chapter.subtitle && (
+            <span
+              className="text-[10px] font-semibold uppercase tracking-widest"
+              style={{ color: isLocked ? c.textFaint : `${c.parchment}60` }}
+            >
+              {chapter.subtitle}
+            </span>
+          )}
         </div>
         {isLocked && <Lock size={13} style={{ color: c.textFaint }} />}
       </div>
@@ -311,7 +323,7 @@ function PhaseNode({
   const isLight     = themeMode === "light";
 
   const size     = isBoss ? 64 : 54;
-  const ringSize = size + 14;
+  const ringSize = size + 20;
 
   const bg = isCompleted ? c.nodeCompleted
            : isCurrent && isBoss   ? c.bossColor
@@ -354,7 +366,7 @@ function PhaseNode({
           completed={completedSections}
           total={sectionCount}
           size={ringSize}
-          strokeWidth={2}
+          strokeWidth={6}
           c={c}
         />
       )}
@@ -386,7 +398,10 @@ function PhaseNode({
         ) : isReview ? (
           <BookOpen size={17} />
         ) : (
-          <span className="text-[15px] font-bold tabular-nums">{phase.number}</span>
+          <div className="flex flex-col items-center leading-none gap-px">
+            <span className="text-[7px] font-bold uppercase tracking-wider opacity-60">dia</span>
+            <span className="text-[14px] font-bold tabular-nums">{phase.number}</span>
+          </div>
         )}
       </button>
 
@@ -479,19 +494,9 @@ export default function AdventureMapScreen({ langCode, themeMode, chapters, onSt
                 className="absolute inset-0"
                 style={{ pointerEvents: "none" }}
               >
-                {/* Road base */}
                 <path d={PATH_D} fill="none" stroke={c.pathColor} strokeWidth="3.2" opacity="0.25" />
-                {/* Road surface */}
                 <path d={PATH_D} fill="none" stroke={c.pathColor} strokeWidth="2" opacity="0.5" />
-                {/* Center dashes */}
-                <path
-                  d={PATH_D}
-                  fill="none"
-                  stroke={c.goldAccent}
-                  strokeWidth="0.6"
-                  strokeDasharray="5,8"
-                  opacity="0.3"
-                />
+                <path d={PATH_D} fill="none" stroke={c.goldAccent} strokeWidth="0.6" strokeDasharray="5,8" opacity="0.3" />
               </svg>
 
               {/* Phase nodes */}

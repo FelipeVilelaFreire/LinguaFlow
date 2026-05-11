@@ -1,42 +1,285 @@
-import { ChevronLeft } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Check, ChevronLeft, History, Moon, Sun, Sunset } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import CharacterAvatar from "../../../../../../../components/CharacterAvatar";
+import { CHARACTER_AVATARS } from "../../../../../../../constants/characterAvatars";
 import { useStrings } from "../../../../../../../contexts/StringsContext";
 import { PLAYER_PRONOUN } from "../../../../../../../constants/playerPronoun";
+import { adventureService } from "../../../../../../../services/adventureService";
 import { getAdventureColors } from "../../../../../../../theme/adventureColors";
-import type { NarrativaBeat, PhaseSection, SectionStep } from "../../../../../../../types/sections";
+import type { PhaseSection, SectionRecap, SectionStep } from "../../../../../../../types/sections";
 
 type Colors = ReturnType<typeof getAdventureColors>;
 
-// ── Sub-components ─────────────────────────────────────────────────────────────
+// ── Chat entry — each item accumulated in the scroll ─────────────────────────
 
-function SceneBar({ text, c }: { text: string; c: Colors }) {
+type ChatEntry = { id: string } & (
+  | { kind: "narrative";      text: string }
+  | { kind: "npc";            npc: string; line: string; translation?: string; isNew?: boolean }
+  | { kind: "npc_reaction";   npc: string; line: string }
+  | { kind: "situation";      context: string; prompt: string }
+  | { kind: "player_text";    text: string; label: string }
+  | { kind: "player_answer";  text: string; label: string; correct: boolean }
+  | { kind: "wrong_hint";     correctText: string }
+  | { kind: "pattern";        parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
+  | { kind: "reveal";         phrase: string; meaning: string; note?: string }
+  | { kind: "vocab_list";     items: Array<{ target: string; native: string }> }
+);
+
+type ActiveChoice = {
+  question:      string;
+  options:       Array<{ id: string; text: string }>;
+  correct:       string;
+  npc?:          string;
+  npc_reaction?: string;
+  isGated:       boolean;
+  shaking:       boolean;
+};
+
+type FloatBadge = { id: string; x: number; bottomPx: number; text: string; isCombo: boolean };
+
+// ── Normalize section → flat SectionStep[] ───────────────────────────────────
+
+function normalizeSection(section: PhaseSection): SectionStep[] {
+  if (section.type !== "narrativa") return section.steps;
+  const fromBeats: SectionStep[] = section.beats.map(b => {
+    if (b.kind === "npc")    return { kind: "npc_speak"    as const, npc: b.npc, line: b.line, translation: b.translation };
+    if (b.kind === "player") return { kind: "player_react" as const, text: b.text };
+    return b;
+  });
+  return [...fromBeats, ...(section.exercises ?? [])];
+}
+
+// ── Scene card — parses "🏘️  Location · Time · Episode" ─────────────────────
+
+function SceneCard({ text, c, onTap }: { text: string; c: Colors; onTap: () => void }) {
+  const parts    = text.split(" · ");
+  const location = parts[0] ?? text;
+  const time     = parts[1];
+  const episode  = parts[2];
   return (
     <div
-      className="flex items-center gap-2 rounded-xl px-3 py-2.5"
-      style={{ background: c.surface, border: `1px solid ${c.borderFaint}`, animation: "narrativeFadeIn 300ms ease-out both" }}
+      className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 cursor-pointer select-none"
+      style={{ background: "rgba(0,0,0,0.93)", animation: "narrativeFadeIn 500ms ease-out both" }}
+      onClick={onTap}
     >
-      <p className="text-xs font-medium italic" style={{ color: c.textFaint }}>{text}</p>
+      <div className="flex flex-col items-center gap-3 px-8 text-center">
+        {episode && (
+          <p
+            className="text-xs font-bold uppercase tracking-widest"
+            style={{ color: c.goldAccent }}
+          >
+            {episode}
+          </p>
+        )}
+        <p className="text-2xl font-bold leading-snug md:text-3xl" style={{ color: c.parchment }}>
+          {location}
+        </p>
+        {time && (
+          <p className="text-sm font-medium md:text-base" style={{ color: c.textOnBg }}>
+            {time}
+          </p>
+        )}
+      </div>
+      <p
+        className="absolute bottom-14 text-xs font-semibold tracking-wide"
+        style={{ color: c.textFaint, animation: "tapPulse 1.8s ease-in-out infinite" }}
+      >
+        toque para continuar  ›
+      </p>
     </div>
   );
 }
 
-function NpcBubble({ npc, line, translation, c }: {
-  npc: string; line: string; translation?: string; c: Colors;
+// ── Recap card — "Me relembre onde paramos" overlay opened by header button ──
+
+function RecapCard({ recap, c, onClose, labels }: {
+  recap: SectionRecap;
+  c: Colors;
+  onClose: () => void;
+  labels: { eyebrow: string; now: string; close: string };
 }) {
-  const initial = npc.charAt(0).toUpperCase();
   return (
-    <div className="flex items-start gap-3" style={{ animation: "narrativeFadeIn 300ms ease-out both" }}>
+    <div
+      className="absolute inset-0 z-30 flex flex-col"
+      style={{ background: "rgba(0,0,0,0.97)", animation: "narrativeFadeIn 350ms ease-out both" }}
+    >
+      <div className="flex flex-1 flex-col gap-6 overflow-y-auto px-6 pb-4 pt-14">
+
+        <div className="flex flex-col gap-4" style={{ animation: "narrativeFadeIn 400ms 80ms ease-out both" }}>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: c.goldAccent }}>
+            ✦ {labels.eyebrow}
+          </p>
+
+          {recap.characters && recap.characters.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {recap.characters.map((name) => {
+                const avatar = CHARACTER_AVATARS[name];
+                return (
+                  <div
+                    key={name}
+                    className="flex items-center gap-2 rounded-full py-1 pl-1 pr-3"
+                    style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                  >
+                    <CharacterAvatar
+                      slug={avatar?.slug}
+                      emoji={avatar?.emoji}
+                      name={name}
+                      size={28}
+                      fallbackBg={c.ctaBg}
+                    />
+                    <span className="text-sm font-semibold" style={{ color: c.parchment }}>
+                      {name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div style={{ animation: "narrativeFadeIn 400ms 200ms ease-out both" }}>
+          {recap.story.split("\n\n").map((para, i) => (
+            <p
+              key={i}
+              className="text-base leading-[1.8] md:text-[17px]"
+              style={{
+                color: c.parchment,
+                marginBottom: i < recap.story.split("\n\n").length - 1 ? "0.85rem" : 0,
+              }}
+            >
+              {para}
+            </p>
+          ))}
+        </div>
+
+        {recap.now && (
+          <div
+            className="flex flex-col gap-2 rounded-2xl px-4 py-4"
+            style={{
+              background: c.surface,
+              border: `1px solid ${c.borderFaint}`,
+              animation: "narrativeFadeIn 400ms 350ms ease-out both",
+            }}
+          >
+            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
+              {labels.now}
+            </p>
+            <p className="text-[15px] leading-relaxed md:text-base" style={{ color: c.textOnBg }}>
+              {recap.now}
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="shrink-0 px-4 pb-6 pt-2">
+        <button
+          type="button"
+          onClick={onClose}
+          className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97]"
+          style={{ background: c.goldAccent, color: "#1a0800" }}
+        >
+          {labels.close}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Section complete overlay ──────────────────────────────────────────────────
+
+function SectionCompleteOverlay({ sectionNumber, totalSections, c }: {
+  sectionNumber: number; totalSections: number; c: Colors;
+}) {
+  return (
+    <div
+      className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 pointer-events-none"
+      style={{ background: "rgba(0,0,0,0.90)", animation: "narrativeFadeIn 400ms ease-out both" }}
+    >
       <div
-        className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-bold"
-        style={{ background: c.ctaBg, color: "#fff" }}
-      >{initial}</div>
-      <div className="flex min-w-0 flex-col gap-1">
-        <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: c.goldAccent }}>{npc}</p>
-        <div className="rounded-2xl rounded-tl-sm px-4 py-3" style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}>
-          <p className="text-base font-semibold italic leading-relaxed" style={{ color: c.parchment }}>"{line}"</p>
+        className="grid h-20 w-20 place-items-center rounded-full"
+        style={{
+          background: `${c.goldAccent}15`,
+          border: `1.5px solid ${c.goldAccent}55`,
+          animation: "successPop 500ms 250ms ease-out both",
+        }}
+      >
+        <Check size={32} style={{ color: c.goldAccent }} />
+      </div>
+      <div
+        className="flex flex-col items-center gap-2 text-center"
+        style={{ animation: "narrativeFadeIn 450ms 400ms ease-out both" }}
+      >
+        <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
+          Seção {sectionNumber} de {totalSections}
+        </p>
+        <p className="text-2xl font-bold leading-snug md:text-3xl" style={{ color: c.parchment }}>
+          Concluída
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function NarrativeEntry({ text, c }: { text: string; c: Colors }) {
+  return (
+    <div className="px-1">
+      {text.split("\n\n").map((para, i) => (
+        <p
+          key={i}
+          className="text-base leading-[1.9] md:text-[17px]"
+          style={{ color: c.textOnBg, marginBottom: i < text.split("\n\n").length - 1 ? "0.75rem" : 0 }}
+        >
+          {para}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function NpcEntry({ npc, line, translation, isNew, c }: {
+  npc: string; line: string; translation?: string; isNew?: boolean; c: Colors;
+}) {
+  const avatar = CHARACTER_AVATARS[npc];
+  return (
+    <div className="flex items-end gap-3" style={{ maxWidth: "88%" }}>
+      <CharacterAvatar
+        slug={avatar?.slug}
+        emoji={avatar?.emoji}
+        name={npc}
+        size={36}
+        fallbackBg={c.ctaBg}
+        className="mb-0.5"
+      />
+      <div className="flex flex-col gap-1">
+        {isNew && (
+          <span
+            className="mb-0.5 w-fit rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+            style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}40`, animation: "narrativeFadeIn 400ms ease-out both" }}
+          >
+            ✦ Novo personagem
+          </span>
+        )}
+        <p className="text-xs font-bold uppercase tracking-wider pl-1" style={{ color: c.goldAccent }}>
+          {npc}
+        </p>
+        <div
+          className="rounded-2xl rounded-bl-sm px-4 py-3"
+          style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+        >
+          <p className="text-base font-semibold italic leading-relaxed md:text-[17px]" style={{ color: c.parchment }}>
+            {line}
+          </p>
           {translation && (
-            <p className="mt-1.5 text-xs font-medium" style={{ color: c.textOnBg }}>{translation}</p>
+            <p
+              className="mt-2 border-t pt-2 text-[13px] leading-relaxed italic"
+              style={{ color: c.textFaint, borderColor: `${c.borderFaint}` }}
+            >
+              <span className="not-italic mr-1 opacity-50">∿</span>
+              {translation}
+            </p>
           )}
         </div>
       </div>
@@ -44,19 +287,92 @@ function NpcBubble({ npc, line, translation, c }: {
   );
 }
 
-function PlayerBubble({ text, label, c }: { text: string; label: string; c: Colors }) {
+function SituationEntry({ context, prompt, c }: { context: string; prompt: string; c: Colors }) {
   return (
-    <div className="flex items-end justify-end gap-2.5" style={{ animation: "narrativeFadeIn 300ms ease-out both" }}>
+    <div
+      className="rounded-xl px-4 py-3 mx-1"
+      style={{ background: `${c.surface}`, border: `1px solid ${c.borderFaint}` }}
+    >
+      <p className="mb-1 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+        {context}
+      </p>
+      <p className="text-[15px] leading-relaxed md:text-base" style={{ color: c.textOnBg }}>
+        {prompt}
+      </p>
+    </div>
+  );
+}
+
+function PlayerEntry({ text, label, correct, c }: {
+  text: string; label: string; correct?: boolean; c: Colors;
+}) {
+  const isAnswer = correct !== undefined;
+  const bg     = isAnswer ? (correct ? "#16a34a22" : "#dc262622") : `${c.nodeActive}15`;
+  const border = isAnswer ? (correct ? "#16a34a55" : "#dc262655") : `${c.nodeActive}35`;
+  return (
+    <div className="flex items-end justify-end gap-2.5">
       <div
         className="rounded-2xl rounded-br-sm px-4 py-3"
-        style={{ background: `${c.nodeActive}22`, border: `1px solid ${c.nodeActive}50`, maxWidth: "78%" }}
+        style={{ background: bg, border: `1px solid ${border}`, maxWidth: "80%" }}
       >
-        <p className="text-base italic leading-relaxed" style={{ color: c.parchment }}>{text}</p>
+        <p className="text-base italic leading-relaxed md:text-[17px]" style={{ color: c.parchment }}>{text}</p>
       </div>
       <div
-        className="mb-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold"
-        style={{ background: `${c.nodeActive}40`, color: c.parchment }}
-      >{label}</div>
+        className="mb-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full text-xs font-bold"
+        style={{ background: `${c.nodeActive}25`, color: c.parchment }}
+      >
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function WrongHintEntry({ correctText, c }: { correctText: string; c: Colors }) {
+  return (
+    <div
+      className="rounded-xl px-3 py-2 mx-1"
+      style={{ background: "#dc262610", border: "1px solid #dc262625" }}
+    >
+      <p className="text-sm leading-relaxed" style={{ color: "#f87171" }}>
+        Forma correta: <strong>{correctText}</strong>
+      </p>
+    </div>
+  );
+}
+
+function PatternEntry({ parts, example, translation, note, c }: {
+  parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string; c: Colors;
+}) {
+  return (
+    <div
+      className="rounded-2xl p-4"
+      style={{ background: c.surfaceMid, border: `1px solid ${c.goldAccent}35` }}
+    >
+      <p className="mb-3 text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
+        ✏️  Gramática
+      </p>
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        {parts.map((part, i) =>
+          part.isKey ? (
+            <span
+              key={i}
+              className="rounded-lg px-2.5 py-1 text-sm font-bold md:text-base"
+              style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}40` }}
+            >
+              {part.text}
+            </span>
+          ) : (
+            <span key={i} className="text-sm font-semibold md:text-base" style={{ color: c.textFaint }}>
+              {part.text}
+            </span>
+          )
+        )}
+      </div>
+      <div className="mb-3 rounded-xl px-3 py-2.5" style={{ background: c.surface }}>
+        <p className="text-base font-bold italic md:text-[17px]" style={{ color: c.parchment }}>{example}</p>
+        <p className="mt-0.5 text-sm" style={{ color: c.textOnBg }}>{translation}</p>
+      </div>
+      <p className="text-sm leading-relaxed" style={{ color: c.textFaint }}>💡  {note}</p>
     </div>
   );
 }
@@ -80,427 +396,549 @@ export default function AdventureChapterSections({
   section,
   sectionNumber = 1,
   totalSections = 6,
-  phaseNumber,
+  phaseNumber: _phaseNumber,
   langCode,
   sourceLangCode,
-  onComplete = (_mistakes: number) => {},
+  onComplete = () => {},
   onBack,
 }: AdventureChapterSectionsProps) {
-  const s = useStrings();
-  const c = getAdventureColors(langCode, "dark");
+  const s           = useStrings();
+  const c           = getAdventureColors(langCode, "dark");
   const playerLabel = PLAYER_PRONOUN[sourceLangCode.toUpperCase()] ?? sourceLangCode;
 
-  const [beatIdx,        setBeatIdx]        = useState(0);
-  const [inExercises,    setInExercises]    = useState(false);
-  const [exerciseIdx,    setExerciseIdx]    = useState(0);
+  const allSteps = useMemo(() => normalizeSection(section), [section]);
 
-  const [stepIdx,         setStepIdx]         = useState(0);
-  const [answer,          setAnswer]          = useState<string | null>(null);
-  const [sectionMistakes, setSectionMistakes] = useState(0);
-  const [revealed,        setRevealed]        = useState(false);
-
-  const contentRef = useRef<HTMLDivElement>(null);
-
-  function nextDialogueOrLast(beats: NarrativaBeat[], from: number): number {
-    for (let i = from; i < beats.length; i++) {
-      if (beats[i].kind === "npc" || beats[i].kind === "player") return i;
+  const sectionWords = useMemo(() => {
+    for (const step of allSteps) {
+      if (step.kind === "vocab_list") return step.items;
     }
-    return beats.length - 1;
+    return [];
+  }, [allSteps]);
+
+  // +1 badge only fires in sections that introduce vocabulary (have a vocab_list step)
+  const hasVocabList = useMemo(() => allSteps.some(s => s.kind === "vocab_list"), [allSteps]);
+
+  const [entries,      setEntries]      = useState<ChatEntry[]>([]);
+  const [cursor,       setCursor]       = useState(0);
+  const [sessionId,    setSessionId]    = useState(0);
+  const [phase,        setPhase]        = useState<"auto" | "tap" | "choosing" | "done" | "summary">("auto");
+  const [activeChoice, setActiveChoice] = useState<ActiveChoice | null>(null);
+  const [sceneCard,    setSceneCard]    = useState<string | null>(null);
+  const [currentTime,  setCurrentTime]  = useState<string | null>(null);
+  const [currentDay,   setCurrentDay]   = useState<string | null>(null);
+  const [recapOpen,    setRecapOpen]    = useState<boolean>(false);
+
+  const [floats, setFloats] = useState<FloatBadge[]>([]);
+
+  const mistakesRef    = useRef(0);
+  const comboRef       = useRef(0);
+  const seenWordIds    = useRef<Set<string>>(new Set());
+  const metNpcs        = useRef<Set<string>>(new Set());
+  const bottomRef      = useRef<HTMLDivElement>(null);
+  const rootRef        = useRef<HTMLDivElement>(null);
+  const timerRef       = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const choicesFootRef = useRef<HTMLDivElement>(null);
+
+  function addFloat(text: string, isCombo: boolean) {
+    const id = `float-${Date.now()}-${Math.random()}`;
+    const x  = 30 + Math.random() * 40;
+    // bottomPx is relative to the component root so the badge appears just above the choices footer
+    const rootBottom  = rootRef.current?.getBoundingClientRect().bottom   ?? window.innerHeight;
+    const footerTop   = choicesFootRef.current?.getBoundingClientRect().top ?? (rootBottom - 220);
+    const bottomPx    = (rootBottom - footerTop) + 10;
+    setFloats(prev => [...prev, { id, x, bottomPx, text, isCombo }]);
+    setTimeout(() => setFloats(prev => prev.filter(f => f.id !== id)), 3000);
   }
 
-  // Returns the last scene/narrative beat before the first npc/player beat.
-  // This lets the opening context appear automatically; first tap reveals the NPC.
-  function lastContextBeat(beats: NarrativaBeat[]): number {
-    for (let i = 0; i < beats.length; i++) {
-      if (beats[i].kind === "npc" || beats[i].kind === "player") return Math.max(0, i - 1);
-    }
-    return beats.length - 1;
+  function clearTimer() {
+    if (timerRef.current) clearTimeout(timerRef.current);
   }
 
+  const addEntry = useCallback((entry: ChatEntry) => {
+    setEntries(prev => {
+      if (prev.some(e => e.id === entry.id)) return prev;
+      return [...prev, entry];
+    });
+  }, []);
+
+  // Reset when section changes
   useEffect(() => {
-    if (section.type === "narrativa") {
-      setBeatIdx(lastContextBeat(section.beats));
-      setInExercises(false);
-      setExerciseIdx(0);
-    } else {
-      setStepIdx(0);
-    }
-    setAnswer(null);
-    setSectionMistakes(0);
-    setRevealed(false);
+    clearTimer();
+    setEntries([]);
+    setCursor(0);
+    setPhase("auto");
+    setActiveChoice(null);
+    setSceneCard(null);
+    setCurrentTime(null);
+    setCurrentDay(null);
+    setRecapOpen(false);
+    mistakesRef.current  = 0;
+    comboRef.current     = 0;
+    seenWordIds.current  = new Set();
+    metNpcs.current      = new Set();
+    setFloats([]);
+    setSessionId(id => id + 1);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section]);
 
+  // Scroll to bottom whenever content changes
   useEffect(() => {
-    if (section.type === "narrativa" && !inExercises && contentRef.current) {
-      contentRef.current.scrollTo({ top: contentRef.current.scrollHeight, behavior: "smooth" });
-    }
-  }, [beatIdx, inExercises, section.type]);
+    const t = setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, 60);
+    return () => clearTimeout(t);
+  }, [entries, activeChoice]);
 
-  const isNarrativa   = section.type === "narrativa";
-  const narrExercises = isNarrativa ? (section.exercises ?? []) : [];
+  // Process the step at `cursor`
+  useEffect(() => {
+    clearTimer();
+    const step = allSteps[cursor];
+    if (!step) { setPhase("done"); return; }
 
-  // Unified "active step" — narrativa exercise phase OR section steps
-  const hasSteps    = "steps" in section;
-  const steps       = hasSteps ? section.steps : [];
-  const activeStep: SectionStep | null = isNarrativa
-    ? (inExercises ? (narrExercises[exerciseIdx] ?? null) : null)
-    : (steps[stepIdx] ?? null);
-  const activeStepCount: number | null = isNarrativa
-    ? (inExercises ? narrExercises.length : null)
-    : steps.length;
-  const activeStepIdx = isNarrativa ? exerciseIdx : stepIdx;
+    const id       = `${sessionId}-${cursor}`;
+    const withDelay = (ms: number, fn: () => void) => {
+      timerRef.current = setTimeout(fn, ms);
+    };
 
-  const canContinue = (() => {
-    if (isNarrativa && !inExercises) return true;
-    if (!activeStep) return true;
-    if (activeStep.kind === "fill_blank" || activeStep.kind === "translate") return revealed;
-    if (activeStep.kind === "multiple_choice") {
-      // TODO(mochila): palavras com flag "mastery_required" vão exigir acerto para
-      // desbloquear habilidade na mochila — por enquanto todos os erros só contam para SRS
-      if (section.type === "obstaculo") return answer === activeStep.correct;
-      return answer !== null; // seções 1–5: qualquer resposta libera, erros contam para SRS
-    }
-    return true;
-  })();
+    switch (step.kind) {
 
-  function advance() {
-    if (isNarrativa) {
-      if (inExercises) {
-        if (exerciseIdx >= narrExercises.length - 1) { onComplete(sectionMistakes); return; }
-        setExerciseIdx(i => i + 1);
-        setAnswer(null);
-        setRevealed(false);
-        return;
+      // ── Scene — full-screen cinematic card ───────────────────────────────
+      case "scene": {
+        setSceneCard(step.text);
+        setPhase("tap");
+        const parts = step.text.split(" · ");
+        if (parts[1]) setCurrentTime(parts[1]);
+        if (parts[2]) setCurrentDay(parts[2]);
+        break;
       }
-      if (beatIdx >= section.beats.length - 1) {
-        if (narrExercises.length > 0) { setInExercises(true); setAnswer(null); setRevealed(false); return; }
-        onComplete(sectionMistakes);
-        return;
-      }
-      setBeatIdx(nextDialogueOrLast(section.beats, beatIdx + 1));
-      return;
+
+      // ── Auto-advance ─────────────────────────────────────────────────────
+      case "player_react":
+        addEntry({ id, kind: "player_text", text: step.text, label: playerLabel });
+        timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
+        break;
+
+      // ── Tap to continue ───────────────────────────────────────────────────
+      case "narrative":
+        addEntry({ id, kind: "narrative", text: step.text });
+        setPhase("tap");
+        break;
+
+      case "npc_speak":
+        withDelay(300, () => {
+          addEntry({ id, kind: "npc", npc: step.npc, line: step.line, translation: step.translation, isNew: step.is_new_npc });
+          setPhase("tap");
+        });
+        if (step.npc && !metNpcs.current.has(step.npc)) {
+          metNpcs.current.add(step.npc);
+          adventureService.meetCharacterByName(step.npc).catch(() => {});
+        }
+        break;
+
+      case "pattern":
+        addEntry({ id, kind: "pattern", parts: step.parts, example: step.example, translation: step.translation, note: step.note });
+        setPhase("tap");
+        break;
+
+      case "reveal":
+        addEntry({ id, kind: "reveal", phrase: step.phrase, meaning: step.meaning, note: step.note });
+        setPhase("tap");
+        break;
+
+      case "vocab_list":
+        addEntry({ id, kind: "vocab_list", items: step.items });
+        setPhase("tap");
+        break;
+
+      // ── Choice ────────────────────────────────────────────────────────────
+      case "multiple_choice":
+        withDelay(300, () => {
+          if (step.npc) {
+            addEntry({ id: `${id}-q`, kind: "situation", context: step.npc, prompt: step.question });
+          }
+          setActiveChoice({
+            question:     step.npc ? "" : step.question,
+            options:      step.options,
+            correct:      step.correct,
+            npc:          step.npc,
+            npc_reaction: step.npc_reaction,
+            isGated:      section.type === "obstaculo",
+            shaking:      false,
+          });
+          setPhase("choosing");
+        });
+        break;
+
+      default:
+        setPhase("tap");
     }
-    if (stepIdx >= steps.length - 1) { onComplete(sectionMistakes); return; }
-    setStepIdx(i => i + 1);
-    setAnswer(null);
-    setRevealed(false);
+
+    return clearTimer;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursor, sessionId]);
+
+  // When done, show completion overlay briefly then advance to summary
+  useEffect(() => {
+    if (phase !== "done") return;
+    timerRef.current = setTimeout(() => setPhase("summary"), 900);
+    return clearTimer;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  function handleTap() {
+    if (phase !== "tap") return;
+    setSceneCard(null);
+    setPhase("auto");
+    setCursor(n => n + 1);
   }
 
-  // ── Shared multiple-choice renderer ─────────────────────────────────────────
+  function handleChoice(chosenId: string) {
+    if (!activeChoice || activeChoice.shaking) return;
+    const { correct, options, npc, npc_reaction, isGated } = activeChoice;
+    const isCorrect   = chosenId === correct;
+    const chosenText  = options.find(o => o.id === chosenId)?.text ?? chosenId;
+    const correctText = options.find(o => o.id === correct)?.text ?? correct;
+    const id          = `${sessionId}-${cursor}`;
 
-  function renderChoice(opts: {
-    question: string;
-    options: Array<{ id: string; text: string }>;
-    correct: string;
-    explanation?: string;
-    currentAnswer: string | null;
-    onPick: (id: string) => void;
-    gated: boolean;
-    animKey: string;
-  }) {
-    const { question, options, correct, explanation, currentAnswer, onPick, gated, animKey } = opts;
-    const isCorrect = currentAnswer === correct;
+    const currentStep = allSteps[cursor];
+    const wordId      = currentStep?.kind === "multiple_choice" ? currentStep.word_id : undefined;
+    const wordTarget  = currentStep?.kind === "multiple_choice" ? currentStep.target  : undefined;
+    const wordNative  = currentStep?.kind === "multiple_choice" ? currentStep.native  : undefined;
+    // New word = section introduces vocab (has vocab_list) AND this word_id hasn't been answered correctly yet
+    const isNewWord   = hasVocabList && Boolean(wordId) && !seenWordIds.current.has(wordId!);
 
-    let feedbackMsg: string | null = null;
-    let feedbackColor = "#f87171";
-    if (currentAnswer !== null) {
-      if (isCorrect) { feedbackMsg = explanation ?? s.adventure.obstacleCorrect; feedbackColor = "#4ade80"; }
-      else if (gated) { feedbackMsg = s.adventure.obstacleWrong; }
-      else { feedbackMsg = explanation ?? null; } // seções 1–5: mostra explicação mesmo errando
+    if (wordId) {
+      adventureService.recordWordAnswer({
+        word_id:   wordId,
+        correct:   isCorrect,
+        target:    wordTarget,
+        native:    wordNative,
+        lang_code: langCode.toLowerCase(),
+      }).catch(() => {});
     }
 
-    return (
-      <div key={animKey} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
-        <p className="px-1 text-base font-semibold leading-snug" style={{ color: c.parchment }}>{question}</p>
-        <div className="flex flex-col gap-2">
-          {options.map(({ id, text }) => {
-            const chosen  = currentAnswer === id;
-            const isRight = id === correct;
-            let bg = c.surfaceMid, border = c.borderFaint, color = c.textOnBg;
-            if (chosen && isRight)   { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
-            if (chosen && !isRight)  { bg = "#dc262622"; border = "#dc262680"; color = "#f87171"; }
-            // revela o correto após resposta (exceto no gate — não entrega a resposta)
-            if (!chosen && !gated && currentAnswer && isRight) { bg = "#16a34a22"; border = "#16a34a80"; color = "#4ade80"; }
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => { if (!currentAnswer || (gated && !isCorrect)) onPick(id); }}
-                className="w-full rounded-xl px-4 py-3.5 text-left text-sm font-semibold transition active:scale-[0.98]"
-                style={{ background: bg, border: `1px solid ${border}`, color }}
-              >{text}</button>
-            );
-          })}
-        </div>
-        {feedbackMsg && (
-          <p
-            className="px-1 text-sm font-semibold"
-            style={{ color: feedbackColor, animation: "fadeIn 180ms ease-out both" }}
-          >
-            {feedbackMsg}
-          </p>
-        )}
-      </div>
-    );
+    if (isCorrect) {
+      if (wordId) seenWordIds.current.add(wordId);
+      if (isNewWord) {
+        comboRef.current += 1;
+        const n = comboRef.current;
+        if (n >= 3) addFloat(s.adventure.comboLabel(n), true);
+        else        addFloat(s.adventure.plusOne, false);
+      }
+    } else {
+      comboRef.current = 0;
+    }
+
+    if (!isCorrect && isGated) {
+      mistakesRef.current++;
+      setActiveChoice(prev => prev ? { ...prev, shaking: true } : null);
+      timerRef.current = setTimeout(() => {
+        setActiveChoice(prev => prev ? { ...prev, shaking: false } : null);
+      }, 550);
+      return;
+    }
+
+    if (!isCorrect) mistakesRef.current++;
+
+    addEntry({ id: `${id}-ans`, kind: "player_answer", text: chosenText, label: playerLabel, correct: isCorrect });
+    setActiveChoice(null);
+
+    if (!isCorrect) {
+      addEntry({ id: `${id}-hint`, kind: "wrong_hint", correctText });
+      timerRef.current = setTimeout(() => setCursor(n => n + 1), 1600);
+      return;
+    }
+
+    if (npc_reaction && npc) {
+      timerRef.current = setTimeout(() => {
+        addEntry({ id: `${id}-react`, kind: "npc_reaction", npc, line: npc_reaction });
+        timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
+      }, 400);
+    } else {
+      timerRef.current = setTimeout(() => setCursor(n => n + 1), 700);
+    }
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div ref={rootRef} className="relative flex h-full flex-col">
 
-      {/* Header */}
-      <header className="shrink-0 px-4 pb-2 pt-3">
-        <div className="mb-3 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onBack}
-            className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold"
-            style={{ background: c.surface, color: c.parchment }}
-          >
-            <ChevronLeft size={15} />
-            {s.adventure.exit}
-          </button>
-          <div className="flex flex-col gap-0.5">
-            <p className="text-xs font-bold" style={{ color: c.goldAccent }}>
-              {s.adventure.sectionLabel(sectionNumber, totalSections)}
-            </p>
-            {activeStepCount != null && (
-              <p className="text-[10px] font-semibold" style={{ color: c.textFaint }}>
-                {activeStepIdx + 1} / {activeStepCount}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Section progress */}
-        <div className="flex gap-1.5">
-          {Array.from({ length: totalSections }, (_, i) => (
-            <div
-              key={i}
-              className="h-1.5 flex-1 rounded-full transition-all duration-300"
+      {/* Floating +1 / combo badges */}
+      {floats.length > 0 && (
+        <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden">
+          {floats.map(badge => (
+            <span
+              key={badge.id}
+              className="absolute font-black"
               style={{
-                background:
-                  i < sectionNumber - 1  ? c.nodeCompleted :
-                  i === sectionNumber - 1 ? c.nodeActive :
-                  c.surface,
+                left:       `${badge.x}%`,
+                bottom:     `${badge.bottomPx}px`,
+                fontSize:   badge.isCombo ? "1.4rem" : "1.1rem",
+                color:      badge.isCombo ? c.goldAccent : "#4ade80",
+                textShadow: badge.isCombo
+                  ? `0 0 16px ${c.goldAccent}90`
+                  : "0 0 12px #4ade8090",
+                animation:  "floatUpFade 3s cubic-bezier(0.16,1,0.3,1) both",
               }}
-            />
+            >
+              {badge.text}
+            </span>
           ))}
         </div>
+      )}
 
-        {/* Step progress within section */}
-        {activeStepCount != null && (
-          <div className="mt-1.5 flex gap-1">
-            {Array.from({ length: activeStepCount }, (_, i) => (
-              <div
-                key={i}
-                className="h-1 flex-1 rounded-full transition-all duration-300"
-                style={{
-                  background:
-                    i < activeStepIdx  ? c.nodeCompleted :
-                    i === activeStepIdx ? c.goldAccent :
-                    c.surface,
-                }}
-              />
-            ))}
-          </div>
-        )}
-      </header>
+      {/* Recap card — opened by the "Me relembre" header button */}
+      {recapOpen && section.recap && (
+        <RecapCard
+          recap={section.recap}
+          c={c}
+          onClose={() => setRecapOpen(false)}
+          labels={{
+            eyebrow: s.adventure.recapEyebrow,
+            now:     s.adventure.recapNowLabel,
+            close:   s.adventure.recapClose,
+          }}
+        />
+      )}
 
-      {/* Content */}
-      <div ref={contentRef} className="flex-1 overflow-y-auto px-4 pb-4 pt-3">
+      {/* Scene full-screen card */}
+      {sceneCard && (
+        <SceneCard text={sceneCard} c={c} onTap={handleTap} />
+      )}
 
-        {/* ── Narrativa — accumulated chat (beat phase only) ───────────────── */}
-        {isNarrativa && !inExercises && (
-          <div className="flex flex-col gap-4">
-            {section.beats.slice(0, beatIdx + 1).map((beat, i) => {
-              const delay = `${i * 160}ms`;
-              if (beat.kind === "scene") return (
-                <div key={i} style={{ animationDelay: delay }}><SceneBar text={beat.text} c={c} /></div>
-              );
-              if (beat.kind === "narrative") return (
-                <div
-                  key={i}
-                  className="flex flex-col gap-3 px-1"
-                  style={{ animation: "narrativeFadeIn 350ms ease-out both", animationDelay: delay }}
-                >
-                  {beat.text.split("\n\n").map((para, j) => (
-                    <p key={j} className="text-base leading-relaxed" style={{ color: c.textOnBg }}>{para}</p>
+      {/* Section complete overlay */}
+      {phase === "done" && (
+        <SectionCompleteOverlay sectionNumber={sectionNumber} totalSections={totalSections} c={c} />
+      )}
+
+      {/* Section word summary */}
+      {phase === "summary" && (
+        <div
+          className="absolute inset-0 z-30 flex flex-col"
+          style={{ background: "rgba(0,0,0,0.97)", animation: "narrativeFadeIn 400ms ease-out both" }}
+        >
+          <div className="flex flex-1 flex-col items-center gap-6 overflow-y-auto px-5 pb-4 pt-12">
+            <div
+              className="grid h-14 w-14 place-items-center rounded-full"
+              style={{
+                background: `${c.goldAccent}15`,
+                border: `1.5px solid ${c.goldAccent}55`,
+                animation: "successPop 500ms ease-out both",
+              }}
+            >
+              <Check size={22} style={{ color: c.goldAccent }} />
+            </div>
+            <div className="text-center" style={{ animation: "narrativeFadeIn 450ms 200ms ease-out both" }}>
+              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
+                {s.adventure.sectionLabel(sectionNumber, totalSections)}
+              </p>
+              <p className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>Concluída</p>
+            </div>
+            {sectionWords.length > 0 && (
+              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 400ms ease-out both" }}>
+                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  {s.adventure.sectionWordsLabel}
+                </p>
+                <div className="flex flex-col gap-2">
+                  {sectionWords.map(({ target, native }) => (
+                    <div
+                      key={target}
+                      className="flex items-center justify-between gap-3 rounded-xl px-4 py-3"
+                      style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                    >
+                      <span className="text-base font-bold italic" style={{ color: c.parchment }}>{target}</span>
+                      <span className="max-w-[60%] text-right text-sm font-medium" style={{ color: c.textOnBg }}>{native}</span>
+                    </div>
                   ))}
                 </div>
-              );
-              if (beat.kind === "npc") return (
-                <NpcBubble key={i} npc={beat.npc} line={beat.line} translation={beat.translation} c={c} />
-              );
-              if (beat.kind === "player") return <PlayerBubble key={i} text={beat.text} label={playerLabel} c={c} />;
-              return null;
-            })}
+              </div>
+            )}
+          </div>
+          <div className="shrink-0 px-4 pb-6 pt-2">
+            <button
+              type="button"
+              onClick={() => onComplete(mistakesRef.current)}
+              className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97]"
+              style={{ background: c.goldAccent, color: "#1a0800" }}
+            >
+              {s.adventure.continueBtn}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <header className="relative shrink-0 flex items-center justify-between px-4 pb-3 pt-3">
+        <button
+          type="button"
+          onClick={onBack}
+          className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold"
+          style={{ background: c.surface, color: c.parchment }}
+        >
+          <ChevronLeft size={15} />
+          {s.adventure.exit}
+        </button>
+
+        {currentTime && (
+          <div
+            className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1.5 rounded-full px-3 py-1.5"
+            style={{ background: c.surfaceMid }}
+          >
+            {/noite|anoitecer/i.test(currentTime)
+              ? <Moon   size={11} style={{ color: c.goldAccent }} />
+              : /tarde|final/i.test(currentTime)
+              ? <Sunset size={11} style={{ color: c.goldAccent }} />
+              : <Sun    size={11} style={{ color: c.goldAccent }} />}
+            <span className="text-xs font-semibold" style={{ color: c.textOnBg }}>
+              {currentDay ? `${currentDay} · ${currentTime}` : currentTime}
+            </span>
           </div>
         )}
 
-        {/* ── Active step — exercises (narrativa phase 2) OR section steps ─── */}
-        {activeStep && (() => {
-          const step = activeStep;
-          const key  = `${sectionNumber}-${activeStepIdx}`;
+        <div className="flex items-center gap-2">
+          {section.recap && (
+            <button
+              type="button"
+              onClick={() => setRecapOpen(true)}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold"
+              style={{ background: c.surfaceMid, color: c.parchment, border: `1px solid ${c.borderFaint}` }}
+            >
+              <History size={12} style={{ color: c.goldAccent }} />
+              {s.adventure.recapButton}
+            </button>
+          )}
+          <p className="text-xs font-bold tabular-nums" style={{ color: c.textFaint }}>
+            S{sectionNumber}/{totalSections}
+          </p>
+        </div>
+      </header>
 
-          if (step.kind === "scene") return <SceneBar key={key} text={step.text} c={c} />;
+      {/* Chat scroll */}
+      <div className="adventure-scroll flex-1 overflow-y-auto px-4">
+        <div className="flex flex-col gap-5 pb-4 pt-1">
 
-          if (step.kind === "narrative") return (
-            <div key={key} className="flex flex-col gap-3 px-1" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              {step.text.split("\n\n").map((para, j) => (
-                <p key={j} className="text-base leading-relaxed" style={{ color: c.textOnBg }}>{para}</p>
-              ))}
-            </div>
-          );
-
-          if (step.kind === "npc_speak") return (
-            <NpcBubble key={key} npc={step.npc} line={step.line} translation={step.translation} c={c} />
-          );
-
-          if (step.kind === "player_react") return (
-            <PlayerBubble key={key} text={step.text} label={playerLabel} c={c} />
-          );
-
-          if (step.kind === "reveal") return (
-            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              <div
-                className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 text-center"
-                style={{ background: `${c.goldAccent}18`, border: `1px solid ${c.goldAccent}45` }}
-              >
-                <p className="text-3xl font-bold italic" style={{ color: c.parchment }}>{step.phrase}</p>
-                <p className="text-lg font-semibold" style={{ color: c.goldAccent }}>{step.meaning}</p>
-              </div>
-              {step.note && (
-                <p className="px-2 text-xs italic leading-relaxed" style={{ color: c.textFaint }}>💡 {step.note}</p>
+          {entries.map((entry) => (
+            <div
+              key={entry.id}
+              style={{ animation: "narrativeFadeIn 350ms ease-out both" }}
+            >
+              {entry.kind === "narrative" && (
+                <NarrativeEntry text={entry.text} c={c} />
+              )}
+              {entry.kind === "npc" && (
+                <NpcEntry npc={entry.npc} line={entry.line} translation={entry.translation} isNew={entry.isNew} c={c} />
+              )}
+              {entry.kind === "npc_reaction" && (
+                <NpcEntry npc={entry.npc} line={entry.line} c={c} />
+              )}
+              {entry.kind === "situation" && (
+                <SituationEntry context={entry.context} prompt={entry.prompt} c={c} />
+              )}
+              {entry.kind === "player_text" && (
+                <PlayerEntry text={entry.text} label={entry.label} c={c} />
+              )}
+              {entry.kind === "player_answer" && (
+                <PlayerEntry text={entry.text} label={entry.label} correct={entry.correct} c={c} />
+              )}
+              {entry.kind === "wrong_hint" && (
+                <WrongHintEntry correctText={entry.correctText} c={c} />
+              )}
+              {entry.kind === "pattern" && (
+                <PatternEntry
+                  parts={entry.parts}
+                  example={entry.example}
+                  translation={entry.translation}
+                  note={entry.note}
+                  c={c}
+                />
+              )}
+              {entry.kind === "reveal" && (
+                <div
+                  className="flex flex-col items-center gap-2 rounded-2xl px-6 py-8 text-center"
+                  style={{ background: `${c.goldAccent}15`, border: `1px solid ${c.goldAccent}40` }}
+                >
+                  <p className="text-3xl font-bold italic md:text-4xl" style={{ color: c.parchment }}>{entry.phrase}</p>
+                  <p className="text-lg font-semibold md:text-xl" style={{ color: c.goldAccent }}>{entry.meaning}</p>
+                  {entry.note && (
+                    <p className="mt-1 text-sm" style={{ color: c.textFaint }}>💡 {entry.note}</p>
+                  )}
+                </div>
+              )}
+              {entry.kind === "vocab_list" && (
+                <div className="flex flex-col gap-2">
+                  {entry.items.map(({ target, native }) => (
+                    <div
+                      key={target}
+                      className="flex items-center justify-between rounded-xl px-4 py-3"
+                      style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                    >
+                      <span className="text-base font-bold italic md:text-[17px]" style={{ color: c.parchment }}>{target}</span>
+                      <span className="text-sm font-medium md:text-base" style={{ color: c.textOnBg }}>{native}</span>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
-          );
+          ))}
 
-          if (step.kind === "pattern") return (
-            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              <div className="flex flex-col gap-4 rounded-2xl p-4" style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}>
-                <div>
-                  <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-                    {s.adventure.patternFormula}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {step.parts.map((part, i) =>
-                      part.isKey ? (
-                        <span key={i} className="rounded-lg px-3 py-1.5 text-sm font-bold"
-                          style={{ background: `${c.goldAccent}20`, color: c.goldAccent, border: `1px solid ${c.goldAccent}45` }}
-                        >{part.text}</span>
-                      ) : (
-                        <span key={i} className="text-sm font-semibold" style={{ color: c.textFaint }}>{part.text}</span>
-                      )
-                    )}
-                  </div>
-                </div>
-                <div className="rounded-xl px-4 py-3" style={{ background: c.surface }}>
-                  <p className="text-base font-bold italic" style={{ color: c.parchment }}>{step.example}</p>
-                  <p className="mt-0.5 text-sm font-medium" style={{ color: c.textOnBg }}>{step.translation}</p>
-                </div>
-                <p className="text-xs italic leading-relaxed" style={{ color: c.textFaint }}>💡 {step.note}</p>
-              </div>
-            </div>
-          );
-
-          if (step.kind === "vocab_list") return (
-            <div key={key} className="flex flex-col gap-2" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              {step.items.map(({ target, native }, i) => (
-                <div
-                  key={target}
-                  className="flex items-center justify-between rounded-xl px-4 py-3"
-                  style={{
-                    background: c.surfaceMid,
-                    border: `1px solid ${c.borderFaint}`,
-                    animation: `narrativeFadeIn 250ms ease-out ${i * 70}ms both`,
-                  }}
-                >
-                  <span className="text-base font-bold italic" style={{ color: c.parchment }}>{target}</span>
-                  <span className="text-sm font-medium" style={{ color: c.textOnBg }}>{native}</span>
-                </div>
-              ))}
-            </div>
-          );
-
-          if (step.kind === "multiple_choice") return renderChoice({
-            question:      step.question,
-            options:       step.options,
-            correct:       step.correct,
-            explanation:   step.explanation,
-            currentAnswer: answer,
-            onPick: (id) => {
-              setAnswer(id);
-              if (id !== step.correct && section.type !== "obstaculo") {
-                setSectionMistakes(n => n + 1);
-              }
-            },
-            gated:   section.type === "obstaculo",
-            animKey: key,
-          });
-
-          if (step.kind === "fill_blank") return (
-            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              <div
-                className="flex flex-col items-center gap-5 rounded-2xl px-5 py-10 text-center"
-                style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
-              >
-                <p className="text-2xl font-bold italic" style={{ color: c.parchment }}>{step.prompt}</p>
-                {revealed ? (
-                  <p className="text-sm font-semibold leading-relaxed"
-                    style={{ color: c.goldAccent, animation: "fadeIn 200ms ease-out both" }}
-                  >{step.answer}</p>
-                ) : (
-                  <button type="button" onClick={() => setRevealed(true)}
-                    className="rounded-xl px-5 py-2.5 text-sm font-bold transition active:scale-[0.98]"
-                    style={{ background: c.surface, color: c.textOnBg, border: `1px solid ${c.borderFaint}` }}
-                  >{s.adventure.practiceReveal}</button>
-                )}
-              </div>
-            </div>
-          );
-
-          if (step.kind === "translate") return (
-            <div key={key} className="flex flex-col gap-4" style={{ animation: "fadeIn 250ms ease-out both" }}>
-              <div
-                className="flex flex-col items-center gap-5 rounded-2xl px-5 py-10 text-center"
-                style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
-              >
-                <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                  {s.adventure.translatePrompt}
-                </p>
-                <p className="text-xl font-semibold" style={{ color: c.parchment }}>{step.source}</p>
-                {revealed ? (
-                  <p className="text-base font-bold italic"
-                    style={{ color: c.goldAccent, animation: "fadeIn 200ms ease-out both" }}
-                  >{step.answer}</p>
-                ) : (
-                  <button type="button" onClick={() => setRevealed(true)}
-                    className="rounded-xl px-5 py-2.5 text-sm font-bold transition active:scale-[0.98]"
-                    style={{ background: c.surface, color: c.textOnBg, border: `1px solid ${c.borderFaint}` }}
-                  >{s.adventure.practiceReveal}</button>
-                )}
-              </div>
-            </div>
-          );
-
-          return null;
-        })()}
-
+          <div ref={bottomRef} />
+        </div>
       </div>
 
-      {/* Continue button */}
-      <div className="shrink-0 px-4 pb-6 pt-2">
-        <button
-          type="button"
-          disabled={!canContinue}
-          onClick={advance}
-          className="flex h-14 w-full items-center justify-center rounded-2xl text-base font-bold transition"
-          style={{ background: canContinue ? c.ctaBg : c.surface, color: canContinue ? "#fff" : c.textFaint }}
+      {/* Footer — fixed Continuar (hidden during choices / scene / done / summary) */}
+      {!sceneCard && phase !== "choosing" && phase !== "done" && phase !== "summary" && (
+        <div className="shrink-0 px-4 pb-6 pt-2">
+          <button
+            type="button"
+            onClick={phase === "tap" ? handleTap : undefined}
+            disabled={phase !== "tap"}
+            className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97] md:text-lg"
+            style={{
+              background: phase === "tap" ? c.goldAccent : `${c.goldAccent}30`,
+              color:      phase === "tap" ? "#1a0800"    : `${c.goldAccent}70`,
+              cursor:     phase === "tap" ? "pointer"    : "default",
+            }}
+          >
+            Continuar
+          </button>
+        </div>
+      )}
+
+      {phase === "choosing" && activeChoice && (
+        <div
+          ref={choicesFootRef}
+          className="shrink-0 px-4 pb-6 pt-3"
+          style={{
+            borderTop: `1px solid ${c.borderFaint}`,
+            background: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5))`,
+          }}
         >
-          {s.actions.continue}
-        </button>
-      </div>
+          {activeChoice.question && (
+            <p className="mb-3 px-1 text-[15px] leading-snug md:text-base" style={{ color: c.textOnBg }}>
+              {activeChoice.question}
+            </p>
+          )}
+          <div
+            className="flex flex-col gap-2"
+            style={activeChoice.shaking ? { animation: "shake 500ms ease-out both" } : undefined}
+          >
+            {activeChoice.options.map(({ id, text }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => handleChoice(id)}
+                className="w-full rounded-xl px-4 py-3.5 text-left text-[15px] font-semibold transition active:scale-[0.97] md:text-base"
+                style={{
+                  background: c.surfaceMid,
+                  border: `1px solid ${c.borderFaint}`,
+                  color: c.textOnBg,
+                }}
+              >
+                {text}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
     </div>
   );

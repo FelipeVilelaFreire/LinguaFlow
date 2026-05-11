@@ -67,14 +67,14 @@ const DARK_NEUTRAL = {
   surface:      "rgba(255,255,255,0.08)",
   surfaceMid:   "rgba(0,0,0,0.35)",
   textOnBg:     "rgba(255,255,255,0.70)",
-  textFaint:    "rgba(255,255,255,0.18)",
+  textFaint:    "rgba(255,255,255,0.52)",
   borderFaint:  "rgba(255,255,255,0.06)",
 };
 const LIGHT_NEUTRAL = {
   surface:      "rgba(0,0,0,0.07)",
   surfaceMid:   "rgba(0,0,0,0.12)",
   textOnBg:     "rgba(0,0,0,0.65)",
-  textFaint:    "rgba(0,0,0,0.38)",
+  textFaint:    "rgba(0,0,0,0.50)",
   borderFaint:  "rgba(0,0,0,0.14)",
 };
 

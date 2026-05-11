@@ -1,17 +1,15 @@
 import { Award, Flame, Swords, Zap } from "lucide-react";
 
+import { useStrings } from "../../../contexts/StringsContext";
 import { getAdventureColors } from "../../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../../theme/adventureColors";
 
-const USER_NAME  = "Felipe";
-const USER_PHOTO = "";
-
 const JOURNEY_ITEMS = [
-  { key: "sigillo", emoji: "📜", seasonBadge: "T1" },
-  { key: "mappa",   emoji: "🗺️",  seasonBadge: "T2" },
-  { key: "codice",  emoji: "📖", seasonBadge: "T3" },
-  { key: "pietra",  emoji: "💎", seasonBadge: "T4" },
-  { key: "corona",  emoji: "👑", seasonBadge: "T5" },
+  { key: "t1", emoji: "📜", seasonBadge: "T1" },
+  { key: "t2", emoji: "🗺️",  seasonBadge: "T2" },
+  { key: "t3", emoji: "📖", seasonBadge: "T3" },
+  { key: "t4", emoji: "💎", seasonBadge: "T4" },
+  { key: "t5", emoji: "👑", seasonBadge: "T5" },
 ];
 
 const ATTRIBUTES = [
@@ -21,13 +19,15 @@ const ATTRIBUTES = [
 ];
 
 interface AdventureHeroScreenProps {
-  langCode: string;
-  themeMode: AdventureThemeMode;
+  langCode:    string;
+  themeMode:   AdventureThemeMode;
+  storyTitle?: string;
 }
 
-export default function AdventureHeroScreen({ langCode, themeMode }: AdventureHeroScreenProps) {
-  const c       = getAdventureColors(langCode, themeMode);
-  const initial = USER_NAME.charAt(0).toUpperCase();
+export default function AdventureHeroScreen({ langCode, themeMode, storyTitle }: AdventureHeroScreenProps) {
+  const s    = useStrings();
+  const c    = getAdventureColors(langCode, themeMode);
+  const langName = s.languages[langCode.toUpperCase() as keyof typeof s.languages] ?? langCode;
 
   return (
     <div className="px-4 pb-10 pt-6">
@@ -38,11 +38,7 @@ export default function AdventureHeroScreen({ langCode, themeMode }: AdventureHe
           className="relative grid h-24 w-24 place-items-center rounded-full shadow-lg"
           style={{ background: `linear-gradient(135deg, ${c.nodeActive}, ${c.ctaBg})` }}
         >
-          {USER_PHOTO ? (
-            <img src={USER_PHOTO} alt={USER_NAME} className="h-full w-full rounded-full object-cover" />
-          ) : (
-            <span className="text-3xl font-bold" style={{ color: "#fff" }}>{initial}</span>
-          )}
+          <span className="text-3xl font-bold" style={{ color: "#fff" }}>F</span>
           <span
             className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold"
             style={{ background: c.goldAccent, color: c.seasonBadgeText }}
@@ -52,12 +48,12 @@ export default function AdventureHeroScreen({ langCode, themeMode }: AdventureHe
         </div>
 
         <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: c.goldAccent }}>
-          Il Viandante · A1
+          {storyTitle ?? langName}
         </p>
         <h2 className="mt-1 text-xl font-bold" style={{ color: c.parchment }}>
-          Forasteiro {USER_NAME}
+          Forasteiro
         </h2>
-        <p className="mt-0.5 text-xs" style={{ color: c.textFaint }}>Italiano · Nível 1</p>
+        <p className="mt-0.5 text-xs" style={{ color: c.textFaint }}>{langName} · Nível 1</p>
 
         {/* Stats row */}
         <div

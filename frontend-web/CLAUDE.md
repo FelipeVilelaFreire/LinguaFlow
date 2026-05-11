@@ -71,6 +71,24 @@ subtitle: `${s.adventure.phaseLabel(n)} · ${s.languages[langCode]}`
 
 ## Modo Aventura — hierarquia
 
+### ⚠️ REGRA ABSOLUTAMENTE CRÍTICA — SÉRIE = CEFR
+
+**SÉRIE = nível CEFR. Toda série tem exatamente 5 temporadas (T1–T5).**
+
+As 5 temporadas de uma série **NÃO representam níveis CEFR diferentes**. Elas aprofundam o **mesmo nível CEFR** progressivamente. Quem conclui as 5 temporadas do A1 **sai no A1**.
+
+```
+SÉRIE A1  →  T1 · T2 · T3 · T4 · T5   ← todas A1, mesmo nível (~65h)
+SÉRIE A2  →  T1 · T2 · T3 · T4 · T5   ← todas A2, outra história
+SÉRIE B1  →  T1 · T2 · T3 · T4 · T5   ← todas B1, outra história
+```
+
+- Badge de temporada = sempre **T1/T2/T3/T4/T5** — jamais A1/A2/B1/B2/C1
+- Slug de temporada = sempre prefixado pela série: `it-a1-*` para TODAS as 5 temporadas do A1 italiano
+- O label CEFR ("A1") aparece no header da série — nunca por temporada
+
+---
+
 ```
 SÉRIE  (nível CEFR — ex: A1)
   └── TEMPORADA  (5 por série — badge T1…T5)
@@ -136,7 +154,7 @@ const c = getAdventureColors(langCode, themeMode); // themeMode padrão "dark"
 | `c.surface` | rgba(255,255,255,0.08) | rgba(0,0,0,0.04) |
 | `c.surfaceMid` | rgba(0,0,0,0.35) | rgba(0,0,0,0.06) |
 | `c.textOnBg` | rgba(255,255,255,0.70) | rgba(0,0,0,0.60) |
-| `c.textFaint` | rgba(255,255,255,0.18) | rgba(0,0,0,0.28) |
+| `c.textFaint` | rgba(255,255,255,0.52) | rgba(0,0,0,0.50) |
 | `c.borderFaint` | rgba(255,255,255,0.06) | rgba(0,0,0,0.08) |
 
 **Regra crítica de cor de texto — NUNCA usar `parchmentText` ou `parchmentSubtext` diretamente no fundo da tela:**
@@ -375,6 +393,70 @@ Tema via `src/theme/colors.ts` → `getStudyAreaThemeStyle()` → CSS vars no `<
 - Sempre `type="button"` em `<button>` fora de forms
 - Ícones: só Lucide React
 - Preferir `Edit` sobre `Write` ao modificar arquivos existentes
+
+---
+
+## Diretrizes de conteúdo narrativo (mocks / aventura)
+
+O Talkly é mais série do que livro. Cada beat ou step precisa ganhar seu lugar — se a informação já está no diálogo, no emoji da cena ou no contexto do exercício, o narrador não repete.
+
+### Ciclo base — completo por si só
+
+```
+scene (emoji + lugar + horário)  →  NPC fala  →  player reage  →  exercício reforça
+```
+
+Narrativas de contexto são reserva, não regra. Máximo de 1–2 por seção, apenas quando o diálogo sozinho não fecha o ambiente.
+
+### O que cortar sempre
+
+| Tipo | Exemplo ruim | Por quê cortar |
+|------|-------------|----------------|
+| Narrativa que antecipa o NPC | "Ele claramente quer saber o que aconteceu." → NPC: "¿Cómo te fue?" | O NPC já diz |
+| Narrativa que traduz o gesto | "Campesino. A palavra e o gesto se fundem." | O gesto + exercício já ensinam |
+| Narrativa que resume o que aconteceu | "E assim você aprendeu cinco palavras." | O vocab_list já mostra |
+| Editorial que descreve emoção óbvia | "Ela sorri com um olhar de quem vai ensinar algo." | O leitor vê pelo diálogo |
+| Fechamento de cena literário | "Você se senta. Não sabe muita coisa. Mas sabe que prometeu." | O NPC fecha a cena |
+
+### Sistema de língua por personagem — regra crítica de conteúdo
+
+Cada NPC tem uma relação diferente com a língua do player. Isso define como suas falas e `npc_reaction` devem ser escritas.
+
+**Espanhol (ES) — Aventura A1:**
+
+| Personagem | Língua com o player | Como escrever falas/reações |
+|-----------|--------------------|-----------------------------|
+| **Don Miguel el Campesino** | Entende português, fala pouco — guia/ponte | `npc_reaction` em **português quebrado**: exclamações em espanhol ("¡Bien!", "¡Exacto!") + explicação em PT ("quem vem de fora. Como você.") |
+| **Rosa la Panadera** | Só espanhol — paciente, simples | `npc_reaction` em **espanhol** — o player aprende pelo contexto |
+| **Señora Carmen** | Só espanhol — culta, direta | `npc_reaction` em **espanhol** |
+| **El Vigilante del Mercado** | Só espanhol — seco, formal | `npc_reaction` em **espanhol** |
+
+**Por quê isso importa:**
+Se o idioma fosse russo e todas as reações fossem em russo, o player não entenderia nada. Miguel é o único que tenta falar a língua do player — e é essa limitação que o torna humano e interessante. Os outros NPCs são imersivos justamente porque o player tem que se virar.
+
+**Regra para novos NPCs:**
+Ao criar um NPC, definir explicitamente: fala só na língua-alvo, ou tem algum vínculo com a língua nativa do player? Documentar no comentário da seção do mock.
+
+### Player react — curto e concreto
+
+`player_react` e `player` beats: máximo 2 linhas. Descrevem ação ou sensação física — não interpretam emoção.
+
+```
+// ❌
+"Você para, surpreso. Ele acabou de falar na sua língua — com sotaque pesado, mas na sua língua. Você o olha com um misto de alívio e estranheza."
+
+// ✅
+"Você para. Ele está falando na sua língua.\n\n— Com sotaque pesado. Mas na sua língua."
+```
+
+### Narrativa de abertura de seção
+
+1 linha de ação/ambiente, não mais.
+
+```
+// ❌  "Miguel se levanta e faz um gesto largo — vamos andar. Ele vai na sua frente, apresentando o pueblo um passo de cada vez. Desta vez, é você que tem que usar as palavras."
+// ✅  "Miguel faz um gesto — vamos andar."
+```
 
 ---
 

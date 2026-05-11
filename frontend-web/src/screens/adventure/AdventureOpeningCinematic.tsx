@@ -9,41 +9,48 @@ interface Scene {
   paragraphs: string[];
   npcLabel?: string;
   npcLine?: string;
+  preReply?: string;
   playerReply?: string;
   replyEcho?: string;
 }
 
-const SCENES: Scene[] = [
-  {
-    eyebrow: "Il Viandante · T1 · Cena I",
-    paragraphs: [
-      "Você não sabe seu nome. Não sabe de onde veio.",
-      "Quando seus olhos se abrem, o que você vê é um céu mediterrâneo — azul profundo, sem uma nuvem — e o cheiro de terra quente de um verão italiano.",
-      "Você está deitado num campo de trigo dourado. Ao longe, as torres de um vilarejo medieval recortam o horizonte.",
-      "No bolso, um envelope lacrado. Estampado na cera vermelha, duas palavras: Non ancora.",
-    ],
-  },
-  {
-    eyebrow: "Il Viandante · T1 · Cena II",
-    paragraphs: [
-      "Você tenta abrir o envelope. A cera não cede. Seja o que for que está dentro — não é para agora.",
-      "Você olha para as torres ao longe. Alguém naquele vilarejo pode saber quem você é.",
-      "Para sobreviver. Para perguntar. Para entender o que ouvir — você vai precisar aprender a falar italiano.",
-      "Você se levanta e começa a caminhar.",
-    ],
-  },
-  {
-    eyebrow: "Il Viandante · T1 · Cena III",
-    paragraphs: [
-      "O portão de pedra do vilarejo está fechado. Um guarda cruza os braços e te barra a passagem.",
-      "Você vasculha a memória. O idioma é estranho — mas uma única palavra emerge.",
-    ],
-    npcLabel: "Guarda",
-    npcLine: "Ciao, forestiero.",
-    playerReply: "Ciao.",
-    replyEcho: "O portão se abre.",
-  },
-];
+const SCENES_BY_LANG: Record<string, Scene[]> = {
+  ES: [
+    {
+      eyebrow: "El Caminante · T1 · Cena I",
+      paragraphs: [
+        "Você não sabe seu nome. Não sabe de onde veio.",
+        "Quando seus olhos se abrem, o que você vê é um céu de outubro — azul profundo, sem uma nuvem — e o cheiro de terra quente de um verão mexicano.",
+        "Você está deitado num campo de milho dourado. Ao longe, as torres de adobe de um pueblo colonial recortam o horizonte.",
+        "No bolso, um envelope lacrado. Estampado na cera vermelha, duas palavras: Todavía no.",
+      ],
+    },
+    {
+      eyebrow: "El Caminante · T1 · Cena II",
+      paragraphs: [
+        "Você tenta abrir o envelope. A cera não cede. Seja o que for que está dentro — não é para agora.",
+        "Você olha para as torres ao longe. Alguém naquele pueblo pode saber quem você é.",
+        "Para sobreviver. Para perguntar. Para entender o que ouvir — você vai precisar aprender a falar espanhol.",
+        "Você se levanta e começa a caminhar.",
+      ],
+    },
+    {
+      eyebrow: "El Caminante · T1 · Cena III",
+      paragraphs: [
+        "O caminho de terra seca leva você direto ao pueblo. Cada passo levanta uma nuvem de poeira dourada.",
+        "As paredes de adobe crescem diante de você. O cheiro de tortilhas e fumaça. Vozes por todo lado — rápidas, calorosas, completamente incompreensíveis.",
+        "Você chega ao portão. Dois batentes de madeira escura, entreabertos. A luz do fim da tarde atravessa a fresta.",
+        "Um campesino de chapéu largo aparece do outro lado. Te olha de cima a baixo. Espera.",
+        "Você vasculha o que sobrou da memória. O idioma é estranho — mas uma única palavra emerge.",
+      ],
+      npcLabel: "Don Miguel",
+      npcLine: "¡Oye, forastero! ¿Estás bien?",
+      preReply: "Ele falou. Você não entendeu nada. E ainda assim, uma única palavra surgiu do fundo de algum lugar.",
+      playerReply: "Hola.",
+      replyEcho: "O campesino sorri e abre passagem.",
+    },
+  ],
+};
 
 interface AdventureOpeningCinematicProps {
   langCode: string;
@@ -56,10 +63,12 @@ export default function AdventureOpeningCinematic({
 }: AdventureOpeningCinematicProps) {
   const s = useStrings();
   const c = getAdventureColors(langCode, "dark");
+
+  const SCENES = SCENES_BY_LANG[langCode.toUpperCase()] ?? SCENES_BY_LANG.ES;
   const [sceneIdx, setSceneIdx] = useState(0);
 
-  const scene   = SCENES[sceneIdx];
-  const isLast  = sceneIdx === SCENES.length - 1;
+  const scene  = SCENES[sceneIdx];
+  const isLast = sceneIdx === SCENES.length - 1;
 
   function advance() {
     if (isLast) {
@@ -72,7 +81,7 @@ export default function AdventureOpeningCinematic({
   return (
     <div className="flex h-full flex-col">
 
-      {/* Header with back button */}
+      {/* Header */}
       <header className="shrink-0 flex items-center justify-between px-4 pb-2 pt-3">
         {sceneIdx > 0 ? (
           <button
@@ -93,14 +102,14 @@ export default function AdventureOpeningCinematic({
       </header>
 
       {/* Scrollable narrative */}
-      <div className="flex-1 overflow-y-auto px-5 pb-4 pt-4">
+      <div className="flex-1 overflow-y-auto px-6 pb-4 pt-6 md:px-10">
         <div
           key={sceneIdx}
-          className="flex flex-col gap-6"
+          className="mx-auto flex max-w-lg flex-col items-center gap-8 text-center"
           style={{ animation: "narrativeFadeIn 600ms ease-out both" }}
         >
           {/* Eyebrow */}
-          <div className="flex items-center gap-3">
+          <div className="flex w-full items-center gap-3">
             <div className="h-px flex-1 rounded" style={{ background: `${c.goldAccent}35` }} />
             <span
               className="shrink-0 text-[9px] font-bold uppercase tracking-[0.25em]"
@@ -112,11 +121,11 @@ export default function AdventureOpeningCinematic({
           </div>
 
           {/* Paragraphs */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6">
             {scene.paragraphs.map((para, i) => (
               <p
                 key={i}
-                className="text-base font-medium leading-8"
+                className="text-lg font-medium leading-9 md:text-xl md:leading-10"
                 style={{
                   color: c.textOnBg,
                   animation: `narrativeFadeIn ${300 + i * 250}ms ease-out both`,
@@ -130,7 +139,7 @@ export default function AdventureOpeningCinematic({
           {/* NPC speech */}
           {scene.npcLine && (
             <div
-              className="rounded-2xl p-4"
+              className="w-full rounded-2xl p-5"
               style={{
                 background: c.surfaceMid,
                 border: `1px solid ${c.borderFaint}`,
@@ -139,14 +148,14 @@ export default function AdventureOpeningCinematic({
             >
               {scene.npcLabel && (
                 <p
-                  className="mb-1.5 text-[10px] font-bold uppercase tracking-widest"
+                  className="mb-2 text-[10px] font-bold uppercase tracking-widest"
                   style={{ color: c.goldAccent }}
                 >
                   {scene.npcLabel}
                 </p>
               )}
               <p
-                className="text-lg font-semibold italic leading-relaxed"
+                className="text-xl font-semibold italic leading-relaxed md:text-2xl"
                 style={{ color: c.parchment }}
               >
                 "{scene.npcLine}"
@@ -154,30 +163,43 @@ export default function AdventureOpeningCinematic({
             </div>
           )}
 
-          {/* Player reply + gate echo */}
+          {/* Bridge between NPC and player reply */}
+          {scene.preReply && (
+            <p
+              className="text-lg font-medium leading-9 md:text-xl md:leading-10"
+              style={{
+                color: c.textOnBg,
+                animation: "narrativeFadeIn 1600ms ease-out both",
+              }}
+            >
+              {scene.preReply}
+            </p>
+          )}
+
+          {/* Player reply */}
           {scene.playerReply && (
             <div
-              className="flex flex-col items-center gap-3 rounded-2xl p-5 text-center"
+              className="flex w-full flex-col items-center gap-3 rounded-2xl p-6"
               style={{
                 background: `${c.seasonBadgeBg}18`,
                 border: `1px solid ${c.seasonBadgeBg}40`,
                 animation: "narrativeFadeIn 1800ms ease-out both",
               }}
             >
-              <p className="text-2xl font-bold italic" style={{ color: c.parchment }}>
+              <p className="text-2xl font-bold italic md:text-3xl" style={{ color: c.parchment }}>
                 "{scene.playerReply}"
               </p>
               {scene.replyEcho && (
                 <p className="text-sm font-semibold" style={{ color: c.goldAccent }}>
-                  {s.adventure.openingGateOpens}
+                  {scene.replyEcho}
                 </p>
               )}
             </div>
           )}
 
-          {/* Bottom ornament — only on last scene */}
+          {/* Bottom ornament — last scene only */}
           {isLast && (
-            <div className="flex justify-center pt-2" style={{ animation: "narrativeFadeIn 2200ms ease-out both" }}>
+            <div className="pt-2" style={{ animation: "narrativeFadeIn 2200ms ease-out both" }}>
               <svg viewBox="0 0 80 20" width={80} height={20} style={{ opacity: 0.25 }}>
                 <path d="M5,10 Q20,2 40,10 Q60,18 75,10" fill="none" stroke={c.goldAccent} strokeWidth="1.5" />
                 <circle cx="40" cy="10" r="3" fill={c.goldAccent} />

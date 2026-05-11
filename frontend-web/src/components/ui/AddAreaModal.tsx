@@ -1,8 +1,10 @@
 import { ArrowRight, Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useStrings } from "../../contexts/StringsContext";
+import { adventureService } from "../../services/adventureService";
 import { contentService } from "../../services/contentService";
+import type { AvailableLanguage } from "../../types/adventure";
 import type { Goal } from "../../types/content";
 import BottomModal from "./BottomModal";
 import LangFlag from "./LangFlag";
@@ -15,11 +17,6 @@ interface AddAreaModalProps {
 const SOURCE_LANGUAGES = [
   { code: "PT", labelKey: "PT" as const, detail: "Explicações em português" },
   { code: "EN", labelKey: "EN" as const, detail: "Explanations in English" },
-];
-
-const TARGET_LANGUAGES = [
-  { code: "DE", labelKey: "DE" as const, detail: "Vila Medieval · A história começa aqui", available: true },
-  { code: "ES", labelKey: "ES" as const, detail: "Em breve", available: false },
 ];
 
 const LEVELS = [
@@ -47,11 +44,22 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
   const s = useStrings();
 
   const [source, setSource] = useState(SOURCE_LANGUAGES[0]);
-  const [target, setTarget] = useState(TARGET_LANGUAGES[0]);
+  const [target, setTarget] = useState<AvailableLanguage | null>(null);
   const [level, setLevel] = useState(LEVELS[0]);
   const [days, setDays] = useState([0, 2, 4]);
   const [minutes, setMinutes] = useState(30);
   const [loading, setLoading] = useState(false);
+  const [availableTargets, setAvailableTargets] = useState<AvailableLanguage[]>([]);
+  const [loadingLanguages, setLoadingLanguages] = useState(true);
+
+  useEffect(() => {
+    adventureService.listAvailableLanguages()
+      .then((langs) => {
+        setAvailableTargets(langs);
+        if (langs.length > 0) setTarget(langs[0]);
+      })
+      .finally(() => setLoadingLanguages(false));
+  }, []);
 
   const months = estimateMonths(days, minutes);
 
@@ -62,7 +70,7 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
   }
 
   async function submit() {
-    if (days.length === 0) return;
+    if (days.length === 0 || !target) return;
     setLoading(true);
     try {
       const goal = await contentService.createGoal({
@@ -84,7 +92,7 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
     <button
       type="button"
       onClick={submit}
-      disabled={loading || days.length === 0}
+      disabled={loading || days.length === 0 || !target}
       className="auth-submit"
     >
       {loading ? <LoadingDots /> : <>{s.onboarding.addAreaCta} <ArrowRight size={17} strokeWidth={2.5} /></>}
@@ -113,20 +121,24 @@ export default function AddAreaModal({ onClose, onCreated }: AddAreaModalProps) 
 
         {/* Idioma de destino */}
         <ModalSection label={s.onboarding.youLearn}>
-          <div className="flex flex-col gap-2">
-            {TARGET_LANGUAGES.map((lang) => (
-              <LangCard
-                key={lang.code}
-                code={lang.code}
-                name={s.languages[lang.labelKey]}
-                detail={lang.available ? lang.detail : s.onboarding.comingSoon}
-                selected={target.code === lang.code}
-                disabled={!lang.available}
-                badge={!lang.available ? s.onboarding.comingSoon : undefined}
-                onClick={() => lang.available && setTarget(lang)}
-              />
-            ))}
-          </div>
+          {loadingLanguages ? (
+            <div className="flex items-center gap-2 py-4 text-sm text-slate-400">
+              <LoadingDots /> Carregando...
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {availableTargets.map((lang) => (
+                <LangCard
+                  key={lang.code}
+                  code={lang.code}
+                  name={s.languages[lang.code as keyof typeof s.languages] ?? lang.code}
+                  detail={lang.chapter_subtitle || lang.chapter_title}
+                  selected={target?.code === lang.code}
+                  onClick={() => setTarget(lang)}
+                />
+              ))}
+            </div>
+          )}
         </ModalSection>
 
         {/* Nível inicial */}
@@ -209,32 +221,25 @@ function ModalSection({ label, children }: { label: string; children: React.Reac
   );
 }
 
-function LangCard({ code, name, detail, selected, disabled, badge, onClick }: {
+function LangCard({ code, name, detail, selected, onClick }: {
   code: string;
   name: string;
   detail: string;
   selected: boolean;
-  disabled?: boolean;
-  badge?: string;
   onClick: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`onb-select-card ${selected ? "selected" : ""} ${disabled ? "disabled" : ""}`}
+      className={`onb-select-card ${selected ? "selected" : ""}`}
     >
       <LangFlag code={code} size="sm" className="shrink-0" />
       <div className="flex-1 text-left">
         <p className="text-sm font-bold text-slate-950">{name}</p>
         <p className="text-xs font-medium text-slate-500">{detail}</p>
       </div>
-      {badge && (
-        <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-400">
-          {badge}
-        </span>
-      )}
-      {selected && !disabled && <Check size={16} className="shrink-0 area-text-primary" />}
+      {selected && <Check size={16} className="shrink-0 area-text-primary" />}
     </button>
   );
 }
