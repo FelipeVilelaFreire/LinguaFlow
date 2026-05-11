@@ -1,32 +1,90 @@
-# Talkly — A1: Vila Medieval — A Carta Sem Remetente
+# Talkly — A1: A Carta Sem Remetente
+
+> **Este documento é a bíblia narrativa de toda série A1 do Talkly.**
+> A história é a mesma para todos os idiomas — alemão, espanhol, italiano, inglês, francês, japonês.
+> O que muda entre idiomas é o **cenário cultural** e os **personagens de vocabulário**.
+> O protagonista, Marta, Valeria, a carta, o dom e o arco de 5 temporadas são universais.
+>
+> | Idioma | Cenário | Nome do dom | "Nicht jetzt" |
+> |--------|---------|-------------|---------------|
+> | DE | Vila Medieval | Runensprache | "Nicht jetzt" |
+> | ES | Pueblo Colonial | A Palavra Viva | "Todavía no" |
+> | IT | Cidade Renascentista | La Parola Viva | "Non ancora" |
+> | EN | Port City | The Living Word | "Not yet" |
+> | FR | Ville Médiévale | La Parole Vivante | "Pas encore" |
+> | JA | Cidade Feudal | 言霊 (Kotodama) | "まだ" |
+
+---
 
 ## Lore — O Mundo e a História
 
-### O Que É o Runensprache
+### O Dom — A Lei Fundamental
 
-No mundo da Vila Medieval existe uma lei fundamental: a língua alemã não descreve o mundo — ela o cria. Quando alguém com o dom fala uma palavra com compreensão real, ela se torna física. `Feuer` não é a palavra para fogo — é o comando que invoca fogo.
+Em cada mundo existe uma lei fundamental: **a língua-alvo não descreve o mundo — ela o cria.** Quando alguém com o dom fala uma palavra com compreensão real, ela se torna física.
 
-Só os **Runenträger** conseguem fazer isso. Nascem com o dom. Raríssimos. Quando chegam ao mundo, a própria língua os chama.
+Na Vila Medieval alemã, esse dom se chama **Runensprache**. No Pueblo Colonial espanhol, **La Palabra Viva**. O nome muda. A lei é a mesma.
+
+Só os **Portadores do Dom** conseguem fazer isso. Nascem com ele. Raríssimos. Quando chegam ao mundo, a própria língua os chama.
+
+> **Implementação DE — Vila Medieval:**
+> `Feuer` não é a palavra para fogo — é o comando que invoca fogo. Os Portadores se chamam **Runenträger**.
 
 ### Quem É o Protagonista
 
-Um Runenträger vindo de fora — outro tempo, outra realidade. Chegou com o dom intacto e zero memória. Sua família também está morta. Ele não sabe disso ainda.
+Um Portador — tem o dom, nasceu com ele. Não precisa de linhagem especial nem família nobre. Simplesmente tem o poder, como seu irmão mais velho também tinha.
 
-Não está aqui por acidente. O Runensprache ressoou com ele e o puxou para esse mundo. Alguém aproveitou a chegada para apagar sua memória antes que despertasse.
+Chegou ao mundo sem memória. Não sabe que tem um irmão mais velho que cometeu um crime que colocou um alvo permanente em suas costas. Não sabe que as técnicas de La Palabra Viva que carrega foram ensinadas por esse irmão — e que esse irmão as aprendeu matando a família de Marta-equivalente.
+
+**O que ele carrega sem saber:** o irmão mais velho matou toda a família de Marta para roubar os segredos ancestrais do dom. Depois ensinou essas técnicas ao protagonista. O protagonista as tem — sem saber a origem, sem saber o preço que foi pago.
+
+A Marta-equivalente apagou a memória dele quando o encontrou — não conseguiu matá-lo. Ele era inocente. Mas deixá-lo livre era impossível. Plantou a carta. O colocou no pueblo deliberadamente — o mesmo lugar onde a família dela viveu e morreu. Que ele aprenda a língua pisando naquele chão.
 
 ### Quem É Marta — A Vilã Trágica
 
-A família de Marta era uma das últimas linhagens puras de Runenträger. Todos tinham o dom. Marta nasceu sem ele — a única da família.
+A família de Marta era uma das últimas linhagens puras de Portadores. Todos tinham o dom. Todos. Marta nasceu sem ele — a única da família que não conseguia usar o poder que via funcionar ao seu redor todos os dias.
 
-Passou a vida estudando o que nunca poderia usar. Então alguém assassinou toda a família dela por causa do poder que ela nunca teve.
+Passou a vida inteira estudando o que nunca poderia usar. Tornou-se a maior especialista viva nos segredos do dom — sem nunca ter acesso a ele.
 
-O assassino está morto. Mas o irmão vive — e é alguém conectado ao protagonista.
+**O que o irmão mais velho do protagonista fez:**
+As duas famílias tinham um pacto antigo de não-interferência. O irmão mais velho descobriu que a família de Marta guardava técnicas ancestrais que amplificavam La Palabra Viva muito além do que qualquer Portador conseguia. Quebrou o pacto. Foi até lá e matou todos para aprender os segredos à força. Marta estava fora naquele dia. Voltou e encontrou todos mortos.
 
-Marta quer o ritual para ter força suficiente de confrontar esse homem. Não por ambição. Por vingança. Por décadas de dor acumulada. E ela é trágica porque o jogador vai entender tudo isso — e ter que escolher o que fazer.
+**O que ela fez depois:**
+Passou anos rastreando o irmão mais velho. Encontrou. Matou. Achou que tinha acabado.
 
-**O que ela fez ao protagonista:** quando ele chegou ao mundo, Marta o reconheceu como Runenträger e apagou sua memória antes que despertasse — o único feitiço que domina. Plantou a carta no bolso e o deixou na floresta. Ela precisa de um Runenträger forte para o ritual. Então esperou ele crescer.
+Não acabou. O vazio não fechou. A família continuava morta. Então ela descobriu que o irmão mais novo existe — e que o irmão mais velho ensinou a ele as técnicas roubadas antes de morrer.
 
-**Como ela o reconhece na T1:** quando "cura" o protagonista na Fase 8, ela vê uma marca residual do próprio feitiço de apagamento — como uma assinatura invisible que só ela pode sentir. Ali ela confirma: é ele.
+**O ritual — a janela de 3 meses:**
+Marta domina uma teoria que ninguém mais conhece: o ritual de La Palabra Viva pode dar o dom a quem não nasceu com ele. Mas só funciona numa janela específica — aproximadamente 3 meses depois que o dom de um Portador desperta completamente. Antes: fraco demais. Depois: enraizado demais para extrair.
+
+Ela calculou essa janela para o protagonista. A partir do momento em que ele entra no pueblo e começa a usar a língua com compreensão real, o relógio começa. **A série inteira é esses 3 meses.**
+
+**O que ela quer agora:**
+Não é mais só vingança direta. É algo mais cruel: ela quer que o protagonista sinta exatamente o que ela sentiu. Perder todos que ama. Ver o grupo que construiu ser destruído um por um. Ficar completamente sozinho — como ela ficou.
+
+Para isso entrou no grupo. Ficou do lado dele enquanto os laços se formavam. Tornou-se indispensável.
+
+**O que ela também descobriu:** a Interesse Amorosa do protagonista também é Portadora — também sem memória, também sem saber de onde veio. Marta quer realizar o ritual com ela também. Com os dois, ela teria o dom completo.
+
+**Por que ela é trágica:**
+Ela não está errada sobre o que perdeu. O irmão mais velho destruiu a vida dela. O protagonista carrega involuntariamente os frutos desse crime. E quando o jogador entende tudo isso — na T5 — a escolha do confronto final se torna genuinamente difícil.
+
+### Quem É a Interesse Amorosa — A Segunda Portadora
+
+A Interesse Amorosa (Catalina no ES, nome equivalente em cada idioma) é a segunda peça central do arco.
+
+**Quem ela é:** também tem o dom — nasceu com ele como o protagonista. Também perdeu a memória. Também não sabe de onde veio. Chegou ao mesmo mundo por caminhos diferentes.
+
+Ela e o protagonista são espelhos. A diferença: ela não carrega as técnicas roubadas que ele carrega. Ela tem o dom puro e adormecido — que por si só já é suficiente para fazer dela um alvo permanente.
+
+**Como ela entra na história:** aparece cedo no cenário, sem que o protagonista saiba da conexão. A relação se desenvolve naturalmente ao longo da T1 e T2. Ela entra no grupo na T2.
+
+**Por que Marta a quer:**
+Marta quer o protagonista pelas técnicas roubadas que ele carrega.
+Marta quer a Interesse Amorosa pelo dom puro — para o ritual.
+Com os dois, ela teria tudo que a família dela tinha.
+
+**O padrão de ataque em todas as temporadas:**
+Os antagonistas de cada temporada sempre atacam os dois. O protagonista é o alvo principal — mas a Interesse Amorosa é a pressão. Ameaçá-la é a alavanca mais eficiente contra o protagonista, e todos os inimigos do arco sabem disso. Isso cria um padrão constante ao longo das 5 temporadas: proteger ela enquanto tenta avançar. Marta conhece esse padrão melhor que ninguém — porque foi ela quem estabeleceu essa dinâmica ao entrar no grupo.
 
 ### Quem É Valeria — V
 
@@ -38,32 +96,68 @@ Cada fragmento revelado depois de um boss é Valeria contando a verdade na veloc
 
 Na T5 ela aparece pessoalmente.
 
-### O Outro Forasteiro
+### O Outro Forasteiro — O Explicador
 
-Aparece na T3, quando o protagonista vai à floresta em missão. É de outro vilarejo — mesmo mundo, origem diferente. Não é misterioso nem suspeito: é simplesmente alguém que também está fora do lugar.
+Aparece na T3, vindo de uma região completamente diferente — linhagem diferente, mundo diferente. No ES é James (linhagem inglesa). Em cada idioma o nome e a linhagem mudam, mas o papel é o mesmo.
 
-Também tem Runensprache — mas o poder veio da família. Herdado, ensinado de geração em geração. Sabe usar, sabe as técnicas, mas não consegue explicar por que o protagonista tem o dom sem nenhuma linhagem conhecida. Pra ele faz sentido ter o poder. Pra o protagonista, não.
+**O que o distingue:** ele tem o dom — e sabe que tem. Sua família ensinou a teoria, a técnica, a história. Ele é o único personagem que chega ao grupo com conhecimento real sobre o que La Palabra Viva é, como funciona, por que existe.
 
-Juntos derrotam o boss da T3 — o mais poderoso até então. É nessa batalha que o protagonista começa a entender como usar o poder de verdade. O Forasteiro ensina técnica. Não consegue ensinar origem.
+**O papel dele na história:** é quem explica o mundo ao protagonista e ao grupo. Quando entra na T3, ele coloca em palavras o que o protagonista experimentou sem entender por duas temporadas. Ele ensina técnica — como usar o dom com intenção, não por acidente.
 
-Três tipos de relação com o Runensprache na série:
+**O que ele não consegue explicar:** de onde vem o dom do protagonista. Pelo sistema de linhagens que ele conhece, o protagonista não deveria ter o poder. A família de origem do protagonista não é uma linhagem de Portadores conhecida. Isso o incomoda — quebra tudo o que ele aprendeu.
+
+> *"Minha família me ensinou. O teu pai te ensinou? O teu avô? Alguém? ... Então como?"*
+
+Essa pergunta é o que a T4 começa a responder — e a T5 fecha completamente.
+
+**Três relações com o dom na série:**
 ```
-Protagonista     → poder inato, misterioso, sem linhagem conhecida
-Outro Forasteiro → poder herdado, familiar, ensinável
-Marta            → sem poder, estudou a vida toda, nunca conseguiu
+Protagonista      → dom ativo, origem desconhecida, carrega segredos roubados
+Outro Forasteiro  → dom herdado, ensinado, técnico — mas origem clara
+Marta-equivalente → sem dom, estudou a vida toda, nunca conseguiu usar
 ```
 
-A grande questão que fica após a T3: se o Forasteiro tem o poder por herança familiar — de onde vem o do protagonista, que não tem família? Valeria responde na T5.
+Juntos derrotam o boss da T3. É nessa batalha que o protagonista usa o poder com intenção pela primeira vez.
 
-### Progressão do Runensprache nas 5 Temporadas
+### Progressão do Dom nas 5 Temporadas
 
 ```
-T1 — usa sem querer (fase 3), fica confuso, quase ninguém sabe
-T2 — usa com mais frequência, sem controle, começa a buscar respostas
-T3 — entende COMO funciona, não sabe POR QUÊ tem o poder
-T4 — descobre a origem — e quem mais tem esse poder
-T5 — domínio total. A verdade completa. Confronto com Marta.
+T1 — usa sem querer (fase 6), fica confuso, quase ninguém vê.
+     Marta-equivalente entra no grupo (F8). Sabe quem ele é desde o primeiro toque.
+
+T2 — usa com mais frequência, sem controle. O grupo começa a perceber.
+     A Interesse Amorosa entra no grupo. Os ataques a ela começam.
+     Marta observa tudo — está executando o plano.
+
+T3 — O Outro Forasteiro chega e explica o dom pela primeira vez.
+     O protagonista aprende a usar com intenção.
+     Marta fica nervosa: o Forasteiro está chegando perto de verdades perigosas.
+     Boss da T3 derrotado juntos — o mais difícil até então.
+
+T4 — A origem do dom do protagonista começa a emergir.
+     O grupo começa a suspeitar de Marta. Ela acelera o plano.
+     A Interesse Amorosa é usada como pressão. Alguém do grupo paga o preço.
+     Fragmento 4 da carta: "Há outros como você. Eles não querem que você lembre."
+
+T5 — Valeria-equivalente aparece pessoalmente.
+     A verdade completa: o irmão mais velho, o pacto quebrado, os segredos transferidos.
+     Marta revela o que é e o que planejou desde T1.
+     Confronto final. A carta abre: "[Não agora]. Agora. — V."
 ```
+
+### Padrão de Antagonistas por Temporada
+
+Cada temporada tem um boss externo ao grupo — mas o arco interno com Marta é o fio que atravessa tudo. Os bosses externos sempre têm conexão com o conflito entre linhagens:
+
+| T | Boss externo | Conexão com o arco principal |
+|---|-------------|------------------------------|
+| T1 | Figura de autoridade local | Suspeita do forasteiro — quem é ele e por que apareceu |
+| T2 | Agente de uma terceira linhagem | Quer o que o protagonista carrega. Sabe mais do que deveria. |
+| T3 | Guardião de um território | Bloqueia o caminho do Forasteiro — o boss que os une |
+| T4 | Alguém que conhecia o irmão mais velho | O passado do protagonista começa a aparecer em carne e osso |
+| T5 | Marta-equivalente | O confronto interno que a série inteira construiu |
+
+**Regra:** todo antagonista de toda temporada ataca o protagonista — mas usa a Interesse Amorosa como alavanca. Ameaçar ela é mais eficiente do que atacar ele diretamente. Todos os inimigos sabem disso.
 
 ### Regra dos Personagens Suspeitos
 
@@ -96,7 +190,20 @@ Cada boss revela um fragmento — Valeria te contando a verdade na velocidade qu
 
 ---
 
-## Personagens
+## Personagens Universais — O Grupo
+
+Estes personagens existem em todas as implementações de idioma. Os nomes mudam. Os papéis são fixos.
+
+| Papel | ES | DE | Entra quando | Função no arco |
+|-------|----|----|-------------|----------------|
+| **A Ponte** | Miguel | a definir | T1 · F2 | Fala a língua de origem quebrada. Primeiro aliado. |
+| **A Local** | Sofía | a definir | T1 · F6 | Viu o dom funcionar. Acredita. Impulsiva. |
+| **A Vilã Escondida** | María | Marta | T1 · F8 | Curandeira de confiança. No grupo desde o início. |
+| **A Interesse Amorosa** | Catalina | a definir | T2 · F3 | Também Portadora. Também sem memória. Alvo constante. |
+| **O Prático** | Rodrigo | a definir | T2 · F6 | Cético, pés no chão. Vira aliado real na T3. |
+| **O Explicador** | James | a definir | T3 · F2 | El Otro Forasteiro. Linhagem diferente. Explica o dom. |
+
+### Personagens de Vocabulário — DE (referência)
 
 | Personagem | Papel | Aparece quando |
 |---|---|---|
@@ -900,3 +1007,88 @@ Itens desbloqueados ao dominar as palavras:
 | Wasser | 3 | 💧 Água | +stamina, -sede |
 
 *(MVP: itens visuais no inventário. Efeitos mecânicos reais ficam pra depois do MVP.)*
+
+---
+
+## Implementações por Idioma
+
+> O conteúdo acima descreve a implementação DE (Vila Medieval) como referência.
+> Cada idioma segue a mesma estrutura canônica com cenário e personagens próprios.
+
+### DE — Vila Medieval *(referência — detalhado acima)*
+- Cenário: vila medieval europeia, séc. XII
+- NPCs de vocabulário: Elsa (padeira), Aldric (ferreiro), Lena (criança), Bruno (estalajadeiro)
+- Marta: curandeira que chega na Fase 8 da T1
+- Dom local: Runensprache — palavras alemãs invocam elementos físicos
+- "Nicht jetzt" — o lacre da carta
+
+### ES — Pueblo Colonial *(em desenvolvimento)*
+- Cenário: pueblo colonial espanhol, séc. XVII — San Cristóbal
+- Dom local: La Palabra Viva — palavras espanholas afetam o mundo físico
+- "Todavía no" — o equivalente do lacre
+
+**O Grupo (6 companheiros):**
+| Nome | Papel universal | Entra |
+|------|----------------|-------|
+| Miguel | A Ponte | T1 · F2 — campesino, fala português quebrado, descendente de forasteiro |
+| Sofía | A Local | T1 · F6 — filha de comerciante, viu o dom funcionar |
+| María | A Vilã Escondida | T1 · F8 — curandera itinerante, a Marta-equivalente |
+| Catalina | A Interesse Amorosa | T2 · F3 — também portuguesa, também sem memória, também Portadora |
+| Rodrigo | O Prático | T2 · F6 — jovem negociante, cético |
+| James | O Explicador | T3 · F2 — linhagem inglesa, herdou o dom da família |
+
+**NPCs de vocabulário (fases):**
+- Rosa la Panadera — fase 1-2, só espanhol, paciente
+- Señora Carmen — fase 1-5, só espanhol, culta e direta
+- Don Miguel el Campesino (antes de entrar no grupo) — ponte, português quebrado
+- El Vigilante del Mercado — fase 2-3, seco, formal
+
+**Arco de María (ES):**
+- Família de Portadores morta pelo irmão mais velho do protagonista
+- Irmão queria as técnicas ancestrais de La Palabra Viva que só a família dela dominava
+- Antes de morrer, um membro da família transferiu o conhecimento ao protagonista (inocente)
+- María matou o irmão mais velho — vingança executada, vazio não fechou
+- Descobriu que o protagonista carrega os segredos roubados
+- Descobriu que Catalina também é Portadora
+- Entrou no grupo para destruir tudo que o protagonista constrói — que ele sinta o que ela sentiu
+- Todos os antagonistas de toda temporada usam Catalina como alavanca
+
+- Boss T1: El Alcalde
+- Seed backend: `seed_es_full.py` + `seed_es_sections.py`
+
+### IT — Il Viandante *(planejado)*
+- Cenário: cidade italiana renascentista (Florença / Veneza)
+- NPCs de vocabulário: a definir
+- Dom local: La Parola Viva
+- "Non ancora" — o equivalente do lacre
+
+### EN, FR, JA *(futuros)*
+- Seguem a mesma estrutura quando implementados
+
+---
+
+## Arco Universal por Fase — Onde a Meta-História Entra
+
+Independente do idioma, o mapa narrativo da T1 segue este padrão:
+
+```
+F1–5   → Camada de rua. Sobrevivência. O protagonista nem sabe que tem o dom.
+         A carta está ilegível. Os NPCs ensinam vocabulário básico.
+
+F6     → Primeiro sinal. Uma palavra dita com compreensão real faz algo pequeno.
+         Alguém percebe. Não comenta.
+
+F8     → A Marta-equivalente chega. Trata uma ferida/doença do protagonista.
+         Ao tocar, vê a marca do apagamento. Agora ela sabe quem ele é.
+         O protagonista não percebe. A tensão começa aqui.
+
+F14    → 3ª fase de revisão. A Marta-equivalente está no cenário, observando.
+         Precisa que o protagonista fique e fique mais forte para o ritual.
+
+F19    → 4ª fase de revisão. O protagonista já fala o suficiente.
+         A primeira palavra da carta torna-se legível.
+
+F25    → Boss. A palavra-poder é usada pela primeira vez com consciência.
+         O confronto tem consequências reais.
+         Fragmento 1 revelado: "Você não é de onde pensa."
+```

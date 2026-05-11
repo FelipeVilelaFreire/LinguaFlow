@@ -16,13 +16,10 @@ interface AddAreaModalProps {
 
 const SOURCE_LANGUAGES = [
   { code: "PT", labelKey: "PT" as const, detail: "Explicações em português" },
-  { code: "EN", labelKey: "EN" as const, detail: "Explanations in English" },
 ];
 
 const LEVELS = [
   { code: "A1", labelKey: "levelIniciante" as const },
-  { code: "A2", labelKey: "levelBasico" as const },
-  { code: "B1", labelKey: "levelBase" as const },
 ];
 
 const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];

@@ -392,20 +392,6 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel volta a perguntar: '¿Cómo te llamas?' Você responde:",
-                    "options": [
-                        {"id": "a", "text": "Me llamo [seu nome]"},
-                        {"id": "b", "text": "Bien, gracias"},
-                        {"id": "c", "text": "¿Y tú?"},
-                        {"id": "d", "text": "Hola"},
-                    ],
-                    "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "Eso. Repítelo cien veces si hace falta.",
-                },
-                {
-                    "kind": "multiple_choice",
-                    "npc": "Don Miguel",
                     "question": "Você quer saber o nome de alguém. Pergunta:",
                     "options": [
                         {"id": "a", "text": "¿Cómo te llamas?"},
@@ -459,18 +445,8 @@ SECTIONS = [
                     "npc_reaction": "Forastero. Pero menos cada hora que pasa, ¿eh?",
                 },
                 {
-                    "kind": "multiple_choice",
-                    "npc": "Don Miguel",
-                    "question": "Você acabou de dar uma resposta certa. Don Miguel te entrega uma manzana do bolso. Você diz:",
-                    "options": [
-                        {"id": "a", "text": "Gracias"},
-                        {"id": "b", "text": "Hola"},
-                        {"id": "c", "text": "Bien"},
-                        {"id": "d", "text": "Adiós"},
-                    ],
-                    "correct": "a",
-                    "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada, forastero. La manzana es del árbol detrás de mi casa.",
+                    "kind": "narrative",
+                    "text": "Don Miguel tira uma manzana do bolso e te passa sem cerimônia. 'Del árbol detrás de mi casa.' Você aceita com um aceno.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -597,6 +573,45 @@ SECTIONS = [
                     "npc_reaction": "Me alegro. Aquí siempre se está bien si el cuerpo no falla y la gente saluda.",
                 },
                 {
+                    "kind": "npc_speak",
+                    "npc": "Carmen",
+                    "line": "¿Y sabes despedirte también, forastero?",
+                    "translation": "E você sabe se despedir também, forasteiro?",
+                },
+                {
+                    "kind": "multiple_choice",
+                    "npc": "Carmen",
+                    "question": "Carmen te olha esperando. Você precisa dizer tchau em espanhol.",
+                    "options": [
+                        {"id": "a", "text": "Adiós"},
+                        {"id": "b", "text": "Hola"},
+                        {"id": "c", "text": "Gracias"},
+                        {"id": "d", "text": "Bien"},
+                    ],
+                    "correct": "a",
+                    "word_id": "es_adios", "target": "adiós", "native": "tchau / adeus",
+                    "npc_reaction": "Bien. Aunque espero que no tan pronto, hijo.",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Carmen",
+                    "line": "Ahora — pregúntale a Miguel cómo está.",
+                    "translation": "Agora — pergunta pro Miguel como ele tá.",
+                },
+                {
+                    "kind": "multiple_choice",
+                    "npc": "Don Miguel",
+                    "question": "Carmen aponta pra Don Miguel. É a sua vez de perguntar.",
+                    "options": [
+                        {"id": "a", "text": "¿Cómo estás?"},
+                        {"id": "b", "text": "¿Cómo te llamas?"},
+                        {"id": "c", "text": "¿Y tú?"},
+                        {"id": "d", "text": "¿Adiós?"},
+                    ],
+                    "correct": "a",
+                    "npc_reaction": "Bien. Como siempre que enseño a alguien que quiere aprender.",
+                },
+                {
                     "kind": "narrative",
                     "text": (
                         "Don Miguel observa de pé, satisfeito. Carmen continua "
@@ -678,6 +693,46 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_de_nada", "target": "de nada", "native": "de nada",
                     "npc_reaction": "Ese es el ciclo, hijo. Saludo, palabra, respuesta. Así vivimos en el pueblo.",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Carmen",
+                    "line": "¿Y cuando el sol se pone y llega la noche?",
+                    "translation": "E quando o sol se põe e chega a noite?",
+                },
+                {
+                    "kind": "multiple_choice",
+                    "npc": "Carmen",
+                    "question": "O sol sumiu. Você encontra alguém na rua à noite. Como cumprimenta?",
+                    "options": [
+                        {"id": "a", "text": "Buenas noches"},
+                        {"id": "b", "text": "Buenos días"},
+                        {"id": "c", "text": "Buenas tardes"},
+                        {"id": "d", "text": "Hola noche"},
+                    ],
+                    "correct": "a",
+                    "word_id": "es_buenas_noches", "target": "buenas noches", "native": "boa noite",
+                    "npc_reaction": "Así. Cada hora tiene su saludo.",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Carmen",
+                    "line": "Una última cosa, forastero — ¿cómo te llamas?",
+                    "translation": "Uma última coisa, forasteiro — como você se chama?",
+                },
+                {
+                    "kind": "multiple_choice",
+                    "npc": "Carmen",
+                    "question": "Carmen te olha com um sorriso. Ela quer ouvir você dizer seu nome.",
+                    "options": [
+                        {"id": "a", "text": "Me llamo [seu nome]"},
+                        {"id": "b", "text": "Bien, gracias"},
+                        {"id": "c", "text": "Hola Carmen"},
+                        {"id": "d", "text": "Soy forastero"},
+                    ],
+                    "correct": "a",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "Eso. Nunca olvides tu nombre cuando alguien te lo pida.",
                 },
                 {
                     "kind": "narrative",
@@ -845,34 +900,6 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_buenas_tardes", "target": "buenas tardes", "native": "boa tarde",
                     "npc_reaction": "Sí. Aprendiste.",
-                },
-                {
-                    "kind": "multiple_choice",
-                    "npc": "Don Miguel",
-                    "question": "'Yo soy un...'",
-                    "options": [
-                        {"id": "a", "text": "Campesino"},
-                        {"id": "b", "text": "Forastero"},
-                        {"id": "c", "text": "Médico"},
-                        {"id": "d", "text": "Soldado"},
-                    ],
-                    "correct": "a",
-                    "word_id": "es_campesino", "target": "campesino", "native": "camponês",
-                    "npc_reaction": "Eso. Y orgulloso de serlo.",
-                },
-                {
-                    "kind": "multiple_choice",
-                    "npc": "Don Miguel",
-                    "question": "'Tú llegaste de afuera. Eres un...'",
-                    "options": [
-                        {"id": "a", "text": "Forastero"},
-                        {"id": "b", "text": "Campesino"},
-                        {"id": "c", "text": "Vecino"},
-                        {"id": "d", "text": "Amigo"},
-                    ],
-                    "correct": "a",
-                    "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Por ahora. Hasta que dejes de serlo, forastero.",
                 },
                 # ── Closing beats — transição pro Dia 2 / la posada ──
                 {

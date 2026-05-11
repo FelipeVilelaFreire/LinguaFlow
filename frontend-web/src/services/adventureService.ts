@@ -1,6 +1,6 @@
 import { apiRequest } from "./api";
 import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserInventoryItem, AvailableLanguage, EarnedItemData, StreakData } from "../types/adventure";
-import type { Phrase } from "../types/content";
+import type { Phrase, StudySessionData } from "../types/content";
 import type { PhaseSection } from "../types/sections";
 
 export const adventureService = {
@@ -34,6 +34,9 @@ export const adventureService = {
 
   getSections: (phaseId: number) =>
     apiRequest<PhaseSection[]>(`/adventure/phases/${phaseId}/sections/`),
+
+  getStudySession: () =>
+    apiRequest<StudySessionData>("/adventure/vocabulary/study-session/"),
 
   listLearnedWords: (langCode?: string) =>
     apiRequest<{ word_id: string; target: string; native: string; tier: string }[]>(

@@ -14,24 +14,13 @@ interface OnboardingScreenProps {
 
 const SOURCE_LANGUAGES = [
   { code: "PT", detail: "Explicações em português" },
-  { code: "EN", detail: "Explanations in English" },
 ];
 
 const LEVELS = [
   { code: "A1", labelKey: "levelIniciante" as const, detailKey: "levelA1Detail" as const },
-  { code: "A2", labelKey: "levelBasico"    as const, detailKey: "levelA2Detail" as const },
-  { code: "B1", labelKey: "levelBase"      as const, detailKey: "levelB1Detail" as const },
 ];
 
-const WEEKDAYS = [
-  { value: 0, short: "Seg" },
-  { value: 1, short: "Ter" },
-  { value: 2, short: "Qua" },
-  { value: 3, short: "Qui" },
-  { value: 4, short: "Sex" },
-  { value: 5, short: "Sáb" },
-  { value: 6, short: "Dom" },
-];
+const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
 
 const SESSION_OPTIONS = [15, 30, 45, 60, 90];
 
@@ -263,6 +252,7 @@ function Step2({
   onToggleDay: (day: number) => void;
   onSelectMinutes: (m: number) => void;
 }) {
+  const s = useStrings();
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -274,17 +264,17 @@ function Step2({
         <div className="flex justify-between gap-1">
           {WEEKDAYS.map((day) => (
             <button
-              key={day.value}
+              key={day}
               type="button"
-              onClick={() => onToggleDay(day.value)}
-              className={`onb-day-pill ${studyDays.includes(day.value) ? "selected" : ""}`}
+              onClick={() => onToggleDay(day)}
+              className={`onb-day-pill ${studyDays.includes(day) ? "selected" : ""}`}
             >
-              {day.short}
+              {s.weekdays.short[day]}
             </button>
           ))}
         </div>
         {studyDays.length === 0 && (
-          <p className="mt-2 text-xs font-semibold text-red-500">Escolha pelo menos um dia</p>
+          <p className="mt-2 text-xs font-semibold text-red-500">{s.profile.chooseDayError}</p>
         )}
       </Section>
 

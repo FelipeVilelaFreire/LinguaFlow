@@ -1,5 +1,30 @@
 # Talkly — Diretrizes para Claude Code
 
+## Documentos canônicos — ler antes de qualquer trabalho narrativo
+
+Estes dois arquivos são a fonte de verdade da série A1. Qualquer decisão sobre personagens, história, poderes, idades ou arco narrativo deve ser consultada e respeitada aqui:
+
+| Arquivo | Conteúdo |
+|---------|---------|
+| `STORY_A1.md` | Bíblia narrativa completa — lore, poderes, arco das 5 temporadas, regras universais |
+| `CHARACTERS_A1.md` | Perfis completos de todos os personagens — idades, especialidades, relações, arco individual |
+| `INVENTORY_SYSTEM.md` | Sistema de Mochila e Baús — itens, raridades, word→item, item_moments, recuperação |
+
+**Regras derivadas desses documentos que nunca podem ser quebradas:**
+- Todo item tem um `word_id` — itens são palavras, nunca recompensas genéricas
+- Itens são bônus, nunca bloqueio — o caminho sem item é sempre completável
+- O step type `item_moment` é o único lugar onde itens são usados durante fases
+- Palavras com erro crônico (5x+) desbloqueiam item degradado automaticamente — nunca travar o jogador
+- O protagonista tem o dom naturalmente — não precisa de linhagem nobre
+- O irmão mais velho ensinou as técnicas ao protagonista (não "transferiu o dom")
+- María quer realizar o ritual dentro de uma janela de **3 meses** — a série inteira é esse prazo
+- Catalina também é Portadora e também perdeu a memória — alvo constante de todos os antagonistas
+- O grupo tem **6 companheiros**: Miguel · Sofía · María · Catalina · Rodrigo · James
+- James (El Otro Forasteiro) é quem explica La Palabra Viva ao grupo — entra na T3
+- María matou o irmão mais velho. O irmão mais velho está morto antes do início da história.
+
+---
+
 ## Regra crítica — nunca hardcodar strings de UI
 
 **Todo texto visível ao usuário deve vir de `src/constants/strings.ts` via `useStrings()`.**
@@ -103,15 +128,15 @@ Os nomes internos das seções são **arquitetura de backend — nunca visíveis
 
 **Cada step = 1 tela/atividade** (uma pergunta, um bloco narrativo, uma lista de vocab). Número de steps por seção é variável — determinado pelo conteúdo, não fixo. Mínimo 3 exercícios por seção em qualquer fase.
 
-| # | Tipo interno (`type`) | Perfil | Exercícios | Tipo de conteúdo |
+| # | Tipo interno (`type`) | Perfil | Exercícios (alvo) | Tipo de conteúdo |
 |---|---|---|---|---|
-| 1 | `cotidiano` | Imersão narrativa + prática leve | 4 | Beats acumulados (scene/npc/player) → 4 exercícios de reconhecimento |
-| 2 | `revisao_srs` | Revisão SRS — fase(s) anterior(es) | 12 | Exercícios dinâmicos do algoritmo SRS |
-| 3 | `pratica` | Prática intensa do vocab novo | 10 | Exercícios variados usando o vocab praticado |
-| 4 | `gramatica_narrativa` | NPC ensina gramática via história | 8 | Narrativa → NPC apresenta padrão → 8 exercícios |
-| 5 | `reforco` | Pattern card + reforço explícito | 6 | Pattern card → NPC demonstra → 6 exercícios focados no padrão |
-| 6 | `obstaculo` | Gate final — produção ativa | 10 gated | Cena → NPC desafia → 10 exercícios travados (errar trava) |
-| | **Total por fase** | | **50** | |
+| 1 | `cotidiano` | Imersão narrativa + prática leve | ~4 | Beats acumulados (scene/npc/player) → exercícios de reconhecimento contextual |
+| 2 | `revisao_srs` | Revisão SRS — fase(s) anterior(es) | ~5-6 | NPC conduz situações, cada exercício é uma pergunta dele |
+| 3 | `pratica` | Prática intensa — concentração de esforço | ~8-12 | Exercícios variados, NPC firing rapid-fire |
+| 4 | `gramatica_narrativa` | NPC intro/encontro via história | ~3-4 | Narrativa-heavy, exercícios servem o encontro com o NPC |
+| 5 | `reforco` | Convivência com NPC — vocab em uso orgânico | ~3-4 | Mais narrativa, NPC usa o vocab novo no contexto |
+| 6 | `obstaculo` | Gate final — produção ativa | ~8-10 gated | Cena → NPC desafia → exercícios travados (errar trava) |
+| | **Total por fase** | | **~33-40** | Concentrado em S3 e S6 — narrativa não fragmentada |
 
 **Fluxo pedagógico (por que essa ordem):**
 - Seção 1: ouvir o vocab **em contexto** sem entender ainda — imersão intencional
@@ -238,30 +263,49 @@ Total ~40 exercícios por fase. Antes era ~50 distribuído, mas concentrar em 3 
 | **Lugares** | ≥2 locais distintos. Seção 3 = lugar íntimo/parado. Seção 6 = lugar de limiar (porta, plaza, posada) |
 | **Transição** | Toda fase termina num beat de descanso/transição. A fase seguinte abre nesse mesmo lugar (continuidade) |
 | **Itens** | 2-4 itens cotidianos (`comum`), cada um amarrado a um beat. Raros/épicos só em marcos (fase 5, 10, 15, 20). Lendário só na fase 25 (boss) |
-| **Vocab** | 8-12 palavras novas, amarradas ao cenário. 1-3 estruturas gramaticais ensinadas na Seção 3 |
+| **Vocab** | **Fase 1:** ~12 palavras novas (única exceção — base do jogo). **Fases 2+:** máximo 2-3 palavras novas (80% revisão, 20% novo). 1-3 estruturas gramaticais ensinadas na Seção 3 |
 | **Arco emocional** | A fase tem um sentimento de chegada → partida. Ex: Fase 1 = "perdido → seguro" (posada como resolução) |
+| **Grupo** | Os 6 companheiros (Miguel · Sofía · María · Catalina · Rodrigo · James) entram progressivamente. Verificar em `CHARACTERS_A1.md` em que fase cada um entra antes de escrever cenas de grupo |
+| **Meta-história** | Verificar em `STORY_A1.md` se essa fase tem um evento do arco global (dom manifesta F6, María chega F8, janela de 3 meses começa F1, etc.) |
+
+**Milestones do arco global por fase — nunca ignorar:**
+
+| Fase | Evento obrigatório |
+|------|--------------------|
+| F1 | Protagonista chega ao pueblo. Janela de 3 meses começa. |
+| F2 | Miguel entra no grupo. |
+| F6 | Sofía entra no grupo. Primeiro sinal do dom — uma palavra funciona sem querer. |
+| F8 | María entra no grupo. Ao tocar o protagonista, reconhece quem ele é. |
+| F14 | María no cenário, observando. 3ª fase de revisão. |
+| F19 | 4ª fase de revisão. Primera palavra da carta torna-se legível. |
+| F25 | Boss. Dom usado com consciência pela 1ª vez. Carta: fragmento 1 revelado. |
+| T2·F3 | Catalina entra no grupo. |
+| T2·F6 | Rodrigo entra no grupo. |
+| T3·F2 | James entra no grupo. Explica o dom ao grupo pela 1ª vez. |
 
 **Checklist obrigatório antes de escrever conteúdo de uma fase nova:**
 
-1. **Narrativo:** que momento da história essa fase é?
-2. **Pedagógico:** que vocab + gramática novos entram?
-3. **Emocional:** como o jogador começa e termina?
-4. **NPCs:** quem é o principal + quem é o cameo novo?
-5. **Lugares:** quais 2-3 lugares aparecem?
-6. **Itens:** que 2-4 itens cotidianos amarram aos beats?
-7. **Transição:** como termina e onde a próxima fase começa?
+1. **Meta-história:** essa fase tem algum milestone do arco global? (ver tabela acima e `STORY_A1.md`)
+2. **Narrativo:** que momento da história essa fase é?
+3. **Pedagógico:** que vocab + gramática novos entram? (máximo 2-3 novas se não for F1)
+4. **Emocional:** como o jogador começa e termina a fase?
+5. **NPCs:** quem do grupo está presente? + quem é o cameo novo?
+6. **Lugares:** quais 2-3 lugares aparecem?
+7. **Itens:** que 2-4 itens cotidianos amarram aos beats?
+8. **Transição:** como termina e onde a próxima fase começa?
 
-Se algum dos 7 ficar em branco, a fase ainda não está pronta pra virar seed.
+Se algum dos 8 ficar em branco, a fase ainda não está pronta pra virar seed.
 
 **Fase 1 ES — referência canônica:**
 
-- Narrativo: chegada ao pueblo de San Cristóbal
-- Pedagógico: hola, buenos días, buenas tardes, gracias, de nada, ¿cómo te llamas?, me llamo, ¿cómo estás?, bien/mal, forastero, campesino
+- Meta-história: F1 = chegada ao pueblo, início da janela de 3 meses. Dom adormecido, protagonista sem memória.
+- Narrativo: chegada ao pueblo de San Cristóbal. Miguel ainda é NPC de vocabulário — entra no grupo na F2.
+- Pedagógico: hola, buenos días, buenas tardes, gracias, de nada, ¿cómo te llamas?, me llamo, ¿cómo estás?, bien/mal, forastero, campesino (~12 palavras — única fase com 100% conteúdo novo)
 - Emocional: perdido (chegada) → seguro (posada)
-- NPCs: Don Miguel (principal) + Rosa la Panadera (cameo na Seção 2)
+- NPCs: Miguel el Campesino (principal — guia, fala português quebrado) + Rosa la Panadera (cameo na Seção 2)
 - Lugares: portão/parede de adobe → ruas do pueblo → casa de Rosa → plaza/posada
 - Itens: pan_fresco, manzana_del_campo, agua_del_pozo, moneda_de_cobre
-- Transição: termina caminhando com Don Miguel até la posada; próxima fase abre nesse mesmo lugar
+- Transição: termina caminhando com Miguel até la posada; próxima fase abre nesse mesmo lugar. F2 = Miguel entra no grupo.
 
 **Regra especial — primeira fase de cada temporada:**
 A seção 2 (`revisao_srs`) não tem histórico anterior. Nesse caso ela vira aquecimento contextual (apresentação do cenário, vocabulário de sobrevivência do novo arco). O backend pode sinalizar com `is_first_of_season: true` na fase.
@@ -304,9 +348,31 @@ type SectionStep =
   - `multiple_choice` em outras seções: qualquer resposta avança (mostra certo/errado + explicação)
   - Demais tipos (`narrative`, `npc_speak`, `vocab_list`, etc.): sempre liberado
 
-**Seção 6 (`obstaculo`) é o único gate real:**
+**Gate de 50% por seção — regra obrigatória:**
+
+Cada seção precisa de ≥ 50% de acertos nos exercícios para desbloquear a próxima.
+
+```
+S1 completa → score ≥ 50%  →  avança para S2
+             score < 50%  →  tela de resultado + retry embaralhado
+
+S2 → S3 → S4 → S5: mesma lógica
+S6 (obstáculo): já é 100% gated por exercício — sem gate adicional
+```
+
+**Tela de retry (Opção B):**
+- Mostra score: "Você acertou 2 de 5. Precisa de 3 para avançar."
+- Lista cada exercício com ✓ ou ✗ e a resposta correta
+- Botão [Tentar de novo] → mesmos exercícios em ordem embaralhada
+- Sem limite de tentativas
+
+**O que conta para o score:** apenas steps do tipo exercício (`multiple_choice`, `fill_blank`, `translate`). Beats narrativos (`scene`, `narrative`, `npc_speak`, `player_react`) não contam.
+
+**Itens não são afetados pelo score** — itens são recompensa de vocabulário, não de performance.
+
+**Seção 6 (`obstaculo`) é 100% gated por exercício:**
 - Errar trava. O player deve acertar para passar.
-- Todas as outras seções ensinam com feedback — errar não impede progressão.
+- A S6 já garante domínio do conteúdo crítico — o gate de 50% é desnecessário aqui.
 - Completar o Obstáculo = fase concluída = recompensa desbloqueada (loot pool da temporada).
 
 **Regras fixas — nunca quebrar:**

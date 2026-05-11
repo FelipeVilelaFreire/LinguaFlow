@@ -1,5 +1,8 @@
 """
-Seed ES A1 T1 · "El Pueblo" — Fase 1 apenas.
+Seed ES A1 T1 · "El Pueblo de San Cristóbal" — todas as 25 fases.
+
+Cria/atualiza: chapter, cenários, frases, personagens, itens e fases 1–25.
+As seções de cada fase vivem em seeds separados (seed_es_sections, seed_es_f2_sections, etc.)
 
 Uso: python manage.py seed_es_full
 """
@@ -178,6 +181,70 @@ PHASES = [
         ),
         "key_words": ["hola", "me llamo", "forastero", "campesino", "bien"],
         "scenario_slug": "es-social", "phrase_count": 8,
+    },
+    {
+        "number": 2, "phase_type": "story",
+        "title": "El Pueblo Despierta",
+        "narrative_intro": (
+            "A manhã chega com cheiro de pão. Don Miguel bate na sua porta cedo — "
+            "tem mais pueblo pra conhecer.\n\n"
+            "'¡Buenos días, forastero! Rosa tiene pan.'"
+        ),
+        "narrative_outro": (
+            "Você se virou sozinho na plaza pela primeira vez. E alguém com chapéu "
+            "baixo passou olhando demais.\n\n"
+            "'Vamos pra posada. Fica perto de mim.' — Don Miguel"
+        ),
+        "key_words": ["pan", "agua", "tengo hambre", "tengo sed"],
+        "scenario_slug": "es-comida", "phrase_count": 8,
+    },
+    {
+        "number": 3, "phase_type": "story",
+        "title": "El Camino de Tierra",
+        "narrative_intro": (
+            "Don Miguel te leva pra fora dos muros do pueblo pela primeira vez. "
+            "Campo aberto, caminho de terra, árboles ao longe.\n\n"
+            "'Hay cosas que el pueblo no te enseña.'"
+        ),
+        "narrative_outro": (
+            "O velho Ernesto te entregou uma pedra do río sem explicar por quê. "
+            "'Tienes algo en los ojos. Como los que escuchan la tierra.'\n\n"
+            "Você ainda estava pensando nisso quando chegaram ao pueblo."
+        ),
+        "key_words": ["árbol", "piedra", "río", "hay", "no hay"],
+        "scenario_slug": "es-lugares", "phrase_count": 8,
+    },
+    {
+        "number": 4, "phase_type": "story",
+        "title": "El Mercado",
+        "narrative_intro": (
+            "Dia de mercado — a plaza inteira vira um labirinto de bancas. "
+            "Don Miguel te ensina a contar e a barganhar.\n\n"
+            "'Aquí te enganam se você não sabe os números.'"
+        ),
+        "narrative_outro": (
+            "Carmen avisou Don Miguel em voz baixa. Alguém novo no pueblo "
+            "fazendo perguntas. Sobre o forasteiro.\n\n"
+            "Miguel ficou mais quieto na volta."
+        ),
+        "key_words": ["naranja", "uno", "dos", "tres", "mucho", "poco"],
+        "scenario_slug": "es-mercado", "phrase_count": 8,
+    },
+    {
+        "number": 5, "phase_type": "story",
+        "title": "La Primera Chispa",
+        "narrative_intro": (
+            "Algo está errado no pueblo. Don Miguel muda a rota, fala menos, "
+            "fica mais perto. À noite, um barulho no corredor da posada.\n\n"
+            "'Fuego. Correr. Miedo.' — as palavras que você vai precisar."
+        ),
+        "narrative_outro": (
+            "A palavra 'fuego' saiu antes de você pensar. E o corredor explodiu em luz.\n\n"
+            "El Vigilante fugiu. Don Miguel olhou pras suas mãos por um longo segundo.\n\n"
+            "'Entra. Cierra la puerta. Tenemos que hablar.'"
+        ),
+        "key_words": ["miedo", "fuego", "correr", "corre", "para"],
+        "scenario_slug": "es-desafio", "phrase_count": 8,
     },
 ]
 

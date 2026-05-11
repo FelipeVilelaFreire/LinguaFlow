@@ -1,3 +1,6 @@
+import random
+from datetime import timedelta
+
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework import mixins, status, viewsets
@@ -31,6 +34,69 @@ from .serializers import (
     UserInventoryItemSerializer,
     WordMasterySerializer,
 )
+
+
+# ─── SRS study session ────────────────────────────────────────────────────────
+
+_TIER_INTERVALS = {
+    WordMastery.TIER_BRONZE:    timedelta(days=1),
+    WordMastery.TIER_PRATA:     timedelta(days=3),
+    WordMastery.TIER_OURO:      timedelta(days=7),
+    WordMastery.TIER_DIAMANTE:  timedelta(days=14),
+    WordMastery.TIER_ESMERALDA: timedelta(days=30),
+}
+
+_WRITE_TIERS = {WordMastery.TIER_DIAMANTE, WordMastery.TIER_ESMERALDA}
+
+
+def _build_srs_exercise(word: WordMastery, pool: list) -> dict:
+    if word.tier in _WRITE_TIERS:
+        t    = word.target or ""
+        hint = (t[0] + "·" * (len(t) - 1)) if len(t) > 1 else t
+        return {
+            "kind":    "write_word",
+            "word_id": word.word_id,
+            "tier":    word.tier,
+            "target":  word.target,
+            "native":  word.native,
+            "prompt":  f"Como se diz '{word.native}'?",
+            "answer":  word.target,
+            "hint":    hint,
+        }
+
+    # Ouro → target→native recognition; Bronze/Prata → native→target production
+    if word.tier == WordMastery.TIER_OURO:
+        question     = f"O que significa '{word.target}'?"
+        correct_text = word.native
+        texts        = [d.native for d in pool if d.native and d.native != word.native]
+    else:
+        question     = f"Como se diz '{word.native}'?"
+        correct_text = word.target
+        texts        = [d.target for d in pool if d.target and d.target != word.target]
+
+    random.shuffle(texts)
+    distractors = (texts[:3] + ["—", "—", "—"])[:3]
+
+    correct_pos = random.randint(0, 3)
+    ids = ["a", "b", "c", "d"]
+    options, di = [], 0
+    for i, oid in enumerate(ids):
+        if i == correct_pos:
+            options.append({"id": oid, "text": correct_text})
+        else:
+            options.append({"id": oid, "text": distractors[di]})
+            di += 1
+
+    return {
+        "kind":     "multiple_choice",
+        "word_id":  word.word_id,
+        "tier":     word.tier,
+        "target":   word.target,
+        "native":   word.native,
+        "question": question,
+        "options":  options,
+        "correct":  ids[correct_pos],
+    }
 
 
 # ─── Flag helpers ─────────────────────────────────────────────────────────────
@@ -308,6 +374,43 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if lang:
             qs = qs.filter(lang_code=lang.lower())
         return qs
+
+    @action(detail=False, methods=["get"], url_path="study-session")
+    def study_session(self, request):
+        """SRS session: returns up to 20 words due for review, as exercises."""
+        goal = Goal.objects.filter(
+            user=request.user, is_active=True
+        ).select_related("target_language").first()
+        if not goal:
+            return Response({"total": 0, "due_count": 0, "exercises": []})
+
+        lang_code = goal.target_language.code.lower()
+        now       = timezone.now()
+
+        all_words = list(WordMastery.objects.filter(user=request.user, lang_code=lang_code))
+        total     = len(all_words)
+
+        due = [
+            w for w in all_words
+            if w.last_seen_at is None
+            or (now - w.last_seen_at) >= _TIER_INTERVALS.get(w.tier, timedelta(days=1))
+        ]
+        due_count = len(due)
+
+        if not due:
+            return Response({"total": total, "due_count": 0, "exercises": []})
+
+        session_words = due[:20]
+        random.shuffle(session_words)
+
+        session_ids  = {w.word_id for w in session_words}
+        distractor_pool = [w for w in all_words if w.word_id not in session_ids]
+
+        return Response({
+            "total":     total,
+            "due_count": due_count,
+            "exercises": [_build_srs_exercise(w, distractor_pool) for w in session_words],
+        })
 
     @action(detail=False, methods=["post"])
     def record(self, request):

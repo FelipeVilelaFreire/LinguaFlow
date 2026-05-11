@@ -115,3 +115,32 @@ export interface HistoryMonth {
   month: number;
   goals: GoalHistory[];
 }
+
+// ─── SRS Study Session ────────────────────────────────────────────────────────
+
+export interface StudySessionOption {
+  id: string;
+  text: string;
+}
+
+export interface StudySessionExercise {
+  kind: "multiple_choice" | "write_word";
+  word_id: string;
+  tier: string;
+  target: string;
+  native: string;
+  // multiple_choice fields
+  question?: string;
+  options?: StudySessionOption[];
+  correct?: string;
+  // write_word fields
+  prompt?: string;
+  answer?: string;
+  hint?: string;
+}
+
+export interface StudySessionData {
+  total: number;
+  due_count: number;
+  exercises: StudySessionExercise[];
+}

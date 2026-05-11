@@ -20,6 +20,7 @@ export interface ApiAdventurePhase {
   scenario_slug: string;
   phrase_count: number;
   phase_type: "story" | "review" | "boss";
+  npc_name?: string;
   is_boss: boolean;
   is_completed: boolean;
   score: number | null;
