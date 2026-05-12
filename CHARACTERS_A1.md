@@ -52,37 +52,41 @@ T5 — a verdade completa. Confronto com María. Escolha sem resposta fácil.
 
 | Campo | Valor |
 |-------|-------|
-| **Idade** | 29 anos |
+| **Idade** | 20 anos |
 | **Importância** | ★★★★☆ |
 | **Frequência** | T1 → T5 |
 | **Especialidade** | Conhecimento local — conhece cada rua, pessoa e favor que se deve no pueblo |
-| **Amizade com o protagonista** | ★★★★★ Íntimo |
+| **Amizade com o protagonista** | ★★★★★ Melhor amigo |
 
-**Personalidade:** direto, leal, com um senso de leitura de pessoas que raramente falha. Descendente de um forasteiro que ficou no pueblo — por isso fala a língua de origem do protagonista de forma quebrada. É a única ponte linguística real que o protagonista tem no início.
+**Personalidade:** irreverente, leal sem fazer cerimônia disso, fala antes de pensar. Cresceu no pueblo mas nunca se sentiu completamente de lá — filho de Don Miguel el Campesino, que aprendeu português do avô (o forasteiro original que ficou no pueblo). Por isso carrega a língua de origem do protagonista de forma quebrada e orgulhosa.
 
-**Relação com o dom:** não tem o dom e não quer ter. Respeita o poder sem entender completamente.
+Foi seu pai quem encontrou o protagonista primeiro na rua, na manhã da F1 · S1. Don Miguel chamou Miguel — e ali a amizade começou. Miguel não pergunta de onde o protagonista veio. Só pergunta se ele está com fome.
 
-**Por que é indispensável:** foi o primeiro a tratar o protagonista como gente, sem perguntar de onde veio. Essa lealdade incondicional é o que ancora o protagonista nos momentos de dúvida.
+A amizade não é construída aos poucos — ela acontece rápido, como acontece quando duas pessoas se reconhecem sem ter palavras pra isso. No final da F1 já é o melhor amigo. Na T5 ainda é.
+
+**Relação com o dom:** não tem o dom e não quer ter. Não entende completamente — e não finge que entende. Quando vê La Palabra Viva funcionar diz "tá bom" e segue em frente. Isso é raro e vale ouro.
+
+**Por que é indispensável:** é a única pessoa no grupo que trata o protagonista exatamente igual independente do dom, do passado, da carta. Essa normalidade é o que ancora o protagonista quando tudo vira abstrato demais.
 
 **Instinto sobre María:** desconfia dela desde cedo — nunca consegue articular o porquê, nunca vira acusação. Mas quando a verdade vem na T5, ele é o único que não fica surpreso.
 
 **Arco T1→T5:**
 ```
-T1 — primeiro aliado. Guia o protagonista pelo pueblo.
+T1 — primeiro aliado. Conecta com o protagonista na F1, entra no grupo na F2.
 T2 — parceiro sólido quando Catalina e Rodrigo entram.
 T3 — viaja com o grupo para além do pueblo. Fora do elemento, mas não recua.
 T4 — o desconforto com María cresce. Começa a fazer perguntas.
 T5 — confronta María antes do protagonista. Paga um preço por isso ou salva alguém.
 ```
 
-**Momento-chave:** T5 — é ele que confronta María primeiro, sem ter o dom, sem saber se vai sobreviver. Lealdade acima de tudo.
+**Momento-chave:** T5 — é ele que confronta María primeiro, sem ter o dom, sem saber se vai sobreviver. Melhor amigo acima de tudo.
 
 **Relações com o grupo:**
 | Com | Nível | Dinâmica |
 |-----|-------|---------|
 | Sofía | ★★★★☆ | Cresceram juntos. Brigam como irmãos. |
 | María | ★★★☆☆ | Cordial. Instinto de desconfiança nunca verbalizado. |
-| Catalina | ★★★★☆ | Conhecia o pai dela. Protetor. |
+| Catalina | ★★★★☆ | Parceiros por conta do protagonista. Respeito mútuo. |
 | Rodrigo | ★★★★☆ | Dois locais práticos. Parceria sólida. |
 | James | ★★★☆☆ | Mundos diferentes. Curiosidade mútua. |
 
@@ -291,6 +295,33 @@ T5 — junto com Valentina, é quem consegue explicar a verdade completa ao grup
 
 ---
 
+### Don Miguel el Campesino *(pai de Miguel)*
+
+| Campo | Valor |
+|-------|-------|
+| **Idade** | 48 anos |
+| **Importância** | ★★★☆☆ |
+| **Frequência** | T1 (ativo nas primeiras fases) · T2–T5 (cameos do pueblo) |
+| **Especialidade** | Âncora do pueblo — figura mais respeitada de San Cristóbal, conhece cada família e cada favor que se deve |
+
+**Personalidade:** caloroso, direto, sem rodeios. Resolve situações antes de analisar. Viu forasteiros chegarem e irem por décadas — trata a chegada do protagonista com a mesma naturalidade calma com que trata tudo: problema surgiu, problema resolvido, chama o filho.
+
+**A conexão com o protagonista:** foi o primeiro habitante do pueblo a se deparar com o protagonista, na manhã da F1 · S1. Tentou falar espanhol — não funcionou. Chamou Miguel. Considerou o assunto encerrado.
+
+**Por que isso importa:** o avô de Miguel era um forasteiro que chegou ao pueblo décadas atrás, ficou, e aprendeu a língua. Don Miguel cresceu ouvindo essa história. Quando vê outro forasteiro perdido, não vê problema — vê uma história que já conhece o final.
+
+**Língua:** fala só espanhol. Não tenta falar português — para isso existe o filho.
+
+**Arco T1:**
+```
+F1 S1 — encontra o protagonista, chama Miguel. Missão cumprida.
+F2+   — figura de fundo no pueblo. Acena pra Miguel. Já trata o protagonista como alguém do lugar.
+```
+
+**Momento-chave:** F1 · S1 — o grito "¡MIGUEL! ¡MIJO, VEN AQUÍ!" que começou tudo.
+
+---
+
 ### Valentina — V
 
 | Campo | Valor |
@@ -377,7 +408,8 @@ T5        → Confronto final com María
 | Sofía | 18 |
 | Rodrigo | 22 |
 | James | 23 |
-| Miguel | 29 |
+| Miguel | 20 |
 | María | 24 |
+| Don Miguel el Campesino | 48 |
 | Valentina | 67 |
 | Irmão mais velho | teria 27 (morto) |

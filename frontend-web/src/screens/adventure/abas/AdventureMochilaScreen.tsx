@@ -116,46 +116,6 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
         </div>
       )}
 
-      {locked.length > 0 && (
-        <>
-          <p className="mb-3 mt-7 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: c.textFaint }}>
-            {s.adventure.toDiscover}
-          </p>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {locked.map(item => {
-              const r = RARITY_CONFIG[item.rarity];
-              return (
-                <div
-                  key={item.id}
-                  className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center opacity-30"
-                  style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
-                >
-                  <div
-                    className="flex h-16 w-16 items-center justify-center rounded-full text-3xl grayscale"
-                    style={{ background: c.surfaceMid, border: `2px solid ${c.borderFaint}` }}
-                  >
-                    {item.emoji}
-                  </div>
-                  <div className="min-w-0 w-full">
-                    <p className="truncate text-sm font-bold leading-tight" style={{ color: c.parchment }}>???</p>
-                    {item.source_character_name && (
-                      <p className="mt-0.5 truncate text-xs" style={{ color: c.textFaint }}>
-                        {item.source_character_name}
-                      </p>
-                    )}
-                  </div>
-                  <span
-                    className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
-                    style={{ background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }}
-                  >
-                    {s.adventure.itemRarity[item.rarity]}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </>
-      )}
 
       {expandedEntry && (
         <ItemDetailOverlay
@@ -211,11 +171,6 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
             <p className="text-lg font-bold leading-tight md:text-xl" style={{ color: c.parchment }}>
               {entry.item.name}
             </p>
-            {entry.item.source_character_name && (
-              <p className="mt-1 text-xs" style={{ color: c.textFaint }}>
-                {entry.item.source_character_name}
-              </p>
-            )}
             <div className="mt-2 flex items-center gap-2">
               <span
                 className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
@@ -310,11 +265,6 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLa
         <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment }}>
           {item.name}
         </p>
-        {item.source_character_name && (
-          <p className="mt-0.5 truncate text-xs" style={{ color: c.textFaint }}>
-            {item.source_character_name}
-          </p>
-        )}
       </div>
       <span
         className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"

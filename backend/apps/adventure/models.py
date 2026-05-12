@@ -184,6 +184,7 @@ class AdventureItem(models.Model):
     lore         = models.TextField()
     rarity       = models.CharField(max_length=10, choices=RARITY_CHOICES, default=RARITY_COMUM)
     action       = models.CharField(max_length=10, choices=ACTION_CHOICES, default=ACTION_EXAMINAR)
+    word_id      = models.CharField(max_length=60, blank=True, default="")
     source_phase = models.ForeignKey(
         AdventurePhase, related_name="reward_items",
         on_delete=models.SET_NULL, null=True, blank=True,

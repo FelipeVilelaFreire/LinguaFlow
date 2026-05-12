@@ -14,6 +14,7 @@ interface AdventurePhaseRunnerProps {
   keyWords?:          string[];
   langCode:           string;
   sourceLangCode:     string;
+  firstName?:         string;
   startSectionIdx?:   number;
   onSectionComplete?: (newCount: number) => void;
   onBack:             () => void;
@@ -34,6 +35,7 @@ export default function AdventurePhaseRunner({
   keyWords = [],
   langCode,
   sourceLangCode,
+  firstName = "",
   startSectionIdx = 0,
   onSectionComplete,
   onBack,
@@ -332,6 +334,7 @@ export default function AdventurePhaseRunner({
       phaseNumber={phaseNumber}
       langCode={langCode}
       sourceLangCode={sourceLangCode}
+      firstName={firstName}
       onComplete={handleSectionComplete}
       onBack={onBack}
     />

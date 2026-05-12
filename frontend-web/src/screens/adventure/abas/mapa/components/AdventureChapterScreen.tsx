@@ -12,6 +12,7 @@ export default function AdventureChapterScreen({ onBack }: AdventureChapterScree
   const phaseNumber     = (window.history.state?.phaseNumber     as number | undefined) ?? 1;
   const langCode        = (window.history.state?.langCode        as string | undefined) ?? "IT";
   const sourceLangCode  = (window.history.state?.sourceLangCode  as string | undefined) ?? "PT";
+  const firstName       = (window.history.state?.firstName       as string | undefined) ?? "";
   const chapterId       = (window.history.state?.chapterId       as number | undefined) ?? 1;
   const startSectionIdx = (window.history.state?.startSectionIdx as number | undefined) ?? 0;
   const c               = getAdventureColors(langCode, "dark");
@@ -31,6 +32,7 @@ export default function AdventureChapterScreen({ onBack }: AdventureChapterScree
         phaseId={chapterId}
         langCode={langCode}
         sourceLangCode={sourceLangCode}
+        firstName={firstName}
         startSectionIdx={startSectionIdx}
         onSectionComplete={handleSectionComplete}
         onBack={onBack}

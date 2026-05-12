@@ -1,7 +1,7 @@
 import random
 from datetime import timedelta
 
-from django.db.models import Q
+from django.db.models import Avg, Q, Sum
 from django.utils import timezone
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -167,6 +167,92 @@ class AdventureChapterViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, 
                     "chapter_subtitle": ch.subtitle,
                 })
         return Response(result)
+
+    @action(detail=False, methods=["get"], url_path="hero-stats", permission_classes=[IsAuthenticated])
+    def hero_stats(self, request):
+        phases_qs         = AdventurePhaseCompletion.objects.filter(user=request.user)
+        phases_completed  = phases_qs.count()
+        avg_score         = phases_qs.aggregate(avg=Avg("score"))["avg"] or 0
+
+        section_total = (
+            AdventureSectionProgress.objects
+            .filter(user=request.user)
+            .aggregate(total=Sum("completed_sections"))["total"] or 0
+        )
+
+        streak_obj     = DailyStreak.objects.filter(user=request.user).first()
+        current_streak = streak_obj.current_streak if streak_obj else 0
+        longest_streak = streak_obj.longest_streak if streak_obj else 0
+
+        words_qs   = WordMastery.objects.filter(user=request.user)
+        total_words = words_qs.count()
+        words_by_tier = {
+            "bronze":    words_qs.filter(tier=WordMastery.TIER_BRONZE).count(),
+            "prata":     words_qs.filter(tier=WordMastery.TIER_PRATA).count(),
+            "ouro":      words_qs.filter(tier=WordMastery.TIER_OURO).count(),
+            "diamante":  words_qs.filter(tier=WordMastery.TIER_DIAMANTE).count(),
+            "esmeralda": words_qs.filter(tier=WordMastery.TIER_ESMERALDA).count(),
+        }
+
+        xp = (
+            phases_completed * 50
+            + section_total  * 10
+            + current_streak * 15
+            + words_by_tier["bronze"]    * 5
+            + words_by_tier["prata"]     * 15
+            + words_by_tier["ouro"]      * 30
+            + words_by_tier["diamante"]  * 50
+            + words_by_tier["esmeralda"] * 100
+        )
+
+        LEVEL_THRESHOLDS = [0, 1000, 2500, 5000, 10000, 20000, 50000]
+        level = 1
+        for i, threshold in enumerate(LEVEL_THRESHOLDS):
+            if xp >= threshold:
+                level = i + 1
+            else:
+                break
+        xp_current_level = LEVEL_THRESHOLDS[level - 1]
+        xp_next_level    = LEVEL_THRESHOLDS[level] if level < len(LEVEL_THRESHOLDS) else None
+
+        prata_plus = (
+            words_by_tier["prata"] + words_by_tier["ouro"]
+            + words_by_tier["diamante"] + words_by_tier["esmeralda"]
+        )
+        ouro_plus = (
+            words_by_tier["ouro"] + words_by_tier["diamante"] + words_by_tier["esmeralda"]
+        )
+        attributes = {
+            "vocabulario": int(prata_plus / total_words * 100) if total_words else 0,
+            "gramatica":   int(min(avg_score, 100)),
+            "fluencia":    int(ouro_plus  / total_words * 100) if total_words else 0,
+        }
+
+        achievements = []
+        if phases_completed >= 1:
+            achievements.append({"key": "first_step", "emoji": "⚔️", "label": "Primeiro Passo", "desc": "Completou a primeira fase"})
+        if phases_completed >= 10:
+            achievements.append({"key": "warrior", "emoji": "🗡️", "label": "Guerreiro", "desc": "Completou 10 fases"})
+        if current_streak >= 7:
+            achievements.append({"key": "on_fire", "emoji": "🔥", "label": "Em Chamas", "desc": "7 dias seguidos de estudo"})
+        if total_words >= 100:
+            achievements.append({"key": "wordsmith", "emoji": "📚", "label": "100 Palavras", "desc": "Aprendeu 100 palavras"})
+        if phases_completed >= 25:
+            achievements.append({"key": "t1_survivor", "emoji": "👑", "label": "Sobrevivente T1", "desc": "Concluiu a Temporada 1"})
+
+        return Response({
+            "phases_completed":  phases_completed,
+            "xp":                xp,
+            "level":             level,
+            "xp_current_level":  xp_current_level,
+            "xp_next_level":     xp_next_level,
+            "current_streak":    current_streak,
+            "longest_streak":    longest_streak,
+            "total_words":       total_words,
+            "words_by_tier":     words_by_tier,
+            "attributes":        attributes,
+            "achievements":      achievements,
+        })
 
 
 # ─── Phases ───────────────────────────────────────────────────────────────────
@@ -443,14 +529,33 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
         promoted = mastery.record_answer(correct)
 
+        # Award item tied to this word_id on first correct answer
+        earned_item_data = None
+        if correct:
+            item = AdventureItem.objects.filter(word_id=word_id).first()
+            if item:
+                inv, item_created = UserInventoryItem.objects.get_or_create(
+                    user=request.user, item=item
+                )
+                if item_created:
+                    earned_item_data = {
+                        "slug":   item.slug,
+                        "emoji":  item.emoji,
+                        "name":   item.name,
+                        "lore":   item.lore,
+                        "rarity": item.rarity,
+                        "action": item.action,
+                    }
+
         return Response({
-            "word_id":  mastery.word_id,
-            "target":   mastery.target,
-            "native":   mastery.native,
-            "tier":     mastery.tier,
-            "streak":   mastery.streak,
-            "promoted": promoted,
-            "created":  created,
+            "word_id":    mastery.word_id,
+            "target":     mastery.target,
+            "native":     mastery.native,
+            "tier":       mastery.tier,
+            "streak":     mastery.streak,
+            "promoted":   promoted,
+            "created":    created,
+            "earned_item": earned_item_data,
         })
 
 

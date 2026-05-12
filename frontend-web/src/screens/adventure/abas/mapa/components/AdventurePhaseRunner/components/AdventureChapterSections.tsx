@@ -43,8 +43,8 @@ type FloatBadge = { id: string; x: number; bottomPx: number; text: string; isCom
 function normalizeSection(section: PhaseSection): SectionStep[] {
   if (section.type !== "narrativa") return section.steps;
   const fromBeats: SectionStep[] = section.beats.map(b => {
-    if (b.kind === "npc")    return { kind: "npc_speak"    as const, npc: b.npc, line: b.line, translation: b.translation };
-    if (b.kind === "player") return { kind: "player_react" as const, text: b.text };
+    if (b.kind === "npc")    return { ...b, kind: "npc_speak"    as const };
+    if (b.kind === "player") return { ...b, kind: "player_react" as const };
     return b;
   });
   return [...fromBeats, ...(section.exercises ?? [])];
@@ -194,21 +194,33 @@ function SectionCompleteOverlay({ sectionNumber, totalSections, c }: {
   return (
     <div
       className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 pointer-events-none"
-      style={{ background: "rgba(0,0,0,0.90)", animation: "narrativeFadeIn 400ms ease-out both" }}
+      style={{ background: "rgba(0,0,0,0.92)", animation: "narrativeFadeIn 350ms ease-out both" }}
     >
-      <div
-        className="grid h-20 w-20 place-items-center rounded-full"
-        style={{
-          background: `${c.goldAccent}15`,
-          border: `1.5px solid ${c.goldAccent}55`,
-          animation: "successPop 500ms 250ms ease-out both",
-        }}
-      >
-        <Check size={32} style={{ color: c.goldAccent }} />
+      {/* glow pulse behind checkmark */}
+      <div className="relative flex items-center justify-center">
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 120, height: 120,
+            background: `radial-gradient(circle, ${c.goldAccent}25 0%, transparent 70%)`,
+            animation: "progressGlow 1.8s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="relative grid h-20 w-20 place-items-center rounded-full"
+          style={{
+            background: `${c.goldAccent}15`,
+            border: `1.5px solid ${c.goldAccent}60`,
+            boxShadow: `0 0 32px ${c.goldAccent}30`,
+            animation: "successPop 500ms 200ms cubic-bezier(0.16,1,0.3,1) both",
+          }}
+        >
+          <Check size={32} style={{ color: c.goldAccent }} />
+        </div>
       </div>
       <div
         className="flex flex-col items-center gap-2 text-center"
-        style={{ animation: "narrativeFadeIn 450ms 400ms ease-out both" }}
+        style={{ animation: "narrativeFadeIn 450ms 380ms ease-out both" }}
       >
         <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
           Seção {sectionNumber} de {totalSections}
@@ -386,6 +398,7 @@ export interface AdventureChapterSectionsProps {
   phaseNumber: number;
   langCode: string;
   sourceLangCode: string;
+  firstName?: string;
   onComplete?: (mistakes: number) => void;
   onBack: () => void;
 }
@@ -399,12 +412,15 @@ export default function AdventureChapterSections({
   phaseNumber: _phaseNumber,
   langCode,
   sourceLangCode,
+  firstName = "",
   onComplete = () => {},
   onBack,
 }: AdventureChapterSectionsProps) {
   const s           = useStrings();
   const c           = getAdventureColors(langCode, "dark");
-  const playerLabel = PLAYER_PRONOUN[sourceLangCode.toUpperCase()] ?? sourceLangCode;
+  const playerLabel = firstName
+    ? firstName.charAt(0).toUpperCase()
+    : (PLAYER_PRONOUN[sourceLangCode.toUpperCase()] ?? sourceLangCode);
 
   const allSteps = useMemo(() => normalizeSection(section), [section]);
 
@@ -428,10 +444,19 @@ export default function AdventureChapterSections({
   const [currentDay,   setCurrentDay]   = useState<string | null>(null);
   const [recapOpen,    setRecapOpen]    = useState<boolean>(false);
 
-  const [floats, setFloats] = useState<FloatBadge[]>([]);
+  const [floats,       setFloats]       = useState<FloatBadge[]>([]);
+  const [summaryData,  setSummaryData]  = useState<{
+    xp: number; correct: number; mistakes: number;
+    newChars: string[];
+    earnedItems: Array<{ emoji: string; name: string; rarity: string }>;
+  } | null>(null);
+  const [xpDisplay,    setXpDisplay]    = useState(0);
 
   const mistakesRef    = useRef(0);
+  const correctRef     = useRef(0);
   const comboRef       = useRef(0);
+  const maxComboRef    = useRef(0);
+  const earnedItemsRef = useRef<Array<{ emoji: string; name: string; rarity: string }>>([]);
   const seenWordIds    = useRef<Set<string>>(new Set());
   const metNpcs        = useRef<Set<string>>(new Set());
   const bottomRef      = useRef<HTMLDivElement>(null);
@@ -472,11 +497,16 @@ export default function AdventureChapterSections({
     setCurrentTime(null);
     setCurrentDay(null);
     setRecapOpen(false);
-    mistakesRef.current  = 0;
-    comboRef.current     = 0;
-    seenWordIds.current  = new Set();
+    mistakesRef.current   = 0;
+    correctRef.current    = 0;
+    comboRef.current      = 0;
+    maxComboRef.current   = 0;
+    earnedItemsRef.current = [];
+    seenWordIds.current   = new Set();
     metNpcs.current      = new Set();
     setFloats([]);
+    setSummaryData(null);
+    setXpDisplay(0);
     setSessionId(id => id + 1);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [section]);
@@ -580,10 +610,44 @@ export default function AdventureChapterSections({
   // When done, show completion overlay briefly then advance to summary
   useEffect(() => {
     if (phase !== "done") return;
-    timerRef.current = setTimeout(() => setPhase("summary"), 900);
+    timerRef.current = setTimeout(() => {
+      const totalExercises = allSteps.filter(s =>
+        s.kind === "multiple_choice" || s.kind === "fill_blank" || s.kind === "translate"
+      ).length;
+      const perfect  = mistakesRef.current === 0 && totalExercises > 0;
+      const hasCombo = maxComboRef.current >= 3;
+      const xpEarned = 10
+        + correctRef.current   * 2
+        + (perfect  ? 10 : 0)
+        + (hasCombo ?  5 : 0);
+      setSummaryData({
+        xp:          xpEarned,
+        correct:     correctRef.current,
+        mistakes:    mistakesRef.current,
+        newChars:    Array.from(metNpcs.current),
+        earnedItems: [...earnedItemsRef.current],
+      });
+      setPhase("summary");
+    }, 1800);
     return clearTimer;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
+
+  // Count-up animation for XP on summary screen
+  useEffect(() => {
+    if (!summaryData) return;
+    const target = summaryData.xp;
+    let start: number | null = null;
+    let raf: number;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const pct = Math.min((ts - start) / 800, 1);
+      setXpDisplay(Math.floor(pct * target));
+      if (pct < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [summaryData]);
 
   function handleTap() {
     if (phase !== "tap") return;
@@ -614,13 +678,23 @@ export default function AdventureChapterSections({
         target:    wordTarget,
         native:    wordNative,
         lang_code: langCode.toLowerCase(),
+      }).then(res => {
+        if (res.earned_item) {
+          addFloat(`${res.earned_item.emoji} ${res.earned_item.name}`, false);
+          earnedItemsRef.current = [
+            ...earnedItemsRef.current.filter(i => i.name !== res.earned_item!.name),
+            { emoji: res.earned_item.emoji, name: res.earned_item.name, rarity: res.earned_item.rarity },
+          ];
+        }
       }).catch(() => {});
     }
 
     if (isCorrect) {
+      correctRef.current += 1;
       if (wordId) seenWordIds.current.add(wordId);
       if (isNewWord) {
         comboRef.current += 1;
+        if (comboRef.current > maxComboRef.current) maxComboRef.current = comboRef.current;
         const n = comboRef.current;
         if (n >= 3) addFloat(s.adventure.comboLabel(n), true);
         else        addFloat(s.adventure.plusOne, false);
@@ -710,49 +784,196 @@ export default function AdventureChapterSections({
         <SectionCompleteOverlay sectionNumber={sectionNumber} totalSections={totalSections} c={c} />
       )}
 
-      {/* Section word summary */}
-      {phase === "summary" && (
+      {/* Section summary */}
+      {phase === "summary" && summaryData && (
         <div
           className="absolute inset-0 z-30 flex flex-col"
           style={{ background: "rgba(0,0,0,0.97)", animation: "narrativeFadeIn 400ms ease-out both" }}
         >
-          <div className="flex flex-1 flex-col items-center gap-6 overflow-y-auto px-5 pb-4 pt-12">
+          <div className="flex flex-1 flex-col items-center gap-5 overflow-y-auto px-5 pb-4 pt-12">
+
+            {/* Check icon */}
             <div
               className="grid h-14 w-14 place-items-center rounded-full"
-              style={{
-                background: `${c.goldAccent}15`,
-                border: `1.5px solid ${c.goldAccent}55`,
-                animation: "successPop 500ms ease-out both",
-              }}
+              style={{ background: `${c.goldAccent}15`, border: `1.5px solid ${c.goldAccent}55`, animation: "successPop 500ms ease-out both" }}
             >
               <Check size={22} style={{ color: c.goldAccent }} />
             </div>
+
+            {/* Title */}
             <div className="text-center" style={{ animation: "narrativeFadeIn 450ms 200ms ease-out both" }}>
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
                 {s.adventure.sectionLabel(sectionNumber, totalSections)}
               </p>
               <p className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>Concluída</p>
             </div>
-            {sectionWords.length > 0 && (
-              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 400ms ease-out both" }}>
+
+            {/* XP earned */}
+            <div
+              className="flex flex-col items-center gap-1"
+              style={{ animation: "narrativeFadeIn 450ms 350ms ease-out both" }}
+            >
+              <span
+                className="text-5xl font-black tabular-nums leading-none"
+                style={{
+                  color:      c.goldAccent,
+                  textShadow: `0 0 28px ${c.goldAccent}70`,
+                  animation:  "successPop 0.5s cubic-bezier(0.16,1,0.3,1) 0.45s both",
+                }}
+              >
+                +{xpDisplay} XP
+              </span>
+              <div className="mt-1 flex flex-col items-center gap-0.5">
+                {summaryData.mistakes === 0 && summaryData.correct > 0 && (
+                  <span className="text-xs font-bold" style={{ color: "#4ade80", animation: "narrativeFadeIn 400ms 750ms ease-out both" }}>
+                    ✨ Sem erros! +10 bônus
+                  </span>
+                )}
+                {maxComboRef.current >= 3 && (
+                  <span className="text-xs font-bold" style={{ color: c.goldAccent, animation: "narrativeFadeIn 400ms 800ms ease-out both" }}>
+                    🔥 Combo ×{maxComboRef.current}! +5 bônus
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Score row */}
+            {summaryData.correct + summaryData.mistakes > 0 && (
+              <div className="flex w-full gap-3" style={{ animation: "narrativeFadeIn 450ms 500ms ease-out both" }}>
+                <div
+                  className="flex flex-1 flex-col items-center gap-1 rounded-xl py-3"
+                  style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                >
+                  <span className="text-xl font-bold tabular-nums" style={{ color: "#4ade80" }}>{summaryData.correct}</span>
+                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>acertos</span>
+                </div>
+                <div
+                  className="flex flex-1 flex-col items-center gap-1 rounded-xl py-3"
+                  style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                >
+                  <span
+                    className="text-xl font-bold tabular-nums"
+                    style={{ color: summaryData.mistakes > 0 ? "#f87171" : c.textFaint }}
+                  >
+                    {summaryData.mistakes}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>erros</span>
+                </div>
+              </div>
+            )}
+
+            {/* Earned items */}
+            {summaryData.earnedItems.length > 0 && (
+              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 560ms ease-out both" }}>
                 <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                  {s.adventure.sectionWordsLabel}
+                  Itens encontrados
                 </p>
                 <div className="flex flex-col gap-2">
-                  {sectionWords.map(({ target, native }) => (
+                  {summaryData.earnedItems.map((item, i) => (
+                    <div
+                      key={item.name}
+                      className="flex items-center gap-3 rounded-xl px-4 py-3"
+                      style={{
+                        background: c.surfaceMid,
+                        border: `1px solid ${c.goldAccent}30`,
+                        animation: `successPop 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s both`,
+                      }}
+                    >
+                      <span className="text-2xl leading-none">{item.emoji}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-bold" style={{ color: c.parchment }}>{item.name}</p>
+                        <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: c.goldAccent }}>{item.rarity}</p>
+                      </div>
+                      <span
+                        className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-black"
+                        style={{ background: c.goldAccent, color: "#1a0800" }}
+                      >
+                        +1
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* New characters */}
+            {summaryData.newChars.length > 0 && (
+              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 580ms ease-out both" }}>
+                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  Personagens encontrados
+                </p>
+                <div className="flex gap-4 overflow-x-auto pb-1">
+                  {summaryData.newChars.map((name, i) => {
+                    const avatar = CHARACTER_AVATARS[name];
+                    const shortName = name.split(" ")[0];
+                    return (
+                      <div
+                        key={name}
+                        className="flex flex-col items-center gap-2 shrink-0"
+                        style={{ animation: `successPop 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s both` }}
+                      >
+                        <div
+                          className="relative"
+                          style={{
+                            borderRadius: "50%",
+                            border: `2px solid ${c.goldAccent}60`,
+                            boxShadow: `0 0 16px ${c.goldAccent}30`,
+                          }}
+                        >
+                          <CharacterAvatar
+                            slug={avatar?.slug}
+                            emoji={avatar?.emoji ?? "🎭"}
+                            name={name}
+                            size={60}
+                            fallbackBg={`${c.goldAccent}18`}
+                          />
+                          <span
+                            className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-[8px] font-black"
+                            style={{ background: c.goldAccent, color: "#1a0800" }}
+                          >
+                            ✦
+                          </span>
+                        </div>
+                        <span className="text-xs font-bold" style={{ color: c.parchment }}>{shortName}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Words earned */}
+            {sectionWords.length > 0 && (
+              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 640ms ease-out both" }}>
+                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  Palavras desbloqueadas
+                </p>
+                <div className="flex flex-col gap-2">
+                  {sectionWords.map(({ target, native }, i) => (
                     <div
                       key={target}
-                      className="flex items-center justify-between gap-3 rounded-xl px-4 py-3"
-                      style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+                      className="flex items-center gap-3 rounded-xl px-4 py-3"
+                      style={{
+                        background: c.surfaceMid,
+                        border: `1px solid ${c.borderFaint}`,
+                        animation: `narrativeFadeIn 0.35s ease-out ${0.65 + i * 0.07}s both`,
+                      }}
                     >
-                      <span className="text-base font-bold italic" style={{ color: c.parchment }}>{target}</span>
-                      <span className="max-w-[60%] text-right text-sm font-medium" style={{ color: c.textOnBg }}>{native}</span>
+                      <span
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-black"
+                        style={{ background: `${c.nodeActive}22`, color: c.nodeActive, border: `1px solid ${c.nodeActive}40` }}
+                      >
+                        +1
+                      </span>
+                      <span className="flex-1 text-sm font-bold italic" style={{ color: c.parchment }}>{target}</span>
+                      <span className="text-right text-xs font-medium" style={{ color: c.textOnBg }}>{native}</span>
                     </div>
                   ))}
                 </div>
               </div>
             )}
           </div>
+
           <div className="shrink-0 px-4 pb-6 pt-2">
             <button
               type="button"
@@ -771,11 +992,10 @@ export default function AdventureChapterSections({
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold"
+          className="flex items-center justify-center rounded-full w-9 h-9"
           style={{ background: c.surface, color: c.parchment }}
         >
-          <ChevronLeft size={15} />
-          {s.adventure.exit}
+          <ChevronLeft size={16} />
         </button>
 
         {currentTime && (

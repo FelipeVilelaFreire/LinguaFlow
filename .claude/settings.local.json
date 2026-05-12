@@ -37,7 +37,14 @@
       "Bash(Select-Object Name)",
       "Bash(npx vite *)",
       "Bash(Get-ChildItem -Path src -Recurse -Name)",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(dir *)",
+      "Bash(python *)",
+      "Bash(conda run *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":8000\\\\|:8080\")",
+      "Bash(findstr LISTENING)",
+      "Bash(..\\\\venv\\\\Scripts\\\\python.exe manage.py seed_es_sections --reset)"
     ]
   }
 }

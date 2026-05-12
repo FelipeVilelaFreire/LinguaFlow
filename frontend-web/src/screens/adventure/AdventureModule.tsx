@@ -23,6 +23,7 @@ interface AdventureModuleProps {
   sourceLangCode: string;
   initialTab: AdventureTab;
   chapterPath: (chapterId: number) => string;
+  firstName?: string;
   onBack: () => void;
   onTabChange: (tab: AdventureTab) => void;
 }
@@ -32,6 +33,7 @@ export default function AdventureModule({
   sourceLangCode,
   initialTab,
   chapterPath,
+  firstName = "",
   onBack,
   onTabChange,
 }: AdventureModuleProps) {
@@ -104,7 +106,7 @@ export default function AdventureModule({
     } else {
       navigateImmersive(
         chapterPath(chapterId),
-        { phaseNumber, langCode: effectiveLangCode, sourceLangCode, chapterId, startSectionIdx },
+        { phaseNumber, langCode: effectiveLangCode, sourceLangCode, chapterId, startSectionIdx, firstName },
         {
           title:    phaseTitle,
           subtitle: `${chapterLevel} · ${s.adventure.phaseLabel(phaseNumber)} · ${langName}`,
@@ -150,6 +152,7 @@ export default function AdventureModule({
           keyWords={chapterView.keyWords}
           langCode={effectiveLangCode}
           sourceLangCode={sourceLangCode}
+          firstName={firstName}
           startSectionIdx={chapterView.startSectionIdx}
           onSectionComplete={(n) => handleSectionComplete(chapterView.phaseId, n)}
           onBack={() => setChapterView(null)}
@@ -190,7 +193,7 @@ export default function AdventureModule({
         {initialTab === "mochila"     && <AdventureMochilaScreen     langCode={effectiveLangCode} themeMode={themeMode} chapterSlug={chapters[0]?.slug} />}
         {initialTab === "palavras"    && <AdventureWordsScreen        langCode={effectiveLangCode} themeMode={themeMode} />}
         {initialTab === "personagens" && <AdventurePersonagensScreen  langCode={effectiveLangCode} themeMode={themeMode} chapterSlug={chapters[0]?.slug} />}
-        {initialTab === "heroi"       && <AdventureHeroScreen         langCode={effectiveLangCode} themeMode={themeMode} storyTitle={storyTitle} />}
+        {initialTab === "heroi"       && <AdventureHeroScreen         langCode={effectiveLangCode} themeMode={themeMode} storyTitle={storyTitle} firstName={firstName} />}
       </div>
     );
   }

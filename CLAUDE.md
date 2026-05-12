@@ -307,8 +307,32 @@ Se algum dos 8 ficar em branco, a fase ainda não está pronta pra virar seed.
 - Itens: pan_fresco, manzana_del_campo, agua_del_pozo, moneda_de_cobre
 - Transição: termina caminhando com Miguel até la posada; próxima fase abre nesse mesmo lugar. F2 = Miguel entra no grupo.
 
-**Regra especial — primeira fase de cada temporada:**
-A seção 2 (`revisao_srs`) não tem histórico anterior. Nesse caso ela vira aquecimento contextual (apresentação do cenário, vocabulário de sobrevivência do novo arco). O backend pode sinalizar com `is_first_of_season: true` na fase.
+**Regra especial — primeira fase de cada temporada (F1):**
+
+A Fase 1 de cada temporada é fundamentalmente diferente das demais — é a fase de chegada, sem histórico e sem revisão. O ritmo é mais narrativo e menos denso em exercícios.
+
+**Distribuição de exercícios na F1 (máximo ~25, concentrados nas seções finais):**
+
+| Seção | Exercícios | Caráter |
+|-------|-----------|---------|
+| S1 · cotidiano | ~2 | Quase só narrativa — o jogador observa, não é testado ainda |
+| S2 · aquecimento | ~3 | Sem SRS (sem histórico) → apresentação do cenário e vocab de sobrevivência |
+| S3 · pratica | ~5 | Prática leve — metade do volume normal |
+| S4 · gramatica_narrativa | ~5 | Encontro com NPC novo + explicação das palavras |
+| S5 · reforco | ~5 | Convivência — vocab em uso natural |
+| S6 · obstaculo | ~5 | Gate final gated — mais curto que fases normais |
+| **Total** | **~25** | Fases normais têm 33–40 — F1 é mais leve intencionalmente |
+
+**Por que menos exercícios na F1:**
+- O jogador acabou de chegar — ainda está se orientando no mundo
+- Não há vocab anterior para revisar (S2 vira aquecimento, não SRS)
+- A narrativa e a ambientação precisam de espaço para respirar
+- A pressão pedagógica aumenta progressivamente a partir da F2
+
+**S2 na F1 = aquecimento contextual, não revisão:**
+Sem histórico anterior, a S2 apresenta o cenário, os personagens e as primeiras palavras de sobrevivência de forma narrativa. O backend sinaliza com `is_first_of_season: true` na fase.
+
+**Esta regra se aplica à F1 de toda temporada** (T1·F1, T2·F1, T3·F1, etc.), não só ao ES A1.
 
 ---
 

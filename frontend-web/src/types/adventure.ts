@@ -147,6 +147,37 @@ export interface EarnedItemData {
   action: ItemAction;
 }
 
+// ─── Hero stats ───────────────────────────────────────────────────────────────
+
+export interface HeroStats {
+  phases_completed: number;
+  xp:               number;
+  level:            number;
+  xp_current_level: number;
+  xp_next_level:    number | null;
+  current_streak:   number;
+  longest_streak:   number;
+  total_words:      number;
+  words_by_tier: {
+    bronze:    number;
+    prata:     number;
+    ouro:      number;
+    diamante:  number;
+    esmeralda: number;
+  };
+  attributes: {
+    vocabulario: number;
+    gramatica:   number;
+    fluencia:    number;
+  };
+  achievements: Array<{
+    key:   string;
+    emoji: string;
+    label: string;
+    desc:  string;
+  }>;
+}
+
 // ─── Word mastery ─────────────────────────────────────────────────────────────
 
 export type WordTier = "bronze" | "prata" | "ouro" | "diamante" | "esmeralda";

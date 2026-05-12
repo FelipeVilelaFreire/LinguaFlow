@@ -83,18 +83,6 @@ export default function AdventurePersonagensScreen({ langCode, themeMode, chapte
         </div>
       )}
 
-      {upcoming.length > 0 && (
-        <>
-          <p className="mb-3 mt-7 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: c.textFaint }}>
-            {s.adventure.comingUp}
-          </p>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-            {upcoming.map(ch => (
-              <LockedCard key={ch.id} emoji={ch.emoji} c={c} />
-            ))}
-          </div>
-        </>
-      )}
 
       {characters.length === 0 && (
         <div
@@ -192,8 +180,7 @@ function CharCard({ ch, expanded, onToggle, c, speaksYourLang }: {
   );
 }
 
-function LockedCard({ emoji, c }: {
-  emoji: string;
+function LockedCard({ c }: {
   c: ReturnType<typeof getAdventureColors>;
 }) {
   return (
@@ -201,14 +188,11 @@ function LockedCard({ emoji, c }: {
       className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center opacity-30"
       style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
     >
-      <div style={{ border: `2px solid ${c.borderFaint}`, borderRadius: "50%" }}>
-        <CharacterAvatar
-          emoji={emoji}
-          name="?"
-          size={64}
-          fallbackBg={c.surfaceMid}
-          className="grayscale"
-        />
+      <div
+        className="flex h-16 w-16 items-center justify-center rounded-full text-2xl font-black"
+        style={{ border: `2px solid ${c.borderFaint}`, background: c.surfaceMid, color: c.textFaint }}
+      >
+        ?
       </div>
       <div className="min-w-0 w-full">
         <p className="truncate text-sm font-bold leading-tight" style={{ color: c.parchment }}>???</p>

@@ -1,5 +1,5 @@
 import { apiRequest } from "./api";
-import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserInventoryItem, AvailableLanguage, EarnedItemData, StreakData } from "../types/adventure";
+import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserInventoryItem, AvailableLanguage, EarnedItemData, HeroStats, StreakData } from "../types/adventure";
 import type { Phrase, StudySessionData } from "../types/content";
 import type { PhaseSection } from "../types/sections";
 
@@ -50,7 +50,16 @@ export const adventureService = {
     native?:    string;
     lang_code?: string;
   }) =>
-    apiRequest<{ word_id: string; target: string; native: string; tier: string; streak: number; promoted: boolean; created: boolean }>(
+    apiRequest<{
+      word_id:    string;
+      target:     string;
+      native:     string;
+      tier:       string;
+      streak:     number;
+      promoted:   boolean;
+      created:    boolean;
+      earned_item: { slug: string; emoji: string; name: string; lore: string; rarity: string; action: string } | null;
+    }>(
       "/adventure/vocabulary/record/",
       { method: "POST", body: JSON.stringify(payload) },
     ),
@@ -84,6 +93,9 @@ export const adventureService = {
       `/adventure/phases/${phaseId}/section-progress/`,
       { method: "POST", body: JSON.stringify({ completed_sections: completedSections }) },
     ),
+
+  getHeroStats: () =>
+    apiRequest<HeroStats>("/adventure/chapters/hero-stats/"),
 
   completePhase: (phaseId: number, score: number) =>
     apiRequest<{

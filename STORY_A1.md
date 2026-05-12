@@ -1030,7 +1030,7 @@ Itens desbloqueados ao dominar as palavras:
 **O Grupo (6 companheiros):**
 | Nome | Papel universal | Entra |
 |------|----------------|-------|
-| Miguel | A Ponte | T1 · F2 — campesino, fala português quebrado, descendente de forasteiro |
+| Miguel | A Ponte | T1 · F2 — 20 anos, campesino, fala português quebrado, descendente de forasteiro. Conecta com o protagonista na F1 e se torna o melhor amigo da série. |
 | Sofía | A Local | T1 · F6 — filha de comerciante, viu o dom funcionar |
 | María | A Vilã Escondida | T1 · F8 — curandera itinerante, a Marta-equivalente |
 | Catalina | A Interesse Amorosa | T2 · F3 — também portuguesa, também sem memória, também Portadora |

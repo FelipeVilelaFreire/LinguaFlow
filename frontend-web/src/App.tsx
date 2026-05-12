@@ -258,6 +258,7 @@ export default function App() {
           sourceLangCode={goal?.source_language?.code ?? "PT"}
           initialTab={tabMap[route]}
           chapterPath={adventureChapterPath}
+          firstName={user?.first_name ?? ""}
           onBack={() => navigate("adventure")}
           onTabChange={(tab) => {
             navigate(`adventure-${tab}` as AppRoute);

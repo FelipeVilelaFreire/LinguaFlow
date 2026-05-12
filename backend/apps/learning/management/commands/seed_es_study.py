@@ -240,6 +240,12 @@ class Command(BaseCommand):
         total_phrases = 0
 
         for mod_data in MODULES:
+            mod_dupes = StudyModule.objects.filter(
+                lang_code=mod_data["lang_code"],
+                title=mod_data["title"],
+            )
+            if mod_dupes.count() > 1:
+                mod_dupes.exclude(pk=mod_dupes.first().pk).delete()
             module, created = StudyModule.objects.update_or_create(
                 lang_code=mod_data["lang_code"],
                 title=mod_data["title"],
@@ -262,6 +268,13 @@ class Command(BaseCommand):
                 self.stdout.write(f"    Scenario: {scenario.title}")
 
                 for source_text, target_text in sc_data["phrases"]:
+                    dupes = Phrase.objects.filter(
+                        source_language=pt,
+                        target_language=es,
+                        source_text=source_text,
+                    )
+                    if dupes.count() > 1:
+                        dupes.exclude(pk=dupes.first().pk).delete()
                     Phrase.objects.update_or_create(
                         source_language=pt,
                         target_language=es,
