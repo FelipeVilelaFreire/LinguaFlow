@@ -13,11 +13,11 @@ interface AdventureMochilaScreenProps {
   chapterSlug?: string;
 }
 
-const RARITY_CONFIG: Record<ItemRarity, { label: string; color: string; glow: string; border: string }> = {
-  comum:    { label: "Comum",    color: "#94a3b8", glow: "#94a3b820", border: "#94a3b830" },
-  raro:     { label: "Raro",     color: "#60a5fa", glow: "#60a5fa20", border: "#60a5fa35" },
-  epico:    { label: "Épico",    color: "#c084fc", glow: "#c084fc25", border: "#c084fc40" },
-  lendario: { label: "Lendário", color: "#fbbf24", glow: "#fbbf2430", border: "#fbbf2450" },
+const RARITY_CONFIG: Record<ItemRarity, { color: string; glow: string; border: string }> = {
+  comum:    { color: "#94a3b8", glow: "#94a3b820", border: "#94a3b830" },
+  raro:     { color: "#60a5fa", glow: "#60a5fa20", border: "#60a5fa35" },
+  epico:    { color: "#c084fc", glow: "#c084fc25", border: "#c084fc40" },
+  lendario: { color: "#fbbf24", glow: "#fbbf2430", border: "#fbbf2450" },
 };
 
 export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlug }: AdventureMochilaScreenProps) {
@@ -68,7 +68,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
     return (
       <div className="flex h-full items-center justify-center">
         <p className="animate-pulse text-sm font-semibold" style={{ color: c.textOnBg }}>
-          Carregando inventário...
+          {s.adventure.inventoryLoading}
         </p>
       </div>
     );
@@ -110,6 +110,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
               onToggle={() => setExpanded(prev => prev === entry.item.id ? null : entry.item.id)}
               c={c}
               itemUsedLabel={s.adventure.itemUsed}
+              rarityLabel={s.adventure.itemRarity[entry.item.rarity]}
             />
           ))}
         </div>
@@ -147,7 +148,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
                     className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
                     style={{ background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }}
                   >
-                    {r.label}
+                    {s.adventure.itemRarity[item.rarity]}
                   </span>
                 </div>
               );
@@ -164,6 +165,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
           onUse={() => void handleUseItem(expandedEntry.item.id)}
           actionLabel={actionLabel(expandedEntry.item.action)}
           itemUsedLabel={s.adventure.itemUsed}
+          rarityLabel={s.adventure.itemRarity[expandedEntry.item.rarity]}
         />
       )}
 
@@ -171,13 +173,14 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
   );
 }
 
-function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabel }: {
+function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabel, rarityLabel }: {
   entry: ApiUserInventoryItem;
   c: ReturnType<typeof getAdventureColors>;
   onClose: () => void;
   onUse: () => void;
   actionLabel: string;
   itemUsedLabel: string;
+  rarityLabel: string;
 }) {
   const r          = RARITY_CONFIG[entry.item.rarity];
   const paragraphs = (entry.item.lore || "").split("\n\n").filter(Boolean);
@@ -218,7 +221,7 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
                 className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
                 style={{ background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }}
               >
-                {r.label}
+                {rarityLabel}
               </span>
               {entry.is_used && (
                 <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: c.textFaint }}>
@@ -272,13 +275,14 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
   );
 }
 
-function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel }: {
+function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLabel }: {
   item: ApiAdventureItem;
   isUsed: boolean;
   expanded: boolean;
   onToggle: () => void;
   c: ReturnType<typeof getAdventureColors>;
   itemUsedLabel: string;
+  rarityLabel: string;
 }) {
   const r = RARITY_CONFIG[item.rarity];
   return (
@@ -320,7 +324,7 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel }: {
             : { background: `${r.color}15`, color: r.color, border: `1px solid ${r.border}` }
         }
       >
-        {isUsed ? itemUsedLabel : r.label}
+        {isUsed ? itemUsedLabel : rarityLabel}
       </span>
     </button>
   );

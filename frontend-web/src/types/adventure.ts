@@ -24,6 +24,7 @@ export interface ApiAdventurePhase {
   is_boss: boolean;
   is_completed: boolean;
   score: number | null;
+  completed_sections: number;
 }
 
 export interface ApiAdventureChapter {

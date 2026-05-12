@@ -6,7 +6,11 @@ import { useStrings } from "../contexts/StringsContext";
 import { useAsyncData } from "../hooks/useAsyncData";
 import { contentService } from "../services/contentService";
 
-export default function ScenariosScreen() {
+interface ScenariosScreenProps {
+  hideHeader?: boolean;
+}
+
+export default function ScenariosScreen({ hideHeader }: ScenariosScreenProps = {}) {
   const s = useStrings();
   const [selectedScenario, setSelectedScenario] = useState<string | null>(null);
   const scenarios = useAsyncData(contentService.listScenarios);
@@ -19,11 +23,13 @@ export default function ScenariosScreen() {
     <div className="pb-4">
 
       {/* Header */}
-      <div className="mb-5">
-        <p className="text-xs font-semibold uppercase tracking-wide area-text-primary">{s.scenarios.eyebrow}</p>
-        <h1 className="mt-1 text-2xl font-bold text-slate-950">{s.scenarios.title}</h1>
-        <p className="mt-1 text-sm font-medium text-slate-500">{s.scenarios.subtitle}</p>
-      </div>
+      {!hideHeader && (
+        <div className="mb-5">
+          <p className="text-xs font-semibold uppercase tracking-wide area-text-primary">{s.scenarios.eyebrow}</p>
+          <h1 className="mt-1 text-2xl font-bold text-slate-950">{s.scenarios.title}</h1>
+          <p className="mt-1 text-sm font-medium text-slate-500">{s.scenarios.subtitle}</p>
+        </div>
+      )}
 
       {/* Scenario grid */}
       <div className="grid grid-cols-2 gap-2">

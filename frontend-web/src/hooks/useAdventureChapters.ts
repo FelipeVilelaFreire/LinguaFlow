@@ -39,7 +39,7 @@ function hydrate(apiChapters: ApiAdventureChapter[], langCode: string): Adventur
     phases: ch.phases.map(p => {
       const completedSections = p.is_completed
         ? SECTION_COUNT
-        : (sectionMap[String(p.id)] ?? 0);
+        : Math.max(sectionMap[String(p.id)] ?? 0, p.completed_sections ?? 0);
       return {
         ...p,
         section_count:      SECTION_COUNT,
@@ -98,6 +98,9 @@ export function useAdventureChapters(langCode: string): UseAdventureChaptersResu
     const map = loadSectionMap(langCode);
     map[String(phaseId)] = newCount;
     writeSectionMap(langCode, map);
+
+    // Sync to backend non-blocking (best-effort; local state is authoritative)
+    adventureService.updateSectionProgress(phaseId, newCount).catch(() => {});
 
     const isPhaseComplete = newCount >= SECTION_COUNT;
 

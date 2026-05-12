@@ -589,6 +589,21 @@ class AdventureDevViewSet(viewsets.GenericViewSet):
         })
 
 
+# ─── Item catalog ─────────────────────────────────────────────────────────────
+
+class AdventureItemViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Public catalog of all items for a chapter (?chapter=slug). No auth required for listing."""
+    serializer_class   = AdventureItemSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        qs = AdventureItem.objects.select_related("chapter")
+        chapter_slug = self.request.query_params.get("chapter")
+        if chapter_slug:
+            qs = qs.filter(chapter__slug=chapter_slug)
+        return qs.order_by("order")
+
+
 # ─── Inventory ────────────────────────────────────────────────────────────────
 
 class UserInventoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

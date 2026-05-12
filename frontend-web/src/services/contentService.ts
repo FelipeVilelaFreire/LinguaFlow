@@ -1,5 +1,5 @@
 import { apiRequest } from "./api";
-import type { Favorite, Goal, HistoryMonth, Phrase, Scenario, StudyDay } from "../types/content";
+import type { Favorite, Goal, HistoryMonth, Phrase, Scenario, StudyDay, StudyModule } from "../types/content";
 
 export const contentService = {
   getCurrentGoal: () => apiRequest<Goal>("/goals/current/"),
@@ -9,6 +9,7 @@ export const contentService = {
   getToday: () => apiRequest<StudyDay>("/study-days/today/"),
   getHistory: (year: number, month: number) => apiRequest<HistoryMonth>(`/goals/history/?year=${year}&month=${month}`),
   listScenarios: () => apiRequest<Scenario[]>("/scenarios/"),
+  listStudyModules: () => apiRequest<StudyModule[]>("/study/modules/"),
   listPhrases: (scenario?: string) => apiRequest<Phrase[]>(scenario ? `/phrases/?scenario=${scenario}` : "/phrases/"),
   listFavorites: () => apiRequest<Favorite[]>("/favorites/"),
   favoritePhrase: (phraseId: number) => apiRequest<Favorite>("/favorites/", { method: "POST", body: JSON.stringify({ phrase_id: phraseId }) }),

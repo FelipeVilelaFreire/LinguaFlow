@@ -1,4 +1,4 @@
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -7,8 +7,8 @@ from rest_framework.response import Response
 from apps.goals.models import Goal
 from apps.progress.models import StudyDayCompletion
 
-from .models import Phrase, Scenario, StudyDay
-from .serializers import PhraseSerializer, ScenarioSerializer, StudyDaySerializer
+from .models import Phrase, Scenario, StudyDay, StudyModule
+from .serializers import PhraseSerializer, ScenarioSerializer, StudyDaySerializer, StudyModuleSerializer
 
 
 class PhraseViewSet(viewsets.ModelViewSet):
@@ -30,6 +30,25 @@ class ScenarioViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return Scenario.objects.annotate(phrase_count=Count("phrases")).order_by("title")
+
+
+class StudyModuleViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = StudyModuleSerializer
+
+    def get_queryset(self):
+        lang_code = self.request.query_params.get("lang")
+        if not lang_code and self.request.user.is_authenticated:
+            goal = Goal.objects.filter(user=self.request.user, is_active=True).first()
+            if goal and goal.target_language:
+                lang_code = goal.target_language.code
+        if not lang_code:
+            return StudyModule.objects.none()
+        lesson_qs = Scenario.objects.annotate(phrase_count=Count("phrases")).order_by("order")
+        return (
+            StudyModule.objects.filter(lang_code=lang_code)
+            .prefetch_related(Prefetch("scenarios", queryset=lesson_qs))
+            .order_by("order")
+        )
 
 
 class StudyDayViewSet(viewsets.ReadOnlyModelViewSet):

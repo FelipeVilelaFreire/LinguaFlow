@@ -1,6 +1,19 @@
 from django.db import models
 
 
+class StudyModule(models.Model):
+    lang_code = models.CharField(max_length=2)
+    title     = models.CharField(max_length=120)
+    order     = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        db_table = "content_study_module"
+        ordering = ["order"]
+
+    def __str__(self) -> str:
+        return f"{self.lang_code} · {self.title}"
+
+
 class Language(models.Model):
     code = models.CharField(max_length=2, unique=True)
     name = models.CharField(max_length=80)
@@ -14,12 +27,16 @@ class Language(models.Model):
 
 
 class Scenario(models.Model):
-    slug = models.SlugField(unique=True)
-    title = models.CharField(max_length=120)
-    description = models.TextField(blank=True)
+    slug            = models.SlugField(unique=True)
+    title           = models.CharField(max_length=120)
+    description     = models.TextField(blank=True)
+    module          = models.ForeignKey(StudyModule, related_name="scenarios", null=True, blank=True, on_delete=models.SET_NULL)
+    adventure_phase = models.PositiveIntegerField(null=True, blank=True)
+    order           = models.PositiveIntegerField(default=0)
 
     class Meta:
         db_table = "content_scenario"
+        ordering = ["order", "id"]
 
     def __str__(self) -> str:
         return self.title

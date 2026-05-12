@@ -12,6 +12,24 @@ export interface Scenario {
   phrase_count: number;
 }
 
+export interface StudyLesson {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  adventure_phase: number | null;
+  order: number;
+  phrase_count: number;
+}
+
+export interface StudyModule {
+  id: number;
+  title: string;
+  lang_code: string;
+  order: number;
+  lessons: StudyLesson[];
+}
+
 export interface Phrase {
   id: number;
   source_language: Language;

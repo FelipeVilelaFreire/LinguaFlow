@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from apps.progress.models import UserProgress
 
-from .models import Language, Lesson, Phrase, Scenario, StudyDay
+from .models import Language, Lesson, Phrase, Scenario, StudyDay, StudyModule
 
 
 class LanguageSerializer(serializers.ModelSerializer):
@@ -18,6 +18,22 @@ class ScenarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scenario
         fields = ["id", "slug", "title", "description", "phrase_count"]
+
+
+class StudyLessonSerializer(serializers.ModelSerializer):
+    phrase_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Scenario
+        fields = ["id", "slug", "title", "description", "adventure_phase", "order", "phrase_count"]
+
+
+class StudyModuleSerializer(serializers.ModelSerializer):
+    lessons = StudyLessonSerializer(many=True, read_only=True, source="scenarios")
+
+    class Meta:
+        model = StudyModule
+        fields = ["id", "title", "lang_code", "order", "lessons"]
 
 
 class PhraseSerializer(serializers.ModelSerializer):

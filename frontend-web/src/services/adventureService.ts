@@ -79,6 +79,12 @@ export const adventureService = {
       }),
     }),
 
+  updateSectionProgress: (phaseId: number, completedSections: number) =>
+    apiRequest<{ phase_id: number; completed_sections: number }>(
+      `/adventure/phases/${phaseId}/section-progress/`,
+      { method: "POST", body: JSON.stringify({ completed_sections: completedSections }) },
+    ),
+
   completePhase: (phaseId: number, score: number) =>
     apiRequest<{
       score: number;

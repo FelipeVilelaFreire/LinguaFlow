@@ -21,11 +21,11 @@ interface AdventurePhaseRunnerProps {
 
 type CompleteStage = "trophy" | "words" | "item";
 
-const RARITY_GLOW: Record<ItemRarity, { color: string; glow: string; border: string; label: string }> = {
-  comum:    { color: "#94a3b8", glow: "#94a3b840", border: "#94a3b850", label: "Comum"    },
-  raro:     { color: "#60a5fa", glow: "#60a5fa40", border: "#60a5fa50", label: "Raro"     },
-  epico:    { color: "#c084fc", glow: "#c084fc45", border: "#c084fc55", label: "Épico"    },
-  lendario: { color: "#fbbf24", glow: "#fbbf2450", border: "#fbbf2460", label: "Lendário" },
+const RARITY_GLOW: Record<ItemRarity, { color: string; glow: string; border: string }> = {
+  comum:    { color: "#94a3b8", glow: "#94a3b840", border: "#94a3b850" },
+  raro:     { color: "#60a5fa", glow: "#60a5fa40", border: "#60a5fa50" },
+  epico:    { color: "#c084fc", glow: "#c084fc45", border: "#c084fc55" },
+  lendario: { color: "#fbbf24", glow: "#fbbf2450", border: "#fbbf2460" },
 };
 
 export default function AdventurePhaseRunner({
@@ -164,7 +164,7 @@ export default function AdventurePhaseRunner({
             className="mt-8 flex h-14 w-full max-w-xs items-center justify-center rounded-2xl text-base font-bold transition active:scale-[0.97]"
             style={{ background: c.ctaBg, color: "#fff", boxShadow: `0 4px 20px ${c.nodeActiveGlow}60` }}
           >
-            {wordsToShow.length > 0 || earnedItem ? "Ver resumo" : s.adventure.backToMap}
+            {wordsToShow.length > 0 || earnedItem ? s.adventure.phaseSeeSummary : s.adventure.backToMap}
           </button>
         </div>
       </div>
@@ -179,13 +179,13 @@ export default function AdventurePhaseRunner({
         style={{ animation: "phaseCompleteIn 0.38s cubic-bezier(0.16,1,0.3,1) both" }}
       >
         <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-          Esta fase
+          {s.adventure.phaseWordsSummaryEyebrow}
         </p>
         <h2 className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>
-          Palavras praticadas
+          {s.adventure.phaseWordsSummaryTitle}
         </h2>
         <p className="mt-1 text-sm" style={{ color: c.textOnBg }}>
-          {wordsToShow.length} {wordsToShow.length === 1 ? "palavra" : "palavras"} desta fase
+          {s.adventure.phaseWordsSummaryCount(wordsToShow.length)}
         </p>
 
         <div className="mt-6 flex flex-wrap gap-2">
@@ -212,7 +212,7 @@ export default function AdventurePhaseRunner({
             className="flex h-14 w-full items-center justify-center rounded-2xl text-base font-bold transition active:scale-[0.97]"
             style={{ background: c.ctaBg, color: "#fff", boxShadow: `0 4px 20px ${c.nodeActiveGlow}60` }}
           >
-            {earnedItem ? "Ver item ganho →" : s.adventure.backToMap}
+            {earnedItem ? s.adventure.phaseSeeItem : s.adventure.backToMap}
           </button>
         </div>
       </div>
@@ -236,7 +236,7 @@ export default function AdventurePhaseRunner({
           className="relative z-10 text-[10px] font-bold uppercase tracking-[0.25em]"
           style={{ color: r.color, animation: "itemLoreIn 0.5s ease-out 0.1s both" }}
         >
-          Item ganho
+          {s.adventure.phaseItemGainedEyebrow}
         </p>
 
         {/* Emoji burst */}
@@ -281,7 +281,7 @@ export default function AdventurePhaseRunner({
             animation: "itemLoreIn 0.5s ease-out 0.4s both",
           }}
         >
-          {r.label}
+          {s.adventure.itemRarity[earnedItem.rarity]}
         </span>
 
         <p
@@ -302,7 +302,7 @@ export default function AdventurePhaseRunner({
             animation:   "itemLoreIn 0.5s ease-out 0.7s both",
           }}
         >
-          Para a mochila 🎒
+          {s.adventure.phaseToBag} 🎒
         </button>
       </div>
     );

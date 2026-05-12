@@ -27,7 +27,17 @@
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
       "Bash(awk '{print $5, $9}')",
-      "PowerShell(Get-Content \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\\\\services\\\\api.ts\" -Raw | Select-String -Pattern \"localhost|http://|https://\" -AllMatches | ForEach-Object { \"Found in api.ts: $_\" })"
+      "PowerShell(Get-Content \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\src\\\\services\\\\api.ts\" -Raw | Select-String -Pattern \"localhost|http://|https://\" -AllMatches | ForEach-Object { \"Found in api.ts: $_\" })",
+      "Bash(python manage.py makemigrations --name \"add_phase_section_and_word_mastery_fields\")",
+      "Bash(py manage.py makemigrations --name \"add_phase_section_and_word_mastery_fields\")",
+      "Bash(git stash *)",
+      "Bash(dir \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\\\\services\" /b)",
+      "Bash(dir C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\frontend-web\\\\src\\\\mocks *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\felip_x6n9d9e\\\\OneDrive\\\\Documentos\\\\FELIPE\\\\PROGRAMAÇÃO\\\\LinguaFlow\\\\backend\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(npx vite *)",
+      "Bash(Get-ChildItem -Path src -Recurse -Name)",
+      "Bash(npm run *)"
     ]
   }
 }

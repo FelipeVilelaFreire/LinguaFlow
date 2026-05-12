@@ -20,8 +20,9 @@ from .models import (
 # ─── Phase ────────────────────────────────────────────────────────────────────
 
 class AdventurePhaseSerializer(serializers.ModelSerializer):
-    is_completed = serializers.SerializerMethodField()
-    score        = serializers.SerializerMethodField()
+    is_completed       = serializers.SerializerMethodField()
+    score              = serializers.SerializerMethodField()
+    completed_sections = serializers.SerializerMethodField()
 
     class Meta:
         model  = AdventurePhase
@@ -29,7 +30,7 @@ class AdventurePhaseSerializer(serializers.ModelSerializer):
             "id", "number", "title", "narrative_intro", "narrative_outro",
             "key_words", "scenario_slug", "phrase_count",
             "phase_type", "is_boss",
-            "is_completed", "score",
+            "is_completed", "score", "completed_sections",
         ]
 
     def get_is_completed(self, phase):
@@ -44,6 +45,16 @@ class AdventurePhaseSerializer(serializers.ModelSerializer):
             return None
         completion = AdventurePhaseCompletion.objects.filter(user=request.user, phase=phase).first()
         return completion.score if completion else None
+
+    def get_completed_sections(self, phase):
+        request = self.context.get("request")
+        if not request or not request.user.is_authenticated:
+            return 0
+        # A completed phase always has all 6 sections done
+        if AdventurePhaseCompletion.objects.filter(user=request.user, phase=phase).exists():
+            return 6
+        sp = AdventureSectionProgress.objects.filter(user=request.user, phase=phase).first()
+        return sp.completed_sections if sp else 0
 
 
 # ─── Progress ─────────────────────────────────────────────────────────────────
