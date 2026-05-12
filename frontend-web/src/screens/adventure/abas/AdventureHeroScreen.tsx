@@ -1,5 +1,7 @@
-import { Award, Flame, Swords, Zap } from "lucide-react";
+import { type LucideIcon, Award, BookOpen, Crown, Flame, Gem, Map, Scroll, Swords, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+import Emoji from "../../../components/Emoji";
 
 import { adventureService } from "../../../services/adventureService";
 import { getAdventureColors } from "../../../theme/adventureColors";
@@ -7,12 +9,12 @@ import type { AdventureThemeMode } from "../../../theme/adventureColors";
 import type { HeroStats } from "../../../types/adventure";
 import { useStrings } from "../../../contexts/StringsContext";
 
-const JOURNEY_ITEMS = [
-  { key: "t1", emoji: "📜", seasonBadge: "T1" },
-  { key: "t2", emoji: "🗺️",  seasonBadge: "T2" },
-  { key: "t3", emoji: "📖", seasonBadge: "T3" },
-  { key: "t4", emoji: "💎", seasonBadge: "T4" },
-  { key: "t5", emoji: "👑", seasonBadge: "T5" },
+const JOURNEY_ITEMS: Array<{ key: string; Icon: LucideIcon; seasonBadge: string }> = [
+  { key: "t1", Icon: Scroll,   seasonBadge: "T1" },
+  { key: "t2", Icon: Map,      seasonBadge: "T2" },
+  { key: "t3", Icon: BookOpen, seasonBadge: "T3" },
+  { key: "t4", Icon: Gem,      seasonBadge: "T4" },
+  { key: "t5", Icon: Crown,    seasonBadge: "T5" },
 ];
 
 const LEVEL_LABELS = ["", "Aprendiz", "Viajante", "Explorador", "Veterano", "Mestre", "Lendário"];
@@ -250,12 +252,10 @@ export default function AdventureHeroScreen({
                     transition: `all 0.35s ease ${i * 0.07}s`,
                   }}
                 >
-                  <span
-                    className="text-2xl leading-none"
-                    style={{ filter: unlocked ? "none" : "grayscale(1)", opacity: unlocked ? 1 : 0.22 }}
-                  >
-                    {item.emoji}
-                  </span>
+                  <item.Icon
+                    size={22}
+                    style={{ color: unlocked ? c.nodeActive : c.textFaint, opacity: unlocked ? 1 : 0.22 }}
+                  />
                   <span
                     className="rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide"
                     style={{
@@ -294,7 +294,7 @@ export default function AdventureHeroScreen({
                     animation:    `successPop 0.35s ease-out ${i * 0.08}s both`,
                   }}
                 >
-                  <span className="text-2xl leading-none">{ach.emoji}</span>
+                  <Emoji char={ach.emoji} size={28} style={{ flexShrink: 0 }} />
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-bold" style={{ color: c.parchment }}>{ach.label}</p>
                     <p className="text-[10px]" style={{ color: c.textFaint }}>{ach.desc}</p>

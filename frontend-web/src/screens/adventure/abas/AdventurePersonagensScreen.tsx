@@ -1,3 +1,4 @@
+import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import CharacterAvatar from "../../../components/CharacterAvatar";
@@ -89,7 +90,7 @@ export default function AdventurePersonagensScreen({ langCode, themeMode, chapte
           className="flex flex-col items-center gap-3 rounded-2xl px-6 py-12 text-center"
           style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
         >
-          <p className="text-4xl">🎭</p>
+          <Users size={40} style={{ color: c.textOnBg }} />
           <p className="text-sm font-semibold" style={{ color: c.textOnBg }}>
             {s.adventure.noCharactersYet}
           </p>

@@ -1,4 +1,4 @@
-import { Star, Trophy } from "lucide-react";
+import { Backpack, Flame, Star, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useStrings } from "../../../../../../contexts/StringsContext";
@@ -6,6 +6,7 @@ import type { PhaseSection } from "../../../../../../types/sections";
 import { adventureService } from "../../../../../../services/adventureService";
 import { getAdventureColors } from "../../../../../../theme/adventureColors";
 import type { EarnedItemData, ItemRarity, StreakData } from "../../../../../../types/adventure";
+import Emoji from "../../../../../../components/Emoji";
 import AdventureChapterSections from "./components/AdventureChapterSections";
 
 interface AdventurePhaseRunnerProps {
@@ -134,12 +135,10 @@ export default function AdventurePhaseRunner({
               style={{ animation: "streakReveal 0.5s ease-out 1.1s both" }}
             >
               <div className="flex items-center gap-2">
-                <span
-                  className="text-3xl leading-none"
-                  style={{ display: "inline-block", animation: "flamePulse 1.5s ease-in-out 1.3s infinite" }}
-                >
-                  🔥
-                </span>
+                <Flame
+                  size={30}
+                  style={{ color: c.goldAccent, animation: "flamePulse 1.5s ease-in-out 1.3s infinite" }}
+                />
                 <span
                   className="text-4xl font-black tabular-nums leading-none"
                   style={{ color: c.goldAccent, animation: "streakNumberPop 0.6s cubic-bezier(0.16,1,0.3,1) 1.3s both" }}
@@ -260,10 +259,10 @@ export default function AdventurePhaseRunner({
             }}
           />
           <span
-            className="relative text-7xl"
+            className="relative"
             style={{ animation: "itemRevealBurst 0.65s cubic-bezier(0.16,1,0.3,1) both" }}
           >
-            {earnedItem.emoji}
+            <Emoji char={earnedItem.emoji} size={72} />
           </span>
         </div>
 
@@ -296,7 +295,7 @@ export default function AdventurePhaseRunner({
         <button
           type="button"
           onClick={onBack}
-          className="relative z-10 mt-8 flex h-14 w-full max-w-xs items-center justify-center rounded-2xl text-base font-bold transition active:scale-[0.97]"
+          className="relative z-10 mt-8 flex h-14 w-full max-w-xs items-center justify-center gap-2 rounded-2xl text-base font-bold transition active:scale-[0.97]"
           style={{
             background:  r.color,
             color:       "#fff",
@@ -304,7 +303,8 @@ export default function AdventurePhaseRunner({
             animation:   "itemLoreIn 0.5s ease-out 0.7s both",
           }}
         >
-          {s.adventure.phaseToBag} 🎒
+          <Backpack size={18} />
+          {s.adventure.phaseToBag}
         </button>
       </div>
     );

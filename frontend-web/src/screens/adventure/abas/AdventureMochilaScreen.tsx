@@ -1,10 +1,11 @@
-import { X } from "lucide-react";
+import { Backpack, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useStrings } from "../../../contexts/StringsContext";
 import { adventureService } from "../../../services/adventureService";
 import { getAdventureColors } from "../../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../../theme/adventureColors";
+import Emoji from "../../../components/Emoji";
 import type { ApiAdventureItem, ApiUserInventoryItem, ItemRarity } from "../../../types/adventure";
 
 interface AdventureMochilaScreenProps {
@@ -94,7 +95,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
           className="flex flex-col items-center gap-3 rounded-2xl px-6 py-10 text-center"
           style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
         >
-          <p className="text-3xl">🎒</p>
+          <Backpack size={36} style={{ color: c.textOnBg }} />
           <p className="text-sm font-semibold" style={{ color: c.textOnBg }}>
             {s.adventure.bagEmpty}
           </p>
@@ -162,10 +163,10 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
       >
         <div className="relative flex shrink-0 items-start gap-4 px-6 pb-4 pt-6">
           <div
-            className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl text-5xl"
+            className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl"
             style={{ background: r.glow, border: `2px solid ${r.border}`, opacity: entry.is_used ? 0.45 : 1 }}
           >
-            {entry.item.emoji}
+            <Emoji char={entry.item.emoji} size={52} />
           </div>
           <div className="min-w-0 flex-1 pt-1">
             <p className="text-lg font-bold leading-tight md:text-xl" style={{ color: c.parchment }}>
@@ -252,14 +253,14 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLa
       }}
     >
       <div
-        className="flex h-16 w-16 items-center justify-center rounded-full text-3xl"
+        className="flex h-16 w-16 items-center justify-center rounded-full"
         style={{
           background: r.glow,
           border: `2px solid ${r.border}`,
           opacity: isUsed ? 0.5 : 1,
         }}
       >
-        {item.emoji}
+        <Emoji char={item.emoji} size={40} />
       </div>
       <div className="min-w-0 w-full">
         <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment }}>

@@ -1,7 +1,8 @@
-import { Check, ChevronLeft, History, Moon, Sun, Sunset } from "lucide-react";
+import { Check, ChevronLeft, Flame, History, Lightbulb, Moon, Sparkles, Sun, Sunset } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import CharacterAvatar from "../../../../../../../components/CharacterAvatar";
+import Emoji from "../../../../../../../components/Emoji";
 import { CHARACTER_AVATARS } from "../../../../../../../constants/characterAvatars";
 import { useStrings } from "../../../../../../../contexts/StringsContext";
 import { PLAYER_PRONOUN } from "../../../../../../../constants/playerPronoun";
@@ -384,7 +385,10 @@ function PatternEntry({ parts, example, translation, note, c }: {
         <p className="text-base font-bold italic md:text-[17px]" style={{ color: c.parchment }}>{example}</p>
         <p className="mt-0.5 text-sm" style={{ color: c.textOnBg }}>{translation}</p>
       </div>
-      <p className="text-sm leading-relaxed" style={{ color: c.textFaint }}>💡  {note}</p>
+      <div className="flex items-start gap-1.5 text-sm leading-relaxed" style={{ color: c.textFaint }}>
+        <Lightbulb size={14} className="mt-0.5 shrink-0" />
+        <span>{note}</span>
+      </div>
     </div>
   );
 }
@@ -680,7 +684,7 @@ export default function AdventureChapterSections({
         lang_code: langCode.toLowerCase(),
       }).then(res => {
         if (res.earned_item) {
-          addFloat(`${res.earned_item.emoji} ${res.earned_item.name}`, false);
+          addFloat(res.earned_item.name, false);
           earnedItemsRef.current = [
             ...earnedItemsRef.current.filter(i => i.name !== res.earned_item!.name),
             { emoji: res.earned_item.emoji, name: res.earned_item.name, rarity: res.earned_item.rarity },
@@ -825,13 +829,15 @@ export default function AdventureChapterSections({
               </span>
               <div className="mt-1 flex flex-col items-center gap-0.5">
                 {summaryData.mistakes === 0 && summaryData.correct > 0 && (
-                  <span className="text-xs font-bold" style={{ color: "#4ade80", animation: "narrativeFadeIn 400ms 750ms ease-out both" }}>
-                    ✨ Sem erros! +10 bônus
+                  <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: "#4ade80", animation: "narrativeFadeIn 400ms 750ms ease-out both" }}>
+                    <Sparkles size={12} />
+                    Sem erros! +10 bônus
                   </span>
                 )}
                 {maxComboRef.current >= 3 && (
-                  <span className="text-xs font-bold" style={{ color: c.goldAccent, animation: "narrativeFadeIn 400ms 800ms ease-out both" }}>
-                    🔥 Combo ×{maxComboRef.current}! +5 bônus
+                  <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: c.goldAccent, animation: "narrativeFadeIn 400ms 800ms ease-out both" }}>
+                    <Flame size={12} />
+                    Combo ×{maxComboRef.current}! +5 bônus
                   </span>
                 )}
               </div>
@@ -879,7 +885,7 @@ export default function AdventureChapterSections({
                         animation: `successPop 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s both`,
                       }}
                     >
-                      <span className="text-2xl leading-none">{item.emoji}</span>
+                      <Emoji char={item.emoji} size={28} style={{ flexShrink: 0 }} />
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-bold" style={{ color: c.parchment }}>{item.name}</p>
                         <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: c.goldAccent }}>{item.rarity}</p>
@@ -922,7 +928,7 @@ export default function AdventureChapterSections({
                         >
                           <CharacterAvatar
                             slug={avatar?.slug}
-                            emoji={avatar?.emoji ?? "🎭"}
+                            emoji={avatar?.emoji ?? ""}
                             name={name}
                             size={60}
                             fallbackBg={`${c.goldAccent}18`}

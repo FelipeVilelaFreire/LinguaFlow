@@ -152,9 +152,9 @@ export default function AdventureScreen({ langCode = "ES" }: AdventureScreenProp
               <div className="min-w-0">
                 <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: c.goldAccent }}>
                   {activePhase.is_boss
-                    ? `⚔️ ${s.adventure.bossLabel} · ${activeChapter.level}`
+                    ? `${s.adventure.bossLabel} · ${activeChapter.level}`
                     : activePhase.phase_type === "review"
-                    ? `📚 ${s.adventure.reviewLabel} · ${activeChapter.level}`
+                    ? `${s.adventure.reviewLabel} · ${activeChapter.level}`
                     : `${s.adventure.nextPhase} · ${activeChapter.level}`}
                 </p>
                 <p className="truncate text-sm font-semibold leading-tight" style={{ color: c.parchment }}>

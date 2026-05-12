@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { BookOpen, Search } from "lucide-react";
 
 import { useStrings } from "../../../contexts/StringsContext";
 import { adventureService } from "../../../services/adventureService";
@@ -105,7 +105,7 @@ export default function AdventureWordsScreen({ langCode, themeMode }: AdventureW
           className="flex flex-col items-center gap-3 rounded-2xl px-6 py-12 text-center"
           style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
         >
-          <p className="text-4xl">📖</p>
+          <BookOpen size={40} style={{ color: c.textOnBg }} />
           <p className="text-sm font-semibold" style={{ color: c.textOnBg }}>
             {s.adventure.noWordsYet}
           </p>
@@ -115,7 +115,7 @@ export default function AdventureWordsScreen({ langCode, themeMode }: AdventureW
           className="flex flex-col items-center gap-3 rounded-2xl px-6 py-12 text-center"
           style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
         >
-          <p className="text-4xl">🔍</p>
+          <Search size={40} style={{ color: c.textOnBg }} />
           <p className="text-sm font-semibold" style={{ color: c.textOnBg }}>
             {s.adventure.noWordsSearch(query)}
           </p>

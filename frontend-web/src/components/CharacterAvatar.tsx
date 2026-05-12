@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import Emoji from "./Emoji";
+
 interface CharacterAvatarProps {
   slug?: string;
   emoji?: string;
@@ -39,7 +41,7 @@ export default function CharacterAvatar({
       style={{ width: size, height: size, background: fallbackBg }}
     >
       {emoji ? (
-        <span style={{ fontSize: size * 0.46, lineHeight: 1 }}>{emoji}</span>
+        <Emoji char={emoji} size={Math.round(size * 0.55)} />
       ) : (
         <span className="font-bold text-white" style={{ fontSize: size * 0.38 }}>
           {name.charAt(0).toUpperCase()}
