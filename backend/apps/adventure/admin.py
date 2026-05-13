@@ -29,7 +29,7 @@ class AdventurePhaseInline(admin.TabularInline):
 class AdventureCharacterInline(admin.TabularInline):
     model  = AdventureCharacter
     extra  = 0
-    fields = ["slug", "name", "role", "emoji", "character_type", "lang_bridge", "first_phase", "order"]
+    fields = ["slug", "name", "role", "emoji", "character_type", "description", "lang_bridge", "first_phase", "order"]
 
 
 class AdventureItemInline(admin.TabularInline):
@@ -62,6 +62,7 @@ class PhaseSectionAdmin(admin.ModelAdmin):
 class AdventureCharacterAdmin(admin.ModelAdmin):
     list_display  = ["name", "role", "character_type", "chapter", "lang_bridge", "order"]
     list_filter   = ["chapter", "character_type", "lang_bridge"]
+    fields = ["chapter", "slug", "name", "role", "emoji", "character_type", "description", "quote", "lang_bridge", "first_phase", "order"]
 
 
 @admin.register(AdventureItem)

@@ -55,7 +55,18 @@
       "Bash(Select-Object -Property FullName)",
       "Bash(Sort-Object -Property FullName)",
       "Bash(Format-Table -AutoSize -Wrap)",
-      "Bash(Remove-Item *)"
+      "Bash(Remove-Item *)",
+      "Bash(type *)",
+      "Bash(cat *)",
+      "Bash(npm run build)",
+      "Bash(yarn build*)",
+      "Bash(yarn lint*)",
+      "Bash(*tsc.cmd*)",
+      "Bash(yarn typecheck*)",
+      "Skill(update-config)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\public\" -Recurse | Where-Object { -not $_.PSIsContainer } | Select-Object FullName)",
+      "PowerShell(cmd /c \"dir /s /b C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\public\\\\es\\\\characters\")",
+      "PowerShell(cmd /c \"dir /b C:\\\\Users\\\\Felipe.Freire\\\\Documents\\\\Documentos\\\\Sites\\\\LinguaFlow\\\\LinguaFlow\\\\frontend-web\\\\public\\\\es\\\\characters\")"
     ]
   }
 }

@@ -122,7 +122,7 @@ class AdventureCharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model  = AdventureCharacter
         fields = [
-            "id", "slug", "name", "role", "emoji", "quote",
+            "id", "slug", "name", "role", "emoji", "description", "quote",
             "character_type", "lang_bridge", "order", "is_met",
         ]
 

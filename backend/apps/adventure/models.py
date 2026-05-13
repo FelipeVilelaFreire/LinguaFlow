@@ -123,6 +123,7 @@ class AdventureCharacter(models.Model):
     role           = models.CharField(max_length=120)   # occupation/title in target language, e.g. "Campesino"
     emoji          = models.CharField(max_length=10)
     character_type = models.CharField(max_length=10, choices=TYPE_CHOICES, default=TYPE_NPC)
+    description    = models.TextField(blank=True, default="")
     quote          = models.TextField()                 # memorable quote
     lang_bridge    = models.BooleanField(default=False) # speaks the player's native language
     first_phase    = models.ForeignKey(

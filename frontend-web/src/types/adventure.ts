@@ -100,6 +100,7 @@ export interface ApiAdventureCharacter {
   role: string;           // in target language
   emoji: string;
   character_type: "main" | "ally" | "boss" | "npc";
+  description: string;
   quote: string;
   lang_bridge: boolean;
   order: number;

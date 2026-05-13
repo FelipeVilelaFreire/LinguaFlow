@@ -29,24 +29,24 @@ if %errorlevel% neq 0 ( echo ERRO: seed_es_full && pause && exit /b 1 )
 
 echo.
 echo [4/8] Seed ES secoes fase 1...
-python manage.py seed_es_sections
+python manage.py seed_es_sections --reset
 if %errorlevel% neq 0 ( echo ERRO: seed_es_sections && pause && exit /b 1 )
 
 echo.
 echo [5/8] Seed ES secoes fase 2...
-python manage.py seed_es_f2_sections
+python manage.py seed_es_f2_sections --reset
 if %errorlevel% neq 0 ( echo ERRO: seed_es_f2_sections && pause && exit /b 1 )
 
 echo.
 echo [6/8] Seed ES secoes fase 3...
-python manage.py seed_es_f3_sections
+python manage.py seed_es_f3_sections --reset
 if %errorlevel% neq 0 ( echo ERRO: seed_es_f3_sections && pause && exit /b 1 )
 
 echo.
 echo [7/8] Seed ES secoes fases 4 e 5...
-python manage.py seed_es_f4_sections
+python manage.py seed_es_f4_sections --reset
 if %errorlevel% neq 0 ( echo ERRO: seed_es_f4_sections && pause && exit /b 1 )
-python manage.py seed_es_f5_sections
+python manage.py seed_es_f5_sections --reset
 if %errorlevel% neq 0 ( echo ERRO: seed_es_f5_sections && pause && exit /b 1 )
 
 echo.

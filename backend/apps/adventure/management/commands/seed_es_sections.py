@@ -17,6 +17,7 @@ Língua por personagem:
 from django.core.management.base import BaseCommand, CommandError
 
 from apps.adventure.models import AdventureChapter, AdventurePhase, PhaseSection
+from apps.adventure.management.commands.seed_voice import hydrate_section_content
 
 
 # ─── Conteúdo das seções ──────────────────────────────────────────────────────
@@ -976,7 +977,7 @@ class Command(BaseCommand):
                 phase=phase,
                 section_number=sec["section_number"],
                 section_type=sec["section_type"],
-                content=sec["content"],
+                content=hydrate_section_content(sec["content"]),
             )
             self.stdout.write(
                 f"  ✓ Seção {sec['section_number']}: {sec['section_type']}"

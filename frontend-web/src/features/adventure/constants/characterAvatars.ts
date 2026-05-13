@@ -1,0 +1,27 @@
+// Maps NPC name (as used in section content npc_speak steps) to { slug, emoji }.
+// Needed in the chat where only the name string is available.
+// Keep in sync with the backend character slugs.
+
+export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> = {
+  // Full display names
+  "Don Miguel el Campesino":  { slug: "don_miguel",    emoji: "👨‍🌾" },
+  "Miguel el Campesino":      { slug: "miguel",        emoji: "🧑‍🌾" },
+  "Ernesto":                  { slug: "ernesto",       emoji: "🪓"  },
+  "El Mercader":              { slug: "mercader",      emoji: "🍊"  },
+  "El Vigilante del Mercado": { slug: "vigilante",     emoji: "💂"  },
+  "Señora Carmen":            { slug: "senora_carmen", emoji: "👩"  },
+  "Rosa la Panadera":         { slug: "rosa_panadera", emoji: "👩‍🍳" },
+  "Sofía":                    { slug: "sofia",         emoji: "⚡"  },
+  "María":                    { slug: "maria",         emoji: "🌿"  },
+  "Catalina":                 { slug: "catalina",      emoji: "✨"  },
+  "Rodrigo":                  { slug: "rodrigo",       emoji: "💰"  },
+  "James":                    { slug: "james",         emoji: "📖"  },
+  "Valentina":                { slug: "valentina",     emoji: "🕯️"  },
+  // Short aliases used in section content npc_speak steps
+  "Don Miguel":               { slug: "don_miguel",    emoji: "👨‍🌾" },
+  "Miguel":                   { slug: "miguel",        emoji: "🧑‍🌾" },
+  "Mercader":                 { slug: "mercader",      emoji: "🍊"  },
+  "El Vigilante":             { slug: "vigilante",     emoji: "💂"  },
+  "Carmen":                   { slug: "senora_carmen", emoji: "👩"  },
+  "Rosa":                     { slug: "rosa_panadera", emoji: "👩‍🍳" },
+};

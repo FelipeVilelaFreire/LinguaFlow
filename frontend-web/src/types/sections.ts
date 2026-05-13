@@ -6,13 +6,15 @@
 // Diamante→ write_word (escrever do zero)          → sobe escrevendo 5x seguidas
 // Esmeralda → maestria confirmada
 export type WordTier = "bronze" | "prata" | "ouro" | "diamante" | "esmeralda";
+export type VoiceGender = "male" | "female" | "neutral";
+export type VoiceProfile = { lang?: string; gender?: VoiceGender; pitch?: number; rate?: number };
 
 // ── Beat types — narrativa section only ──────────────────────────────────────
 
 export type NarrativaBeat =
   | { kind: "scene";     text: string }
   | { kind: "narrative"; text: string }
-  | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent" }
+  | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile }
   | { kind: "player";    text: string };
 
 // ── Step types — all step-based sections ─────────────────────────────────────
@@ -20,7 +22,7 @@ export type NarrativaBeat =
 export type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
-  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean; pace?: "slow" | "normal" | "urgent" }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile }
   | { kind: "player_react";    text: string }
   | { kind: "reveal";          phrase: string; meaning: string; note?: string }
   | { kind: "pattern";         parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }

@@ -14,28 +14,34 @@ const LANG_MAP: Record<string, string> = {
 
 const NPC_PROFILES: Record<string, VoiceProfile> = {
   "Don Miguel":           { lang: "es-ES", gender: "male",   pitch: 0.85, rate: 0.88 },
+  "Miguel":               { lang: "es-ES", gender: "male",   pitch: 0.95, rate: 1.0  },
+  "Miguel el Campesino":  { lang: "es-ES", gender: "male",   pitch: 0.95, rate: 1.0  },
+  "Rosa":                 { lang: "es-ES", gender: "female", pitch: 1.12, rate: 0.95 },
   "Rosa la Panadera":     { lang: "es-ES", gender: "female", pitch: 1.1,  rate: 0.95 },
   "Señora Carmen":        { lang: "es-ES", gender: "female", pitch: 0.95, rate: 0.88 },
   "El Vigilante":         { lang: "es-ES", gender: "male",   pitch: 0.8,  rate: 0.85 },
+  "Ernesto":              { lang: "es-ES", gender: "male",   pitch: 0.82, rate: 0.82 },
+  "El Mercader":          { lang: "es-ES", gender: "male",   pitch: 0.9,  rate: 1.0  },
   "Contadino":            { lang: "it-IT", gender: "male",   pitch: 0.9,  rate: 0.9  },
   "Il Condottiero":       { lang: "it-IT", gender: "male",   pitch: 0.75, rate: 0.82 },
 };
 
 const FEMALE_HINTS = /female|woman|paulina|helena|monica|lucia|rosa|carmen|anna|alice|florence|amélie|kyoko/i;
-const MALE_HINTS   = /male|man|jorge|carlos|pablo|marco|giovanni|hans|thomas|adam|pierre/i;
+const MALE_HINTS   = /male|man|hombre|jorge|carlos|pablo|diego|miguel|ernesto|mercader|raul|alonso|marco|giovanni|hans|thomas|adam|pierre/i;
 const PACE_MULT: Record<string, number> = { slow: 0.72, normal: 1.0, urgent: 1.35 };
 
 const SPEED_KEY = "tts_speed";
+const DEFAULT_SPEED = 1.25;
 
 class AudioService {
   private voices: SpeechSynthesisVoice[] = [];
   private ctx: AudioContext | null = null;
-  speedMultiplier: number = 1.5;
+  speedMultiplier: number = DEFAULT_SPEED;
 
   constructor() {
     if (typeof window === "undefined") return;
-    const saved = parseFloat(localStorage.getItem(SPEED_KEY) ?? "1.5");
-    this.speedMultiplier = isNaN(saved) ? 1.5 : saved;
+    const saved = parseFloat(localStorage.getItem(SPEED_KEY) ?? String(DEFAULT_SPEED));
+    this.speedMultiplier = isNaN(saved) ? DEFAULT_SPEED : saved;
     if (!("speechSynthesis" in window)) return;
     const load = () => { this.voices = speechSynthesis.getVoices(); };
     load();
@@ -63,8 +69,16 @@ class AudioService {
     const base = lang.split("-")[0];
     const pool = this.voices.filter(v => v.lang.startsWith(base));
     if (!pool.length) return null;
-    if (gender === "female") return pool.find(v => FEMALE_HINTS.test(v.name)) ?? pool[0];
-    if (gender === "male")   return pool.find(v => MALE_HINTS.test(v.name))   ?? pool[0];
+    if (gender === "female") {
+      return pool.find(v => FEMALE_HINTS.test(v.name))
+        ?? pool.find(v => !MALE_HINTS.test(v.name))
+        ?? pool[0];
+    }
+    if (gender === "male") {
+      return pool.find(v => MALE_HINTS.test(v.name))
+        ?? pool.find(v => !FEMALE_HINTS.test(v.name))
+        ?? pool[0];
+    }
     return pool[0];
   }
 
@@ -73,18 +87,19 @@ class AudioService {
     speechSynthesis.cancel();
   }
 
-  speak(text: string, langCode: string, npcName?: string, pace?: string): void {
+  speak(text: string, langCode: string, npcName?: string, pace?: string, voice?: Partial<VoiceProfile>, speechRate?: number): void {
     if (!("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
 
-    const profile  = npcName ? NPC_PROFILES[npcName] : undefined;
+    const profile  = { ...(npcName ? NPC_PROFILES[npcName] : undefined), ...voice };
     const lang     = profile?.lang ?? LANG_MAP[langCode.toLowerCase()] ?? langCode;
     const paceMult = PACE_MULT[pace ?? "normal"] ?? 1.0;
+    const lineRate = speechRate ?? paceMult;
 
     const u = new SpeechSynthesisUtterance(text);
     u.lang  = lang;
     u.pitch = profile?.pitch ?? 1.0;
-    u.rate  = (profile?.rate ?? 0.9) * this.speedMultiplier * paceMult;
+    u.rate  = (profile?.rate ?? 0.9) * this.speedMultiplier * lineRate;
     const v = this.pickVoice(lang, profile?.gender ?? "neutral");
     if (v) u.voice = v;
 

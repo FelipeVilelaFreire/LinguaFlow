@@ -113,7 +113,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  Fase 1: {phase1.title}")
 
         # ── 6. Personagens ────────────────────────────────────────────────────
-        miguel, _ = AdventureCharacter.objects.get_or_create(
+        miguel, _ = AdventureCharacter.objects.update_or_create(
             chapter=chapter,
             slug="don_miguel",
             defaults={
@@ -121,6 +121,7 @@ class Command(BaseCommand):
                 "role":           "Campesino",
                 "emoji":          "👨‍🌾",
                 "character_type": AdventureCharacter.TYPE_ALLY,
+                "description":    "Un campesino mayor de San Cristobal. Habla despacio, observa antes de actuar y guia al forastero con paciencia.",
                 "quote":          "Poco a poco, amigo. La lengua se aprende viviendo.",
                 "lang_bridge":    True,   # fala português quebrado — é a ponte do player
                 "first_phase":    phase1,

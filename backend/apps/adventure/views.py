@@ -430,10 +430,11 @@ class AdventureCharacterViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         if not goal:
             return Response({"detail": "No active goal."}, status=status.HTTP_404_NOT_FOUND)
 
+        characters = AdventureCharacter.objects.filter(chapter__language=goal.target_language)
         character = (
-            AdventureCharacter.objects
-            .filter(chapter__language=goal.target_language, name__icontains=name)
-            .order_by("order").first()
+            characters.filter(name__iexact=name).order_by("order").first()
+            or characters.filter(name__istartswith=f"{name} ").order_by("order").first()
+            or characters.filter(name__icontains=name).order_by("order").first()
         )
         if not character:
             return Response({"detail": f"Character '{name}' not found for active language."},

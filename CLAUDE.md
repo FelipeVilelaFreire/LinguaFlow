@@ -6,9 +6,9 @@ Estes dois arquivos são a fonte de verdade da série A1. Qualquer decisão sobr
 
 | Arquivo | Conteúdo |
 |---------|---------|
-| `STORY_A1.md` | Bíblia narrativa completa — lore, poderes, arco das 5 temporadas, regras universais |
-| `CHARACTERS_A1.md` | Perfis completos de todos os personagens — idades, especialidades, relações, arco individual |
-| `INVENTORY_SYSTEM.md` | Sistema de Mochila e Baús — itens, raridades, word→item, item_moments, recuperação |
+| `docs/content/es-a1/story.md` | Bíblia narrativa completa — lore, poderes, arco das 5 temporadas, regras universais |
+| `docs/content/es-a1/characters.md` | Perfis completos de todos os personagens — idades, especialidades, relações, arco individual |
+| `docs/content/es-a1/inventory-system.md` | Sistema de Mochila e Baús — itens, raridades, word→item, item_moments, recuperação |
 
 **Regras derivadas desses documentos que nunca podem ser quebradas:**
 - Todo item tem um `word_id` — itens são palavras, nunca recompensas genéricas
@@ -265,8 +265,8 @@ Total ~40 exercícios por fase. Antes era ~50 distribuído, mas concentrar em 3 
 | **Itens** | 2-4 itens cotidianos (`comum`), cada um amarrado a um beat. Raros/épicos só em marcos (fase 5, 10, 15, 20). Lendário só na fase 25 (boss) |
 | **Vocab** | **Fase 1:** ~12 palavras novas (única exceção — base do jogo). **Fases 2+:** máximo 2-3 palavras novas (80% revisão, 20% novo). 1-3 estruturas gramaticais ensinadas na Seção 3 |
 | **Arco emocional** | A fase tem um sentimento de chegada → partida. Ex: Fase 1 = "perdido → seguro" (posada como resolução) |
-| **Grupo** | Os 6 companheiros (Miguel · Sofía · María · Catalina · Rodrigo · James) entram progressivamente. Verificar em `CHARACTERS_A1.md` em que fase cada um entra antes de escrever cenas de grupo |
-| **Meta-história** | Verificar em `STORY_A1.md` se essa fase tem um evento do arco global (dom manifesta F6, María chega F8, janela de 3 meses começa F1, etc.) |
+| **Grupo** | Os 6 companheiros (Miguel · Sofía · María · Catalina · Rodrigo · James) entram progressivamente. Verificar em `docs/content/es-a1/characters.md` em que fase cada um entra antes de escrever cenas de grupo |
+| **Meta-história** | Verificar em `docs/content/es-a1/story.md` se essa fase tem um evento do arco global (dom manifesta F6, María chega F8, janela de 3 meses começa F1, etc.) |
 
 **Milestones do arco global por fase — nunca ignorar:**
 
@@ -285,7 +285,7 @@ Total ~40 exercícios por fase. Antes era ~50 distribuído, mas concentrar em 3 
 
 **Checklist obrigatório antes de escrever conteúdo de uma fase nova:**
 
-1. **Meta-história:** essa fase tem algum milestone do arco global? (ver tabela acima e `STORY_A1.md`)
+1. **Meta-história:** essa fase tem algum milestone do arco global? (ver tabela acima e `docs/content/es-a1/story.md`)
 2. **Narrativo:** que momento da história essa fase é?
 3. **Pedagógico:** que vocab + gramática novos entram? (máximo 2-3 novas se não for F1)
 4. **Emocional:** como o jogador começa e termina a fase?
