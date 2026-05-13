@@ -68,11 +68,13 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "¿Cuánto? ¿Dos monedas? Eso es mucho para tres naranjas.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "npc",
                     "npc": "El Mercader",
                     "line": "¡No, no! Es poco. Las naranjas son grandes.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -438,6 +440,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Rápido — el mercador te muestra dos naranjas. ¿Cuántas hay?",
                     "translation": "Rápido — o mercador te mostra duas laranjas. Quantas tem?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -576,6 +579,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "¡Miguel! Menos mal que te encuentro. Hay algo que tienes que saber.",
                     "translation": "Miguel! Ainda bem que te encontro. Tem algo que você precisa saber.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "npc_speak",
@@ -592,6 +596,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "(em voz baixa) Hay un hombre nuevo en el pueblo. Está haciendo preguntas. Sobre el forastero.",
                     "translation": "(em voz baixa) Tem um homem novo no pueblo. Está fazendo perguntas. Sobre o forasteiro.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -621,6 +626,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "No. Pero tiene malas preguntas. ¿Entiendes lo que digo, Miguel?",
                     "translation": "Não. Mas ele faz perguntas ruins. Entende o que estou dizendo, Miguel?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",

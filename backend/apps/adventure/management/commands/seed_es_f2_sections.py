@@ -71,6 +71,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Rosa",
                     "line": "¡Ja! ¡Tienes hambre! Come, come.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "narrative",
@@ -501,6 +502,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Vamos rápido. Yo digo la situación, tú usas la palabra. ¿Listo?",
                     "translation": "Vamos rápido. Eu digo a situação, você usa a palavra. Pronto?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -672,6 +674,7 @@ SECTIONS = [
                     "npc": "Rosa",
                     "line": "¡Miguel! ¡Forastero! Tengo pan que sobró. ¿Quieren?",
                     "translation": "Miguel! Forasteiro! Tenho pão que sobrou. Vocês querem?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "npc_speak",
@@ -810,6 +813,7 @@ SECTIONS = [
                     "npc": "Niña",
                     "line": "¡Señor! ¿Tienes agua? ¡Tengo sed!",
                     "translation": "Senhor! Você tem água? Estou com sede!",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -839,6 +843,7 @@ SECTIONS = [
                     "npc": "Señor Mayor",
                     "line": "Joven, ¿cómo estás? ¿Sabes dónde está la posada?",
                     "translation": "Jovem, como vai? Sabe onde fica a posada?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -886,6 +891,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Bien hecho, forastero. Estuviste solo y te manejaste.",
                     "translation": "Bem feito, forasteiro. Ficou sozinho e se virou.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",

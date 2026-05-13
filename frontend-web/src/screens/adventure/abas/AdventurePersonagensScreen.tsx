@@ -151,6 +151,7 @@ function CharCard({ ch, expanded, onToggle, c, speaksYourLang }: {
           slug={ch.slug}
           emoji={ch.emoji}
           name={ch.name}
+          langCode={langCode}
           size={64}
           fallbackBg={`${c.goldAccent}22`}
         />

@@ -9,6 +9,12 @@ export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> 
   "El Vigilante del Mercado": { slug: "vigilante",     emoji: "💂"  },
   "Señora Carmen":            { slug: "senora_carmen", emoji: "👩"  },
   "Rosa la Panadera":         { slug: "rosa_panadera", emoji: "👩‍🍳" },
+  "Sofía":                    { slug: "sofia",         emoji: "⚡"  },
+  "María":                    { slug: "maria",         emoji: "🌿"  },
+  "Catalina":                 { slug: "catalina",      emoji: "✨"  },
+  "Rodrigo":                  { slug: "rodrigo",       emoji: "💰"  },
+  "James":                    { slug: "james",         emoji: "📖"  },
+  "Valentina":                { slug: "valentina",     emoji: "🕯️"  },
   // Short aliases used in section content npc_speak steps
   "Don Miguel":               { slug: "don_miguel",    emoji: "👨‍🌾" },
   "Miguel":                   { slug: "miguel",        emoji: "🤠"  },

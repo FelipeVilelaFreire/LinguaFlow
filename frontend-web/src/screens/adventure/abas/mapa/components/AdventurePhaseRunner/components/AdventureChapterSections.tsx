@@ -1,4 +1,4 @@
-import { Check, ChevronLeft, Flame, History, Lightbulb, Moon, Sparkles, Sun, Sunset } from "lucide-react";
+import { Check, ChevronLeft, Flame, History, Lightbulb, Moon, Sparkles, Sun, Sunset, Volume2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import CharacterAvatar from "../../../../../../../components/CharacterAvatar";
@@ -7,6 +7,7 @@ import { CHARACTER_AVATARS } from "../../../../../../../constants/characterAvata
 import { useStrings } from "../../../../../../../contexts/StringsContext";
 import { PLAYER_PRONOUN } from "../../../../../../../constants/playerPronoun";
 import { adventureService } from "../../../../../../../services/adventureService";
+import { audioService } from "../../../../../../../services/audioService";
 import { getAdventureColors } from "../../../../../../../theme/adventureColors";
 import type { PhaseSection, SectionRecap, SectionStep } from "../../../../../../../types/sections";
 
@@ -126,6 +127,7 @@ function RecapCard({ recap, c, onClose, labels }: {
                       slug={avatar?.slug}
                       emoji={avatar?.emoji}
                       name={name}
+                      langCode={langCode}
                       size={28}
                       fallbackBg={c.ctaBg}
                     />
@@ -252,8 +254,9 @@ function NarrativeEntry({ text, c }: { text: string; c: Colors }) {
   );
 }
 
-function NpcEntry({ npc, line, translation, isNew, c }: {
-  npc: string; line: string; translation?: string; isNew?: boolean; c: Colors;
+function NpcEntry({ npc, line, translation, isNew, langCode, ttsSpeed, onCycleSpeed, c }: {
+  npc: string; line: string; translation?: string; isNew?: boolean; langCode: string;
+  ttsSpeed?: number; onCycleSpeed?: () => void; c: Colors;
 }) {
   const avatar = CHARACTER_AVATARS[npc];
   return (
@@ -262,6 +265,7 @@ function NpcEntry({ npc, line, translation, isNew, c }: {
         slug={avatar?.slug}
         emoji={avatar?.emoji}
         name={npc}
+        langCode={langCode}
         size={36}
         fallbackBg={c.ctaBg}
         className="mb-0.5"
@@ -294,6 +298,30 @@ function NpcEntry({ npc, line, translation, isNew, c }: {
               {translation}
             </p>
           )}
+          <div className="mt-2 flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => audioService.speak(line, langCode, npc)}
+              className="flex items-center justify-center rounded-full w-7 h-7 transition active:scale-90"
+              style={{ background: c.surface, color: c.textFaint }}
+            >
+              <Volume2 size={12} />
+            </button>
+            {onCycleSpeed && (
+              <button
+                type="button"
+                onClick={onCycleSpeed}
+                className="flex items-center justify-center rounded-full px-2 h-7 text-[11px] font-bold tabular-nums transition active:scale-90"
+                style={{
+                  background: (ttsSpeed ?? 1) > 1 ? `${c.goldAccent}22` : c.surface,
+                  color:      (ttsSpeed ?? 1) > 1 ? c.goldAccent          : c.textFaint,
+                  border:     `1px solid ${(ttsSpeed ?? 1) > 1 ? c.goldAccent + "40" : c.borderFaint}`,
+                }}
+              >
+                {(ttsSpeed ?? 1) === 1 ? "1×" : (ttsSpeed ?? 1) === 1.5 ? "1.5×" : "2×"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -447,6 +475,14 @@ export default function AdventureChapterSections({
   const [currentTime,  setCurrentTime]  = useState<string | null>(null);
   const [currentDay,   setCurrentDay]   = useState<string | null>(null);
   const [recapOpen,    setRecapOpen]    = useState<boolean>(false);
+  const [ttsSpeed,     setTtsSpeed]     = useState(() => audioService.speedMultiplier);
+
+  const SPEEDS = [1, 1.5, 2];
+  function cycleSpeed() {
+    const next = SPEEDS[(SPEEDS.indexOf(ttsSpeed) + 1) % SPEEDS.length];
+    audioService.setSpeed(next);
+    setTtsSpeed(next);
+  }
 
   const [floats,       setFloats]       = useState<FloatBadge[]>([]);
   const [summaryData,  setSummaryData]  = useState<{
@@ -493,6 +529,7 @@ export default function AdventureChapterSections({
   // Reset when section changes
   useEffect(() => {
     clearTimer();
+    audioService.stop();
     setEntries([]);
     setCursor(0);
     setPhase("auto");
@@ -561,6 +598,7 @@ export default function AdventureChapterSections({
       case "npc_speak":
         withDelay(300, () => {
           addEntry({ id, kind: "npc", npc: step.npc, line: step.line, translation: step.translation, isNew: step.is_new_npc });
+          audioService.speak(step.line, langCode, step.npc, step.pace);
           setPhase("tap");
         });
         if (step.npc && !metNpcs.current.has(step.npc)) {
@@ -637,6 +675,10 @@ export default function AdventureChapterSections({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
+  useEffect(() => {
+    if (phase === "done") audioService.playComplete();
+  }, [phase]);
+
   // Count-up animation for XP on summary screen
   useEffect(() => {
     if (!summaryData) return;
@@ -655,6 +697,7 @@ export default function AdventureChapterSections({
 
   function handleTap() {
     if (phase !== "tap") return;
+    audioService.stop();
     setSceneCard(null);
     setPhase("auto");
     setCursor(n => n + 1);
@@ -709,6 +752,7 @@ export default function AdventureChapterSections({
 
     if (!isCorrect && isGated) {
       mistakesRef.current++;
+      audioService.playWrong();
       setActiveChoice(prev => prev ? { ...prev, shaking: true } : null);
       timerRef.current = setTimeout(() => {
         setActiveChoice(prev => prev ? { ...prev, shaking: false } : null);
@@ -722,10 +766,13 @@ export default function AdventureChapterSections({
     setActiveChoice(null);
 
     if (!isCorrect) {
+      audioService.playWrong();
       addEntry({ id: `${id}-hint`, kind: "wrong_hint", correctText });
       timerRef.current = setTimeout(() => setCursor(n => n + 1), 1600);
       return;
     }
+
+    audioService.playCorrect();
 
     if (npc_reaction && npc) {
       timerRef.current = setTimeout(() => {
@@ -930,6 +977,7 @@ export default function AdventureChapterSections({
                             slug={avatar?.slug}
                             emoji={avatar?.emoji ?? ""}
                             name={name}
+                            langCode={langCode}
                             size={60}
                             fallbackBg={`${c.goldAccent}18`}
                           />
@@ -1051,10 +1099,10 @@ export default function AdventureChapterSections({
                 <NarrativeEntry text={entry.text} c={c} />
               )}
               {entry.kind === "npc" && (
-                <NpcEntry npc={entry.npc} line={entry.line} translation={entry.translation} isNew={entry.isNew} c={c} />
+                <NpcEntry npc={entry.npc} line={entry.line} translation={entry.translation} isNew={entry.isNew} langCode={langCode} ttsSpeed={ttsSpeed} onCycleSpeed={cycleSpeed} c={c} />
               )}
               {entry.kind === "npc_reaction" && (
-                <NpcEntry npc={entry.npc} line={entry.line} c={c} />
+                <NpcEntry npc={entry.npc} line={entry.line} langCode={langCode} c={c} />
               )}
               {entry.kind === "situation" && (
                 <SituationEntry context={entry.context} prompt={entry.prompt} c={c} />
@@ -1083,6 +1131,14 @@ export default function AdventureChapterSections({
                   style={{ background: `${c.goldAccent}15`, border: `1px solid ${c.goldAccent}40` }}
                 >
                   <p className="text-3xl font-bold italic md:text-4xl" style={{ color: c.parchment }}>{entry.phrase}</p>
+                  <button
+                    type="button"
+                    onClick={() => audioService.speak(entry.phrase, langCode)}
+                    className="flex items-center justify-center rounded-full w-8 h-8 transition active:scale-90"
+                    style={{ background: `${c.goldAccent}20`, color: c.goldAccent }}
+                  >
+                    <Volume2 size={14} />
+                  </button>
                   <p className="text-lg font-semibold md:text-xl" style={{ color: c.goldAccent }}>{entry.meaning}</p>
                   {entry.note && (
                     <p className="mt-1 text-sm" style={{ color: c.textFaint }}>💡 {entry.note}</p>
@@ -1094,10 +1150,18 @@ export default function AdventureChapterSections({
                   {entry.items.map(({ target, native }) => (
                     <div
                       key={target}
-                      className="flex items-center justify-between rounded-xl px-4 py-3"
+                      className="flex items-center gap-3 rounded-xl px-4 py-3"
                       style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
                     >
-                      <span className="text-base font-bold italic md:text-[17px]" style={{ color: c.parchment }}>{target}</span>
+                      <button
+                        type="button"
+                        onClick={() => audioService.speak(target, langCode)}
+                        className="flex items-center justify-center rounded-full w-7 h-7 shrink-0 transition active:scale-90"
+                        style={{ background: c.surface, color: c.textFaint }}
+                      >
+                        <Volume2 size={12} />
+                      </button>
+                      <span className="flex-1 text-base font-bold italic md:text-[17px]" style={{ color: c.parchment }}>{target}</span>
                       <span className="text-sm font-medium md:text-base" style={{ color: c.textOnBg }}>{native}</span>
                     </div>
                   ))}

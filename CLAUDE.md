@@ -344,7 +344,7 @@ Sem histórico anterior, a S2 apresenta o cenário, os personagens e as primeira
 type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
-  | { kind: "npc_speak";       npc: string; line: string; translation?: string }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent" }
   | { kind: "player_react";    text: string }
   | { kind: "reveal";          phrase: string; meaning: string; note?: string }
   | { kind: "pattern";         parts: PatternPart[]; example: string; translation: string; note: string }
@@ -353,6 +353,22 @@ type SectionStep =
   | { kind: "fill_blank";      prompt: string; answer: string }
   | { kind: "translate";       source: string; answer: string };
 ```
+
+**Campo `pace` — ritmo de fala dos NPCs:**
+
+Controla a velocidade de leitura do TTS para cada fala de NPC. O campo é opcional — omitir = `"normal"`.
+
+| Valor | Multiplicador | Quando usar |
+|-------|--------------|-------------|
+| `"slow"` | ×0.72 | Personagens graves/sábios, sussurros, momentos de peso emocional (Ernesto, El Vigilante, Don Miguel em momentos sérios) |
+| `"normal"` | ×1.0 | Conversas do dia a dia, instruções pedagógicas |
+| `"urgent"` | ×1.35 | Exclamações, chamados à distância, situações de perigo, prática rápida ("Vamos rápido!") |
+
+A velocidade final do TTS combina 3 fatores: `(pitch_base * speedMultiplier * paceMult)`.
+- `speedMultiplier`: preferência do usuário (1× / 1.5× / 2×), padrão **1.5×**
+- `paceMult`: o multiplicador de `pace` acima
+
+O campo `pace` também existe em `NarrativaBeat` (`kind: "npc"`) na Seção 1 (narrativa acumulada).
 
 ---
 

@@ -77,6 +77,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "¡Ey! ¿Estás bien? Camina — no mires tanto el suelo.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -447,6 +448,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Antes de ele chegar — vamos praticar rápido. Olha ao redor e responde.",
                     "translation": "Antes dele chegar — vamos praticar rápido. Olha ao redor e responde.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -575,6 +577,7 @@ SECTIONS = [
                     "npc": "Ernesto",
                     "line": "Esta piedra del río. Tómala.",
                     "translation": "Essa pedra do rio. Pega.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -585,6 +588,7 @@ SECTIONS = [
                     "npc": "Ernesto",
                     "line": "El río la hizo así. Años y años de agua.",
                     "translation": "O río fez ela assim. Anos e anos de água.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -605,6 +609,7 @@ SECTIONS = [
                     "npc": "Ernesto",
                     "line": "Forastero — tienes algo. En los ojos. Como los que escuchan la tierra.",
                     "translation": "Forasteiro — você tem algo. Nos olhos. Como os que escutam a terra.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -621,6 +626,7 @@ SECTIONS = [
                     "npc": "Ernesto",
                     "line": "Nada. Buenos días, Miguel. Forastero.",
                     "translation": "Nada. Bom dia, Miguel. Forasteiro.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",
@@ -783,6 +789,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "¡Forastero! ¿Qué pasó? ¿Estás bien?",
                     "translation": "Forasteiro! O que aconteceu? Está bem?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",

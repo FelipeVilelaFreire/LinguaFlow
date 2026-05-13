@@ -56,6 +56,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "Hay cosas que tienes que saber. No me gusta el pueblo hoy.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -69,6 +70,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "Fuego. Lo controlan — por ahora. Pero el fuego no avisa.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -78,6 +80,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "¿Qué sientes cuando lo miras?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -91,6 +94,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "¡Corren! El perro solo ladra — no muerde. Pero el miedo hace correr igual.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -187,6 +191,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
                     "translation": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -261,6 +266,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "¿Y cómo estás — con todo esto?",
                     "translation": "E como você está — com tudo isso?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -321,6 +327,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Si alguien grita '¡Corre!' — corres. No preguntas. Corres.",
                     "translation": "Se alguém gritar '¡Corre!' — você corre. Não pergunta. Corre.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
@@ -333,6 +340,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Y si gritan '¡Para!' — paras. Quieto. Sin moverse.",
                     "translation": "E se gritarem '¡Para!' — você para. Quieto. Sem se mover.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
@@ -345,6 +353,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Y '¡Mira!' — alguien quiere que veas algo. Importante. Miras.",
                     "translation": "E '¡Mira!' — alguém quer que você veja algo. Importante. Você olha.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
@@ -446,6 +455,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Escena 1: Hay fuego en una casa. ¿Qué haces?",
                     "translation": "Cena 1: Tem fogo numa casa. O que você faz?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -480,6 +490,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Escena 2: Alguien grita '¡Para!' detrás de ti. ¿Qué haces?",
                     "translation": "Cena 2: Alguém grita '¡Para!' atrás de você. O que faz?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -547,6 +558,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Bien hecho. Ahora vamos a la posada. Quédate cerca.",
                     "translation": "Bem feito. Agora vamos pra posada. Fica perto de mim.",
+                    "pace": "slow",
                 },
             ],
         },
@@ -581,6 +593,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Último repaso antes de dormir. Necesito saber que lo tienes.",
                     "translation": "Última revisão antes de dormir. Preciso saber que você tem isso.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -629,6 +642,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "Bien. Duerme. Si hay algún problema — grito tu nombre.",
                     "translation": "Bem. Dorme. Se houver qualquer problema — grito seu nome.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -689,6 +703,7 @@ SECTIONS = [
                     "npc": "El Vigilante",
                     "line": "Te encontré, forastero.",
                     "translation": "Te encontrei, forasteiro.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -722,6 +737,7 @@ SECTIONS = [
                     "npc": "El Vigilante",
                     "line": "¿Qué eres tú, forastero?",
                     "translation": "O que você é, forasteiro?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",
@@ -771,6 +787,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "¡¿Qué fue eso?! ¡Forastero! ¿Estás bien?",
                     "translation": "O que foi isso?! Forasteiro! Você está bem?",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -797,6 +814,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "...Entra. Cierra la puerta. Tenemos que hablar.",
                     "translation": "...Entra. Fecha a porta. A gente precisa conversar.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",

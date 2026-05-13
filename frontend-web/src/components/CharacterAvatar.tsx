@@ -6,17 +6,19 @@ interface CharacterAvatarProps {
   slug?: string;
   emoji?: string;
   name: string;
+  langCode?: string;
   size?: number;
   fallbackBg?: string;
   className?: string;
 }
 
-// Images live in public/characters/{slug}.png
+// Images live in public/{langCode}/characters/{slug}.png
 // Falls back to emoji → first initial when image is absent or fails to load.
 export default function CharacterAvatar({
   slug,
   emoji,
   name,
+  langCode = "es",
   size = 40,
   fallbackBg = "#4a3728",
   className = "",
@@ -26,7 +28,7 @@ export default function CharacterAvatar({
   if (slug && !imgFailed) {
     return (
       <img
-        src={`/characters/${slug}.png`}
+        src={`/${langCode.toLowerCase()}/characters/${slug}.png`}
         alt={name}
         className={`shrink-0 rounded-full object-cover object-top ${className}`}
         style={{ width: size, height: size }}

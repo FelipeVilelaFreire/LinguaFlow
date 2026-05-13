@@ -74,6 +74,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "¡Rosa, espera! Este es forastero — no habla español.",
                     "is_new_npc": True,
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -92,6 +93,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "Mmm.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",
@@ -101,6 +103,7 @@ SECTIONS = [
                     "kind": "npc",
                     "npc": "Don Miguel",
                     "line": "¡MIGUEL! ¡MIJO, VEN AQUÍ! ¡HAY UN FORASTERO!",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -178,6 +181,7 @@ SECTIONS = [
                     "line": "¡Papá! ¡Aquí estoy! — oi?",
                     "translation": "Pai! Tô aqui! — oi?",
                     "is_new_npc": True,
+                    "pace": "urgent",
                 },
                 {
                     "kind": "player",
@@ -194,6 +198,7 @@ SECTIONS = [
                     "npc": "Miguel",
                     "line": "Uh... você... fala português?",
                     "translation": "(português quebrado)",
+                    "pace": "slow",
                 },
                 {
                     "kind": "player",
@@ -204,6 +209,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "line": "¡Bueno! ¡Mijo, cuídalo! ¡Forastero — bienvenido a San Cristóbal!",
                     "translation": "Bom! Filho, cuida dele! Forasteiro — bem-vindo a San Cristóbal!",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "narrative",
@@ -394,6 +400,7 @@ SECTIONS = [
                     "npc": "Miguel",
                     "line": "Pero si no estás bien, dilo. No finjas.",
                     "translation": "Mas se você não está bem, fala. Não finge.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -534,6 +541,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Acércate, hijo. Déjame verte mejor.",
                     "translation": "Chega mais perto, filho. Deixa eu te ver melhor.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -561,6 +569,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "¿Quieres agua del pozo? Aquí el agua es buena, forastero.",
                     "translation": "agua = água",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -581,6 +590,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Dime una cosa — ¿cómo estás hoy? El primer día siempre es duro.",
                     "translation": "Me diz uma coisa — como você está hoje? O primeiro dia sempre é duro.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -601,6 +611,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "¿Y sabes despedirte también, forastero?",
                     "translation": "E você sabe se despedir também, forasteiro?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -669,6 +680,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Aquí en el pueblo, somos pocos. Pero todos nos conocemos.",
                     "translation": "Aqui no pueblo, somos poucos. Mas todos nos conhecemos.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",
@@ -679,12 +691,14 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Si saludas a alguien, te recordará. Si dices 'gracias', te invitará. Es así.",
                     "translation": "Se você cumprimenta alguém, vão lembrar. Se diz 'gracias', vão te convidar. É assim.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
                     "line": "La palabra más bonita del español es 'gracias'. No la olvides nunca.",
                     "translation": "A palavra mais bonita do espanhol é 'gracias'. Não esqueça nunca.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -719,6 +733,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Y cuando el sol se pone y llega la noche, decimos 'buenas noches'.",
                     "translation": "E quando o sol se põe e chega a noite, dizemos 'buenas noches' — boa noite.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -739,6 +754,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Una última cosa, forastero — ¿cómo te llamas?",
                     "translation": "Uma última coisa, forasteiro — como você se chama?",
+                    "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
@@ -766,6 +782,7 @@ SECTIONS = [
                     "npc": "Carmen",
                     "line": "Vuelve mañana si quieres. Siempre estoy aquí — en este banco, con la aguja en la mano.",
                     "translation": "Volta amanhã se quiser. Sempre estou aqui — neste banco, com a agulha na mão.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
@@ -803,6 +820,7 @@ SECTIONS = [
                     "npc": "Miguel",
                     "line": "Ya basta de explicaciones. Si te equivocas, repites. Sin atajos.",
                     "translation": "Chega de explicações. Se errar, repete. Sem atalho.",
+                    "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
@@ -887,12 +905,14 @@ SECTIONS = [
                     "npc": "Miguel",
                     "line": "Ya hiciste mucho por hoy. Ven, vamos a la posada.",
                     "translation": "Já fez bastante por hoje. Vem, vamos pra posada.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
                     "line": "Descansa. Mañana hay más pueblo para conocer.",
                     "translation": "Descansa. Amanhã tem mais pueblo pra conhecer.",
+                    "pace": "slow",
                 },
                 {
                     "kind": "narrative",

@@ -12,7 +12,7 @@ export type WordTier = "bronze" | "prata" | "ouro" | "diamante" | "esmeralda";
 export type NarrativaBeat =
   | { kind: "scene";     text: string }
   | { kind: "narrative"; text: string }
-  | { kind: "npc";       npc: string; line: string; translation?: string }
+  | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent" }
   | { kind: "player";    text: string };
 
 // ── Step types — all step-based sections ─────────────────────────────────────
@@ -20,7 +20,7 @@ export type NarrativaBeat =
 export type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
-  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean; pace?: "slow" | "normal" | "urgent" }
   | { kind: "player_react";    text: string }
   | { kind: "reveal";          phrase: string; meaning: string; note?: string }
   | { kind: "pattern";         parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
