@@ -1,14 +1,14 @@
 @echo off
 REM ============================================================================
-REM  Talkly Backend - Setup ES
+REM  Talkly Backend - Idioma DE
 REM
-REM  Roda migrations e popula o conteudo ES A1 T1 completo.
+REM  Roda o setup completo do Alemao: migrations + seed DE + secoes.
 REM ============================================================================
 
 pushd "%~dp0..\.."
 
 echo.
-echo === Talkly Backend Setup - ES ===
+echo === Talkly Backend Setup - DE ===
 echo.
 
 echo Ativando ambiente conda (linguaflow)...
@@ -20,6 +20,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+set PYTHONIOENCODING=utf-8
 
 echo.
 echo [1/5] Migrations (makemigrations + migrate)...
@@ -44,33 +45,32 @@ echo [2/5] Seed languages...
 python manage.py seed_languages 2>nul
 
 echo.
-echo [3/5] Seed ES aventura (chapter, fases, personagens, itens e baus)...
-python manage.py seed_es
+echo [3/5] Seed DE aventura...
+python manage.py seed_de
 if %errorlevel% neq 0 (
-    echo ERRO: seed_es
+    echo ERRO: seed_de
     popd
     pause
     exit /b 1
 )
 
 echo.
-echo [4/5] Seed ES secoes (F1-F25)...
-python manage.py seed_es_sections --reset
+echo [4/5] Seed DE secoes (F1-F25)...
+python manage.py seed_de_sections --reset
 if %errorlevel% neq 0 (
-    echo ERRO: seed_es_sections
+    echo ERRO: seed_de_sections
     popd
     pause
     exit /b 1
 )
 
 echo.
-echo [5/5] Seed ES estudo (modulos)...
-python manage.py seed_es_study
+echo [5/5] Seed ES estudo mantido separado.
+echo Study modules for DE are not created yet.
 
 echo.
-echo === Setup ES concluido! ===
-echo Fases ES A1 T1: F1 a F25.
-echo Dinamica de itens: item_moment + baus + itens degradados ativos.
+echo === Setup DE concluido! ===
+echo EN -> DE A1 T1: F1 a F25.
 echo.
 
 popd

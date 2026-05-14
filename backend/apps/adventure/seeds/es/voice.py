@@ -32,7 +32,7 @@ VOICE_PROFILES = {
         "pitch": 0.95,
         "rate": 0.88,
     },
-    "SeÃƒÂ±ora Carmen": {
+    "Señora Carmen": {
         "lang": "es-ES",
         "gender": "female",
         "pitch": 0.95,

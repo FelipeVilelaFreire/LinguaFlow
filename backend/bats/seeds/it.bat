@@ -1,14 +1,14 @@
 @echo off
 REM ============================================================================
-REM  Talkly Backend - Seed ES
+REM  Talkly Backend - Seed IT
 REM
-REM  Popula somente o conteudo ES. Nao roda migrations.
+REM  Popula somente o conteudo IT. Nao roda migrations.
 REM ============================================================================
 
 pushd "%~dp0..\.."
 
 echo.
-echo === Talkly Backend Seed - ES ===
+echo === Talkly Backend Seed - IT ===
 echo.
 
 echo Ativando ambiente conda (linguaflow)...
@@ -20,37 +20,34 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+set PYTHONIOENCODING=utf-8
 
 echo.
-echo [1/4] Seed languages...
+echo [1/3] Seed languages...
 python manage.py seed_languages 2>nul
 
 echo.
-echo [2/4] Seed ES aventura...
-python manage.py seed_es
+echo [2/3] Seed IT aventura...
+python manage.py seed_it
 if %errorlevel% neq 0 (
-    echo ERRO: seed_es
+    echo ERRO: seed_it
     popd
     pause
     exit /b 1
 )
 
 echo.
-echo [3/4] Seed ES secoes (F1-F25)...
-python manage.py seed_es_sections --reset
+echo [3/3] Seed IT secoes (F1-F25)...
+python manage.py seed_it_sections --reset
 if %errorlevel% neq 0 (
-    echo ERRO: seed_es_sections
+    echo ERRO: seed_it_sections
     popd
     pause
     exit /b 1
 )
 
 echo.
-echo [4/4] Seed ES estudo...
-python manage.py seed_es_study
-
-echo.
-echo === Seed ES concluido! ===
+echo === Seed IT concluido! ===
 echo.
 
 popd

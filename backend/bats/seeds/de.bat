@@ -2,7 +2,7 @@
 REM ============================================================================
 REM  Talkly Backend - Seed DE
 REM
-REM  Populates only EN -> DE content. Does not run migrations.
+REM  Popula somente o conteudo EN -> DE. Nao roda migrations.
 REM ============================================================================
 
 pushd "%~dp0..\.."
@@ -20,6 +20,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+set PYTHONIOENCODING=utf-8
 
 echo.
 echo [1/3] Seed languages...

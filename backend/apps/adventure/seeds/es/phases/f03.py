@@ -1,30 +1,30 @@
-﻿"""
-Seed das 6 seÃ§Ãµes da Fase 3 Espanhol A1 â€” "El Camino de Tierra".
+"""
+Seed das 6 seções da Fase 3 Espanhol A1 — "El Camino de Tierra".
 
 Primeiro dia fora dos muros do pueblo. Don Miguel leva o protagonista pelo
-caminho de terra que cruza os campos e chega atÃ© o rio. LÃ¡ encontram El Viejo
-LeÃ±ador â€” um velho lenhador que reage ao protagonista de forma estranha.
+caminho de terra que cruza os campos e chega até o rio. Lá encontram El Viejo
+Leñador — um velho lenhador que reage ao protagonista de forma estranha.
 
-Novos vocab (3): Ã¡rbol Â· piedra Â· rÃ­o
-RevisÃ£o F1+F2: hola, buenos dÃ­as, buenas tardes, gracias, bien/mal,
+Novos vocab (3): árbol · piedra · río
+Revisão F1+F2: hola, buenos días, buenas tardes, gracias, bien/mal,
                forastero, me llamo, tengo hambre, tengo sed, pan, agua
 NPC principal:   Don Miguel (fio condutor)
-NPC cameo:       El Viejo LeÃ±ador (reaÃ§Ã£o estranha â€” primeiro sinal do dom)
-Itens:           piedra_del_rÃ­o (word_id: es_piedra) Â· flor_silvestre (word_id: es_flor)
-Arco emocional:  confinado â†’ expansivo; curiosidade + primeiro pressentimento
-TransiÃ§Ã£o:       voltam ao pueblo ao entardecer; Miguel quieto; pedra no bolso
-                 do protagonista como lembranÃ§a do dia.
+NPC cameo:       El Viejo Leñador (reação estranha — primeiro sinal do dom)
+Itens:           piedra_del_río (word_id: es_piedra) · flor_silvestre (word_id: es_flor)
+Arco emocional:  confinado → expansivo; curiosidade + primeiro pressentimento
+Transição:       voltam ao pueblo ao entardecer; Miguel quieto; pedra no bolso
+                 do protagonista como lembrança do dia.
 
-PrÃ©-requisito: python manage.py seed_es_full
+Pré-requisito: python manage.py seed_es_full
 Uso:           python manage.py seed_es_f3_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # ManhÃ£ â€” Don Miguel propÃµe sair dos muros. PortÃ£o do pueblo, campos abertos,
-    # caminho de terra. Novo NPC (LeÃ±ador) ouvido ao longe. Vocab aparece sem
-    # traduÃ§Ã£o â€” imersÃ£o. ExercÃ­cios: reconhecimento contextual.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Manhã — Don Miguel propõe sair dos muros. Portão do pueblo, campos abertos,
+    # caminho de terra. Novo NPC (Leñador) ouvido ao longe. Vocab aparece sem
+    # tradução — imersão. Exercícios: reconhecimento contextual.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -33,117 +33,117 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ„ ManhÃ£ clara. Don Miguel estÃ¡ na porta da posada com um "
-                        "saco velho Ã s costas. Aponta pro portÃ£o de madeira pesada "
-                        "na borda do pueblo â€” a saÃ­da pros campos."
+                        "🌄 Manhã clara. Don Miguel está na porta da posada com um "
+                        "saco velho às costas. Aponta pro portão de madeira pesada "
+                        "na borda do pueblo — a saída pros campos."
                     ),
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Hoy salimos. Quiero que veas el campo. Hay cosas que el pueblo no te enseÃ±a.",
+                    "line": "Hoy salimos. Quiero que veas el campo. Hay cosas que el pueblo no te enseña.",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª seguiu sem perguntar. Faz dias que vocÃª sÃ³ viu adobe e pedra. A ideia de campo aberto parecia boa.",
+                    "text": "Você seguiu sem perguntar. Faz dias que você só viu adobe e pedra. A ideia de campo aberto parecia boa.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ¾ O portÃ£o abre pesado. Do outro lado: campos de milho, um caminho de terra batida, e longe â€” o verde-escuro de Ã¡rvores.",
+                    "text": "🌾 O portão abre pesado. Do outro lado: campos de milho, um caminho de terra batida, e longe — o verde-escuro de árvores.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Mira â€” los Ã¡rboles allÃ¡. El rÃ­o estÃ¡ detrÃ¡s de ellos.",
+                    "line": "Mira — los árboles allá. El río está detrás de ellos.",
                 },
                 {
                     "kind": "player",
-                    "text": "Ãrboles. Rio. A palavra era nova, mas o gesto era claro â€” ele apontou pro verde e depois fez um gesto de Ã¡gua correndo.",
+                    "text": "Árboles. Rio. A palavra era nova, mas o gesto era claro — ele apontou pro verde e depois fez um gesto de água correndo.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Y en el camino â€” piedras. Cuidado con los pies.",
+                    "line": "Y en el camino — piedras. Cuidado con los pies.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸª¨ Caminho cheio de pedras brancas. VocÃª olhou pra baixo â€” algumas lisas, algumas pontiagudas.",
+                    "text": "🪨 Caminho cheio de pedras brancas. Você olhou pra baixo — algumas lisas, algumas pontiagudas.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Â¡Ey! Â¿EstÃ¡s bien? Camina â€” no mires tanto el suelo.",
+                    "line": "¡Ey! ¿Estás bien? Camina — no mires tanto el suelo.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª ergueu a cabeÃ§a. O campo se abria de todos os lados. Depois de dias no pueblo fechado, aquilo parecia enorme.",
+                    "text": "Você ergueu a cabeça. O campo se abria de todos os lados. Depois de dias no pueblo fechado, aquilo parecia enorme.",
                 },
             ],
             "exercises": [
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel apontou pro verde-escuro no horizonte e disse uma palavra. O que vocÃª vÃª ao longe?",
+                    "question": "Don Miguel apontou pro verde-escuro no horizonte e disse uma palavra. O que você vê ao longe?",
                     "options": [
-                        {"id": "a", "text": "Ãrboles"},
+                        {"id": "a", "text": "Árboles"},
                         {"id": "b", "text": "Piedras"},
-                        {"id": "c", "text": "El rÃ­o"},
+                        {"id": "c", "text": "El río"},
                         {"id": "d", "text": "La posada"},
                     ],
                     "correct": "a",
-                    "word_id": "es_arbol", "target": "Ã¡rbol", "native": "Ã¡rvore",
-                    "npc_reaction": "Ãrboles. Onde tem Ã¡rbol, tem sombra. E onde tem sombra...",
+                    "word_id": "es_arbol", "target": "árbol", "native": "árvore",
+                    "npc_reaction": "Árboles. Onde tem árbol, tem sombra. E onde tem sombra...",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "O caminho estava cheio delas â€” brancas, lisas, pontiagudas. Don Miguel avisou pra vocÃª cuidar dos pÃ©s. O que estava no caminho?",
+                    "question": "O caminho estava cheio delas — brancas, lisas, pontiagudas. Don Miguel avisou pra você cuidar dos pés. O que estava no caminho?",
                     "options": [
                         {"id": "a", "text": "Piedras"},
-                        {"id": "b", "text": "Ãrboles"},
+                        {"id": "b", "text": "Árboles"},
                         {"id": "c", "text": "Agua"},
                         {"id": "d", "text": "Flores"},
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Piedras. O chÃ£o do campo sempre tem piedras. Os pÃ©s aprendem.",
+                    "npc_reaction": "Piedras. O chão do campo sempre tem piedras. Os pés aprendem.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel fez um gesto â€” as duas mÃ£os correndo pra frente â€” e apontou atrÃ¡s dos Ã¡rboles. O que estÃ¡ alÃ©m das Ã¡rvores?",
+                    "question": "Don Miguel fez um gesto — as duas mãos correndo pra frente — e apontou atrás dos árboles. O que está além das árvores?",
                     "options": [
-                        {"id": "a", "text": "El rÃ­o"},
+                        {"id": "a", "text": "El río"},
                         {"id": "b", "text": "El pueblo"},
                         {"id": "c", "text": "La posada"},
                         {"id": "d", "text": "El mercado"},
                     ],
                     "correct": "a",
-                    "word_id": "es_rio", "target": "rÃ­o", "native": "rio",
-                    "npc_reaction": "El rÃ­o. Ãgua fria, agua limpia. Melhor que a fonte da plaza.",
+                    "word_id": "es_rio", "target": "río", "native": "rio",
+                    "npc_reaction": "El río. Água fria, agua limpia. Melhor que a fonte da plaza.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃªs caminharam bastante. O sol esquentou. O que vocÃª provavelmente vai querer ao chegar no rÃ­o?",
+                    "question": "Vocês caminharam bastante. O sol esquentou. O que você provavelmente vai querer ao chegar no río?",
                     "options": [
-                        {"id": "a", "text": "Agua â€” tengo sed"},
-                        {"id": "b", "text": "Pan â€” tengo hambre"},
+                        {"id": "a", "text": "Agua — tengo sed"},
+                        {"id": "b", "text": "Pan — tengo hambre"},
                         {"id": "c", "text": "La posada"},
-                        {"id": "d", "text": "Buenos dÃ­as"},
+                        {"id": "d", "text": "Buenos días"},
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. E o rÃ­o vai resolver isso.",
+                    "npc_reaction": "Sed. E o río vai resolver isso.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 2: Revisão SRS ──────────────────────────────────────────────────
     # No campo, Don Miguel aproveita o caminho pra revisar F1+F2 vocab.
-    # SituaÃ§Ãµes reais: um pÃ¡ssaro, uma flor, parar pra beber Ã¡gua.
+    # Situações reais: um pássaro, uma flor, parar pra beber água.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
@@ -151,29 +151,29 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "VocÃªs passaram pelo portÃ£o e o campo se abriu. Don Miguel "
-                    "apontou 'Ã¡rboles', 'piedras', 'el rÃ­o'. O campo Ã© diferente "
-                    "do pueblo â€” mais silÃªncio, mais espaÃ§o, o cheiro de terra.\n\n"
+                    "Vocês passaram pelo portão e o campo se abriu. Don Miguel "
+                    "apontou 'árboles', 'piedras', 'el río'. O campo é diferente "
+                    "do pueblo — mais silêncio, mais espaço, o cheiro de terra.\n\n"
                     "Enquanto caminham, Don Miguel continua te testando. 'O campo "
-                    "tambÃ©m ensina. VocÃª olha, eu pergunto.'"
+                    "também ensina. Você olha, eu pergunto.'"
                 ),
-                "now": "RevisÃ£o das palavras de F1 e F2 â€” cada uma num contexto de campo.",
+                "now": "Revisão das palavras de F1 e F2 — cada uma num contexto de campo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Don Miguel para, pega uma pedra lisa do chÃ£o e te joga. VocÃª pega no ar.",
+                    "text": "Don Miguel para, pega uma pedra lisa do chão e te joga. Você pega no ar.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Â¿CÃ³mo estÃ¡s hoy? Con el campo y el sol?",
-                    "translation": "Como vocÃª estÃ¡ hoje? Com o campo e o sol?",
+                    "line": "¿Cómo estás hoy? Con el campo y el sol?",
+                    "translation": "Como você está hoje? Com o campo e o sol?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "O ar estÃ¡ limpo, o campo aberto, vocÃª comeu o pÃ£o de Rosa antes de sair. Don Miguel quer saber como vocÃª estÃ¡:",
+                    "question": "O ar está limpo, o campo aberto, você comeu o pão de Rosa antes de sair. Don Miguel quer saber como você está:",
                     "options": [
                         {"id": "a", "text": "Bien, gracias"},
                         {"id": "b", "text": "Mal"},
@@ -187,71 +187,71 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Oye â€” Â¿y en la maÃ±ana, cuando llegas a un sitio nuevo y ves a alguien?",
-                    "translation": "Ei â€” e de manhÃ£, quando vocÃª chega num lugar novo e vÃª alguÃ©m?",
+                    "line": "Oye — ¿y en la mañana, cuando llegas a un sitio nuevo y ves a alguien?",
+                    "translation": "Ei — e de manhã, quando você chega num lugar novo e vê alguém?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Um trabalhador do campo passa com uma enxada. Ã‰ cedo ainda. VocÃª cumprimenta:",
+                    "question": "Um trabalhador do campo passa com uma enxada. É cedo ainda. Você cumprimenta:",
                     "options": [
-                        {"id": "a", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "b", "text": "Â¡Buenas noches!"},
-                        {"id": "c", "text": "Â¡Hola noche!"},
-                        {"id": "d", "text": "Â¡AdiÃ³s!"},
+                        {"id": "a", "text": "¡Buenos días!"},
+                        {"id": "b", "text": "¡Buenas noches!"},
+                        {"id": "c", "text": "¡Hola noche!"},
+                        {"id": "d", "text": "¡Adiós!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Buenos dÃ­as. O trabalhador levantou dois dedos â€” reconheceu.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "Buenos días. O trabalhador levantou dois dedos — reconheceu.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Don Miguel aponta pra uma flor vermelha no borde do caminho. 'Flor silvestre â€” flor do campo.'",
+                    "text": "Don Miguel aponta pra uma flor vermelha no borde do caminho. 'Flor silvestre — flor do campo.'",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Um menino do pueblo passa correndo e para quando vÃª a flor â€” 'La flor, quÃ© bonita!' O que ele viu?",
+                    "question": "Um menino do pueblo passa correndo e para quando vê a flor — 'La flor, qué bonita!' O que ele viu?",
                     "options": [
                         {"id": "a", "text": "Flor"},
                         {"id": "b", "text": "Piedra"},
-                        {"id": "c", "text": "Ãrbol"},
-                        {"id": "d", "text": "RÃ­o"},
+                        {"id": "c", "text": "Árbol"},
+                        {"id": "d", "text": "Río"},
                     ],
                     "correct": "a",
                     "word_id": "es_flor", "target": "flor", "native": "flor",
-                    "npc_reaction": "Flor silvestre. Essa Ã© do campo â€” nÃ£o cresce na plaza.",
+                    "npc_reaction": "Flor silvestre. Essa é do campo — não cresce na plaza.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "El forastero â€” asÃ­ te llaman. Â¿Pero te acuerdas quÃ© significa?",
-                    "translation": "O forasteiro â€” assim te chamam. Mas vocÃª lembra o que significa?",
+                    "line": "El forastero — así te llaman. ¿Pero te acuerdas qué significa?",
+                    "translation": "O forasteiro — assim te chamam. Mas você lembra o que significa?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel aponta pra vocÃª: 'Los del pueblo te llaman forastero porque...'",
+                    "question": "Don Miguel aponta pra você: 'Los del pueblo te llaman forastero porque...'",
                     "options": [
-                        {"id": "a", "text": "VocÃª veio de fora â€” nÃ£o Ã© do pueblo"},
-                        {"id": "b", "text": "VocÃª nÃ£o tem nome"},
-                        {"id": "c", "text": "VocÃª trabalha no campo"},
-                        {"id": "d", "text": "VocÃª Ã© muito jovem"},
+                        {"id": "a", "text": "Você veio de fora — não é do pueblo"},
+                        {"id": "b", "text": "Você não tem nome"},
+                        {"id": "c", "text": "Você trabalha no campo"},
+                        {"id": "d", "text": "Você é muito jovem"},
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Eso. Forastero = de fora. Mas o pueblo jÃ¡ tÃ¡ acostumando contigo.",
+                    "npc_reaction": "Eso. Forastero = de fora. Mas o pueblo já tá acostumando contigo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Y yo â€” Â¿quÃ© soy? Â¿Recuerdas la palabra?",
-                    "translation": "E eu â€” o que sou? VocÃª lembra a palavra?",
+                    "line": "Y yo — ¿qué soy? ¿Recuerdas la palabra?",
+                    "translation": "E eu — o que sou? Você lembra a palavra?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel arranca um pedaÃ§o de erva do chÃ£o, cheira. Trabalha com a terra toda a vida. Ele Ã©:",
+                    "question": "Don Miguel arranca um pedaço de erva do chão, cheira. Trabalha com a terra toda a vida. Ele é:",
                     "options": [
                         {"id": "a", "text": "Campesino"},
                         {"id": "b", "text": "Forastero"},
@@ -259,35 +259,35 @@ SECTIONS = [
                         {"id": "d", "text": "Maestro"},
                     ],
                     "correct": "a",
-                    "word_id": "es_campesino", "target": "campesino", "native": "camponÃªs",
+                    "word_id": "es_campesino", "target": "campesino", "native": "camponês",
                     "npc_reaction": "Campesino. E orgulhoso disso.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "As Ã¡rvores estÃ£o mais perto. Um som novo â€” Ã¡gua correndo, fresco, abaixo do ruÃ­do do vento.",
+                    "text": "As árvores estão mais perto. Um som novo — água correndo, fresco, abaixo do ruído do vento.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª ouviu o som, ficou com a boca seca de querer beber. Don Miguel olhou pra vocÃª. VocÃª fala:",
+                    "question": "Você ouviu o som, ficou com a boca seca de querer beber. Don Miguel olhou pra você. Você fala:",
                     "options": [
                         {"id": "a", "text": "Tengo sed"},
                         {"id": "b", "text": "Tengo hambre"},
                         {"id": "c", "text": "Estoy mal"},
-                        {"id": "d", "text": "Buenos dÃ­as"},
+                        {"id": "d", "text": "Buenos días"},
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. El rÃ­o tÃ¡ ali. JÃ¡ estamos chegando.",
+                    "npc_reaction": "Sed. El río tá ali. Já estamos chegando.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: GramÃ¡tica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Chegaram ao rÃ­o. Don Miguel ensina "hay" + lugar:
-    # "Hay Ã¡rboles. Hay piedras. Hay agua en el rÃ­o."
-    # TambÃ©m: "no hay" â€” "no hay pan aquÃ­".
+    # ── Seção 3: Gramática Narrativa ───────────────────────────────────────────
+    # Chegaram ao río. Don Miguel ensina "hay" + lugar:
+    # "Hay árboles. Hay piedras. Hay agua en el río."
+    # Também: "no hay" — "no hay pan aquí".
     {
         "section_number": 3,
         "section_type": "gramatica_narrativa",
@@ -295,41 +295,41 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "VocÃªs chegaram ao rÃ­o. Ãgua fria, pedras brancas no fundo, "
-                    "sombra das Ã¡rvores. Don Miguel jogou o saco no chÃ£o e sentou "
+                    "Vocês chegaram ao río. Água fria, pedras brancas no fundo, "
+                    "sombra das árvores. Don Miguel jogou o saco no chão e sentou "
                     "numa pedra grande.\n\n"
                     "'Olha o que tem aqui. Aprenda a dizer.'"
                 ),
-                "now": "Don Miguel ensina 'hay' â€” a forma de dizer que algo existe num lugar.",
+                "now": "Don Miguel ensina 'hay' — a forma de dizer que algo existe num lugar.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Don Miguel aponta em volta â€” Ã¡rvores, pedras, o rÃ­o, o cÃ©u. Faz um gesto amplo com o braÃ§o.",
+                    "text": "Don Miguel aponta em volta — árvores, pedras, o río, o céu. Faz um gesto amplo com o braço.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "'Hay' â€” eso es lo que usas cuando algo estÃ¡ aquÃ­. 'Hay Ã¡rboles.'",
-                    "translation": "'Hay' â€” isso vocÃª usa quando algo estÃ¡ aqui. 'HÃ¡ Ã¡rvores.'",
+                    "line": "'Hay' — eso es lo que usas cuando algo está aquí. 'Hay árboles.'",
+                    "translation": "'Hay' — isso você usa quando algo está aqui. 'Há árvores.'",
                 },
                 {
                     "kind": "reveal",
-                    "phrase": "Hay Ã¡rboles",
-                    "meaning": "HÃ¡ Ã¡rvores / Tem Ã¡rvores",
-                    "note": "hay = hÃ¡ / tem | serve pra qualquer coisa: hay agua, hay pan, hay piedras",
+                    "phrase": "Hay árboles",
+                    "meaning": "Há árvores / Tem árvores",
+                    "note": "hay = há / tem | serve pra qualquer coisa: hay agua, hay pan, hay piedras",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Y si algo no estÃ¡ â€” 'no hay'. Simple. 'No hay pan aquÃ­ en el campo.'",
-                    "translation": "E se algo nÃ£o estÃ¡ â€” 'nÃ£o tem'. Simples. 'NÃ£o tem pÃ£o aqui no campo.'",
+                    "line": "Y si algo no está — 'no hay'. Simple. 'No hay pan aquí en el campo.'",
+                    "translation": "E se algo não está — 'não tem'. Simples. 'Não tem pão aqui no campo.'",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "No hay pan",
-                    "meaning": "NÃ£o tem pÃ£o / NÃ£o hÃ¡ pÃ£o",
-                    "note": "no hay = nÃ£o tem | o oposto de hay",
+                    "meaning": "Não tem pão / Não há pão",
+                    "note": "no hay = não tem | o oposto de hay",
                 },
                 {
                     "kind": "pattern",
@@ -342,28 +342,28 @@ SECTIONS = [
                         {"text": " + ",    "isKey": False},
                         {"text": "coisa",  "isKey": True},
                     ],
-                    "example": "Hay piedras en el rÃ­o. / No hay pan aquÃ­.",
-                    "translation": "Tem pedras no rio. / NÃ£o tem pÃ£o aqui.",
-                    "note": "Hay = existe. No hay = nÃ£o existe. Um padrÃ£o, infinitas coisas.",
+                    "example": "Hay piedras en el río. / No hay pan aquí.",
+                    "translation": "Tem pedras no rio. / Não tem pão aqui.",
+                    "note": "Hay = existe. No hay = não existe. Um padrão, infinitas coisas.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel aponta pro rÃ­o com pedras brancas no fundo. Como vocÃª descreve?",
+                    "question": "Don Miguel aponta pro río com pedras brancas no fundo. Como você descreve?",
                     "options": [
-                        {"id": "a", "text": "Hay piedras en el rÃ­o"},
+                        {"id": "a", "text": "Hay piedras en el río"},
                         {"id": "b", "text": "No hay piedras"},
-                        {"id": "c", "text": "Hay pan en el rÃ­o"},
+                        {"id": "c", "text": "Hay pan en el río"},
                         {"id": "d", "text": "Tengo piedras"},
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Hay piedras. Exato. O rÃ­o fala por si mesmo.",
+                    "npc_reaction": "Hay piedras. Exato. O río fala por si mesmo.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª olha pra volta â€” sÃ³ campo, Ã¡rvores e rio. NÃ£o hÃ¡ nenhuma padaria. Don Miguel: 'Â¿Hay pan aquÃ­?'",
+                    "question": "Você olha pra volta — só campo, árvores e rio. Não há nenhuma padaria. Don Miguel: '¿Hay pan aquí?'",
                     "options": [
                         {"id": "a", "text": "No hay pan"},
                         {"id": "b", "text": "Hay pan"},
@@ -371,59 +371,59 @@ SECTIONS = [
                         {"id": "d", "text": "Hay agua"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "No hay pan. No hay Rosa tampoco. SÃ³ campo.",
+                    "npc_reaction": "No hay pan. No hay Rosa tampoco. Só campo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Pero â€” Â¿hay agua?",
-                    "translation": "Mas â€” tem Ã¡gua?",
+                    "line": "Pero — ¿hay agua?",
+                    "translation": "Mas — tem água?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "O rÃ­o estÃ¡ na sua frente, correndo sobre pedras brancas. Don Miguel espera:",
+                    "question": "O río está na sua frente, correndo sobre pedras brancas. Don Miguel espera:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, hay agua"},
+                        {"id": "a", "text": "Sí, hay agua"},
                         {"id": "b", "text": "No hay agua"},
                         {"id": "c", "text": "Tengo agua"},
                         {"id": "d", "text": "Hay pan"},
                     ],
                     "correct": "a",
-                    "word_id": "es_agua", "target": "agua", "native": "Ã¡gua",
-                    "npc_reaction": "SÃ­, hay agua. Mucha agua. Beba.",
+                    "word_id": "es_agua", "target": "agua", "native": "água",
+                    "npc_reaction": "Sí, hay agua. Mucha agua. Beba.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel aponta pra cima, pras copas das Ã¡rvores. 'Â¿Y aquÃ­ â€” hay Ã¡rboles?'",
+                    "question": "Don Miguel aponta pra cima, pras copas das árvores. '¿Y aquí — hay árboles?'",
                     "options": [
-                        {"id": "a", "text": "SÃ­, hay Ã¡rboles"},
-                        {"id": "b", "text": "No hay Ã¡rboles"},
+                        {"id": "a", "text": "Sí, hay árboles"},
+                        {"id": "b", "text": "No hay árboles"},
                         {"id": "c", "text": "Hay piedras"},
                         {"id": "d", "text": "Hay pan"},
                     ],
                     "correct": "a",
-                    "word_id": "es_arbol", "target": "Ã¡rbol", "native": "Ã¡rvore",
-                    "npc_reaction": "Hay Ã¡rboles. E eles ficam aqui hÃ¡ cem anos â€” antes do pueblo.",
+                    "word_id": "es_arbol", "target": "árbol", "native": "árvore",
+                    "npc_reaction": "Hay árboles. E eles ficam aqui há cem anos — antes do pueblo.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Ao longe, um som de machado batendo em madeira. Ritmado, constante. Don Miguel levanta a cabeÃ§a.",
+                    "text": "Ao longe, um som de machado batendo em madeira. Ritmado, constante. Don Miguel levanta a cabeça.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Ese es el viejo Ernesto. El leÃ±ador. Viene aquÃ­ hace treinta aÃ±os.",
-                    "translation": "Esse Ã© o velho Ernesto. O lenhador. Vem aqui hÃ¡ trinta anos.",
+                    "line": "Ese es el viejo Ernesto. El leñador. Viene aquí hace treinta años.",
+                    "translation": "Esse é o velho Ernesto. O lenhador. Vem aqui há trinta anos.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: PrÃ¡tica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Encontro com El Viejo LeÃ±ador (Ernesto). Pratica hay/no hay em situaÃ§Ãµes
-    # reais do campo enquanto o lenhador se aproxima. NPC presente em cada exercÃ­cio.
+    # ── Seção 4: Prática Aplicada ─────────────────────────────────────────────
+    # Encontro com El Viejo Leñador (Ernesto). Pratica hay/no hay em situações
+    # reais do campo enquanto o lenhador se aproxima. NPC presente em cada exercício.
     {
         "section_number": 4,
         "section_type": "pratica_aplicada",
@@ -431,53 +431,53 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "Don Miguel te ensinou 'hay' e 'no hay'. Ãrboles, piedras, "
-                    "agua â€” tudo que estÃ¡ ao redor pode ser descrito assim.\n\n"
-                    "O som do machado ficou mais prÃ³ximo. O velho Ernesto estÃ¡ "
-                    "vindo pela margem do rÃ­o."
+                    "Don Miguel te ensinou 'hay' e 'no hay'. Árboles, piedras, "
+                    "agua — tudo que está ao redor pode ser descrito assim.\n\n"
+                    "O som do machado ficou mais próximo. O velho Ernesto está "
+                    "vindo pela margem do río."
                 ),
-                "now": "PrÃ¡tica rÃ¡pida antes do encontro com o leÃ±ador.",
+                "now": "Prática rápida antes do encontro com o leñador.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Antes de ele chegar â€” vamos praticar rÃ¡pido. Olha ao redor e responde.",
-                    "translation": "Antes dele chegar â€” vamos praticar rÃ¡pido. Olha ao redor e responde.",
+                    "line": "Antes de ele chegar — vamos praticar rápido. Olha ao redor e responde.",
+                    "translation": "Antes dele chegar — vamos praticar rápido. Olha ao redor e responde.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel aponta pro outro lado do rÃ­o â€” sÃ³ pedras, grama, sem Ã¡rvores. 'Â¿Hay Ã¡rboles allÃ¡?'",
+                    "question": "Don Miguel aponta pro outro lado do río — só pedras, grama, sem árvores. '¿Hay árboles allá?'",
                     "options": [
-                        {"id": "a", "text": "No, no hay Ã¡rboles"},
-                        {"id": "b", "text": "SÃ­, hay Ã¡rboles"},
-                        {"id": "c", "text": "Hay pan allÃ¡"},
+                        {"id": "a", "text": "No, no hay árboles"},
+                        {"id": "b", "text": "Sí, hay árboles"},
+                        {"id": "c", "text": "Hay pan allá"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
-                    "word_id": "es_arbol", "target": "Ã¡rbol", "native": "Ã¡rvore",
-                    "npc_reaction": "No hay Ã¡rboles allÃ¡. Correto.",
+                    "word_id": "es_arbol", "target": "árbol", "native": "árvore",
+                    "npc_reaction": "No hay árboles allá. Correto.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel abre o saco â€” tem um pedaÃ§o de pÃ£o seco lÃ¡ dentro. 'Â¿Hay pan?'",
+                    "question": "Don Miguel abre o saco — tem um pedaço de pão seco lá dentro. '¿Hay pan?'",
                     "options": [
-                        {"id": "a", "text": "SÃ­, hay pan"},
+                        {"id": "a", "text": "Sí, hay pan"},
                         {"id": "b", "text": "No hay pan"},
                         {"id": "c", "text": "Hay agua"},
                         {"id": "d", "text": "No hay agua"},
                     ],
                     "correct": "a",
-                    "word_id": "es_pan", "target": "pan", "native": "pÃ£o",
+                    "word_id": "es_pan", "target": "pan", "native": "pão",
                     "npc_reaction": "Hay pan. Seco, mas hay.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª estÃ¡ com fome depois de caminhar bastante. Como vocÃª fala pro Don Miguel?",
+                    "question": "Você está com fome depois de caminhar bastante. Como você fala pro Don Miguel?",
                     "options": [
                         {"id": "a", "text": "Tengo hambre"},
                         {"id": "b", "text": "Tengo sed"},
@@ -486,110 +486,110 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_hambre", "target": "tengo hambre", "native": "tenho fome",
-                    "npc_reaction": "Hambre. Pega o pÃ£o do saco â€” hÃ¡ um lÃ¡.",
+                    "npc_reaction": "Hambre. Pega o pão do saco — há um lá.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Ernesto chega pela margem do rÃ­o. Alto, pele curtida, machado no ombro. Olhos pequenos que enxergam longe.",
+                    "text": "Ernesto chega pela margem do río. Alto, pele curtida, machado no ombro. Olhos pequenos que enxergam longe.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Ernesto â€” buenos dÃ­as. Vine a mostrar el rÃ­o al forastero.",
-                    "translation": "Ernesto â€” bom dia. Vim mostrar o rÃ­o pro forasteiro.",
+                    "line": "Ernesto — buenos días. Vine a mostrar el río al forastero.",
+                    "translation": "Ernesto — bom dia. Vim mostrar o río pro forasteiro.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Ernesto para na frente de vocÃªs, olha pra vocÃª, depois pro rÃ­o. Don Miguel disse 'buenos dÃ­as' â€” Ã© de manhÃ£. Qual hora do dia Ã© essa?",
+                    "question": "Ernesto para na frente de vocês, olha pra você, depois pro río. Don Miguel disse 'buenos días' — é de manhã. Qual hora do dia é essa?",
                     "options": [
-                        {"id": "a", "text": "De manhÃ£ â€” hora do buenos dÃ­as"},
-                        {"id": "b", "text": "De tarde â€” hora do buenas tardes"},
-                        {"id": "c", "text": "De noite â€” hora do buenas noches"},
-                        {"id": "d", "text": "Meio-dia â€” sem saudaÃ§Ã£o especÃ­fica"},
+                        {"id": "a", "text": "De manhã — hora do buenos días"},
+                        {"id": "b", "text": "De tarde — hora do buenas tardes"},
+                        {"id": "c", "text": "De noite — hora do buenas noches"},
+                        {"id": "d", "text": "Meio-dia — sem saudação específica"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Buenos dÃ­as. O sol ainda estÃ¡ subindo.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "Buenos días. O sol ainda está subindo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Ernesto",
                     "line": "...",
-                    "translation": "(O velho nÃ£o responde imediatamente. Te olha.)",
+                    "translation": "(O velho não responde imediatamente. Te olha.)",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Ernesto te examina por tempo demais. Os olhos vÃ£o do rosto "
-                        "pra mÃ£o, de volta pro rosto. Don Miguel ri nervoso."
+                        "Ernesto te examina por tempo demais. Os olhos vão do rosto "
+                        "pra mão, de volta pro rosto. Don Miguel ri nervoso."
                     ),
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Ernesto finalmente fala â€” em espanhol lento, sem tirar os olhos de vocÃª: 'Â¿CÃ³mo te llamas?' Como vocÃª responde?",
+                    "question": "Ernesto finalmente fala — em espanhol lento, sem tirar os olhos de você: '¿Cómo te llamas?' Como você responde?",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Bien, gracias"},
                         {"id": "c", "text": "Tengo hambre"},
-                        {"id": "d", "text": "Hay Ã¡rboles"},
+                        {"id": "d", "text": "Hay árboles"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Ernesto ouviu, assentiu devagar. NÃ£o disse nada mais por um longo segundo.",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "Ernesto ouviu, assentiu devagar. Não disse nada mais por um longo segundo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Ernesto faz algo estranho. Ele pega uma pedra lisa do rÃ­o, examina, e a
-    # entrega ao protagonista dizendo algo que nÃ£o faz sentido.
-    # A narrativa aqui Ã© densa â€” menos exercÃ­cios, mais beats. O vocab Ã© usado
+    # ── Seção 5: Reforço ───────────────────────────────────────────────────────
+    # Ernesto faz algo estranho. Ele pega uma pedra lisa do río, examina, e a
+    # entrega ao protagonista dizendo algo que não faz sentido.
+    # A narrativa aqui é densa — menos exercícios, mais beats. O vocab é usado
     # dentro da conversa.
     {
         "section_number": 5,
         "section_type": "reforco",
         "content": {
             "recap": {
-                "characters": ["Don Miguel", "Ernesto el LeÃ±ador"],
+                "characters": ["Don Miguel", "Ernesto el Leñador"],
                 "story": (
                     "Ernesto te olhou por tempo demais antes de perguntar seu nome. "
-                    "Quando vocÃª respondeu, ele ficou quieto uns instantes. Don Miguel "
-                    "ficou desconfortÃ¡vel â€” vocÃª percebeu.\n\n"
-                    "Ernesto ainda estÃ¡ parado na margem do rÃ­o, machado no ombro, "
+                    "Quando você respondeu, ele ficou quieto uns instantes. Don Miguel "
+                    "ficou desconfortável — você percebeu.\n\n"
+                    "Ernesto ainda está parado na margem do río, machado no ombro, "
                     "te observando."
                 ),
-                "now": "Ernesto vai fazer algo que ninguÃ©m esperava.",
+                "now": "Ernesto vai fazer algo que ninguém esperava.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Ernesto abaixa o machado devagar. Entra no rÃ­o com as botas â€” a Ã¡gua na canela â€” e pega uma pedra do fundo.",
+                    "text": "Ernesto abaixa o machado devagar. Entra no río com as botas — a água na canela — e pega uma pedra do fundo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Ernesto",
-                    "line": "Esta piedra del rÃ­o. TÃ³mala.",
+                    "line": "Esta piedra del río. Tómala.",
                     "translation": "Essa pedra do rio. Pega.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª pegou a pedra. Lisa, pesada, fria. Branca com uma veia cinza no meio.",
+                    "text": "Você pegou a pedra. Lisa, pesada, fria. Branca com uma veia cinza no meio.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Ernesto",
-                    "line": "El rÃ­o la hizo asÃ­. AÃ±os y aÃ±os de agua.",
-                    "translation": "O rÃ­o fez ela assim. Anos e anos de Ã¡gua.",
+                    "line": "El río la hizo así. Años y años de agua.",
+                    "translation": "O río fez ela assim. Anos e anos de água.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Ernesto",
-                    "question": "Ernesto disse 'Esta piedra del rÃ­o'. Que objeto ele te entregou?",
+                    "question": "Ernesto disse 'Esta piedra del río'. Que objeto ele te entregou?",
                     "options": [
                         {"id": "a", "text": "Piedra"},
                         {"id": "b", "text": "Flor"},
@@ -598,40 +598,40 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Piedra. Do rÃ­o. Guarda.",
+                    "npc_reaction": "Piedra. Do río. Guarda.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Ernesto",
-                    "line": "Forastero â€” tienes algo. En los ojos. Como los que escuchan la tierra.",
-                    "translation": "Forasteiro â€” vocÃª tem algo. Nos olhos. Como os que escutam a terra.",
+                    "line": "Forastero — tienes algo. En los ojos. Como los que escuchan la tierra.",
+                    "translation": "Forasteiro — você tem algo. Nos olhos. Como os que escutam a terra.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª nÃ£o entendeu completamente. Mas 'tienes algo' ficou claro o suficiente â€” ele estava dizendo que vocÃª tem algo.",
+                    "text": "Você não entendeu completamente. Mas 'tienes algo' ficou claro o suficiente — ele estava dizendo que você tem algo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Ernesto â€” Â¿quÃ© dices?",
-                    "translation": "Ernesto â€” o que vocÃª estÃ¡ dizendo?",
+                    "line": "Ernesto — ¿qué dices?",
+                    "translation": "Ernesto — o que você está dizendo?",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Ernesto",
-                    "line": "Nada. Buenos dÃ­as, Miguel. Forastero.",
+                    "line": "Nada. Buenos días, Miguel. Forastero.",
                     "translation": "Nada. Bom dia, Miguel. Forasteiro.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Ernesto pegou o machado e foi embora pela margem. NÃ£o olhou pra trÃ¡s.",
+                    "text": "Ernesto pegou o machado e foi embora pela margem. Não olhou pra trás.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel ficou quieto olhando Ernesto ir embora. Depois te olhou. 'Â¿EstÃ¡s bien?' â€” como vocÃª estÃ¡?",
+                    "question": "Don Miguel ficou quieto olhando Ernesto ir embora. Depois te olhou. '¿Estás bien?' — como você está?",
                     "options": [
                         {"id": "a", "text": "Bien... pero raro"},
                         {"id": "b", "text": "Mal"},
@@ -639,39 +639,39 @@ SECTIONS = [
                         {"id": "d", "text": "No hay agua"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Bien. Ernesto Ã© assim â€” fala coisas, vai embora. NÃ£o se preocupa.",
+                    "npc_reaction": "Bien. Ernesto é assim — fala coisas, vai embora. Não se preocupa.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª estÃ¡ segurando a pedra do rÃ­o. Don Miguel aponta pra ela: 'Â¿QuÃ© tienes ahÃ­?' VocÃª olha e responde:",
+                    "question": "Você está segurando a pedra do río. Don Miguel aponta pra ela: '¿Qué tienes ahí?' Você olha e responde:",
                     "options": [
-                        {"id": "a", "text": "Una piedra del rÃ­o"},
+                        {"id": "a", "text": "Una piedra del río"},
                         {"id": "b", "text": "Una flor del campo"},
                         {"id": "c", "text": "Pan de Rosa"},
-                        {"id": "d", "text": "Agua del rÃ­o"},
+                        {"id": "d", "text": "Agua del río"},
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Piedra del rÃ­o. Guarda. Ernesto nÃ£o dÃ¡ coisas pra qualquer um.",
+                    "npc_reaction": "Piedra del río. Guarda. Ernesto não dá coisas pra qualquer um.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Don Miguel joga o saco nas costas. O sol jÃ¡ estÃ¡ mais alto â€” "
-                        "hora de voltar. VocÃª pÃ´s a pedra no bolso. Ela estava fria "
-                        "ainda. VocÃª se perguntou o que Ernesto quis dizer."
+                        "Don Miguel joga o saco nas costas. O sol já está mais alto — "
+                        "hora de voltar. Você pôs a pedra no bolso. Ela estava fria "
+                        "ainda. Você se perguntou o que Ernesto quis dizer."
                     ),
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃ¡culo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Voltando ao pueblo pelo campo. Don Miguel vai na frente, vocÃª fica pra trÃ¡s
-    # cansado. Dois trabalhadores do campo te abordam â€” curiosos com o forasteiro.
-    # VocÃª tem que usar tudo que aprendeu pra se apresentar e explicar o que hÃ¡
-    # no campo. SeÃ§Ã£o gated â€” errar trava.
+    # ── Seção 6: Obstáculo ────────────────────────────────────────────────────
+    # Voltando ao pueblo pelo campo. Don Miguel vai na frente, você fica pra trás
+    # cansado. Dois trabalhadores do campo te abordam — curiosos com o forasteiro.
+    # Você tem que usar tudo que aprendeu pra se apresentar e explicar o que há
+    # no campo. Seção gated — errar trava.
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -679,92 +679,92 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "Ernesto foi embora. VocÃªs comeram o pÃ£o seco do saco de Miguel "
-                    "Ã  beira do rÃ­o. Depois Don Miguel se levantou. 'Vamos voltando.'\n\n"
-                    "O caminho de volta Ã© longo e o sol esquentou. Don Miguel caminhou "
-                    "mais rÃ¡pido â€” conversando com ele mesmo, em espanhol, sobre as "
-                    "plantas do campo. VocÃª ficou pra trÃ¡s."
+                    "Ernesto foi embora. Vocês comeram o pão seco do saco de Miguel "
+                    "à beira do río. Depois Don Miguel se levantou. 'Vamos voltando.'\n\n"
+                    "O caminho de volta é longo e o sol esquentou. Don Miguel caminhou "
+                    "mais rápido — conversando com ele mesmo, em espanhol, sobre as "
+                    "plantas do campo. Você ficou pra trás."
                 ),
-                "now": "VocÃª estÃ¡ sozinho no caminho. Dois trabalhadores do campo se aproximam.",
+                "now": "Você está sozinho no caminho. Dois trabalhadores do campo se aproximam.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ¾ Caminho de terra. Don Miguel Ã© um ponto distante lÃ¡ na frente. Dois homens com enxadas param na sua frente â€” curiosos.",
+                    "text": "🌾 Caminho de terra. Don Miguel é um ponto distante lá na frente. Dois homens com enxadas param na sua frente — curiosos.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 1",
-                    "line": "Â¡Hola! Â¿Eres el forastero nuevo?",
-                    "translation": "OlÃ¡! VocÃª Ã© o forasteiro novo?",
+                    "line": "¡Hola! ¿Eres el forastero nuevo?",
+                    "translation": "Olá! Você é o forasteiro novo?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 1",
-                    "question": "O homem perguntou 'Â¡Hola!' e quer saber quem vocÃª Ã©. O que vocÃª responde primeiro?",
+                    "question": "O homem perguntou '¡Hola!' e quer saber quem você é. O que você responde primeiro?",
                     "options": [
-                        {"id": "a", "text": "Â¡Hola! SÃ­, soy el forastero"},
+                        {"id": "a", "text": "¡Hola! Sí, soy el forastero"},
                         {"id": "b", "text": "No hay pan"},
                         {"id": "c", "text": "Tengo sed"},
                         {"id": "d", "text": "Buenos noches"},
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "O homem ri. 'SabÃ­amos que ia aparecer um forasteiro. Miguel falou.' ",
+                    "npc_reaction": "O homem ri. 'Sabíamos que ia aparecer um forasteiro. Miguel falou.' ",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 2",
-                    "line": "Â¿Y cÃ³mo te llamas?",
-                    "translation": "E como vocÃª se chama?",
+                    "line": "¿Y cómo te llamas?",
+                    "translation": "E como você se chama?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 2",
-                    "question": "O segundo homem quer saber seu nome. VocÃª responde:",
+                    "question": "O segundo homem quer saber seu nome. Você responde:",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Bien, gracias"},
-                        {"id": "c", "text": "Hay Ã¡rboles"},
+                        {"id": "c", "text": "Hay árboles"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "'Ah! Mucho gusto.' Os dois inclinam a cabeÃ§a.",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "'Ah! Mucho gusto.' Os dois inclinam a cabeça.",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 1",
-                    "line": "Â¿Y por acÃ¡ â€” hay algo especial? Â¿Viste el rÃ­o?",
-                    "translation": "E por aqui â€” tem algo especial? VocÃª viu o rÃ­o?",
+                    "line": "¿Y por acá — hay algo especial? ¿Viste el río?",
+                    "translation": "E por aqui — tem algo especial? Você viu o río?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 1",
-                    "question": "VocÃª acabou de passar o dia no rÃ­o. VocÃª viu muita coisa. O que hÃ¡ por lÃ¡?",
+                    "question": "Você acabou de passar o dia no río. Você viu muita coisa. O que há por lá?",
                     "options": [
-                        {"id": "a", "text": "Hay Ã¡rboles, piedras y agua"},
+                        {"id": "a", "text": "Hay árboles, piedras y agua"},
                         {"id": "b", "text": "No hay nada"},
                         {"id": "c", "text": "Hay pan y posada"},
-                        {"id": "d", "text": "No hay Ã¡rboles"},
+                        {"id": "d", "text": "No hay árboles"},
                     ],
                     "correct": "a",
-                    "word_id": "es_arbol", "target": "Ã¡rbol", "native": "Ã¡rvore",
-                    "npc_reaction": "Os dois assentem. 'Siempre hay Ã¡rboles y piedras en el rÃ­o. Claro.'",
+                    "word_id": "es_arbol", "target": "árbol", "native": "árvore",
+                    "npc_reaction": "Os dois assentem. 'Siempre hay árboles y piedras en el río. Claro.'",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 2",
-                    "line": "Â¿CÃ³mo estÃ¡s, forastero? El sol estÃ¡ fuerte hoy.",
-                    "translation": "Como vocÃª estÃ¡, forasteiro? O sol estÃ¡ forte hoje.",
+                    "line": "¿Cómo estás, forastero? El sol está fuerte hoy.",
+                    "translation": "Como você está, forasteiro? O sol está forte hoje.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 2",
-                    "question": "VocÃª caminhou bastante, bebeu do rÃ­o, ainda tem a pedra no bolso. Como vocÃª estÃ¡?",
+                    "question": "Você caminhou bastante, bebeu do río, ainda tem a pedra no bolso. Como você está?",
                     "options": [
                         {"id": "a", "text": "Bien, gracias"},
                         {"id": "b", "text": "Mal"},
@@ -773,27 +773,27 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "'Â¡Bien! Eso es.' Os dois riem. 'Bem-vindo ao campo, forastero.'",
+                    "npc_reaction": "'¡Bien! Eso es.' Os dois riem. 'Bem-vindo ao campo, forastero.'",
                     "gated": True,
                 },
                 {
                     "kind": "narrative",
-                    "text": "Os dois levantam as enxadas e seguem caminho. Don Miguel jÃ¡ parou pra te esperar lÃ¡ na frente.",
+                    "text": "Os dois levantam as enxadas e seguem caminho. Don Miguel já parou pra te esperar lá na frente.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Â¡Forastero! Â¿QuÃ© pasÃ³? Â¿EstÃ¡s bien?",
-                    "translation": "Forasteiro! O que aconteceu? EstÃ¡ bem?",
+                    "line": "¡Forastero! ¿Qué pasó? ¿Estás bien?",
+                    "translation": "Forasteiro! O que aconteceu? Está bem?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel voltou pra te esperar, preocupado. Mas vocÃª se virou bem. Como vocÃª responde?",
+                    "question": "Don Miguel voltou pra te esperar, preocupado. Mas você se virou bem. Como você responde?",
                     "options": [
-                        {"id": "a", "text": "SÃ­ â€” me presentÃ© solo"},
-                        {"id": "b", "text": "Mal â€” tengo miedo"},
+                        {"id": "a", "text": "Sí — me presenté solo"},
+                        {"id": "b", "text": "Mal — tengo miedo"},
                         {"id": "c", "text": "No hay nada"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
@@ -804,9 +804,9 @@ SECTIONS = [
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs voltaram ao pueblo com o sol se pondo. VocÃª com a "
-                        "pedra do rÃ­o no bolso â€” fria ainda, lisa, pesada.\n\n"
-                        "VocÃª se perguntou o que Ernesto quis dizer com 'tienes algo "
+                        "Vocês voltaram ao pueblo com o sol se pondo. Você com a "
+                        "pedra do río no bolso — fria ainda, lisa, pesada.\n\n"
+                        "Você se perguntou o que Ernesto quis dizer com 'tienes algo "
                         "en los ojos'. E o que eram 'los que escuchan la tierra'."
                     ),
                 },
@@ -816,4 +816,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

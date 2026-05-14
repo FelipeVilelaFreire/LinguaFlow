@@ -70,7 +70,8 @@ class StudyDayViewSet(viewsets.ReadOnlyModelViewSet):
                 lesson__phrases__target_language=goal.target_language,
                 lesson__phrases__difficulty=goal.target_level,
             ).distinct()
-        study_day = queryset.filter(day_number=day_number).first() or queryset.filter(is_active=True).first()
+        active_queryset = queryset.filter(is_active=True)
+        study_day = active_queryset.filter(day_number=day_number).first() or active_queryset.first()
         if not study_day:
             return Response({"detail": "No active study day found."}, status=404)
         return Response(self.get_serializer(study_day).data)

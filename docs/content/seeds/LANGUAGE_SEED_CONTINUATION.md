@@ -11,7 +11,18 @@ Create full adventure seeds for:
 
 The new seeds must not be short scaffolds. They must follow the Spanish ES A1 T1 seed as the editorial matrix.
 
+Read `docs/content/seeds/ES_CANON_ADAPTATION.md` before continuing. It defines the hierarchy: ES A1 T1 is the operational canon; other languages are controlled adaptations of that canon.
+
 ## Core Rule
+
+ES is the pillar. Target languages must copy the ES narrative structure, item structure, boss structure, character-role timing, and phase density. Only local names, cultural flavor, item flavor, target vocabulary, and teaching method change.
+
+The teaching method must follow the language pair:
+
+- `pt -> it`: Portuguese support/narration, Italian NPC speech/exercises, Italian A1 grammar pacing.
+- `en -> de`: English support/narration, German NPC speech/exercises, German A1 grammar pacing.
+
+Do not copy Spanish grammar topics blindly. Keep the ES story rhythm, but build the target-language grammar map correctly.
 
 For each target phase file, open the matching Spanish file:
 
@@ -37,6 +48,8 @@ The target file must keep comparable density:
 - review loops
 - transition beats
 - same narrative arc
+- same item moments with valid backend tags
+- same boss/reward shape
 
 Do not generate a small generic phase. A 45k-character ES phase should not become a 5k-character target phase.
 
@@ -52,13 +65,73 @@ backend/apps/adventure/seeds/it/phases/f04.py
 backend/apps/adventure/seeds/it/phases/f05.py
 ```
 
-These were rebuilt from the Spanish `f01`-`f05` matrix and are now roughly the same size/depth as ES:
+Italian module 2 is expanded:
+
+```text
+backend/apps/adventure/seeds/it/phases/f06.py
+backend/apps/adventure/seeds/it/phases/f07.py
+backend/apps/adventure/seeds/it/phases/f08.py
+backend/apps/adventure/seeds/it/phases/f09.py
+backend/apps/adventure/seeds/it/phases/f10.py
+```
+
+Italian module 3 is expanded:
+
+```text
+backend/apps/adventure/seeds/it/phases/f11.py
+backend/apps/adventure/seeds/it/phases/f12.py
+backend/apps/adventure/seeds/it/phases/f13.py
+backend/apps/adventure/seeds/it/phases/f14.py
+backend/apps/adventure/seeds/it/phases/f15.py
+```
+
+Italian module 4 is expanded:
+
+```text
+backend/apps/adventure/seeds/it/phases/f16.py
+backend/apps/adventure/seeds/it/phases/f17.py
+backend/apps/adventure/seeds/it/phases/f18.py
+backend/apps/adventure/seeds/it/phases/f19.py
+backend/apps/adventure/seeds/it/phases/f20.py
+```
+
+Italian module 5 is expanded:
+
+```text
+backend/apps/adventure/seeds/it/phases/f21.py
+backend/apps/adventure/seeds/it/phases/f22.py
+backend/apps/adventure/seeds/it/phases/f23.py
+backend/apps/adventure/seeds/it/phases/f24.py
+backend/apps/adventure/seeds/it/phases/f25.py
+```
+
+These were rebuilt from the Spanish `f01`-`f25` matrix and are now roughly the same size/depth as ES:
 
 - IT `f01` ~47k
 - IT `f02` ~48k
 - IT `f03` ~45k
 - IT `f04` ~44k
 - IT `f05` ~45k
+- IT `f06` ~54k
+- IT `f07` ~54k
+- IT `f08` ~64k
+- IT `f09` ~59k
+- IT `f10` ~62k
+- IT `f11` ~45k
+- IT `f12` ~47k
+- IT `f13` ~48k
+- IT `f14` ~49k
+- IT `f15` ~46k
+- IT `f16` ~45k
+- IT `f17` ~47k
+- IT `f18` ~48k
+- IT `f19` ~48k
+- IT `f20` ~48k
+- IT `f21` ~22k
+- IT `f22` ~18k
+- IT `f23` ~18k
+- IT `f24` ~19k
+- IT `f25` ~24k, with an expanded boss ending and T2 north-road hook
 
 Basic cleanup already done:
 
@@ -71,14 +144,15 @@ Basic cleanup already done:
 
 ## What Still Needs Work
 
-Continue Italian in 5-phase modules:
+Italian T1 is complete through `f25`.
 
-```text
-it f06-f10
-it f11-f15
-it f16-f20
-it f21-f25
-```
+German has now been rebuilt with the same operational rule:
+
+- ES A1 T1 remains the matrix.
+- DE is `en -> de`: English support/narration, German target speech/exercises.
+- All 25 DE phase files are materialized and no longer short 6-7k scaffolds.
+- DE was expanded again for density: current phase files average about 34.7k chars, with item-heavy phases around 54k-56k chars and final-season phases around 18k-35k chars.
+- DE keeps 6 sections per phase, the same T1 canon milestones, mapped mochila/item moments, boss/reward shape, and T2 north-road hook.
 
 Important Italian character mapping:
 
@@ -99,7 +173,12 @@ ES James/future     -> IT Mateusz
 ES Catalina/future  -> IT Sally
 ```
 
-After Italian is complete, redo German the same way:
+Known Italian editorial cleanup still useful before calling IT fully polished:
+
+- Some minor NPC names in phase text still look like ES/PT leftovers and need editorial cleanup.
+- F25 has the right boss/hook shape, but can still receive a final Italian editorial polish pass.
+
+German phase files now rebuilt:
 
 ```text
 de f01-f05
@@ -109,7 +188,7 @@ de f16-f20
 de f21-f25
 ```
 
-German currently exists but is still a summarized scaffold compared with ES. It must be expanded phase-by-phase from the ES matrix.
+German is no longer the summarized scaffold version. It is structurally aligned with ES/IT, including 25 phases, 150 sections, 13 characters, 74 phrases, 48 chest items, 15 chest phases, 2 boss rewards, and mochila moments in F4/F7/F9/F12/F13/F21/F23/F24. Future editorial passes can still improve individual lines and idiomatic German.
 
 ## German Notes
 
@@ -127,6 +206,8 @@ German must be adapted for `en -> de`, so:
   - modal verbs
   - separable verbs
   - perfect/simple past exposure
+
+German must not be treated as a direct Portuguese-to-Italian style adaptation. The source/help language is English, so all narration, explanations, bridge help, and translations must be English.
 
 German character mapping currently used:
 
@@ -165,9 +246,15 @@ When changing seed-generation rules, update:
 
 ## Validation Status
 
-Python/Django validation was not run in this environment because Python is not installed/configured here.
+Latest local validation:
 
-When available, run from `backend/`:
+- `python -m py_compile` passed for DE `content.py`, `chapter.py`, and all `phases/f01.py` through `f25.py`.
+- `backend/.venv/Scripts/python.exe manage.py check` passed.
+- `backend/.venv/Scripts/python.exe manage.py migrate` was run because the local SQLite database was missing inventory columns.
+- `backend/.venv/Scripts/python.exe manage.py seed_de` passed after the second DE expansion.
+- `backend/.venv/Scripts/python.exe manage.py seed_de_sections --reset` passed after the second DE expansion and created 150 sections.
+
+Useful commands from `backend/`:
 
 ```bat
 py manage.py check

@@ -1,40 +1,40 @@
 """
-Seed das 6 seÃ§Ãµes da Fase 5 Italiano A1 â€” "La Prima Scintilla".
+Seed das 6 seções da Fase 5 Italiano A1 — "La Prima Scintilla".
 
-Algo estÃ errado no borgo. La Guardia â€” o homem do chapÃ©u baixo
-visto em F2 e F4 â€” age mais abertamente. Antonio comeÃ§a a preparar o
+Algo est? errado no borgo. La Guardia — o homem do chapéu baixo
+visto em F2 e F4 — age mais abertamente. Antonio começa a preparar o
 protagonista. E na S6, sozinho numa rua escura, o protagonista usa uma
-palavra pela primeira vez de verdade â€” fuoco â€” e ela se torna fÃ­sica.
+palavra pela primeira vez de verdade — fuoco — e ela se torna física.
 
-Esta Ã© a primeira apariÃ§Ã£o de La Palabra Viva. NÃ£o Ã© herÃ³ica. Ã‰ acidental,
+Esta é a primeira aparição de La Palabra Viva. Não é heróica. É acidental,
 aterrorizante, e muda tudo.
 
 REGRA DO SISTEMA DE PODER:
-Acertar a palavra â‰  matar o inimigo.
+Acertar a palavra ≠ matar o inimigo.
 Acertar a palavra = entendeu de verdade = a palavra se torna real = poder manifesto.
-DEPOIS, com o poder em mÃ£os, o protagonista pode agir.
-Nunca: "vocÃª acertou, portanto venceu." Sempre: "vocÃª acertou â†’ poder ganho â†’ vocÃª escolhe."
+DEPOIS, com o poder em mãos, o protagonista pode agir.
+Nunca: "você acertou, portanto venceu." Sempre: "você acertou → poder ganho → você escolhe."
 
 Novos vocab (3): paura · fuoco · correre
-RevisÃ£o F1â€“F4: ciao, buongiorno, grazie, bene/male, mi chiamo, straniero,
-               c'e/non c'e, pane, acqua, Ãrbol, pietra, mela, tre, molto/poco
-NPC principal:   Antonio (fio condutor â€” mais sÃ©rio a partir daqui)
-NPC antagonista: La Guardia (agente â€” confronto na S6)
-Arco emocional:  seguro â†’ ameaÃ§ado â†’ poder acidental â†’ assustado com si mesmo
-TransiÃ§Ã£o:       Nico olha pro protagonista de um jeito diferente. A fase seguinte
-                 comeÃ§a com uma conversa sÃ©ria.
+Revisão F1–F4: ciao, buongiorno, grazie, bene/male, mi chiamo, straniero,
+               c'e/non c'e, pane, acqua, ?rbol, pietra, mela, tre, molto/poco
+NPC principal:   Antonio (fio condutor — mais sério a partir daqui)
+NPC antagonista: La Guardia (agente — confronto na S6)
+Arco emocional:  seguro → ameaçado → poder acidental → assustado com si mesmo
+Transição:       Nico olha pro protagonista de um jeito diferente. A fase seguinte
+                 começa com uma conversa séria.
 
-PrÃ©-requisito: python manage.py seed_it
+Pré-requisito: python manage.py seed_it
 Uso:           python manage.py seed_it_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
     # Tarde fechada. Nico mais quieto que o normale. Leva o protagonista por
-    # uma rota diferente â€” ruas menos movimentadas. Mostra algo no caminho:
-    # uma fogueira de oleiros, crianÃ§as corrindo com medo de cachorro.
-    # Vocab (paura/fuoco/correre) aparece sem traduÃ§Ã£o â€” imersÃ£o.
+    # uma rota diferente — ruas menos movimentadas. Mostra algo no caminho:
+    # uma fogueira de oleiros, crianças corrindo com medo de cachorro.
+    # Vocab (paura/fuoco/correre) aparece sem tradução — imersão.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -43,9 +43,9 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ† Tarde fechada em Santa Chiara. Nuvens pesadas, sem sol. "
+                        "🌆 Tarde fechada em Santa Chiara. Nuvens pesadas, sem sol. "
                         "Antonio chegou na locanda mais cedo que o normale e te chamou "
-                        "sem explicaÃ§Ã£o â€” 'Vem.' Uma rota diferente pelo borgo."
+                        "sem explicação — 'Vem.' Uma rota diferente pelo borgo."
                     ),
                 },
                 {
@@ -56,11 +56,11 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª seguiu sem perguntar. O tom dele era diferente â€” nÃ£o amigÃvel, nÃ£o preocupado. Alerta.",
+                    "text": "Você seguiu sem perguntar. O tom dele era diferente — não amig?vel, não preocupado. Alerta.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸ”¥ Num beco lateral, um grupo de oleiros mantÃ©m uma fogueira grande â€” fumaÃ§a escura subindo pelo beco.",
+                    "text": "🔥 Num beco lateral, um grupo de oleiros mantém uma fogueira grande — fumaça escura subindo pelo beco.",
                 },
                 {
                     "kind": "npc",
@@ -70,7 +70,7 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "Fuoco. A chama era enorme, quente, barulhenta. VocÃª ficou parado olhando.",
+                    "text": "Fuoco. A chama era enorme, quente, barulhenta. Você ficou parado olhando.",
                 },
                 {
                     "kind": "npc",
@@ -80,21 +80,21 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª nÃ£o tinha a palavra ainda. Mas o cheiro, o calor, o som â€” algo no fogo te puxava.",
+                    "text": "Você não tinha a palavra ainda. Mas o cheiro, o calor, o som — algo no fogo te puxava.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸƒ TrÃªs crianÃ§as dobram a esquina gritando â€” um cachorro latindo atrÃs. Elas corrim, rindo de susto.",
+                    "text": "?? Três crianças dobram a esquina gritando — um cachorro latindo atr?s. Elas correm, rindo de susto.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Antonio",
-                    "line": "Corrin! El cane solo ladra â€” no muerde. Pero el paura hace correre igual.",
+                    "line": "Corrin! El cane solo ladra — no muerde. Pero el paura hace correre igual.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "Corrin. Paura. Duas palavras novas num segundo. O cachorro passou pelo lado de vocÃªs sem parar.",
+                    "text": "Corrin. Paura. Duas palavras novas num segundo. O cachorro passou pelo lado de vocês sem parar.",
                 },
             ],
             "exercises": [
@@ -106,21 +106,21 @@ SECTIONS = [
                         {"id": "a", "text": "Fuoco"},
                         {"id": "b", "text": "Acqua"},
                         {"id": "c", "text": "Pietra"},
-                        {"id": "d", "text": "Ãrbol"},
+                        {"id": "d", "text": "Árbol"},
                     ],
                     "correct": "a",
                     "word_id": "it_fuoco", "target": "fuoco", "native": "fogo",
-                    "npc_reaction": "Fuoco. Quente. NÃ£o avisa â€” sÃ³ aparece.",
+                    "npc_reaction": "Fuoco. Quente. Não avisa — só aparece.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "As crianÃ§as viram o cachorro e saÃ­ram disparadas â€” pernas rÃpidas, gritos. O que elas fizeram?",
+                    "question": "As crianças viram o cachorro e saíram disparadas — pernas r?pidas, gritos. O que elas fizeram?",
                     "options": [
-                        {"id": "a", "text": "Corrieron â€” elas correream"},
-                        {"id": "b", "text": "Comieron â€” elas comeram"},
-                        {"id": "c", "text": "Cantaron â€” elas cantaram"},
-                        {"id": "d", "text": "Durmieron â€” elas dorguardam"},
+                        {"id": "a", "text": "Corrieron — elas correream"},
+                        {"id": "b", "text": "Comieron — elas comeram"},
+                        {"id": "c", "text": "Cantaron — elas cantaram"},
+                        {"id": "d", "text": "Durmieron — elas dorguardam"},
                     ],
                     "correct": "a",
                     "word_id": "it_correre", "target": "correre", "native": "correre",
@@ -129,7 +129,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio disse que o paura faz as crianÃ§as correre mesmo sem perigo real. O que Ã© 'paura'?",
+                    "question": "Antonio disse que o paura faz as crianças correre mesmo sem perigo real. O que é 'paura'?",
                     "options": [
                         {"id": "a", "text": "Medo"},
                         {"id": "b", "text": "Alegria"},
@@ -138,12 +138,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Todo mundo tem. O que importa Ã© o que vocÃª faz com ele.",
+                    "npc_reaction": "Paura. Todo mundo tem. O que importa é o que você faz com ele.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio para, olha ao redor, e diz 'Non mi piace il borgo oggi'. Como vocÃª estÃ se sentindo?",
+                    "question": "Antonio para, olha ao redor, e diz 'Non mi piace il borgo oggi'. Como você est? se sentindo?",
                     "options": [
                         {"id": "a", "text": "Un poco de paura"},
                         {"id": "b", "text": "Bene, grazie"},
@@ -152,15 +152,15 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Bom â€” o paura avisa. Escuta ele.",
+                    "npc_reaction": "Paura. Bom — o paura avisa. Escuta ele.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Antonio leva o protagonista por um caminho mais seguro â€” perto da
-    # iglesia. RevisÃ£o F1â€“F4 com contexto de tensÃ£o crescente.
+    # ── Seção 2: Revisão SRS ──────────────────────────────────────────────────
+    # Antonio leva o protagonista por um caminho mais seguro — perto da
+    # iglesia. Revisão F1–F4 com contexto de tensão crescente.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
@@ -168,31 +168,31 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "VocÃªs saÃ­ram do beco das fogueiras. Antonio caminha perto, "
-                    "mais de perto que de costume. VocÃª aprendeu 'fuoco', 'correre' "
-                    "e 'paura' pela observaÃ§Ã£o â€” sem liÃ§Ã£o.\n\n"
-                    "As outras palavras estÃ£o lÃ: ciao, buongiorno, grazie, bene, "
-                    "ho fame, ho sete, c'e, Ãrbol, pietra, mela, tre, "
-                    "molto, poco. Antonio continua te testando â€” mesmo com esse humor."
+                    "Vocês saíram do beco das fogueiras. Antonio caminha perto, "
+                    "mais de perto que de costume. Você aprendeu 'fuoco', 'correre' "
+                    "e 'paura' pela observação — sem lição.\n\n"
+                    "As outras palavras estão l?: ciao, buongiorno, grazie, bene, "
+                    "ho fame, ho sete, c'e, ?rbol, pietra, mela, tre, "
+                    "molto, poco. Antonio continua te testando — mesmo com esse humor."
                 ),
-                "now": "RevisÃ£o das fases anteriores num contexto mais tenso.",
+                "now": "Revisão das fases anteriores num contexto mais tenso.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Antonio para na sombra da iglesia. Olha a praÃ§a vazia. Uma vela dentro pela janela.",
+                    "text": "Antonio para na sombra da iglesia. Olha a praça vazia. Uma vela dentro pela janela.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Enquanto caminhamos â€” vamos revisar. O que vocÃª aprendeu que pode ajudar agora?",
-                    "translation": "Enquanto caminhamos â€” vamos revisar. O que vocÃª aprendeu que pode ajudar agora?",
+                    "line": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
+                    "translation": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Um homem desconhecido para na outra ponta da rua e olha pra vocÃªs. Como vocÃª cumprimenta â€” Ã© de tarde:",
+                    "question": "Um homem desconhecido para na outra ponta da rua e olha pra vocês. Como você cumprimenta — é de tarde:",
                     "options": [
                         {"id": "a", "text": "Buonasera!"},
                         {"id": "b", "text": "Buongiorno!"},
@@ -201,18 +201,18 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_buenas_tardes", "target": "buonasera", "native": "boa tarde",
-                    "npc_reaction": "Buonasera. O homem nÃ£o respondeu. Seguiu em frente.",
+                    "npc_reaction": "Buonasera. O homem não respondeu. Seguiu em frente.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Y si alguien nuevo llega al borgo y pregunta tu nombre?",
-                    "translation": "E se alguÃ©m novo chegar ao borgo e perguntar seu nome?",
+                    "translation": "E se alguém novo chegar ao borgo e perguntar seu nome?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Um straniero novo para perto de vocÃªs: 'Come ti chiami?' VocÃª responde:",
+                    "question": "Um straniero novo para perto de vocês: 'Come ti chiami?' Você responde:",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Ho paura"},
@@ -220,28 +220,28 @@ SECTIONS = [
                         {"id": "d", "text": "Buongiorno"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Mi chiamo. Sempre diga seu nome â€” nÃ£o esconde.",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
+                    "npc_reaction": "Mi chiamo. Sempre diga seu nome — não esconde.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "QuÃ© habÃ­a ayer en il campo â€” cerca del rÃ­o?",
-                    "translation": "O que havia ontem no campo â€” perto do rÃ­o?",
+                    "line": "Qué había ayer en il campo — cerca del río?",
+                    "translation": "O que havia ontem no campo — perto do río?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "No campo ontem havia Ãrvores, pedras e o rÃ­o. Antonio: 'C'e Ãrboles cerca del rÃ­o?'",
+                    "question": "No campo ontem havia ?rvores, pedras e o río. Antonio: 'C'e ?rboles cerca del río?'",
                     "options": [
-                        {"id": "a", "text": "SÃ­, c'e Ãrboles y pietre"},
+                        {"id": "a", "text": "Sí, c'e ?rboles y pietre"},
                         {"id": "b", "text": "Non c'e nada"},
                         {"id": "c", "text": "C'e fuoco"},
                         {"id": "d", "text": "C'e mele"},
                     ],
                     "correct": "a",
-                    "word_id": "it_arbol", "target": "Ãrbol", "native": "Ãrvore",
-                    "npc_reaction": "C'e Ãrboles. E pietre. E o velho Pietro.",
+                    "word_id": "it_arbol", "target": "?rbol", "native": "?rvore",
+                    "npc_reaction": "C'e ?rboles. E pietre. E o velho Pietro.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -255,19 +255,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_uno", "target": "uno", "native": "um",
-                    "npc_reaction": "Una. SÃ³ uma. Guarda pro caminho.",
+                    "npc_reaction": "Una. Só uma. Guarda pro caminho.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Y come stai â€” con todo esto?",
-                    "translation": "E como vocÃª estÃ â€” com tudo isso?",
+                    "line": "Y come stai — con todo esto?",
+                    "translation": "E como você est? — com tudo isso?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "O borgo estÃ estranho, Nico estÃ tenso, hÃ um homem que te observa hÃ dias. Como vocÃª estÃ?",
+                    "question": "O borgo est? estranho, Nico est? tenso, h? um homem que te observa h? dias. Como você est??",
                     "options": [
                         {"id": "a", "text": "Ho un poco de paura"},
                         {"id": "b", "text": "Bene, grazie"},
@@ -276,12 +276,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Normale. Eu tambÃ©m. Mas fica perto de mim.",
+                    "npc_reaction": "Paura. Normale. Eu também. Mas fica perto de mim.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pra fogueira dos oleiros ao longe. 'Che cosa c e laggiu?' VocÃª vÃª a chama:",
+                    "question": "Antonio aponta pra fogueira dos oleiros ao longe. 'Che cosa c e laggiu?' Você vê a chama:",
                     "options": [
                         {"id": "a", "text": "C'e fuoco"},
                         {"id": "b", "text": "C'e acqua"},
@@ -290,15 +290,15 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_fuoco", "target": "fuoco", "native": "fogo",
-                    "npc_reaction": "Fuoco. Distante â€” tudo bem. Longe do borgo â€” melhor.",
+                    "npc_reaction": "Fuoco. Distante — tudo bem. Longe do borgo — melhor.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: GramÃtica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Antonio para em frente Ã  iglesia e ensina o imperativo bÃsico:
-    # Corri! / Fermo! / Guarda! â€” verbos de aÃ§Ã£o urgente.
+    # ── Seção 3: Gram?tica Narrativa ───────────────────────────────────────────
+    # Antonio para em frente à iglesia e ensina o imperativo b?sico:
+    # Corri! / Fermo! / Guarda! — verbos de ação urgente.
     # Ele diz que o protagonista pode precisar entender ordens gritadas.
     {
         "section_number": 3,
@@ -307,9 +307,9 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "Antonio parou na frente da iglesia. Olhou pra vocÃª com "
-                    "aquela seriedade nova. 'Tem coisa que vocÃª precisa entender "
-                    "quando alguÃ©m grita. NÃ£o Ã© vocabulÃrio â€” Ã© sobrevivÃªncia.'"
+                    "Antonio parou na frente da iglesia. Olhou pra você com "
+                    "aquela seriedade nova. 'Tem coisa que você precisa entender "
+                    "quando alguém grita. Não é vocabul?rio — é sobrevivência.'"
                 ),
                 "now": "Antonio ensina comandos urgentes: Corri! Fermo! Guarda!",
             },
@@ -322,39 +322,39 @@ SECTIONS = [
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Se qualcuno grida 'Corri!', corri. Non chiedi. Corri.",
-                    "translation": "Se alguÃ©m gritar 'Corri!' â€” vocÃª corri. NÃ£o pergunta. Corri.",
+                    "translation": "Se alguém gritar 'Corri!' — você corri. Não pergunta. Corri.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Corri!",
-                    "meaning": "Corri! (imperativo â€” ordem imediata)",
-                    "note": "correre = correre | Corri! = ordem pra vocÃª correre agora",
+                    "meaning": "Corri! (imperativo — ordem imediata)",
+                    "note": "correre = correre | Corri! = ordem pra você correre agora",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Y si gritan 'Fermo!' â€” paras. Quieto. Sin moverse.",
-                    "translation": "E se gritarem 'Fermo!' â€” vocÃª para. Quieto. Sem se mover.",
+                    "line": "Y si gritan 'Fermo!' — paras. Quieto. Sin moverse.",
+                    "translation": "E se gritarem 'Fermo!' — você para. Quieto. Sem se mover.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Fermo!",
-                    "meaning": "Fermo! (imperativo â€” ordem pra parar imediatamente)",
-                    "note": "Oposto de Corri! â€” um te move, o outro te imobiliza",
+                    "meaning": "Fermo! (imperativo — ordem pra parar imediatamente)",
+                    "note": "Oposto de Corri! — um te move, o outro te imobiliza",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Y 'Guarda!' â€” alguien vuole que veas algo. Importante. Guardas.",
-                    "translation": "E 'Guarda!' â€” alguÃ©m quer que vocÃª veja algo. Importante. VocÃª olha.",
+                    "line": "Y 'Guarda!' — alguien vuole que veas algo. Importante. Guardas.",
+                    "translation": "E 'Guarda!' — alguém quer que você veja algo. Importante. Você olha.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Guarda!",
-                    "meaning": "Olha! / VÃª isso! (imperativo â€” ordem pra prestar atenÃ§Ã£o)",
+                    "meaning": "Olha! / Vê isso! (imperativo — ordem pra prestar atenção)",
                     "note": "guardar = olhar | Guarda! = olha agora",
                 },
                 {
@@ -366,16 +366,16 @@ SECTIONS = [
                         {"text": " · ",      "isKey": False},
                         {"text": "Guarda!",   "isKey": True},
                     ],
-                    "example": "Nico grita: Corri! â€” corris. Grita Fermo! â€” paras.",
-                    "translation": "Nico grita: Corri! â€” vocÃª corri. Grita Fermo! â€” vocÃª para.",
-                    "note": "NÃ£o traduz â€” sÃ³ age. O corpo entende antes da cabeÃ§a.",
+                    "example": "Nico grita: Corri! — corris. Grita Fermo! — paras.",
+                    "translation": "Nico grita: Corri! — você corri. Grita Fermo! — você para.",
+                    "note": "Não traduz — só age. O corpo entende antes da cabeça.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio grita repentinamente: 'Corri!' O que vocÃª faz?",
+                    "question": "Antonio grita repentinamente: 'Corri!' O que você faz?",
                     "options": [
-                        {"id": "a", "text": "Corro â€” sem perguntar"},
+                        {"id": "a", "text": "Corro — sem perguntar"},
                         {"id": "b", "text": "Fico parado esperando"},
                         {"id": "c", "text": "Pergunto o que aconteceu"},
                         {"id": "d", "text": "Falo 'buongiorno'"},
@@ -387,50 +387,50 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio sussurra 'Fermo!' no meio do caminho. VocÃª:",
+                    "question": "Antonio sussurra 'Fermo!' no meio do caminho. Você:",
                     "options": [
                         {"id": "a", "text": "Paro. Quieto. Escuto."},
                         {"id": "b", "text": "Continuo caminhando"},
-                        {"id": "c", "text": "ComeÃ§o a correre"},
+                        {"id": "c", "text": "Começo a correre"},
                         {"id": "d", "text": "Pergunto 'come stai?'"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Para. Quieto. Ele ouviu algo. VocÃª ouviu tambÃ©m â€” depois.",
+                    "npc_reaction": "Para. Quieto. Ele ouviu algo. Você ouviu também — depois.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
                     "question": "Antonio aponta pra uma sombra no fim da rua e sussurra 'Guarda!' O que ele quer?",
                     "options": [
-                        {"id": "a", "text": "Que eu olhe â€” ele viu algo"},
+                        {"id": "a", "text": "Que eu olhe — ele viu algo"},
                         {"id": "b", "text": "Que eu corra"},
                         {"id": "c", "text": "Que eu coma"},
                         {"id": "d", "text": "Que eu durma"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Guarda. VocÃª olhou. A sombra era sÃ³ uma crianÃ§a com uma vela.",
+                    "npc_reaction": "Guarda. Você olhou. A sombra era só uma criança com uma vela.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Um cachorro latiu do nada perto de vocÃªs â€” ruÃ­do alto. Antonio grita: 'Corri!' VocÃª:",
+                    "question": "Um cachorro latiu do nada perto de vocês — ruído alto. Antonio grita: 'Corri!' Você:",
                     "options": [
-                        {"id": "a", "text": "Corro â€” instinto antes de pensar"},
+                        {"id": "a", "text": "Corro — instinto antes de pensar"},
                         {"id": "b", "text": "Fico quieto com medo"},
                         {"id": "c", "text": "Cumprimento o cachorro"},
-                        {"id": "d", "text": "Pergunto o que Ã© 'corri'"},
+                        {"id": "d", "text": "Pergunto o que é 'corri'"},
                     ],
                     "correct": "a",
                     "word_id": "it_correre", "target": "correre", "native": "correre",
-                    "npc_reaction": "Corriu. Bom. O corpo aprendeu antes da cabeÃ§a.",
+                    "npc_reaction": "Corriu. Bom. O corpo aprendeu antes da cabeça.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: PrÃtica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Antonio treina o protagonista em situaÃ§Ãµes de urgÃªncia:
-    # reaÃ§Ã£o a comandos, uso de paura/fuoco/correre em frases.
+    # ── Seção 4: Pr?tica Aplicada ─────────────────────────────────────────────
+    # Antonio treina o protagonista em situações de urgência:
+    # reação a comandos, uso de paura/fuoco/correre em frases.
     {
         "section_number": 4,
         "section_type": "pratica_aplicada",
@@ -438,28 +438,28 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "Antonio te ensinou os trÃªs comandos que vocÃª vai ouvir quando "
-                    "as coisas ficarem feias: Corri!, Fermo!, Guarda!. E vocÃª aprendeu "
-                    "fuoco, paura, correre esta tarde â€” sem querer.\n\n"
-                    "'Agora vou ver se ficou.' Ele ainda estÃ muito sÃ©rio."
+                    "Antonio te ensinou os três comandos que você vai ouvir quando "
+                    "as coisas ficarem feias: Corri!, Fermo!, Guarda!. E você aprendeu "
+                    "fuoco, paura, correre esta tarde — sem querer.\n\n"
+                    "'Agora vou ver se ficou.' Ele ainda est? muito sério."
                 ),
-                "now": "PrÃtica rÃpida â€” situaÃ§Ãµes urgentes, respostas rÃpidas.",
+                "now": "Pr?tica r?pida — situações urgentes, respostas r?pidas.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Scena 1: C'e fuoco in una casa. Che fai?",
-                    "translation": "Cena 1: Tem fogo numa casa. O que vocÃª faz?",
+                    "translation": "Cena 1: Tem fogo numa casa. O que você faz?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "FumaÃ§a saindo pela janela de uma casa. Chamas visÃ­veis. O que vocÃª faz?",
+                    "question": "Fumaça saindo pela janela de uma casa. Chamas visíveis. O que você faz?",
                     "options": [
                         {"id": "a", "text": "Corro! Busco ayuda."},
-                        {"id": "b", "text": "Me quedo â€” c'e molto fuoco"},
+                        {"id": "b", "text": "Me quedo — c'e molto fuoco"},
                         {"id": "c", "text": "Ho fame"},
                         {"id": "d", "text": "Buongiorno"},
                     ],
@@ -470,7 +470,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª estÃ corrindo de uma ameaÃ§a. Seu coraÃ§Ã£o dispara, suas mÃ£os tremem. O que vocÃª sente?",
+                    "question": "Você est? corrindo de uma ameaça. Seu coração dispara, suas mãos tremem. O que você sente?",
                     "options": [
                         {"id": "a", "text": "Ho paura"},
                         {"id": "b", "text": "Ho fame"},
@@ -479,23 +479,23 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Normale. Mas o corpo corri mesmo com paura â€” lembra disso.",
+                    "npc_reaction": "Paura. Normale. Mas o corpo corri mesmo com paura — lembra disso.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Scena 2: Qualcuno grida 'Fermo!' detrÃs de ti. Che fai?",
-                    "translation": "Cena 2: AlguÃ©m grita 'Fermo!' atrÃs de vocÃª. O que faz?",
+                    "line": "Scena 2: Qualcuno grida 'Fermo!' detr?s de ti. Che fai?",
+                    "translation": "Cena 2: Alguém grita 'Fermo!' atr?s de você. O que faz?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "'PARA!' â€” grito atrÃs de vocÃª. O que vocÃª faz?",
+                    "question": "'PARA!' — grito atr?s de você. O que você faz?",
                     "options": [
                         {"id": "a", "text": "Paro. Imediatamente."},
-                        {"id": "b", "text": "Corro mais rÃpido"},
-                        {"id": "c", "text": "Pergunto quem estÃ gritando"},
+                        {"id": "b", "text": "Corro mais r?pido"},
+                        {"id": "c", "text": "Pergunto quem est? gritando"},
                         {"id": "d", "text": "Falo 'buongiorno'"},
                     ],
                     "correct": "a",
@@ -518,13 +518,13 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "El fuoco â€” molto o poco?",
-                    "translation": "O fogo â€” muito ou pouco?",
+                    "line": "El fuoco — molto o poco?",
+                    "translation": "O fogo — muito ou pouco?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "A fogueira dos oleiros Ã© enorme â€” chamas de dois metros, calor sentido de longe. O fuoco Ã©:",
+                    "question": "A fogueira dos oleiros é enorme — chamas de dois metros, calor sentido de longe. O fuoco é:",
                     "options": [
                         {"id": "a", "text": "Molto fuoco"},
                         {"id": "b", "text": "Poco fuoco"},
@@ -533,12 +533,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_molto", "target": "molto", "native": "muito",
-                    "npc_reaction": "Molto fuoco. Longe Ã© bonito. Perto â€” perigo.",
+                    "npc_reaction": "Molto fuoco. Longe é bonito. Perto — perigo.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª estÃ com medo de alguma coisa mas nÃ£o sabe nomear bem. Antonio olha: 'Stai bene?' VocÃª responde honestamente:",
+                    "question": "Você est? com medo de alguma coisa mas não sabe nomear bem. Antonio olha: 'Stai bene?' Você responde honestamente:",
                     "options": [
                         {"id": "a", "text": "No... ho paura"},
                         {"id": "b", "text": "Bene, grazie"},
@@ -547,7 +547,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Eu tambÃ©m. Isso significa que estamos prestando atenÃ§Ã£o.",
+                    "npc_reaction": "Paura. Eu também. Isso significa que estamos prestando atenção.",
                 },
                 {
                     "kind": "npc_speak",
@@ -560,10 +560,10 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Noite. Locanda. Antonio estÃ mais sÃ©rio que nunca. Ele faz o protagonista
-    # revisar tudo â€” as palavras do comeÃ§o e as novas de hoje. A narrativa Ã© mais
-    # pesada. VocÃª percebe que ele estÃ te preparando pra algo.
+    # ── Seção 5: Reforço ───────────────────────────────────────────────────────
+    # Noite. Locanda. Antonio est? mais sério que nunca. Ele faz o protagonista
+    # revisar tudo — as palavras do começo e as novas de hoje. A narrativa é mais
+    # pesada. Você percebe que ele est? te preparando pra algo.
     {
         "section_number": 5,
         "section_type": "reforco",
@@ -571,30 +571,30 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "VocÃªs voltaram pra locanda com o sol se pondo. Antonio trancou "
-                    "a porta da locanda por dentro â€” algo que nÃ£o fazia antes.\n\n"
+                    "Vocês voltaram pra locanda com o sol se pondo. Antonio trancou "
+                    "a porta da locanda por dentro — algo que não fazia antes.\n\n"
                     "Sentaram na mesa de madeira com uma vela no meio. Ele te olhou "
-                    "direto. 'O homem que Bianca me contou â€” eu vi ele hoje. Ele "
-                    "sabe onde vocÃª dorme.'"
+                    "direto. 'O homem que Bianca me contou — eu vi ele hoje. Ele "
+                    "sabe onde você dorme.'"
                 ),
-                "now": "Antonio faz uma revisÃ£o final â€” como se fosse a Ãºltima antes de algo acontecer.",
+                "now": "Antonio faz uma revisão final — como se fosse a última antes de algo acontecer.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "A vela tremeu com um vento de baixo da porta. Antonio nÃ£o se mexeu.",
+                    "text": "A vela tremeu com um vento de baixo da porta. Antonio não se mexeu.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Ultimo ripasso prima di dormire. Devo sapere che lo sai.",
-                    "translation": "Ãšltima revisÃ£o antes de dormir. Preciso saber que vocÃª tem isso.",
+                    "translation": "Última revisão antes de dormir. Preciso saber que você tem isso.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pra vocÃª: 'Se qualcuno chiede chi sei, dici...'",
+                    "question": "Antonio aponta pra você: 'Se qualcuno chiede chi sei, dici...'",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [nome]. Soy el straniero de Nico."},
                         {"id": "b", "text": "Ho paura"},
@@ -602,13 +602,13 @@ SECTIONS = [
                         {"id": "d", "text": "C'e fuoco"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
-                    "npc_reaction": "De Nico. Corrito. Isso muda como tratam vocÃª.",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
+                    "npc_reaction": "De Nico. Corrito. Isso muda como tratam você.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pra prÃ³pria cabeÃ§a. 'Si alguien grita Corri! â€” sin pensar, tÃº...'",
+                    "question": "Antonio aponta pra própria cabeça. 'Si alguien grita Corri! — sin pensar, tú...'",
                     "options": [
                         {"id": "a", "text": "Corro"},
                         {"id": "b", "text": "Fico parado"},
@@ -622,60 +622,60 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "A vela apagou. Escuro total. CoraÃ§Ã£o disparou. O que vocÃª sente?",
+                    "question": "A vela apagou. Escuro total. Coração disparou. O que você sente?",
                     "options": [
                         {"id": "a", "text": "Paura"},
                         {"id": "b", "text": "Hambre"},
                         {"id": "c", "text": "Sed"},
-                        {"id": "d", "text": "AlegrÃ­a"},
+                        {"id": "d", "text": "Alegría"},
                     ],
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
-                    "npc_reaction": "Paura. Normale. Mas a vela acendeu de novo â€” estava sÃ³ com vento.",
+                    "npc_reaction": "Paura. Normale. Mas a vela acendeu de novo — estava só com vento.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Bene. Duerme. Si c'e algÃºn problema â€” grito tu nombre.",
-                    "translation": "Bem. Dorme. Se houver qualquer problema â€” grito seu nome.",
+                    "line": "Bene. Duerme. Si c'e algún problema — grito tu nombre.",
+                    "translation": "Bem. Dorme. Se houver qualquer problema — grito seu nome.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio disse 'si c'e algÃºn problema'. 'C'e algÃºn problema ora?' â€” como vocÃª responde honestamente?",
+                    "question": "Antonio disse 'si c'e algún problema'. 'C'e algún problema ora?' — como você responde honestamente?",
                     "options": [
-                        {"id": "a", "text": "No sÃ©... c'e algo raro nel borgo"},
+                        {"id": "a", "text": "No sé... c'e algo raro nel borgo"},
                         {"id": "b", "text": "Non c'e nada, estoy bene"},
                         {"id": "c", "text": "C'e muchas mele"},
                         {"id": "d", "text": "Ho fame"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "C'e algo raro. SÃ­. VocÃª estÃ sentindo certo. Fica alerta.",
+                    "npc_reaction": "C'e algo raro. Sí. Você est? sentindo certo. Fica alerta.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Antonio apagou a vela principal, ficou sÃ³ com uma "
-                        "pequena na janela. VocÃª deitou sem conseguir dormir, "
-                        "ouvindo o vento e os passos lÃ fora."
+                        "Antonio apagou a vela principal, ficou só com uma "
+                        "pequena na janela. Você deitou sem conseguir dormir, "
+                        "ouvindo o vento e os passos l? fora."
                     ),
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃculo â€” La Primera Chispa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 6: Obst?culo — La Primera Chispa ───────────────────────────────
     # Madrugada. O protagonista ouviu um barulho e saiu pro corridor da locanda.
-    # La Guardia estÃ lÃ. Nico estÃ dormindo e nÃ£o vai ouvir.
+    # La Guardia est? l?. Nico est? dormindo e não vai ouvir.
     #
-    # SISTEMA DE PODER â€” LA PALABRA VIVA:
-    # Cada exercÃ­cio certo = entendeu a palavra de verdade = poder manifesto.
-    # "Fuoco" acertado sob pressÃ£o extrema â†’ a palavra se torna fÃ­sica.
-    # O protagonista NÃƒO controla. NÃƒO quis. Aconteceu.
-    # La Guardia recua. Nico aparece. Olha pras mÃ£os do protagonista.
+    # SISTEMA DE PODER — LA PALABRA VIVA:
+    # Cada exercício certo = entendeu a palavra de verdade = poder manifesto.
+    # "Fuoco" acertado sob pressão extrema → a palavra se torna física.
+    # O protagonista NÃO controla. NÃO quis. Aconteceu.
+    # La Guardia recua. Nico aparece. Olha pras mãos do protagonista.
     #
-    # SeÃ§Ã£o gated â€” errar trava.
+    # Seção gated — errar trava.
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -683,34 +683,34 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "Madrugada. VocÃª acordou com um som â€” madeira rangendo no "
-                    "corridor. Pensou que era vento. Mas o som voltou. VocÃª se "
+                    "Madrugada. Você acordou com um som — madeira rangendo no "
+                    "corridor. Pensou que era vento. Mas o som voltou. Você se "
                     "levantou devagar, empurrou a porta do quarto."
                 ),
-                "now": "VocÃª estÃ no corridor escuro da locanda. La Guardia estÃ ali.",
+                "now": "Você est? no corridor escuro da locanda. La Guardia est? ali.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ‘ Corridor da locanda. SÃ³ uma fresta de luar pela janela. Uma silhueta parada no fim do corridor.",
+                    "text": "🌑 Corridor da locanda. Só uma fresta de luar pela janela. Uma silhueta parada no fim do corridor.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "La Guardia",
-                    "line": "Te encontrÃ©, straniero.",
+                    "line": "Te encontré, straniero.",
                     "translation": "Te encontrei, straniero.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "Suas pernas queriam correre. Mas vocÃª estava de costas pra porta do quarto de Nico.",
+                    "text": "Suas pernas queriam correre. Mas você estava de costas pra porta do quarto de Nico.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "La Guardia",
-                    "question": "O homem avanÃ§ou dois passos. Seu estÃ´mago afundou. O que vocÃª sente?",
+                    "question": "O homem avançou dois passos. Seu estômago afundou. O que você sente?",
                     "options": [
-                        {"id": "a", "text": "Paura â€” muito paura"},
+                        {"id": "a", "text": "Paura — muito paura"},
                         {"id": "b", "text": "Hambre"},
                         {"id": "c", "text": "Bene, grazie"},
                         {"id": "d", "text": "C'e mele"},
@@ -718,28 +718,28 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "it_paura", "target": "paura", "native": "medo",
                     "npc_reaction": (
-                        "Paura. A palavra Ã© real â€” vocÃª a sentiu inteira, do estÃ´mago "
-                        "Ã s pontas dos dedos. E de algum jeito, sentir a palavra de "
+                        "Paura. A palavra é real — você a sentiu inteira, do estômago "
+                        "às pontas dos dedos. E de algum jeito, sentir a palavra de "
                         "verdade mudou algo no ar."
                     ),
                     "gated": True,
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸ—ï¸ La Guardia parou. Olhou pras suas mÃ£os. VocÃª tambÃ©m olhou. Nada de diferente. Mas ele hesitou.",
+                    "text": "??? La Guardia parou. Olhou pras suas mãos. Você também olhou. Nada de diferente. Mas ele hesitou.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "La Guardia",
                     "line": "Che cosa sei tu, straniero?",
-                    "translation": "O que vocÃª Ã©, straniero?",
+                    "translation": "O que você é, straniero?",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª nÃ£o tinha resposta. Mas uma palavra surgiu â€” nÃ£o "
-                        "com a cabeÃ§a. Com o peito. Com o calor que vocÃª sentiu "
+                        "Você não tinha resposta. Mas uma palavra surgiu — não "
+                        "com a cabeça. Com o peito. Com o calor que você sentiu "
                         "olhando pra fogueira dos oleiros mais cedo."
                     ),
                 },
@@ -747,48 +747,48 @@ SECTIONS = [
                     "kind": "multiple_choice",
                     "npc": "La Guardia",
                     "question": (
-                        "La Guardia avanÃ§a. VocÃª precisa de algo â€” proteÃ§Ã£o, luz, calor, "
-                        "barreira. Uma palavra pulsa no peito. Qual Ã© ela?"
+                        "La Guardia avança. Você precisa de algo — proteção, luz, calor, "
+                        "barreira. Uma palavra pulsa no peito. Qual é ela?"
                     ),
                     "options": [
-                        {"id": "a", "text": "ðŸ”¥ Fuoco"},
-                        {"id": "b", "text": "ðŸ’§ Acqua"},
-                        {"id": "c", "text": "ðŸª¨ Pietra"},
-                        {"id": "d", "text": "ðŸŠ Mela"},
+                        {"id": "a", "text": "🔥 Fuoco"},
+                        {"id": "b", "text": "💧 Acqua"},
+                        {"id": "c", "text": "🪨 Pietra"},
+                        {"id": "d", "text": "?? Mela"},
                     ],
                     "correct": "a",
                     "word_id": "it_fuoco", "target": "fuoco", "native": "fogo",
                     "npc_reaction": (
-                        "FUOCO â€” a palavra saiu antes de vocÃª pensar.\n\n"
+                        "FUOCO — a palavra saiu antes de você pensar.\n\n"
                         "E o corridor explodiu em luz.\n\n"
-                        "NÃ£o uma fogueira. NÃ£o uma faÃ­sca. Uma parede de fogo "
-                        "entre vocÃª e o vigilante â€” alta, quente, real. SaÃ­da das "
-                        "suas mÃ£os abertas.\n\n"
-                        "La Guardia caiu pra trÃs gritando. VocÃª olhou pras "
-                        "prÃ³prias mÃ£os â€” pele intacta, sem queimadura. Como se "
-                        "o fogo nÃ£o fosse seu pra queimar."
+                        "Não uma fogueira. Não uma faísca. Uma parede de fogo "
+                        "entre você e o vigilante — alta, quente, real. Saída das "
+                        "suas mãos abertas.\n\n"
+                        "La Guardia caiu pra tr?s gritando. Você olhou pras "
+                        "próprias mãos — pele intacta, sem queimadura. Como se "
+                        "o fogo não fosse seu pra queimar."
                     ),
                     "gated": True,
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸ”¥ O fogo durou trÃªs segundos. Depois sumiu. O corridor estava escuro de novo. La Guardia tinha ido embora.",
+                    "text": "🔥 O fogo durou três segundos. Depois sumiu. O corridor estava escuro de novo. La Guardia tinha ido embora.",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª ficou parado olhando pras mÃ£os. Tremendo.",
+                    "text": "Você ficou parado olhando pras mãos. Tremendo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Che cos era?! Straniero! Stai bene?",
-                    "translation": "O que foi isso?! Forasteiro! VocÃª estÃ bem?",
+                    "translation": "O que foi isso?! Forasteiro! Você est? bem?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio abriu a porta gritando. Viu o corridor vazio e vocÃª parado tremendo. 'Stai bene?'",
+                    "question": "Antonio abriu a porta gritando. Viu o corridor vazio e você parado tremendo. 'Stai bene?'",
                     "options": [
                         {"id": "a", "text": "Non lo so... fuoco. E uscito dalle mie mani."},
                         {"id": "b", "text": "Bene, grazie"},
@@ -798,10 +798,10 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "it_fuoco", "target": "fuoco", "native": "fogo",
                     "npc_reaction": (
-                        "Antonio ficou em silÃªncio. Olhou pras suas mÃ£os. "
-                        "Olhou pro corridor. Olhou de volta pra vocÃª.\n\n"
-                        "NÃ£o era a expressÃ£o de quem duvidava. Era a expressÃ£o "
-                        "de quem jÃ sabia que algo assim ia acontecer."
+                        "Antonio ficou em silêncio. Olhou pras suas mãos. "
+                        "Olhou pro corridor. Olhou de volta pra você.\n\n"
+                        "Não era a expressão de quem duvidava. Era a expressão "
+                        "de quem j? sabia que algo assim ia acontecer."
                     ),
                     "gated": True,
                 },
@@ -815,10 +815,10 @@ SECTIONS = [
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª entrou no quarto de Antonio. Ele trancou a porta "
-                        "e ficou de costas pra vocÃª por um longo momento.\n\n"
-                        "Quando virou, o rosto era diferente. NÃ£o mais o contadino "
-                        "paciente que te ensinava saudaÃ§Ãµes. Era alguÃ©m que guardava "
+                        "Você entrou no quarto de Antonio. Ele trancou a porta "
+                        "e ficou de costas pra você por um longo momento.\n\n"
+                        "Quando virou, o rosto era diferente. Não mais o contadino "
+                        "paciente que te ensinava saudações. Era alguém que guardava "
                         "segredo faz muito tempo e acabou de decidir parar."
                     ),
                 },
@@ -828,4 +828,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

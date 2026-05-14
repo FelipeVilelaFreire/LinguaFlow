@@ -1,4 +1,5 @@
 import { Backpack, Lock, X } from "lucide-react";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { useStrings } from "../../../../../contexts/StringsContext";
@@ -16,11 +17,12 @@ interface AdventureMochilaScreenProps {
   chapterSlug?: string;
 }
 
-const RARITY_CONFIG: Record<ItemRarity, { color: string; glow: string; border: string }> = {
-  comum:    { color: "#94a3b8", glow: "#94a3b820", border: "#94a3b830" },
-  raro:     { color: "#60a5fa", glow: "#60a5fa20", border: "#60a5fa35" },
-  epico:    { color: "#c084fc", glow: "#c084fc25", border: "#c084fc40" },
-  lendario: { color: "#fbbf24", glow: "#fbbf2430", border: "#fbbf2450" },
+const RARITY_CONFIG: Record<ItemRarity, { color: string; glow: string; border: string; surface: string }> = {
+  comum:    { color: "#94a3b8", glow: "#94a3b820", border: "#94a3b840", surface: "linear-gradient(160deg, rgba(148,163,184,0.16), rgba(255,255,255,0.035))" },
+  raro:     { color: "#60a5fa", glow: "#60a5fa24", border: "#60a5fa45", surface: "linear-gradient(160deg, rgba(96,165,250,0.18), rgba(255,255,255,0.04))" },
+  epico:    { color: "#c084fc", glow: "#c084fc30", border: "#c084fc55", surface: "linear-gradient(160deg, rgba(192,132,252,0.22), rgba(255,255,255,0.045))" },
+  lendario: { color: "#fbbf24", glow: "#fbbf2438", border: "#fbbf2465", surface: "linear-gradient(160deg, rgba(251,191,36,0.22), rgba(255,255,255,0.05))" },
+  mitico:   { color: "#22d3ee", glow: "#22d3ee40", border: "#22d3ee70", surface: "linear-gradient(160deg, rgba(34,211,238,0.24), rgba(192,132,252,0.12), rgba(255,255,255,0.045))" },
 };
 
 export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlug }: AdventureMochilaScreenProps) {
@@ -102,7 +104,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-          {inventory.map(entry => (
+          {inventory.map((entry, index) => (
             <ItemCard
               key={entry.item.id}
               item={entry.item}
@@ -112,6 +114,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
               c={c}
               itemUsedLabel={s.adventure.itemUsed}
               rarityLabel={s.adventure.itemRarity[entry.item.rarity]}
+              index={index}
             />
           ))}
         </div>
@@ -181,10 +184,18 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
       >
         <div className="relative flex shrink-0 items-start gap-4 px-6 pb-4 pt-6">
           <div
-            className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl"
-            style={{ background: r.glow, border: `2px solid ${r.border}`, opacity: entry.is_used ? 0.45 : 1 }}
+            className="relative grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl"
+            style={{
+              background: r.surface,
+              border: `2px solid ${r.border}`,
+              boxShadow: `0 0 28px ${r.glow}`,
+              opacity: entry.is_used ? 0.45 : 1,
+            }}
           >
-            <Emoji char={entry.item.emoji} size={52} />
+            <span className="absolute inset-x-3 top-2 h-px" style={{ background: `linear-gradient(90deg, transparent, ${r.color}, transparent)` }} />
+            <span style={{ filter: `drop-shadow(0 0 12px ${r.color}70)` }}>
+              <Emoji char={entry.item.emoji} size={52} />
+            </span>
           </div>
           <div className="min-w-0 flex-1 pt-1">
             <p className="text-lg font-bold leading-tight md:text-xl" style={{ color: c.parchment }}>
@@ -256,14 +267,15 @@ function LockedItemCard({ item, c, hint }: {
 }) {
   return (
     <div
-      className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center"
+      className="relative flex min-h-[166px] flex-col items-center gap-2.5 overflow-hidden rounded-2xl px-3 pb-4 pt-4 text-center"
       style={{
-        background: c.surface,
+        background: `linear-gradient(160deg, ${c.surface}, rgba(255,255,255,0.025))`,
         border: `1px dashed ${c.borderFaint}`,
       }}
     >
+      <span className="pointer-events-none absolute inset-0 bg-black/10" />
       <div
-        className="relative flex h-16 w-16 items-center justify-center rounded-full"
+        className="relative flex h-16 w-16 items-center justify-center rounded-2xl"
         style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
       >
         <span style={{ opacity: 0.25, filter: "grayscale(1)" }}>
@@ -288,7 +300,7 @@ function LockedItemCard({ item, c, hint }: {
   );
 }
 
-function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLabel }: {
+function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLabel, index }: {
   item: ApiAdventureItem;
   isUsed: boolean;
   expanded: boolean;
@@ -296,31 +308,49 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLa
   c: ReturnType<typeof getAdventureColors>;
   itemUsedLabel: string;
   rarityLabel: string;
+  index: number;
 }) {
   const r = RARITY_CONFIG[item.rarity];
   return (
-    <button
+    <motion.button
       type="button"
       onClick={onToggle}
-      className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center transition active:scale-[0.97]"
+      className="relative flex min-h-[172px] flex-col items-center gap-2.5 overflow-hidden rounded-2xl px-3 pb-4 pt-4 text-center transition hover:-translate-y-0.5 active:scale-[0.97]"
+      initial={{ opacity: 0, y: 12, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={{ y: -3 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ duration: 0.28, delay: Math.min(index * 0.035, 0.22), ease: [0.16, 1, 0.3, 1] }}
       style={{
-        background: expanded ? c.surfaceMid : c.surface,
+        background: expanded ? r.surface : `linear-gradient(160deg, ${c.surface}, rgba(255,255,255,0.035))`,
         border: `1px solid ${expanded ? r.color + "60" : r.border}`,
-        boxShadow: expanded ? `0 0 16px ${r.glow}` : "none",
+        boxShadow: expanded ? `0 18px 44px ${r.glow}` : `0 10px 28px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.06)`,
+        opacity: isUsed ? 0.68 : 1,
       }}
     >
+      <span
+        className="pointer-events-none absolute inset-x-4 top-0 h-px"
+        style={{ background: `linear-gradient(90deg, transparent, ${r.color}, transparent)` }}
+      />
+      <span
+        className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full blur-2xl"
+        style={{ background: r.glow }}
+      />
       <div
-        className="flex h-16 w-16 items-center justify-center rounded-full"
+        className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl"
         style={{
-          background: r.glow,
+          background: r.surface,
           border: `2px solid ${r.border}`,
-          opacity: isUsed ? 0.5 : 1,
+          boxShadow: `0 0 24px ${r.glow}`,
         }}
       >
-        <Emoji char={item.emoji} size={40} />
+        <span className="absolute inset-x-2 top-2 h-px" style={{ background: `linear-gradient(90deg, transparent, ${r.color}, transparent)` }} />
+        <span style={{ filter: `drop-shadow(0 0 10px ${r.color}80)` }}>
+          <Emoji char={item.emoji} size={40} />
+        </span>
       </div>
       <div className="min-w-0 w-full">
-        <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment }}>
+        <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment, textShadow: isUsed ? "none" : "0 1px 8px rgba(0,0,0,0.28)" }}>
           {item.name}
         </p>
       </div>
@@ -334,6 +364,6 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLa
       >
         {isUsed ? itemUsedLabel : rarityLabel}
       </span>
-    </button>
+    </motion.button>
   );
 }

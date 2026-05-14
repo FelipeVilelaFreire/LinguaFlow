@@ -1,30 +1,30 @@
 """
-Seed das 6 seÃ§Ãµes da Fase 3 Italiano A1 â€” "La Strada di Terra".
+Seed das 6 seções da Fase 3 Italiano A1 — "La Strada di Terra".
 
 Primeiro dia fora dos muros do borgo. Antonio leva o protagonista pelo
-caminho de terra que cruza os campos e chega atÃ© o rio. LÃ encontram El Viejo
-LeÃ±ador â€” um velho lenhador que reage ao protagonista de forma estranha.
+caminho de terra que cruza os campos e chega até o rio. L? encontram El Viejo
+Leñador — um velho lenhador que reage ao protagonista de forma estranha.
 
-Novos vocab (3): Ãrbol · pietra · rÃ­o
-RevisÃ£o F1+F2: ciao, buongiorno, buonasera, grazie, bene/male,
+Novos vocab (3): ?rbol · pietra · río
+Revisão F1+F2: ciao, buongiorno, buonasera, grazie, bene/male,
                straniero, mi chiamo, ho fame, ho sete, pane, acqua
 NPC principal:   Antonio (fio condutor)
-NPC cameo:       El Viejo LeÃ±ador (reaÃ§Ã£o estranha â€” primeiro sinal do dom)
-Itens:           pietra_del_rÃ­o (word_id: it_pietra) · fiore_silvestre (word_id: it_fiore)
-Arco emocional:  confinado â†’ expanesivo; curiosidade + primeiro pressentimento
-TransiÃ§Ã£o:       voltam ao borgo ao entardecer; Nico quieto; pedra no bolso
-                 do protagonista como lembranÃ§a do dia.
+NPC cameo:       El Viejo Leñador (reação estranha — primeiro sinal do dom)
+Itens:           pietra_del_río (word_id: it_pietra) · fiore_silvestre (word_id: it_fiore)
+Arco emocional:  confinado → expanesivo; curiosidade + primeiro pressentimento
+Transição:       voltam ao borgo ao entardecer; Nico quieto; pedra no bolso
+                 do protagonista como lembrança do dia.
 
-PrÃ©-requisito: python manage.py seed_it
+Pré-requisito: python manage.py seed_it
 Uso:           python manage.py seed_it_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # ManhÃ£ â€” Antonio propÃµe sair dos muros. PortÃ£o do borgo, campos abertos,
-    # caminho de terra. Novo NPC (LeÃ±ador) ouvido ao longe. Vocab aparece sem
-    # traduÃ§Ã£o â€” imersÃ£o. ExercÃ­cios: reconhecimento contextual.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Manhã — Antonio propõe sair dos muros. Portão do borgo, campos abertos,
+    # caminho de terra. Novo NPC (Leñador) ouvido ao longe. Vocab aparece sem
+    # tradução — imersão. Exercícios: reconhecimento contextual.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -33,9 +33,9 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ„ ManhÃ£ clara. Antonio estÃ na porta da locanda com um "
-                        "saco velho Ã s costas. Aponta pro portÃ£o de madeira pesada "
-                        "na borda do borgo â€” a saÃ­da pros campos."
+                        "🌄 Manhã clara. Antonio est? na porta da locanda com um "
+                        "saco velho às costas. Aponta pro portão de madeira pesada "
+                        "na borda do borgo — a saída pros campos."
                     ),
                 },
                 {
@@ -45,105 +45,105 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª seguiu sem perguntar. Faz dias que vocÃª sÃ³ viu pedra clara e pedra. A ideia de campo aberto parecia boa.",
+                    "text": "Você seguiu sem perguntar. Faz dias que você só viu pedra clara e pedra. A ideia de campo aberto parecia boa.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ¾ O portÃ£o abre pesado. Do outro lado: campos de milho, um caminho de terra batida, e longe â€” o verde-escuro de Ãrvores.",
+                    "text": "🌾 O portão abre pesado. Do outro lado: campos de milho, um caminho de terra batida, e longe — o verde-escuro de ?rvores.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Antonio",
-                    "line": "Guarda â€” los Ãrboles allÃ. El rÃ­o estÃ detrÃs de ellos.",
+                    "line": "Guarda — los ?rboles all?. El río est? detr?s de ellos.",
                 },
                 {
                     "kind": "player",
-                    "text": "Ãrboles. Rio. A palavra era nova, mas o gesto era claro â€” ele apontou pro verde e depois fez um gesto de Ãgua corrindo.",
+                    "text": "Árboles. Rio. A palavra era nova, mas o gesto era claro — ele apontou pro verde e depois fez um gesto de ?gua corrindo.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Antonio",
-                    "line": "Y en el camino â€” pietre. Attenzione con los pies.",
+                    "line": "Y en el camino — pietre. Attenzione con los pies.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸª¨ Caminho cheio de pedras brancas. VocÃª olhou pra baixo â€” algumas lisas, algumas pontiagudas.",
+                    "text": "🪨 Caminho cheio de pedras brancas. Você olhou pra baixo — algumas lisas, algumas pontiagudas.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Antonio",
-                    "line": "Ey! Stai bene? Cammina â€” no mires tanto el suelo.",
+                    "line": "Ey! Stai bene?Cammina — no mires tanto el suelo.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª ergueu a cabeÃ§a. O campo se abria de todos os lados. Depois de dias no borgo fechado, aquilo parecia enorme.",
+                    "text": "Você ergueu a cabeça. O campo se abria de todos os lados. Depois de dias no borgo fechado, aquilo parecia enorme.",
                 },
             ],
             "exercises": [
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio apontou pro verde-escuro no horizonte e disse uma palavra. O que vocÃª vÃª ao longe?",
+                    "question": "Antonio apontou pro verde-escuro no horizonte e disse uma palavra. O que você vê ao longe?",
                     "options": [
-                        {"id": "a", "text": "Ãrboles"},
+                        {"id": "a", "text": "Árboles"},
                         {"id": "b", "text": "Pietre"},
-                        {"id": "c", "text": "El rÃ­o"},
+                        {"id": "c", "text": "El río"},
                         {"id": "d", "text": "La locanda"},
                     ],
                     "correct": "a",
-                    "word_id": "it_arbol", "target": "Ãrbol", "native": "Ãrvore",
-                    "npc_reaction": "Ãrboles. Onde tem Ãrbol, tem sombra. E onde tem sombra...",
+                    "word_id": "it_arbol", "target": "?rbol", "native": "?rvore",
+                    "npc_reaction": "Árboles. Onde tem ?rbol, tem sombra. E onde tem sombra...",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "O caminho estava cheio delas â€” brancas, lisas, pontiagudas. Antonio avisou pra vocÃª cuidar dos pÃ©s. O que estava no caminho?",
+                    "question": "O caminho estava cheio delas — brancas, lisas, pontiagudas. Antonio avisou pra você cuidar dos pés. O que estava no caminho?",
                     "options": [
                         {"id": "a", "text": "Pietre"},
-                        {"id": "b", "text": "Ãrboles"},
+                        {"id": "b", "text": "Árboles"},
                         {"id": "c", "text": "Acqua"},
                         {"id": "d", "text": "Fiorees"},
                     ],
                     "correct": "a",
                     "word_id": "it_pietra", "target": "pietra", "native": "pedra",
-                    "npc_reaction": "Pietre. O chÃ£o do campo sempre tem pietre. Os pÃ©s aprendem.",
+                    "npc_reaction": "Pietre. O chão do campo sempre tem pietre. Os pés aprendem.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio fez um gesto â€” as duas mÃ£os corrindo pra frente â€” e apontou atrÃs das Ãrvores. O que estÃ alÃ©m das Ãrvores?",
+                    "question": "Antonio fez um gesto — as duas mãos corrindo pra frente — e apontou atr?s das ?rvores. O que est? além das ?rvores?",
                     "options": [
-                        {"id": "a", "text": "El rÃ­o"},
+                        {"id": "a", "text": "El río"},
                         {"id": "b", "text": "El borgo"},
                         {"id": "c", "text": "La locanda"},
                         {"id": "d", "text": "El mercado"},
                     ],
                     "correct": "a",
-                    "word_id": "it_rio", "target": "rÃ­o", "native": "rio",
-                    "npc_reaction": "El rÃ­o. Ãgua fria, acqua limpia. Melhor que a fonte da piazza.",
+                    "word_id": "it_rio", "target": "río", "native": "rio",
+                    "npc_reaction": "El río. Água fria, acqua limpia. Melhor que a fonte da piazza.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃªs caminharam bastante. O sol esquentou. O que vocÃª provavelmente vai querer ao chegar no rÃ­o?",
+                    "question": "Vocês caminharam bastante. O sol esquentou. O que você provavelmente vai querer ao chegar no río?",
                     "options": [
-                        {"id": "a", "text": "Acqua â€” ho sete"},
-                        {"id": "b", "text": "Pane â€” ho fame"},
+                        {"id": "a", "text": "Acqua — ho sete"},
+                        {"id": "b", "text": "Pane — ho fame"},
                         {"id": "c", "text": "La locanda"},
                         {"id": "d", "text": "Buongiorno"},
                     ],
                     "correct": "a",
                     "word_id": "it_sed", "target": "ho sete", "native": "tenho sede",
-                    "npc_reaction": "Sed. E o rÃ­o vai resolver isso.",
+                    "npc_reaction": "Sed. E o río vai resolver isso.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 2: Revisão SRS ──────────────────────────────────────────────────
     # No campo, Antonio aproveita o caminho pra revisar F1+F2 vocab.
-    # SituaÃ§Ãµes reais: um pÃssaro, uma fiore, parar pra beber Ãgua.
+    # Situações reais: um p?ssaro, uma fiore, parar pra beber ?gua.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
@@ -151,29 +151,29 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "VocÃªs passaram pelo portÃ£o e o campo se abriu. Antonio "
-                    "apontou 'Ãrboles', 'pietre', 'el rÃ­o'. O campo Ã© diferente "
-                    "do borgo â€” mais silÃªncio, mais espaÃ§o, o cheiro de terra.\n\n"
+                    "Vocês passaram pelo portão e o campo se abriu. Antonio "
+                    "apontou '?rboles', 'pietre', 'el río'. O campo é diferente "
+                    "do borgo — mais silêncio, mais espaço, o cheiro de terra.\n\n"
                     "Enquanto caminham, Antonio continua te testando. 'O campo "
-                    "tambÃ©m ensina. VocÃª olha, eu pergunto.'"
+                    "também ensina. Você olha, eu pergunto.'"
                 ),
-                "now": "RevisÃ£o das palavras de F1 e F2 â€” cada uma num contexto de campo.",
+                "now": "Revisão das palavras de F1 e F2 — cada uma num contexto de campo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Antonio para, pega uma pedra lisa do chÃ£o e te joga. VocÃª pega no ar.",
+                    "text": "Antonio para, pega uma pedra lisa do chão e te joga. Você pega no ar.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Come stai hoy? Con il campo y el sol?",
-                    "translation": "Como vocÃª estÃ hoje? Com o campo e o sol?",
+                    "line": "Come stai hoy?Con il campo y el sol?",
+                    "translation": "Como você est? hoje?Com o campo e o sol?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "O ar estÃ limpo, o campo aberto, vocÃª comeu o pÃ£o de Giulia antes de sair. Antonio quer saber como vocÃª estÃ:",
+                    "question": "O ar est? limpo, o campo aberto, você comeu o pão de Giulia antes de sair. Antonio quer saber como você est?:",
                     "options": [
                         {"id": "a", "text": "Bene, grazie"},
                         {"id": "b", "text": "Male"},
@@ -188,70 +188,70 @@ SECTIONS = [
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "E la mattina, quando arrivi in un posto nuovo e vedi qualcuno?",
-                    "translation": "Ei â€” e de manhÃ£, quando vocÃª chega num lugar novo e vÃª alguÃ©m?",
+                    "translation": "Ei — e de manhã, quando você chega num lugar novo e vê alguém?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Um trabalhador do campo passa com uma enxada. Ã‰ cedo ainda. VocÃª cumprimenta:",
+                    "question": "Um trabalhador do campo passa com uma enxada. É cedo ainda. Você cumprimenta:",
                     "options": [
                         {"id": "a", "text": "Buongiorno!"},
                         {"id": "b", "text": "Buonanotte!"},
                         {"id": "c", "text": "Ciao noche!"},
-                        {"id": "d", "text": "AdiÃ³s!"},
+                        {"id": "d", "text": "Adiós!"},
                     ],
                     "correct": "a",
                     "word_id": "it_buenos_dias", "target": "buongiorno", "native": "bom dia",
-                    "npc_reaction": "Buongiorno. O trabalhador levantou dois dedos â€” reconheceu.",
+                    "npc_reaction": "Buongiorno. O trabalhador levantou dois dedos — reconheceu.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Antonio aponta pra uma fiore vermelha no borde do caminho. 'Fiore silvestre â€” fiore do campo.'",
+                    "text": "Antonio aponta pra uma fiore vermelha no borde do caminho. 'Fiore silvestre — fiore do campo.'",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Um menino do borgo passa corrindo e para quando vÃª a fiore â€” 'La fiore, quÃ© bonita!' O que ele viu?",
+                    "question": "Um menino do borgo passa corrindo e para quando vê a fiore — 'La fiore, qué bonita!' O que ele viu?",
                     "options": [
                         {"id": "a", "text": "Fiore"},
                         {"id": "b", "text": "Pietra"},
-                        {"id": "c", "text": "Ãrbol"},
-                        {"id": "d", "text": "RÃ­o"},
+                        {"id": "c", "text": "Árbol"},
+                        {"id": "d", "text": "Río"},
                     ],
                     "correct": "a",
                     "word_id": "it_fiore", "target": "fiore", "native": "fiore",
-                    "npc_reaction": "Fiore silvestre. Essa Ã© do campo â€” nÃ£o cresce na piazza.",
+                    "npc_reaction": "Fiore silvestre. Essa é do campo — não cresce na piazza.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "El straniero â€” asÃ­ te llaman. Pero te acuerdas quÃ© significa?",
-                    "translation": "O straniero â€” assim te chamam. Mas vocÃª lembra o que significa?",
+                    "line": "El straniero — así te llaman. Pero te acuerdas qué significa?",
+                    "translation": "O straniero — assim te chamam. Mas você lembra o que significa?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pra vocÃª: 'Quelli del borgo ti chiamano straniero perche...'",
+                    "question": "Antonio aponta pra você: 'Quelli del borgo ti chiamano straniero perche...'",
                     "options": [
-                        {"id": "a", "text": "VocÃª veio de fora â€” nÃ£o Ã© do borgo"},
-                        {"id": "b", "text": "VocÃª nÃ£o tem nome"},
-                        {"id": "c", "text": "VocÃª trabalha no campo"},
-                        {"id": "d", "text": "VocÃª Ã© muito jovem"},
+                        {"id": "a", "text": "Você veio de fora — não é do borgo"},
+                        {"id": "b", "text": "Você não tem nome"},
+                        {"id": "c", "text": "Você trabalha no campo"},
+                        {"id": "d", "text": "Você é muito jovem"},
                     ],
                     "correct": "a",
                     "word_id": "it_straniero", "target": "straniero", "native": "estrangeiro",
-                    "npc_reaction": "Eso. Straniero = de fora. Mas o borgo jÃ tÃ acostumando contigo.",
+                    "npc_reaction": "Eso. Straniero = de fora. Mas o borgo j? t? acostumando contigo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "E io, che cosa sono? Recuerdas la palabra?",
-                    "translation": "E eu â€” o que sou? VocÃª lembra a palavra?",
+                    "line": "E io, che cosa sono?Recuerdas la palabra?",
+                    "translation": "E eu — o que sou?Você lembra a palavra?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio arranca um pedaÃ§o de erva do chÃ£o, cheira. Trabalha com a terra toda a vida. Ele Ã©:",
+                    "question": "Antonio arranca um pedaço de erva do chão, cheira. Trabalha com a terra toda a vida. Ele é:",
                     "options": [
                         {"id": "a", "text": "Contadino"},
                         {"id": "b", "text": "Straniero"},
@@ -259,17 +259,17 @@ SECTIONS = [
                         {"id": "d", "text": "Maestro"},
                     ],
                     "correct": "a",
-                    "word_id": "it_contadino", "target": "contadino", "native": "camponÃªs",
+                    "word_id": "it_contadino", "target": "contadino", "native": "camponês",
                     "npc_reaction": "Contadino. E orgulhoso disso.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "As Ãrvores estÃ£o mais perto. Um som novo â€” Ãgua corrindo, fresco, abaixo do ruÃ­do do vento.",
+                    "text": "As ?rvores estão mais perto. Um som novo — ?gua corrindo, fresco, abaixo do ruído do vento.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª ouviu o som, ficou com a boca seca de querer beber. Antonio olhou pra vocÃª. VocÃª fala:",
+                    "question": "Você ouviu o som, ficou com a boca seca de querer beber. Antonio olhou pra você. Você fala:",
                     "options": [
                         {"id": "a", "text": "Ho sete"},
                         {"id": "b", "text": "Ho fame"},
@@ -278,16 +278,16 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_sed", "target": "ho sete", "native": "tenho sede",
-                    "npc_reaction": "Sed. El rÃ­o tÃ ali. JÃ estamos chegando.",
+                    "npc_reaction": "Sed. El río t? ali. J? estamos chegando.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: GramÃtica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Chegaram ao rÃ­o. Antonio ensina "c'e" + lugar:
-    # "C'e Ãrboles. C'e pietre. C'e acqua en el rÃ­o."
-    # TambÃ©m: "non c'e" â€” "non c'e pane aquÃ­".
+    # ── Seção 3: Gram?tica Narrativa ───────────────────────────────────────────
+    # Chegaram ao río. Antonio ensina "c'e" + lugar:
+    # "C'e ?rboles. C'e pietre. C'e acqua en el río."
+    # Também: "non c'e" — "non c'e pane aquí".
     {
         "section_number": 3,
         "section_type": "gramatica_narrativa",
@@ -295,41 +295,41 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "VocÃªs chegaram ao rÃ­o. Ãgua fria, pedras brancas no fundo, "
-                    "sombra das Ãrvores. Antonio jogou o saco no chÃ£o e sentou "
+                    "Vocês chegaram ao río. Água fria, pedras brancas no fundo, "
+                    "sombra das ?rvores. Antonio jogou o saco no chão e sentou "
                     "numa pedra grande.\n\n"
                     "'Olha o que tem aqui. Aprenda a dizer.'"
                 ),
-                "now": "Antonio ensina 'c'e' â€” a forma de dizer que algo existe num lugar.",
+                "now": "Antonio ensina 'c'e' — a forma de dizer que algo existe num lugar.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Antonio aponta em volta â€” Ãrvores, pedras, o rÃ­o, o cÃ©u. Faz um gesto amplo com o braÃ§o.",
+                    "text": "Antonio aponta em volta — ?rvores, pedras, o río, o céu. Faz um gesto amplo com o braço.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "'C'e' â€” questo si usa quando qualcosa e qui. 'C'e Ãrboles.'",
-                    "translation": "'C'e' â€” isso vocÃª usa quando algo estÃ aqui. 'HÃ Ãrvores.'",
+                    "line": "'C'e' — questo si usa quando qualcosa e qui. 'C'e ?rboles.'",
+                    "translation": "'C'e' — isso você usa quando algo est? aqui. 'H? ?rvores.'",
                 },
                 {
                     "kind": "reveal",
-                    "phrase": "C'e Ãrboles",
-                    "meaning": "HÃ Ãrvores / Tem Ãrvores",
-                    "note": "c'e = hÃ / tem | serve pra qualquer coisa: c'e acqua, c'e pane, c'e pietre",
+                    "phrase": "C'e ?rboles",
+                    "meaning": "H? ?rvores / Tem ?rvores",
+                    "note": "c'e = h? / tem | serve pra qualquer coisa: c'e acqua, c'e pane, c'e pietre",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Y si algo no estÃ â€” 'non c'e'. Simple. 'Non c'e pane aquÃ­ en il campo.'",
-                    "translation": "E se algo nÃ£o estÃ â€” 'nÃ£o tem'. Simples. 'NÃ£o tem pÃ£o aqui no campo.'",
+                    "line": "Y si algo no est? — 'non c'e'. Simple. 'Non c'e pane aquí en il campo.'",
+                    "translation": "E se algo não est? — 'não tem'. Simples. 'Não tem pão aqui no campo.'",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Non c'e pane",
-                    "meaning": "NÃ£o tem pÃ£o / NÃ£o hÃ pÃ£o",
-                    "note": "non c'e = nÃ£o tem | o oposto de c'e",
+                    "meaning": "Não tem pão / Não h? pão",
+                    "note": "non c'e = não tem | o oposto de c'e",
                 },
                 {
                     "kind": "pattern",
@@ -342,28 +342,28 @@ SECTIONS = [
                         {"text": " + ",    "isKey": False},
                         {"text": "coisa",  "isKey": True},
                     ],
-                    "example": "C'e pietre en el rÃ­o. / Non c'e pane aquÃ­.",
-                    "translation": "Tem pedras no rio. / NÃ£o tem pÃ£o aqui.",
-                    "note": "C'e = existe. Non c'e = nÃ£o existe. Um padrÃ£o, infinitas coisas.",
+                    "example": "C'e pietre en el río. / Non c'e pane aquí.",
+                    "translation": "Tem pedras no rio. / Não tem pão aqui.",
+                    "note": "C'e = existe. Non c'e = não existe. Um padrão, infinitas coisas.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pro rÃ­o com pedras brancas no fundo. Como vocÃª descreve?",
+                    "question": "Antonio aponta pro río com pedras brancas no fundo. Como você descreve?",
                     "options": [
-                        {"id": "a", "text": "C'e pietre en el rÃ­o"},
+                        {"id": "a", "text": "C'e pietre en el río"},
                         {"id": "b", "text": "Non c'e pietre"},
-                        {"id": "c", "text": "C'e pane en el rÃ­o"},
+                        {"id": "c", "text": "C'e pane en el río"},
                         {"id": "d", "text": "Ho pietre"},
                     ],
                     "correct": "a",
                     "word_id": "it_pietra", "target": "pietra", "native": "pedra",
-                    "npc_reaction": "C'e pietre. Exato. O rÃ­o fala por si mesmo.",
+                    "npc_reaction": "C'e pietre. Exato. O río fala por si mesmo.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª olha pra volta â€” sÃ³ campo, Ãrvores e rio. NÃ£o hÃ nenhuma padaria. Antonio: 'C'e pane aquÃ­?'",
+                    "question": "Você olha pra volta — só campo, ?rvores e rio. Não h? nenhuma padaria. Antonio: 'C'e pane aquí?'",
                     "options": [
                         {"id": "a", "text": "Non c'e pane"},
                         {"id": "b", "text": "C'e pane"},
@@ -371,59 +371,59 @@ SECTIONS = [
                         {"id": "d", "text": "C'e acqua"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Non c'e pane. Non c'e Giulia tampoco. SÃ³ campo.",
+                    "npc_reaction": "Non c'e pane. Non c'e Giulia tampoco. Só campo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Pero â€” c'e acqua?",
-                    "translation": "Mas â€” tem Ãgua?",
+                    "line": "Pero — c'e acqua?",
+                    "translation": "Mas — tem ?gua?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "O rÃ­o estÃ na sua frente, corrindo sobre pedras brancas. Antonio espera:",
+                    "question": "O río est? na sua frente, corrindo sobre pedras brancas. Antonio espera:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, c'e acqua"},
+                        {"id": "a", "text": "Sí, c'e acqua"},
                         {"id": "b", "text": "Non c'e acqua"},
                         {"id": "c", "text": "Ho acqua"},
                         {"id": "d", "text": "C'e pane"},
                     ],
                     "correct": "a",
-                    "word_id": "it_acqua", "target": "acqua", "native": "Ãgua",
-                    "npc_reaction": "SÃ­, c'e acqua. Mucha acqua. Beba.",
+                    "word_id": "it_acqua", "target": "acqua", "native": "?gua",
+                    "npc_reaction": "Sí, c'e acqua. Mucha acqua. Beba.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pra cima, pras copas das Ãrvores. 'Y aquÃ­ â€” c'e Ãrboles?'",
+                    "question": "Antonio aponta pra cima, pras copas das ?rvores. 'Y aquí — c'e ?rboles?'",
                     "options": [
-                        {"id": "a", "text": "SÃ­, c'e Ãrboles"},
-                        {"id": "b", "text": "Non c'e Ãrboles"},
+                        {"id": "a", "text": "Sí, c'e ?rboles"},
+                        {"id": "b", "text": "Non c'e ?rboles"},
                         {"id": "c", "text": "C'e pietre"},
                         {"id": "d", "text": "C'e pane"},
                     ],
                     "correct": "a",
-                    "word_id": "it_arbol", "target": "Ãrbol", "native": "Ãrvore",
-                    "npc_reaction": "C'e Ãrboles. E eles ficam aqui hÃ cem anos â€” antes do borgo.",
+                    "word_id": "it_arbol", "target": "?rbol", "native": "?rvore",
+                    "npc_reaction": "C'e ?rboles. E eles ficam aqui h? cem anos — antes do borgo.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Ao longe, um som de machado batendo em madeira. Ritmado, constante. Antonio levanta a cabeÃ§a.",
+                    "text": "Ao longe, um som de machado batendo em madeira. Ritmado, constante. Antonio levanta a cabeça.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Ese es el viejo Pietro. El leÃ±ador. Viene aquÃ­ hace treinta aÃ±os.",
-                    "translation": "Esse Ã© o velho Pietro. O lenhador. Vem aqui hÃ trinta anos.",
+                    "line": "Ese es el viejo Pietro. El leñador. Viene aquí hace treinta años.",
+                    "translation": "Esse é o velho Pietro. O lenhador. Vem aqui h? trinta anos.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: PrÃtica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Encontro com El Viejo LeÃ±ador (Pietro). Pratica c'e/non c'e em situaÃ§Ãµes
-    # reais do campo enquanto o lenhador se aproxima. NPC presente em cada exercÃ­cio.
+    # ── Seção 4: Pr?tica Aplicada ─────────────────────────────────────────────
+    # Encontro com El Viejo Leñador (Pietro). Pratica c'e/non c'e em situações
+    # reais do campo enquanto o lenhador se aproxima. NPC presente em cada exercício.
     {
         "section_number": 4,
         "section_type": "pratica_aplicada",
@@ -431,53 +431,53 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "Antonio te ensinou 'c'e' e 'non c'e'. Ãrboles, pietre, "
-                    "acqua â€” tudo que estÃ ao redor pode ser descrito assim.\n\n"
-                    "O som do machado ficou mais prÃ³ximo. O velho Pietro estÃ "
-                    "vindo pela margem do rÃ­o."
+                    "Antonio te ensinou 'c'e' e 'non c'e'. Árboles, pietre, "
+                    "acqua — tudo que est? ao redor pode ser descrito assim.\n\n"
+                    "O som do machado ficou mais próximo. O velho Pietro est? "
+                    "vindo pela margem do río."
                 ),
-                "now": "PrÃtica rÃpida antes do encontro com o leÃ±ador.",
+                "now": "Pr?tica r?pida antes do encontro com o leñador.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Antes de ele chegar â€” vamos praticar rÃpido. Olha ao redor e responde.",
-                    "translation": "Antes dele chegar â€” vamos praticar rÃpido. Olha ao redor e responde.",
+                    "line": "Antes de ele chegar — vamos praticar r?pido. Olha ao redor e responde.",
+                    "translation": "Antes dele chegar — vamos praticar r?pido. Olha ao redor e responde.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio aponta pro outro lado do rÃ­o â€” sÃ³ pedras, grama, sem Ãrvores. 'C'e Ãrboles allÃ?'",
+                    "question": "Antonio aponta pro outro lado do río — só pedras, grama, sem ?rvores. 'C'e ?rboles all??'",
                     "options": [
-                        {"id": "a", "text": "No, non c'e Ãrboles"},
-                        {"id": "b", "text": "SÃ­, c'e Ãrboles"},
-                        {"id": "c", "text": "C'e pane allÃ"},
+                        {"id": "a", "text": "No, non c'e ?rboles"},
+                        {"id": "b", "text": "Sí, c'e ?rboles"},
+                        {"id": "c", "text": "C'e pane all?"},
                         {"id": "d", "text": "Ho fame"},
                     ],
                     "correct": "a",
-                    "word_id": "it_arbol", "target": "Ãrbol", "native": "Ãrvore",
-                    "npc_reaction": "Non c'e Ãrboles allÃ. Corrito.",
+                    "word_id": "it_arbol", "target": "?rbol", "native": "?rvore",
+                    "npc_reaction": "Non c'e ?rboles all?. Corrito.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio abre o saco â€” tem um pedaÃ§o de pÃ£o seco lÃ dentro. 'C'e pane?'",
+                    "question": "Antonio abre o saco — tem um pedaço de pão seco l? dentro. 'C'e pane?'",
                     "options": [
-                        {"id": "a", "text": "SÃ­, c'e pane"},
+                        {"id": "a", "text": "Sí, c'e pane"},
                         {"id": "b", "text": "Non c'e pane"},
                         {"id": "c", "text": "C'e acqua"},
                         {"id": "d", "text": "Non c'e acqua"},
                     ],
                     "correct": "a",
-                    "word_id": "it_pane", "target": "pane", "native": "pÃ£o",
+                    "word_id": "it_pane", "target": "pane", "native": "pão",
                     "npc_reaction": "C'e pane. Seco, mas c'e.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª estÃ com fome depois de caminhar bastante. Como vocÃª fala pro Antonio?",
+                    "question": "Você est? com fome depois de caminhar bastante. Como você fala pro Antonio?",
                     "options": [
                         {"id": "a", "text": "Ho fame"},
                         {"id": "b", "text": "Ho sete"},
@@ -486,110 +486,110 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_hambre", "target": "ho fame", "native": "tenho fome",
-                    "npc_reaction": "Hambre. Pega o pÃ£o do saco â€” hÃ um lÃ.",
+                    "npc_reaction": "Hambre. Pega o pão do saco — h? um l?.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Pietro chega pela margem do rÃ­o. Alto, pele curtida, machado no ombro. Olhos pequenos que enxergam longe.",
+                    "text": "Pietro chega pela margem do río. Alto, pele curtida, machado no ombro. Olhos pequenos que enxergam longe.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Pietro â€” buongiorno. Vine a mostrar el rÃ­o al straniero.",
-                    "translation": "Pietro â€” bom dia. Vim mostrar o rÃ­o pro straniero.",
+                    "line": "Pietro — buongiorno. Vine a mostrar el río al straniero.",
+                    "translation": "Pietro — bom dia. Vim mostrar o río pro straniero.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Pietro para na frente de vocÃªs, olha pra vocÃª, depois pro rÃ­o. Antonio disse 'buongiorno' â€” Ã© de manhÃ£. Qual hora do dia Ã© essa?",
+                    "question": "Pietro para na frente de vocês, olha pra você, depois pro río. Antonio disse 'buongiorno' — é de manhã. Qual hora do dia é essa?",
                     "options": [
-                        {"id": "a", "text": "De manhÃ£ â€” hora do buongiorno"},
-                        {"id": "b", "text": "De tarde â€” hora do buonasera"},
-                        {"id": "c", "text": "De noite â€” hora do buonanotte"},
-                        {"id": "d", "text": "Meio-dia â€” sem saudaÃ§Ã£o especÃ­fica"},
+                        {"id": "a", "text": "De manhã — hora do buongiorno"},
+                        {"id": "b", "text": "De tarde — hora do buonasera"},
+                        {"id": "c", "text": "De noite — hora do buonanotte"},
+                        {"id": "d", "text": "Meio-dia — sem saudação específica"},
                     ],
                     "correct": "a",
                     "word_id": "it_buenos_dias", "target": "buongiorno", "native": "bom dia",
-                    "npc_reaction": "Buongiorno. O sol ainda estÃ subindo.",
+                    "npc_reaction": "Buongiorno. O sol ainda est? subindo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Pietro",
                     "line": "...",
-                    "translation": "(O velho nÃ£o responde imediatamente. Te olha.)",
+                    "translation": "(O velho não responde imediatamente. Te olha.)",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Pietro te examina por tempo demais. Os olhos vÃ£o do rosto "
-                        "pra mÃ£o, de volta pro rosto. Antonio ri nervoso."
+                        "Pietro te examina por tempo demais. Os olhos vão do rosto "
+                        "pra mão, de volta pro rosto. Antonio ri nervoso."
                     ),
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Pietro finalmente fala â€” em italiano lento, sem tirar os olhos de vocÃª: 'Come ti chiami?' Como vocÃª responde?",
+                    "question": "Pietro finalmente fala — em italiano lento, sem tirar os olhos de você: 'Come ti chiami?' Como você responde?",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Bene, grazie"},
                         {"id": "c", "text": "Ho fame"},
-                        {"id": "d", "text": "C'e Ãrboles"},
+                        {"id": "d", "text": "C'e ?rboles"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Pietro ouviu, assentiu devagar. NÃ£o disse nada mais por um longo segundo.",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
+                    "npc_reaction": "Pietro ouviu, assentiu devagar. Não disse nada mais por um longo segundo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Pietro faz algo estranho. Ele pega uma pedra lisa do rÃ­o, examina, e a
-    # entrega ao protagonista dizendo algo que nÃ£o faz sentido.
-    # A narrativa aqui Ã© densa â€” menos exercÃ­cios, mais beats. O vocab Ã© usado
+    # ── Seção 5: Reforço ───────────────────────────────────────────────────────
+    # Pietro faz algo estranho. Ele pega uma pedra lisa do río, examina, e a
+    # entrega ao protagonista dizendo algo que não faz sentido.
+    # A narrativa aqui é densa — menos exercícios, mais beats. O vocab é usado
     # dentro da conversa.
     {
         "section_number": 5,
         "section_type": "reforco",
         "content": {
             "recap": {
-                "characters": ["Antonio", "Pietro el LeÃ±ador"],
+                "characters": ["Antonio", "Pietro el Leñador"],
                 "story": (
                     "Pietro te olhou por tempo demais antes de perguntar seu nome. "
-                    "Quando vocÃª respondeu, ele ficou quieto uns instantes. Antonio "
-                    "ficou desconfortÃvel â€” vocÃª percebeu.\n\n"
-                    "Pietro ainda estÃ parado na margem do rÃ­o, machado no ombro, "
+                    "Quando você respondeu, ele ficou quieto uns instantes. Antonio "
+                    "ficou desconfort?vel — você percebeu.\n\n"
+                    "Pietro ainda est? parado na margem do río, machado no ombro, "
                     "te observando."
                 ),
-                "now": "Pietro vai fazer algo que ninguÃ©m esperava.",
+                "now": "Pietro vai fazer algo que ninguém esperava.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Pietro abaixa o machado devagar. Entra no rÃ­o com as botas â€” a Ãgua na canela â€” e pega uma pedra do fundo.",
+                    "text": "Pietro abaixa o machado devagar. Entra no río com as botas — a ?gua na canela — e pega uma pedra do fundo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Pietro",
-                    "line": "Esta pietra del rÃ­o. TÃ³malea.",
+                    "line": "Esta pietra del río. Tómalea.",
                     "translation": "Essa pedra do rio. Pega.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª pegou a pedra. Lisa, pesada, fria. Branca com uma veia cinza no meio.",
+                    "text": "Você pegou a pedra. Lisa, pesada, fria. Branca com uma veia cinza no meio.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Pietro",
-                    "line": "El rÃ­o la hizo asÃ­. AÃ±os y aÃ±os de acqua.",
-                    "translation": "O rÃ­o fez ela assim. Anos e anos de Ãgua.",
+                    "line": "El río la hizo así. Años y años de acqua.",
+                    "translation": "O río fez ela assim. Anos e anos de ?gua.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Pietro",
-                    "question": "Pietro disse 'Esta pietra del rÃ­o'. Que objeto ele te entregou?",
+                    "question": "Pietro disse 'Esta pietra del río'. Que objeto ele te entregou?",
                     "options": [
                         {"id": "a", "text": "Pietra"},
                         {"id": "b", "text": "Fiore"},
@@ -598,24 +598,24 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_pietra", "target": "pietra", "native": "pedra",
-                    "npc_reaction": "Pietra. Do rÃ­o. Guarda.",
+                    "npc_reaction": "Pietra. Do río. Guarda.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Pietro",
                     "line": "Straniero, hai qualcosa. Negli occhi. Come quelli che ascoltano la terra.",
-                    "translation": "Forasteiro â€” vocÃª tem algo. Nos olhos. Como os que escutam a terra.",
+                    "translation": "Forasteiro — você tem algo. Nos olhos. Como os que escutam a terra.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª nÃ£o entendeu completamente. Mas 'tienes algo' ficou claro o suficiente â€” ele estava dizendo que vocÃª tem algo.",
+                    "text": "Você não entendeu completamente. Mas 'tienes algo' ficou claro o suficiente — ele estava dizendo que você tem algo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Pietro â€” che dici?",
-                    "translation": "Pietro â€” o que vocÃª estÃ dizendo?",
+                    "line": "Pietro — che dici?",
+                    "translation": "Pietro — o que você est? dizendo?",
                 },
                 {
                     "kind": "npc_speak",
@@ -626,12 +626,12 @@ SECTIONS = [
                 },
                 {
                     "kind": "narrative",
-                    "text": "Pietro pegou o machado e foi embora pela margem. NÃ£o olhou pra trÃs.",
+                    "text": "Pietro pegou o machado e foi embora pela margem. Não olhou pra tr?s.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio ficou quieto olhando Pietro ir embora. Depois te olhou. 'Stai bene?' â€” como vocÃª estÃ?",
+                    "question": "Antonio ficou quieto olhando Pietro ir embora. Depois te olhou. 'Stai bene?' — como você est??",
                     "options": [
                         {"id": "a", "text": "Bene... ma raro"},
                         {"id": "b", "text": "Male"},
@@ -639,39 +639,39 @@ SECTIONS = [
                         {"id": "d", "text": "Non c'e acqua"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Bene. Pietro Ã© assim â€” fala coisas, vai embora. NÃ£o se preocupa.",
+                    "npc_reaction": "Bene. Pietro é assim — fala coisas, vai embora. Não se preocupa.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "VocÃª estÃ segurando a pedra do rÃ­o. Antonio aponta pra ela: 'QuÃ© tienes ahÃ­?' VocÃª olha e responde:",
+                    "question": "Você est? segurando a pedra do río. Antonio aponta pra ela: 'Qué tienes ahí?' Você olha e responde:",
                     "options": [
-                        {"id": "a", "text": "Una pietra del rÃ­o"},
+                        {"id": "a", "text": "Una pietra del río"},
                         {"id": "b", "text": "Una fiore dil campo"},
                         {"id": "c", "text": "Pane de Giulia"},
-                        {"id": "d", "text": "Acqua del rÃ­o"},
+                        {"id": "d", "text": "Acqua del río"},
                     ],
                     "correct": "a",
                     "word_id": "it_pietra", "target": "pietra", "native": "pedra",
-                    "npc_reaction": "Pietra del rÃ­o. Guarda. Pietro nÃ£o dÃ coisas pra qualquer um.",
+                    "npc_reaction": "Pietra del río. Guarda. Pietro não d? coisas pra qualquer um.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Antonio joga o saco nas costas. O sol jÃ estÃ mais alto â€” "
-                        "hora de voltar. VocÃª pÃ´s a pedra no bolso. Ela estava fria "
-                        "ainda. VocÃª se perguntou o que Pietro quis dizer."
+                        "Antonio joga o saco nas costas. O sol j? est? mais alto — "
+                        "hora de voltar. Você pôs a pedra no bolso. Ela estava fria "
+                        "ainda. Você se perguntou o que Pietro quis dizer."
                     ),
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃculo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Voltando ao borgo pelo campo. Antonio vai na frente, vocÃª fica pra trÃs
-    # cansado. Dois trabalhadores do campo te abordam â€” curiosos com o straniero.
-    # VocÃª tem que usar tudo que aprendeu pra se apresentar e explicar o que hÃ
-    # no campo. SeÃ§Ã£o gated â€” errar trava.
+    # ── Seção 6: Obst?culo ────────────────────────────────────────────────────
+    # Voltando ao borgo pelo campo. Antonio vai na frente, você fica pra tr?s
+    # cansado. Dois trabalhadores do campo te abordam — curiosos com o straniero.
+    # Você tem que usar tudo que aprendeu pra se apresentar e explicar o que h?
+    # no campo. Seção gated — errar trava.
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -679,29 +679,29 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio"],
                 "story": (
-                    "Pietro foi embora. VocÃªs comeram o pÃ£o seco do saco de Nico "
-                    "Ã  beira do rÃ­o. Depois Antonio se levantou. 'Vamos voltando.'\n\n"
-                    "O caminho de volta Ã© longo e o sol esquentou. Antonio caminhou "
-                    "mais rÃpido â€” conversando com ele mesmo, em italiano, sobre as "
-                    "plantas do campo. VocÃª ficou pra trÃs."
+                    "Pietro foi embora. Vocês comeram o pão seco do saco de Nico "
+                    "à beira do río. Depois Antonio se levantou. 'Vamos voltando.'\n\n"
+                    "O caminho de volta é longo e o sol esquentou. Antonio caminhou "
+                    "mais r?pido — conversando com ele mesmo, em italiano, sobre as "
+                    "plantas do campo. Você ficou pra tr?s."
                 ),
-                "now": "VocÃª estÃ sozinho no caminho. Dois trabalhadores do campo se aproximam.",
+                "now": "Você est? sozinho no caminho. Dois trabalhadores do campo se aproximam.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ¾ Caminho de terra. Antonio Ã© um ponto distante lÃ na frente. Dois homens com enxadas param na sua frente â€” curiosos.",
+                    "text": "🌾 Caminho de terra. Antonio é um ponto distante l? na frente. Dois homens com enxadas param na sua frente — curiosos.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 1",
                     "line": "Ciao! Eres el straniero nuevo?",
-                    "translation": "OlÃ! VocÃª Ã© o straniero novo?",
+                    "translation": "Ol?! Você é o straniero novo?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 1",
-                    "question": "O homem perguntou 'Ciao!' e quer saber quem vocÃª Ã©. O que vocÃª responde primeiro?",
+                    "question": "O homem perguntou 'Ciao!' e quer saber quem você é. O que você responde primeiro?",
                     "options": [
                         {"id": "a", "text": "Ciao! Si, sono lo straniero"},
                         {"id": "b", "text": "Non c'e pane"},
@@ -710,61 +710,61 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_straniero", "target": "straniero", "native": "estrangeiro",
-                    "npc_reaction": "O homem ri. 'SabÃ­amos que ia aparecer um straniero. Nico falou.' ",
+                    "npc_reaction": "O homem ri. 'Sabíamos que ia aparecer um straniero. Nico falou.' ",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 2",
                     "line": "Y come ti chiami?",
-                    "translation": "E como vocÃª se chama?",
+                    "translation": "E como você se chama?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 2",
-                    "question": "O segundo homem quer saber seu nome. VocÃª responde:",
+                    "question": "O segundo homem quer saber seu nome. Você responde:",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Bene, grazie"},
-                        {"id": "c", "text": "C'e Ãrboles"},
+                        {"id": "c", "text": "C'e ?rboles"},
                         {"id": "d", "text": "Ho fame"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
-                    "npc_reaction": "'Ah! Piacere.' Os dois inclinam a cabeÃ§a.",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
+                    "npc_reaction": "'Ah! Piacere.' Os dois inclinam a cabeça.",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 1",
-                    "line": "Y por acÃ â€” c'e algo especial? Viste el rÃ­o?",
-                    "translation": "E por aqui â€” tem algo especial? VocÃª viu o rÃ­o?",
+                    "line": "Y por ac? — c'e algo especial?Viste el río?",
+                    "translation": "E por aqui — tem algo especial?Você viu o río?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 1",
-                    "question": "VocÃª acabou de passar o dia no rÃ­o. VocÃª viu muita coisa. O que hÃ por lÃ?",
+                    "question": "Você acabou de passar o dia no río. Você viu muita coisa. O que h? por l??",
                     "options": [
-                        {"id": "a", "text": "C'e Ãrboles, pietre y acqua"},
+                        {"id": "a", "text": "C'e ?rboles, pietre y acqua"},
                         {"id": "b", "text": "Non c'e nada"},
                         {"id": "c", "text": "C'e pane y locanda"},
-                        {"id": "d", "text": "Non c'e Ãrboles"},
+                        {"id": "d", "text": "Non c'e ?rboles"},
                     ],
                     "correct": "a",
-                    "word_id": "it_arbol", "target": "Ãrbol", "native": "Ãrvore",
-                    "npc_reaction": "Os dois assentem. 'Siempre c'e Ãrboles y pietre en el rÃ­o. Claro.'",
+                    "word_id": "it_arbol", "target": "?rbol", "native": "?rvore",
+                    "npc_reaction": "Os dois assentem. 'Siempre c'e ?rboles y pietre en el río. Claro.'",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Trabajador 2",
-                    "line": "Come stai, straniero? El sol estÃ fuerte hoy.",
-                    "translation": "Como vocÃª estÃ, straniero? O sol estÃ forte hoje.",
+                    "line": "Come stai, straniero?El sol est? fuerte hoy.",
+                    "translation": "Como você est?, straniero?O sol est? forte hoje.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Trabajador 2",
-                    "question": "VocÃª caminhou bastante, bebeu do rÃ­o, ainda tem a pedra no bolso. Como vocÃª estÃ?",
+                    "question": "Você caminhou bastante, bebeu do río, ainda tem a pedra no bolso. Como você est??",
                     "options": [
                         {"id": "a", "text": "Bene, grazie"},
                         {"id": "b", "text": "Male"},
@@ -778,22 +778,22 @@ SECTIONS = [
                 },
                 {
                     "kind": "narrative",
-                    "text": "Os dois levantam as enxadas e seguem caminho. Antonio jÃ parou pra te esperar lÃ na frente.",
+                    "text": "Os dois levantam as enxadas e seguem caminho. Antonio j? parou pra te esperar l? na frente.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Straniero! QuÃ© pasÃ³? Stai bene?",
-                    "translation": "Forasteiro! O que aconteceu? EstÃ bem?",
+                    "line": "Straniero! Qué pasó?Stai bene?",
+                    "translation": "Forasteiro! O que aconteceu?Est? bem?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio voltou pra te esperar, preocupado. Mas vocÃª se virou bem. Como vocÃª responde?",
+                    "question": "Antonio voltou pra te esperar, preocupado. Mas você se virou bem. Como você responde?",
                     "options": [
-                        {"id": "a", "text": "SÃ­ â€” me presentÃ© solo"},
-                        {"id": "b", "text": "Male â€” ho paura"},
+                        {"id": "a", "text": "Sí — me presenté solo"},
+                        {"id": "b", "text": "Male — ho paura"},
                         {"id": "c", "text": "Non c'e nada"},
                         {"id": "d", "text": "Ho fame"},
                     ],
@@ -804,9 +804,9 @@ SECTIONS = [
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs voltaram ao borgo com o sol se pondo. VocÃª com a "
-                        "pedra do rÃ­o no bolso â€” fria ainda, lisa, pesada.\n\n"
-                        "VocÃª se perguntou o que Pietro quis dizer com 'tienes algo "
+                        "Vocês voltaram ao borgo com o sol se pondo. Você com a "
+                        "pedra do río no bolso — fria ainda, lisa, pesada.\n\n"
+                        "Você se perguntou o que Pietro quis dizer com 'tienes algo "
                         "en los ojos'. E o que eram 'los que escuchan la tierra'."
                     ),
                 },
@@ -816,4 +816,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

@@ -6,7 +6,7 @@ REM  Cuida so do banco de dados, sem seeds.
 REM  Rode sempre que mexer em models.py.
 REM ============================================================================
 
-pushd "%~dp0..\.."
+pushd "%~dp0.."
 
 echo.
 echo === Talkly Backend - Migrations ===
@@ -21,6 +21,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+set PYTHONIOENCODING=utf-8
 
 echo.
 echo [1/2] makemigrations...

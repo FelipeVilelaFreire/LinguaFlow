@@ -14,6 +14,7 @@ Read only what is needed:
 - `docs/content/es-a1/story.md`: canonical narrative beats. Do not change the plot.
 - `docs/content/es-a1/characters.md`: character roles and relationship arcs.
 - `docs/content/es-a1/inventory-system.md`: chest, item, rarity, degraded-item rules.
+- `docs/content/seeds/ES_CANON_ADAPTATION.md`: operational rule that ES A1 T1 is the seed matrix for all target-language adaptations.
 - `backend/apps/adventure/seeds/es/chapter.py`: chapter-level structure.
 - `backend/apps/adventure/seeds/es/voice.py`: localized voice profiles and NPC aliases.
 - `backend/apps/adventure/seeds/es/phases/f01.py` through `f25.py`: section structure and pacing.
@@ -69,6 +70,9 @@ Also update `frontend-web/src/features/adventure/constants/characterAvatars.ts` 
 Narrative is immutable.
 Keep the same 25 phase beats, milestones, emotional arc, mystery reveals, boss structure, and item system. Adapt culture, names, scenery, vocabulary, and grammar only.
 
+Spanish A1 T1 is the operational canon.
+When there is doubt, follow the ES seed and `docs/content/seeds/T1-ES-A1-COMPLETA.md`. Other language seeds are controlled adaptations of ES, not new storylines. The ES phase files define the density, pacing, item moments, boss shape, and seasonal hook.
+
 Seed content must be editorial, not merely structural.
 Do not satisfy a language seed by generating thin placeholder phases, generic repeated sections, or a factory that stamps the same exercise shape 25 times. The ES seed is the quality bar: each phase needs scene-specific narrative, character-specific dialogue, contextual exercises, emotional progression, and a clear transition. A structural scaffold is acceptable only as a temporary private drafting step; the final committed `f01.py` through `f25.py` files must contain materialized `SECTIONS` with phase-specific content.
 
@@ -95,6 +99,9 @@ Do not copy Spanish grammar topics blindly. Map the target language's core A1 pr
 
 Items and chests stay structurally identical.
 Keep item moments, chest tiers, degraded items, boss rewards, word links, rarity spread, and inventory behavior. Change flavor and object names to fit the target culture.
+
+Backend item tags are not localized.
+Use the system constants/values exactly (`comida`, `bebida`, `arma`, `documento`, `moneda`, `remedio`, `comum`) even when item names and NPC dialogue are localized.
 
 ## Generation Workflow
 

@@ -1,31 +1,31 @@
 """
-Seed das 6 seÃ§Ãµes da Fase 1 Italiano A1 â€” Nico.
+Seed das 6 seções da Fase 1 Italiano A1 — Nico.
 
-PrÃ©-requisito: python manage.py seed_it (cria chapter + fase)
+Pré-requisito: python manage.py seed_it (cria chapter + fase)
 Uso:           python manage.py seed_it_sections [--reset]
 
-âš ï¸  PadrÃ£o obrigatÃ³rio: chat conversacional do comeÃ§o ao fim.
-Toda multiple_choice carrega 'npc' (situaÃ§Ã£o) + 'npc_reaction' (reaÃ§Ã£o ao acerto).
-Nico Ã© o fio condutor â€” nunca exercÃ­cio solto, nunca pergunta seca.
+⚠️  Padrão obrigatório: chat conversacional do começo ao fim.
+Toda multiple_choice carrega 'npc' (situação) + 'npc_reaction' (reação ao acerto).
+Nico é o fio condutor — nunca exercício solto, nunca pergunta seca.
 
-LÃ­ngua por personagem:
-  Antonio  â†’ sÃ³ italiano â€” chama o filho quando nÃ£o consegue comunicar
-  Nico      â†’ portuguÃªs quebrado + exclamaÃ§Ãµes em italiano (guia/ponte)
-  Giulia        â†’ sÃ³ italiano (imersÃ£o â€” player aprende pelo contexto)
-  Bianca      â†’ sÃ³ italiano (imersÃ£o â€” player aprende pelo contexto)
+Língua por personagem:
+  Antonio  → só italiano — chama o filho quando não consegue comunicar
+  Nico      → português quebrado + exclamações em italiano (guia/ponte)
+  Giulia        → só italiano (imersão — player aprende pelo contexto)
+  Bianca      → só italiano (imersão — player aprende pelo contexto)
 """
 
 
 
-# â”€â”€â”€ ConteÃºdo das seÃ§Ãµes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Conteúdo das seções ──────────────────────────────────────────────────────
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Pura imersÃ£o â€” o player entra no borgo e nÃ£o entende nada. Giulia tenta
-    # vender pÃ£o, confusÃ£o com as moedas. Antonio intervÃ©m, chama o filho.
-    # Falas 100% em italiano, sem traduÃ§Ã£o â€” o player nÃ£o entende, e isso Ã©
-    # intencional. Vocab aparece sÃ³ no vocab_list e exercÃ­cios de reconhecimento.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Pura imersão — o player entra no borgo e não entende nada. Giulia tenta
+    # vender pão, confusão com as moedas. Antonio intervém, chama o filho.
+    # Falas 100% em italiano, sem tradução — o player não entende, e isso é
+    # intencional. Vocab aparece só no vocab_list e exercícios de reconhecimento.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -33,21 +33,21 @@ SECTIONS = [
             "beats": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ…  Il Borgo di Santa Chiara · ManhÃ£ · Dia 1",
+                    "text": "🌅  Il Borgo di Santa Chiara · Manhã · Dia 1",
                 },
                 {
                     "kind": "narrative",
-                    "text": "VocÃª atravessa o portÃ£o de pedra clara. Ruas de pedra, sol novo. Vozes por todo lado â€” vocÃª nÃ£o entende nada.",
+                    "text": "Você atravessa o portão de pedra clara. Ruas de pedra, sol novo. Vozes por todo lado — você não entende nada.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Giulia",
-                    "line": "Signore! Signore, aspetti! Vuole pane? Pane fresco, appena uscito dal forno!",
+                    "line": "Signore! Signore, aspetti! Vuole pane?Pane fresco, appena uscito dal forno!",
                     "is_new_npc": True,
                 },
                 {
                     "kind": "player",
-                    "text": "Uma mulher de avental empoeirado bloqueia o caminho. Estende um pÃ£o quente. Diz alguma coisa â€” vocÃª nÃ£o entende.",
+                    "text": "Uma mulher de avental empoeirado bloqueia o caminho. Estende um pão quente. Diz alguma coisa — você não entende.",
                 },
                 {
                     "kind": "npc",
@@ -56,12 +56,12 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª tira moedas do bolso â€” as suas. As erradas.",
+                    "text": "Você tira moedas do bolso — as suas. As erradas.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Giulia",
-                    "line": "Che cos e questo? Queste non sono monete di qui!",
+                    "line": "Che cos e questo?Queste non sono monete di qui!",
                 },
                 {
                     "kind": "narrative",
@@ -76,16 +76,16 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "Um homem mais velho. ChapÃ©u de palha largo, braÃ§os cruzados. Examina vocÃª como quem avalia uma situaÃ§Ã£o.",
+                    "text": "Um homem mais velho. Chapéu de palha largo, braços cruzados. Examina você como quem avalia uma situação.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Antonio",
-                    "line": "Parla italiano? No?",
+                    "line": "Parla italiano?No?",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª balanÃ§a a cabeÃ§a. NÃ£o.",
+                    "text": "Você balança a cabeça. Não.",
                 },
                 {
                     "kind": "npc",
@@ -105,7 +105,7 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "A voz ressoa pela rua inteira. Giulia ri e guarda o pÃ£o.",
+                    "text": "A voz ressoa pela rua inteira. Giulia ri e guarda o pão.",
                 },
             ],
             "exercises": [
@@ -113,14 +113,14 @@ SECTIONS = [
                     "kind": "vocab_list",
                     "items": [
                         {"target": "straniero", "native": "estrangeiro / straniero"},
-                        {"target": "pane",       "native": "pÃ£o"},
-                        {"target": "italiano",   "native": "italiano (a lÃ­ngua)"},
+                        {"target": "pane",       "native": "pão"},
+                        {"target": "italiano",   "native": "italiano (a língua)"},
                     ],
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Antonio",
-                    "question": "Antonio te chamou de algo ao te ver na rua. O que vocÃª Ã© aqui no borgo?",
+                    "question": "Antonio te chamou de algo ao te ver na rua. O que você é aqui no borgo?",
                     "options": [
                         {"id": "a", "text": "Straniero"},
                         {"id": "b", "text": "Contadino"},
@@ -134,26 +134,26 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Giulia",
-                    "question": "Giulia te estendeu algo e disse 'pane fresco!'. O que Ã© pane?",
+                    "question": "Giulia te estendeu algo e disse 'pane fresco!'. O que é pane?",
                     "options": [
-                        {"id": "a", "text": "PÃ£o"},
-                        {"id": "b", "text": "Ãgua"},
+                        {"id": "a", "text": "Pão"},
+                        {"id": "b", "text": "Água"},
                         {"id": "c", "text": "Moeda"},
-                        {"id": "d", "text": "ChapÃ©u"},
+                        {"id": "d", "text": "Chapéu"},
                     ],
                     "correct": "a",
-                    "word_id": "it_pane", "target": "pane", "native": "pÃ£o",
+                    "word_id": "it_pane", "target": "pane", "native": "pão",
                     "npc_reaction": "Pane! Si, signore. Il migliore del borgo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: Aquecimento contextual (primeira fase da temporada) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Nico chega corrindo â€” Antonio vai embora, Nico conecta via portuguÃªs
-    # (aprendeu com o avÃ´, que era straniero). Apresenta ciao, mi chiamo,
-    # buongiorno. Giulia reaparece como callback da S1 â€” dessa vez dÃ o pÃ£o.
-    # Nico faz a ponte em portuguÃªs quebrado (Ãºnica lÃ­ngua compartilhada).
+    # ── Seção 2: Aquecimento contextual (primeira fase da temporada) ───────────
+    # Nico chega corrindo — Antonio vai embora, Nico conecta via português
+    # (aprendeu com o avô, que era straniero). Apresenta ciao, mi chiamo,
+    # buongiorno. Giulia reaparece como callback da S1 — dessa vez d? o pão.
+    # Nico faz a ponte em português quebrado (única língua compartilhada).
     {
         "section_number": 2,
         "section_type": "revisao_srs",
@@ -161,52 +161,52 @@ SECTIONS = [
             "recap": {
                 "characters": ["Antonio", "Giulia"],
                 "story": (
-                    "VocÃª chegou ao borgo de Santa Chiara de manhÃ£ cedo. "
-                    "Giulia tentou te vender pÃ£o â€” vocÃª ofereceu as moedas erradas. "
-                    "Antonio apareceu, te chamou de 'straniero', tentou italiano â€” nÃ£o funcionou.\n\n"
+                    "Você chegou ao borgo de Santa Chiara de manhã cedo. "
+                    "Giulia tentou te vender pão — você ofereceu as moedas erradas. "
+                    "Antonio apareceu, te chamou de 'straniero', tentou italiano — não funcionou.\n\n"
                     "Aí ele gritou pra rua inteira: 'NICO!'"
                 ),
-                "now": "AlguÃ©m vem corrindo.",
+                "now": "Alguém vem corrindo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Passos. RÃpidue. VÃªm de longe.",
+                    "text": "Passos. R?pidos. Vêm de longe.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "PapÃ! AquÃ­ estoy! â€” oi?",
-                    "translation": "Pai! TÃ´ aqui! â€” oi?",
+                    "line": "Pap?! Aquí estoy! — oi?",
+                    "translation": "Pai! Tô aqui! — oi?",
                     "is_new_npc": True,
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "Um cara da sua idade. Mesmo chapÃ©u de palha do pai. Para na sua frente, ofegando.",
+                    "text": "Um cara da sua idade. Mesmo chapéu de palha do pai. Para na sua frente, ofegando.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
                     "line": "Questo straniero non parla italiano. Mostragli il borgo, ragazzo.",
-                    "translation": "Esse straniero nÃ£o fala italiano. Mostra o borgo pra ele, filho.",
+                    "translation": "Esse straniero não fala italiano. Mostra o borgo pra ele, filho.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Uh... vocÃª... fala portuguÃªs?",
-                    "translation": "(portuguÃªs quebrado)",
+                    "line": "Uh... você... fala português?",
+                    "translation": "(português quebrado)",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª para.\n\nSotaque pesado. Mas na sua lÃ­ngua.",
+                    "text": "Você para.\n\nSotaque pesado. Mas na sua língua.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Antonio",
-                    "line": "Bueno! Ragazzo, cuÃ­dalo! Straniero â€” benevenido a Santa Chiara!",
-                    "translation": "Bom! Filho, cuida dele! Forasteiro â€” bem-vindo a Santa Chiara!",
+                    "line": "Bueno! Ragazzo, cuídalo! Straniero — benevenido a Santa Chiara!",
+                    "translation": "Bom! Filho, cuida dele! Forasteiro — bem-vindo a Santa Chiara!",
                     "pace": "urgent",
                 },
                 {
@@ -216,20 +216,20 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Ciao. Mi chiamo Nico. Contadino â€” trabalho na terra.",
-                    "translation": "OlÃ. Meu nome Ã© Nico.",
+                    "line": "Ciao. Mi chiamo Nico. Contadino — trabalho na terra.",
+                    "translation": "Ol?. Meu nome é Nico.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Meu avÃ´ era straniero tambÃ©m â€” por isso sei um pouco da sua lÃ­ngua. De manhÃ£: 'buongiorno'. De tarde: 'buonasera'.",
+                    "line": "Meu avô era straniero também — por isso sei um pouco da sua língua. De manhã: 'buongiorno'. De tarde: 'buonasera'.",
                     "translation": "buongiorno = bom dia | buonasera = boa tarde",
                 },
                 {
                     "kind": "vocab_list",
                     "items": [
-                        {"target": "ciao",          "native": "olÃ"},
-                        {"target": "mi chiamo",      "native": "meu nome Ã©"},
+                        {"target": "ciao",          "native": "ol?"},
+                        {"target": "mi chiamo",      "native": "meu nome é"},
                         {"target": "buongiorno",   "native": "bom dia"},
                         {"target": "buonasera", "native": "boa tarde"},
                         {"target": "grazie",       "native": "obrigado/a"},
@@ -238,7 +238,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Nico acabou de se apresentar: 'Mi chiamo Nico.' Agora Ã© sua vez. VocÃª diz:",
+                    "question": "Nico acabou de se apresentar: 'Mi chiamo Nico.' Agora é sua vez. Você diz:",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Ciao, grazie"},
@@ -246,13 +246,13 @@ SECTIONS = [
                         {"id": "d", "text": "Straniero"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Eso! Agora ele sabe quem vocÃª Ã©.",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
+                    "npc_reaction": "Eso! Agora ele sabe quem você é.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Sol de manhÃ£ cedo. Nico te olha esperando. Como vocÃª cumprimenta?",
+                    "question": "Sol de manhã cedo. Nico te olha esperando. Como você cumprimenta?",
                     "options": [
                         {"id": "a", "text": "Buongiorno!"},
                         {"id": "b", "text": "Buonasera!"},
@@ -261,17 +261,17 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_buenos_dias", "target": "buongiorno", "native": "bom dia",
-                    "npc_reaction": "Buongiorno â€” atÃ© o meio-dia.",
+                    "npc_reaction": "Buongiorno — até o meio-dia.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "VocÃªs dobram uma rua. Giulia na porta da padaria â€” reconhece vocÃª.",
+                    "text": "Vocês dobram uma rua. Giulia na porta da padaria — reconhece você.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Giulia",
-                    "line": "Ah! El straniero de antes! Toma â€” sin monete esta vez!",
-                    "translation": "O straniero de antes! Toma â€” sem pagar desta vez!",
+                    "line": "Ah! El straniero de antes! Toma — sin monete esta vez!",
+                    "translation": "O straniero de antes! Toma — sem pagar desta vez!",
                 },
                 {
                     "kind": "npc_speak",
@@ -282,7 +282,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Giulia",
-                    "question": "Giulia te dÃ o pÃ£o de graÃ§a. VocÃª responde:",
+                    "question": "Giulia te d? o pão de graça. Você responde:",
                     "options": [
                         {"id": "a", "text": "Grazie!"},
                         {"id": "b", "text": "Ciao!"},
@@ -297,10 +297,10 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: GramÃtica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 3: Gram?tica Narrativa ───────────────────────────────────────────
     # Nico senta com o player num murinho e ensina as estruturas de forma direta,
-    # como amico explicando â€” nÃ£o como professor. Intercala beats com exercÃ­cios.
-    # Ensina: come ti chiami? / mi chiamo + come stai? / bene o male.
+    # como amico explicando — não como professor. Intercala beats com exercícios.
+    # Ensina: come ti chiami?/ mi chiamo + come stai?/ bene o male.
     {
         "section_number": 3,
         "section_type": "gramatica_narrativa",
@@ -308,14 +308,14 @@ SECTIONS = [
             "recap": {
                 "characters": ["Nico"],
                 "story": (
-                    "Nico passou a tarde te fazendo repetir as saudaÃ§Ãµes que ele "
+                    "Nico passou a tarde te fazendo repetir as saudações que ele "
                     "tinha soltado na rua: 'Ciao!', 'Buongiorno', 'Buonasera'. "
-                    "Quando vocÃª acertou 'Grazie' com Giulia e ela respondeu 'Prego', "
-                    "ele bateu palma uma vez sÃ³. Satisfeito.\n\n"
-                    "Aí ele puxou vocÃª pra um murinho na sombra de uma parede de pedra clara. "
-                    "'Tem mais umas coisas que vocÃª precisa saber.'"
+                    "Quando você acertou 'Grazie' com Giulia e ela respondeu 'Prego', "
+                    "ele bateu palma uma vez só. Satisfeito.\n\n"
+                    "Aí ele puxou você pra um murinho na sombra de uma parede de pedra clara. "
+                    "'Tem mais umas coisas que você precisa saber.'"
                 ),
-                "now": "Nico vai te ensinar a pedir nomes e responder como vocÃª estÃ.",
+                "now": "Nico vai te ensinar a pedir nomes e responder como você est?.",
             },
             "steps": [
                 {
@@ -326,63 +326,63 @@ SECTIONS = [
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Primero: come ti chiami?",
-                    "translation": "Primeiro: como vocÃª se chama?",
+                    "translation": "Primeiro: como você se chama?",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Come ti chiami?",
-                    "meaning": "Como vocÃª se chama?",
-                    "note": "Pergunta padrÃ£o pra pedir o nome de alguÃ©m",
+                    "meaning": "Como você se chama?",
+                    "note": "Pergunta padrão pra pedir o nome de alguém",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "E la risposta: 'Mi chiamo' â€” e dici il tuo nome.",
-                    "translation": "E a resposta: 'Mi chiamo' â€” e vocÃª diz seu nome.",
+                    "line": "E la risposta: 'Mi chiamo' — e dici il tuo nome.",
+                    "translation": "E a resposta: 'Mi chiamo' — e você diz seu nome.",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Mi chiamo ___",
-                    "meaning": "Meu nome Ã© ___",
-                    "note": "Use seu prÃ³prio nome: 'Mi chiamo [nome]'",
+                    "meaning": "Meu nome é ___",
+                    "note": "Use seu próprio nome: 'Mi chiamo [nome]'",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Nico aponta pra vocÃª: 'Come ti chiami?' Como vocÃª responde?",
+                    "question": "Nico aponta pra você: 'Come ti chiami?' Como você responde?",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Soy llamo [seu nome]"},
-                        {"id": "c", "text": "TÃº llamas [seu nome]"},
+                        {"id": "c", "text": "Tú llamas [seu nome]"},
                         {"id": "d", "text": "Ciao Nico"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
                     "npc_reaction": "Piacere, amico!",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Ora otra: 'Come stai?'",
-                    "translation": "Agora outra: 'como vocÃª estÃ?'",
+                    "translation": "Agora outra: 'como você est??'",
                 },
                 {
                     "kind": "pattern",
                     "parts": [
                         {"text": "Come stai?", "isKey": False},
-                        {"text": " â†’ ",          "isKey": False},
+                        {"text": " → ",          "isKey": False},
                         {"text": "Bene",          "isKey": True},
                         {"text": " / ",           "isKey": False},
                         {"text": "Male",           "isKey": True},
                     ],
-                    "example": "â€” Come stai? â€” Bene, grazie.",
-                    "translation": "â€” Como vocÃª estÃ? â€” Bem, obrigado.",
+                    "example": "— Come stai?— Bene, grazie.",
+                    "translation": "— Como você est??— Bem, obrigado.",
                     "note": "Bene = bem | Male = male",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "O sol tÃ bom, o pÃ£o da Giulia ainda quente no seu bolso. Nico: 'Come stai?'",
+                    "question": "O sol t? bom, o pão da Giulia ainda quente no seu bolso. Nico: 'Come stai?'",
                     "options": [
                         {"id": "a", "text": "Bene"},
                         {"id": "b", "text": "Male"},
@@ -391,19 +391,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_bene", "target": "bene", "native": "bem",
-                    "npc_reaction": "Bene! Ã‰ isso.",
+                    "npc_reaction": "Bene! É isso.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Pero si no stai bene, dilo. No finjas.",
-                    "translation": "Mas se vocÃª nÃ£o estÃ bem, fala. NÃ£o finge.",
+                    "translation": "Mas se você não est? bem, fala. Não finge.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Seus pÃ©s doem, suas pÃlpebras pesam. Faz dias que vocÃª caminha sem parar. Nico: 'Come stai?'",
+                    "question": "Seus pés doem, suas p?lpebras pesam. Faz dias que você caminha sem parar. Nico: 'Come stai?'",
                     "options": [
                         {"id": "a", "text": "Male"},
                         {"id": "b", "text": "Bene"},
@@ -417,26 +417,26 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "VocÃª quer saber o nome de alguÃ©m. Pergunta:",
+                    "question": "Você quer saber o nome de alguém. Pergunta:",
                     "options": [
                         {"id": "a", "text": "Come ti chiami?"},
                         {"id": "b", "text": "Come stai?"},
-                        {"id": "c", "text": "DÃ³nde estÃs?"},
-                        {"id": "d", "text": "Y tÃº?"},
+                        {"id": "c", "text": "Dónde est?s?"},
+                        {"id": "d", "text": "Y tú?"},
                     ],
                     "correct": "a",
-                    "word_id": "it_como_te_llamas", "target": "come ti chiami?", "native": "como vocÃª se chama?",
+                    "word_id": "it_como_te_llamas", "target": "come ti chiami?", "native": "como você se chama?",
                     "npc_reaction": "Isso. E olha pro peito do outro enquanto pergunta.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Nico tira uma manzana do bolso e te passa sem cerimÃ´nia. 'Del Ãrbol detrÃs de mi casa.'",
+                    "text": "Nico tira uma manzana do bolso e te passa sem cerimônia. 'Del ?rbol detr?s de mi casa.'",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Sabes cÃ³mo se llama esto? Manzana. Dil campo.",
-                    "translation": "manzana = maÃ§Ã£",
+                    "line": "Sabes cómo se llama esto?Manzana. Dil campo.",
+                    "translation": "manzana = maçã",
                 },
                 {
                     "kind": "multiple_choice",
@@ -449,31 +449,31 @@ SECTIONS = [
                         {"id": "d", "text": "Moneta"},
                     ],
                     "correct": "a",
-                    "word_id": "it_manzana", "target": "manzana", "native": "maÃ§Ã£",
-                    "npc_reaction": "Manzana. Roja, del Ãrbol. Gratis.",
+                    "word_id": "it_manzana", "target": "manzana", "native": "maçã",
+                    "npc_reaction": "Manzana. Roja, del ?rbol. Gratis.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Nico cruza os braÃ§os, satisfeito. 'Come stai?'",
+                    "question": "Nico cruza os braços, satisfeito. 'Come stai?'",
                     "options": [
-                        {"id": "a", "text": "Bene, y tÃº?"},
+                        {"id": "a", "text": "Bene, y tú?"},
                         {"id": "b", "text": "Male, grazie"},
                         {"id": "c", "text": "Ciao, Nico"},
                         {"id": "d", "text": "Prego"},
                     ],
                     "correct": "a",
                     "word_id": "it_bene", "target": "bene", "native": "bem",
-                    "npc_reaction": "Excelente! E o 'y tÃº?' no final â€” isso Ã© o que separa.",
+                    "npc_reaction": "Excelente! E o 'y tú?' no final — isso é o que separa.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: Encontro com Bianca â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Nico leva o player pra piazza e apresenta doÃ±a Bianca â€” vizinha antiga,
-    # conhece todo o borgo. Narrativa-heavy. Bianca fala sÃ³ italiano.
-    # adiÃ³s Ã© apresentado por Nico antes de Bianca testar.
+    # ── Seção 4: Encontro com Bianca ──────────────────────────────────────────
+    # Nico leva o player pra piazza e apresenta doña Bianca — vizinha antiga,
+    # conhece todo o borgo. Narrativa-heavy. Bianca fala só italiano.
+    # adiós é apresentado por Nico antes de Bianca testar.
     {
         "section_number": 4,
         "section_type": "pratica_aplicada",
@@ -481,19 +481,19 @@ SECTIONS = [
             "recap": {
                 "characters": ["Nico"],
                 "story": (
-                    "Nico ficou te testando atÃ© as palavras saÃ­rem sem hesitar. "
-                    "SaudaÃ§Ãµes, perguntas, respostas â€” vocÃª foi acertando uma a uma.\n\n"
-                    "Quando ele cruzou os braÃ§os satisfeito vocÃª soube que tinha "
-                    "passado por algo. 'Bueno, straniero. Tem alguÃ©m que quero que "
-                    "vocÃª conheÃ§a.'"
+                    "Nico ficou te testando até as palavras saírem sem hesitar. "
+                    "Saudações, perguntas, respostas — você foi acertando uma a uma.\n\n"
+                    "Quando ele cruzou os braços satisfeito você soube que tinha "
+                    "passado por algo. 'Bueno, straniero. Tem alguém que quero que "
+                    "você conheça.'"
                 ),
-                "now": "Nico vai te apresentar alguÃ©m importante do borgo.",
+                "now": "Nico vai te apresentar alguém importante do borgo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs entram na piazza central. Sombra de Ãrvores antigas, "
+                        "Vocês entram na piazza central. Sombra de ?rvores antigas, "
                         "fonte de pedra no meio. Uma mulher mais velha sentada num "
                         "banco, costurando com agulha fina."
                     ),
@@ -501,36 +501,36 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Guarda â€” esa es doÃ±a Bianca. Conoce a todos nel borgo. Si vuoi saber algo, ella te dice.",
-                    "translation": "Olha â€” essa Ã© doÃ±a Bianca. Conhece todo mundo no borgo. Se quiser saber algo, ela conta.",
+                    "line": "Guarda — esa es doña Bianca. Conoce a todos nel borgo. Si vuoi saber algo, ella te dice.",
+                    "translation": "Olha — essa é doña Bianca. Conhece todo mundo no borgo. Se quiser saber algo, ela conta.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Ah â€” e se for embora de alguÃ©m, fala 'adiÃ³s'. Aprende antes de chegar nela.",
-                    "translation": "adiÃ³s = tchau / adeus",
+                    "line": "Ah — e se for embora de alguém, fala 'adiós'. Aprende antes de chegar nela.",
+                    "translation": "adiós = tchau / adeus",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Bianca levanta os olhos do bordado. Sorri pra Nico, depois pra vocÃª.",
+                    "text": "Bianca levanta os olhos do bordado. Sorri pra Nico, depois pra você.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
                     "line": "Ciao, Nico! Y este straniero?",
-                    "translation": "OlÃ, Nico! E esse straniero?",
+                    "translation": "Ol?, Nico! E esse straniero?",
                     "is_new_npc": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Mi straniero. Lo estoy enseÃ±ando. Sa gia saludar.",
-                    "translation": "Meu straniero. TÃ´ ensinando ele. JÃ sabe cumprimentar.",
+                    "line": "Mi straniero. Lo estoy enseñando. Sa gia saludar.",
+                    "translation": "Meu straniero. Tô ensinando ele. J? sabe cumprimentar.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Bianca tira os Ã³culos pequenos do nariz e te examina de cima "
+                        "Bianca tira os óculos pequenos do nariz e te examina de cima "
                         "a baixo. Gesto materno, sem maledade."
                     ),
                 },
@@ -544,7 +544,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Bianca aponta o banco do lado dela: 'Y tÃº, figlio? Come ti chiami?'",
+                    "question": "Bianca aponta o banco do lado dela: 'Y tú, figlio?Come ti chiami?'",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Bene, grazie"},
@@ -552,48 +552,48 @@ SECTIONS = [
                         {"id": "d", "text": "Ciao Bianca"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
                     "npc_reaction": "Piacere. Io sono Bianca. Llevo toda mi vida en este borgo.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª se senta no banco de pedra ao lado dela. As mÃ£os de "
-                        "Bianca voltam ao bordado â€” Ãgeis, apesar dos anos."
+                        "Você se senta no banco de pedra ao lado dela. As mãos de "
+                        "Bianca voltam ao bordado — ?geis, apesar dos anos."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "Vuoi acqua del pozo? AquÃ­ el acqua es buena, straniero.",
-                    "translation": "acqua = Ãgua",
+                    "line": "Vuoi acqua del pozo?Aquí el acqua es buena, straniero.",
+                    "translation": "acqua = ?gua",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Bianca aponta pro poÃ§o da piazza e oferece algo fresco. O que Ã© 'acqua'?",
+                    "question": "Bianca aponta pro poço da piazza e oferece algo fresco. O que é 'acqua'?",
                     "options": [
-                        {"id": "a", "text": "Ãgua"},
-                        {"id": "b", "text": "PÃ£o"},
-                        {"id": "c", "text": "MaÃ§Ã£"},
+                        {"id": "a", "text": "Água"},
+                        {"id": "b", "text": "Pão"},
+                        {"id": "c", "text": "Maçã"},
                         {"id": "d", "text": "Moeda"},
                     ],
                     "correct": "a",
-                    "word_id": "it_acqua", "target": "acqua", "native": "Ãgua",
+                    "word_id": "it_acqua", "target": "acqua", "native": "?gua",
                     "npc_reaction": "L acqua del pozzo. La migliore del borgo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "Dimmi una cosa â€” come stai oggi? Il primo giorno e sempre duro.",
-                    "translation": "Me diz uma coisa â€” como vocÃª estÃ hoje? O primeiro dia sempre Ã© duro.",
+                    "line": "Dimmi una cosa — come stai oggi?Il primo giorno e sempre duro.",
+                    "translation": "Me diz uma coisa — como você est? hoje?O primeiro dia sempre é duro.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "O sol da tarde te aquece, o pÃ£o da Giulia ainda morno no bolso. VocÃª responde:",
+                    "question": "O sol da tarde te aquece, o pão da Giulia ainda morno no bolso. Você responde:",
                     "options": [
                         {"id": "a", "text": "Bene"},
                         {"id": "b", "text": "Male"},
@@ -602,59 +602,59 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_bene", "target": "bene", "native": "bem",
-                    "npc_reaction": "Me alegro. AquÃ­ siempre se estÃ bene si el cuerpo acquanta y la gente saluda.",
+                    "npc_reaction": "Me alegro. Aquí siempre se est? bene si el cuerpo acquanta y la gente saluda.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "Y sabes despedirte tambiÃ©n, straniero?",
-                    "translation": "E vocÃª sabe se despedir tambÃ©m, straniero?",
+                    "line": "Y sabes despedirte también, straniero?",
+                    "translation": "E você sabe se despedir também, straniero?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Bianca te olha esperando. VocÃª precisa dizer tchau em italiano.",
+                    "question": "Bianca te olha esperando. Você precisa dizer tchau em italiano.",
                     "options": [
-                        {"id": "a", "text": "AdiÃ³s"},
+                        {"id": "a", "text": "Adiós"},
                         {"id": "b", "text": "Ciao"},
                         {"id": "c", "text": "Grazie"},
                         {"id": "d", "text": "Bene"},
                     ],
                     "correct": "a",
-                    "word_id": "it_adios", "target": "adiÃ³s", "native": "tchau / adeus",
+                    "word_id": "it_adios", "target": "adiós", "native": "tchau / adeus",
                     "npc_reaction": "Bene. Aunque esma que no tan pronto, figlio.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "Ora â€” pregÃºntale a Nico cÃ³mo estÃ.",
-                    "translation": "Agora â€” pergunta pro Nico como ele tÃ.",
+                    "line": "Ora — pregúntale a Nico cómo est?.",
+                    "translation": "Agora — pergunta pro Nico como ele t?.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "Bianca aponta pra Nico. Ã‰ a sua vez de perguntar.",
+                    "question": "Bianca aponta pra Nico. É a sua vez de perguntar.",
                     "options": [
                         {"id": "a", "text": "Come stai?"},
                         {"id": "b", "text": "Come ti chiami?"},
-                        {"id": "c", "text": "Y tÃº?"},
-                        {"id": "d", "text": "AdiÃ³s?"},
+                        {"id": "c", "text": "Y tú?"},
+                        {"id": "d", "text": "Adiós?"},
                     ],
                     "correct": "a",
                     "npc_reaction": "Bene. Como siempre que ho a alguien queriendo aprender.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Nico observa de pÃ©, satisfeito. Bianca continua costurando.",
+                    "text": "Nico observa de pé, satisfeito. Bianca continua costurando.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ConvivÃªncia com Bianca â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 5: Convivência com Bianca ────────────────────────────────────────
     # Bianca ensina sobre o ritmo social do borgo enquanto costura.
-    # Poucos exercÃ­cios â€” foco em desenvolver o personagem e contextualizar
+    # Poucos exercícios — foco em desenvolver o personagem e contextualizar
     # o vocab em sabedoria local. buonanotte apresentado antes de ser testado.
     {
         "section_number": 5,
@@ -663,50 +663,50 @@ SECTIONS = [
             "recap": {
                 "characters": ["Nico", "Bianca"],
                 "story": (
-                    "Nico te apresentou a doÃ±a Bianca na piazza. Uma mulher mais "
+                    "Nico te apresentou a doña Bianca na piazza. Uma mulher mais "
                     "velha, costurando num banco de pedra, com olhar calmo de quem "
                     "viu tudo.\n\n"
-                    "VocÃª se apresentou, disse que estava bem. Bianca sorriu â€” 'aqui "
-                    "sempre se estÃ bem se o corpo acquanta e a gente cumprimenta'. "
+                    "Você se apresentou, disse que estava bem. Bianca sorriu — 'aqui "
+                    "sempre se est? bem se o corpo acquanta e a gente cumprimenta'. "
                     "Agora ela quer te contar como o borgo funciona."
                 ),
-                "now": "Bianca vai te ensinar o ritmo social â€” quando cumprimentar como, e por quÃª.",
+                "now": "Bianca vai te ensinar o ritmo social — quando cumprimentar como, e por quê.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "AquÃ­ nel borgo, somos pocos. Pero todos nos conocemos.",
+                    "line": "Aquí nel borgo, somos pocos. Pero todos nos conocemos.",
                     "translation": "Aqui no borgo, somos poucos. Mas todos nos conhecemos.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Nico acena com a cabeÃ§a concordando, mas deixa Bianca falar.",
+                    "text": "Nico acena com a cabeça concordando, mas deixa Bianca falar.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
                     "line": "Se saluti qualcuno, si ricordera di te. Se dici 'grazie', ti invitera. Funziona cosi.",
-                    "translation": "Se vocÃª cumprimenta alguÃ©m, vÃ£o lembrar. Se diz 'grazie', vÃ£o te convidar. Ã‰ assim.",
+                    "translation": "Se você cumprimenta alguém, vão lembrar. Se diz 'grazie', vão te convidar. É assim.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
                     "line": "La parola piu bella dell italiano e 'grazie'. Non dimenticarla mai.",
-                    "translation": "A palavra mais bonita do italiano Ã© 'grazie'. NÃ£o esqueÃ§a nunca.",
+                    "translation": "A palavra mais bonita do italiano é 'grazie'. Não esqueça nunca.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Bianca aponta pra Nico: 'Cuando Ã©l te dÃ© algo â€” pane, acqua, una palabra â€” che dici?'",
+                    "question": "Bianca aponta pra Nico: 'Cuando él te dé algo — pane, acqua, una palabra — che dici?'",
                     "options": [
                         {"id": "a", "text": "Grazie"},
                         {"id": "b", "text": "Ciao"},
                         {"id": "c", "text": "Bene"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "it_grazie", "target": "grazie", "native": "obrigado/a",
@@ -715,7 +715,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Nico te entrega a manzana que estava no bolso dele. VocÃª diz 'grazie'. Como ele responde?",
+                    "question": "Nico te entrega a manzana que estava no bolso dele. Você diz 'grazie'. Como ele responde?",
                     "options": [
                         {"id": "a", "text": "Prego"},
                         {"id": "b", "text": "Ciao"},
@@ -724,19 +724,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_de_nada", "target": "prego", "native": "prego",
-                    "npc_reaction": "Ese es el ciclo, figlio. Saludo, palabra, respuesta. AsÃ­ vivimos.",
+                    "npc_reaction": "Ese es el ciclo, figlio. Saludo, palabra, respuesta. Así vivimos.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
                     "line": "Y cuando el sol se pone y llega la noche, decimos 'buonanotte'.",
-                    "translation": "E quando o sol se pÃµe e chega a noite, dizemos 'buonanotte' â€” boa noite.",
+                    "translation": "E quando o sol se põe e chega a noite, dizemos 'buonanotte' — boa noite.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "O sol sumiu. VocÃª encontra alguÃ©m na rua Ã  noite. Como cumprimenta?",
+                    "question": "O sol sumiu. Você encontra alguém na rua à noite. Como cumprimenta?",
                     "options": [
                         {"id": "a", "text": "Buonanotte"},
                         {"id": "b", "text": "Buongiorno"},
@@ -745,19 +745,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_buenas_noches", "target": "buonanotte", "native": "boa noite",
-                    "npc_reaction": "AsÃ­. Cada hora tiene su saludo.",
+                    "npc_reaction": "Así. Cada hora tiene su saludo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
-                    "line": "Una Ãºltima cosa, straniero â€” come ti chiami?",
-                    "translation": "Uma Ãºltima coisa, straniero â€” como vocÃª se chama?",
+                    "line": "Una última cosa, straniero — come ti chiami?",
+                    "translation": "Uma última coisa, straniero — como você se chama?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Bianca",
-                    "question": "Bianca te olha com um sorriso. Ela quer ouvir vocÃª dizer seu nome.",
+                    "question": "Bianca te olha com um sorriso. Ela quer ouvir você dizer seu nome.",
                     "options": [
                         {"id": "a", "text": "Mi chiamo [seu nome]"},
                         {"id": "b", "text": "Bene, grazie"},
@@ -765,37 +765,37 @@ SECTIONS = [
                         {"id": "d", "text": "Soy straniero"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
                     "npc_reaction": "Eso. Nunca olvides tu nombre cuando alguien te lo pida.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Bianca volta ao bordado. O sol comeÃ§ou a baixar mais â€” "
-                        "sombras compridas no chÃ£o de pedra."
+                        "Bianca volta ao bordado. O sol começou a baixar mais — "
+                        "sombras compridas no chão de pedra."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Bianca",
                     "line": "Torna domani se vuoi. Sono sempre qui, su questa panca, con l ago in mano.",
-                    "translation": "Volta amanhÃ£ se quiser. Sempre estou aqui â€” neste banco, com a agulha na mÃ£o.",
+                    "translation": "Volta amanhã se quiser. Sempre estou aqui — neste banco, com a agulha na mão.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
-                    "line": "Andiamo, straniero. Tem uma Ãºltima coisa antes de vocÃª descansar.",
-                    "translation": "Vamos. Tem uma Ãºltima coisa antes de vocÃª descansar.",
+                    "line": "Andiamo, straniero. Tem uma última coisa antes de você descansar.",
+                    "translation": "Vamos. Tem uma última coisa antes de você descansar.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃculo (gate final â€” gated) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Nico vira examinador. Cada exercÃ­cio Ã© um desafio dele direto.
-    # Errar trava (frontend aplica isGated). Closing beats fazem a transiÃ§Ã£o
-    # pra la locanda â€” onde a Fase 2 comeÃ§a.
+    # ── Seção 6: Obst?culo (gate final — gated) ────────────────────────────────
+    # Nico vira examinador. Cada exercício é um desafio dele direto.
+    # Errar trava (frontend aplica isGated). Closing beats fazem a transição
+    # pra la locanda — onde a Fase 2 começa.
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -803,21 +803,21 @@ SECTIONS = [
             "recap": {
                 "characters": ["Nico"],
                 "story": (
-                    "Nico encaixou tudo numa sequÃªncia e fez vocÃª repetir atÃ© "
-                    "sair natural: 'Ciao! Come stai?' â€” pausa â€” resposta â€” "
-                    "'Y tÃº, come ti chiami?'\n\n"
-                    "Na terceira vez ele nÃ£o corrigiu nada. SÃ³ tirou o chapÃ©u por "
-                    "um segundo â€” gesto sÃ©rio. 'Bueno. JÃ pode falar com qualquer um.'\n\n"
+                    "Nico encaixou tudo numa sequência e fez você repetir até "
+                    "sair natural: 'Ciao! Come stai?' — pausa — resposta — "
+                    "'Y tú, come ti chiami?'\n\n"
+                    "Na terceira vez ele não corrigiu nada. Só tirou o chapéu por "
+                    "um segundo — gesto sério. 'Bueno. J? pode falar com qualquer um.'\n\n"
                     "Aí o sorriso saiu do rosto. 'Agora vamos ver de verdade.'"
                 ),
-                "now": "Teste final. Errar trava â€” vocÃª precisa acertar pra passar.",
+                "now": "Teste final. Errar trava — você precisa acertar pra passar.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Ya basta de explicaciones. Si te equivocas, repites. Sin atajos.",
-                    "translation": "Chega de explicaÃ§Ãµes. Se errar, repete. Sem atalho.",
+                    "translation": "Chega de explicações. Se errar, repete. Sem atalho.",
                     "pace": "urgent",
                 },
                 {
@@ -842,7 +842,7 @@ SECTIONS = [
                         {"id": "a", "text": "Grazie!"},
                         {"id": "b", "text": "Ciao!"},
                         {"id": "c", "text": "Bene!"},
-                        {"id": "d", "text": "AdiÃ³s!"},
+                        {"id": "d", "text": "Adiós!"},
                     ],
                     "correct": "a",
                     "word_id": "it_grazie", "target": "grazie", "native": "obrigado/a",
@@ -851,7 +851,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "'Hai detto grazie. QuÃ© ti rispondo yo?'",
+                    "question": "'Hai detto grazie. Qué ti rispondo yo?'",
                     "options": [
                         {"id": "a", "text": "Prego"},
                         {"id": "b", "text": "Ciao"},
@@ -860,7 +860,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_de_nada", "target": "prego", "native": "prego",
-                    "npc_reaction": "Eso! Ã‰ o ciclo.",
+                    "npc_reaction": "Eso! É o ciclo.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -873,13 +873,13 @@ SECTIONS = [
                         {"id": "d", "text": "Te llamo"},
                     ],
                     "correct": "a",
-                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome Ã©",
+                    "word_id": "it_me_llamo", "target": "mi chiamo", "native": "meu nome é",
                     "npc_reaction": "Eso!",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Nico",
-                    "question": "'Come stai? Stai bene.'",
+                    "question": "'Come stai?Stai bene.'",
                     "options": [
                         {"id": "a", "text": "Bene"},
                         {"id": "b", "text": "Male"},
@@ -890,34 +890,34 @@ SECTIONS = [
                     "word_id": "it_bene", "target": "bene", "native": "bem",
                     "npc_reaction": "Bene.",
                 },
-                # â”€â”€ Closing beats â€” transiÃ§Ã£o pra la locanda â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                # ── Closing beats — transição pra la locanda ──────────────────
                 {
                     "kind": "narrative",
                     "text": (
-                        "Nico ajeita o chapÃ©u. O sol jÃ tÃ baixo, sombras compridas "
-                        "no chÃ£o de terra. Ele te dÃ um tapinha no ombro."
+                        "Nico ajeita o chapéu. O sol j? t? baixo, sombras compridas "
+                        "no chão de terra. Ele te d? um tapinha no ombro."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Hai fatto molto por hoy. Ven, vamos a la locanda.",
-                    "translation": "JÃ fez bastante por hoje. Vem, vamos pra locanda.",
+                    "translation": "J? fez bastante por hoje. Vem, vamos pra locanda.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Nico",
                     "line": "Riposa. Domani c e altro borgo da conoscere.",
-                    "translation": "Descansa. AmanhÃ£ tem mais borgo pra conhecer.",
+                    "translation": "Descansa. Amanhã tem mais borgo pra conhecer.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs caminham pelas ruas de pedra. Primeiras luzes nas janelas. "
-                        "Nico te aponta uma casa de dois andares no canto da piazza â€” "
-                        "la locanda. Onde vocÃª vai dormir essa noite."
+                        "Vocês caminham pelas ruas de pedra. Primeiras luzes nas janelas. "
+                        "Nico te aponta uma casa de dois andares no canto da piazza — "
+                        "la locanda. Onde você vai dormir essa noite."
                     ),
                 },
             ],
@@ -926,4 +926,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

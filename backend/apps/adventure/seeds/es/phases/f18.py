@@ -1,40 +1,40 @@
-﻿"""
-Seed das 6 seÃ§Ãµes da Fase 18 Espanhol A1 â€” "Don Miguel se entera".
+"""
+Seed das 6 seções da Fase 18 Espanhol A1 — "Don Miguel se entera".
 
-Os trÃªs jovens reuniram tudo. Don Miguel ouviu. DecisÃ£o pendente:
-o que fazer com MarÃ­a agora que existem trÃªs pistas concretas
+Os três jovens reuniram tudo. Don Miguel ouviu. Decisão pendente:
+o que fazer com María agora que existem três pistas concretas
 (passado dela com Alcalde via Carmen, marca dos Buscadores, sussurro
-de LucÃ­a).
+de Lucía).
 
-DecisÃ£o final: continuar observando â€” sem confrontar. Mas Don Miguel
-revela que tem uma carta guardada faz 20 anos. Vai mostrar amanhÃ£.
+Decisão final: continuar observando — sem confrontar. Mas Don Miguel
+revela que tem uma carta guardada faz 20 anos. Vai mostrar amanhã.
 
-VOCAB NOVO (3): verdad Â· mentir Â· confiar
+VOCAB NOVO (3): verdad · mentir · confiar
 LINGUAGEM NOVA: poder + verbo (puedo / puedes / puede / podemos)
-    Apresentado pelo uso natural â€” "no puedo decirle, todavÃ­a no"
+    Apresentado pelo uso natural — "no puedo decirle, todavía no"
 
-RevisÃ£o F1-F17 dominante:
-  Â· ya / todavÃ­a no (F17)
-  Â· quiero + verbo (F16)
-  Â· vi/hablÃ©/oÃ­ (F12)
-  Â· mi/tu/su (F13)
-  Â· el/la (F14)
-  Â· soy/estoy/tengo (F8)
+Revisão F1-F17 dominante:
+  · ya / todavía no (F17)
+  · quiero + verbo (F16)
+  · vi/hablé/oí (F12)
+  · mi/tu/su (F13)
+  · el/la (F14)
+  · soy/estoy/tengo (F8)
 
-NPC principais: Don Miguel Â· SofÃ­a Â· Miguel Â· vocÃª
-Arco emocional: dÃºvida â†’ reuniÃ£o â†’ decisÃ£o coletiva â†’ tensÃ£o crescente
-TransiÃ§Ã£o: F19 abre logo apÃ³s â€” Don Miguel jÃ¡ indo atÃ© o baÃº.
+NPC principais: Don Miguel · Sofía · Miguel · você
+Arco emocional: dúvida → reunião → decisão coletiva → tensão crescente
+Transição: F19 abre logo após — Don Miguel já indo até o baú.
 
-PrÃ©-requisito: python manage.py seed_es_full
+Pré-requisito: python manage.py seed_es_full
 Uso:           python manage.py seed_es_f18_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # ManhÃ£ cedo. SofÃ­a e Miguel chegam Ã  casa de Don Miguel. MarÃ­a saiu
-    # cedo â€” disse que ia ao mercado. Os 4 (Don Miguel + 3 jovens) na cozinha.
-    # 2 novos exer + 2 revisÃ£o.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Manhã cedo. Sofía e Miguel chegam à casa de Don Miguel. María saiu
+    # cedo — disse que ia ao mercado. Os 4 (Don Miguel + 3 jovens) na cozinha.
+    # 2 novos exer + 2 revisão.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -43,34 +43,34 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ… Casa de Don Miguel Â· ManhÃ£ cedo Â· Cozinha\n\n"
-                        "MarÃ­a saiu antes do amanhecer â€” disse que ia ao mercado "
-                        "comprar hierbas. SofÃ­a e Miguel chegaram logo depois. "
-                        "Don Miguel preparou cafÃ© forte. Quatro tigelas humeantes "
+                        "🌅 Casa de Don Miguel · Manhã cedo · Cozinha\n\n"
+                        "María saiu antes do amanhecer — disse que ia ao mercado "
+                        "comprar hierbas. Sofía e Miguel chegaram logo depois. "
+                        "Don Miguel preparou café forte. Quatro tigelas humeantes "
                         "na mesa baixa."
                     ),
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Bueno. Antes de que vuelva â€” vamos a juntar todo lo que sabemos.",
+                    "line": "Bueno. Antes de que vuelva — vamos a juntar todo lo que sabemos.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc",
-                    "npc": "SofÃ­a",
-                    "line": "Empezamos por Carmen, despuÃ©s la marca, despuÃ©s lo de tu mujer.",
+                    "npc": "Sofía",
+                    "line": "Empezamos por Carmen, después la marca, después lo de tu mujer.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "SÃ­. Pero antes â€” quiero saber quÃ© creen ustedes. Sin que yo influya.",
+                    "line": "Sí. Pero antes — quiero saber qué creen ustedes. Sin que yo influya.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "Don Miguel quer ouvir vocÃªs primeiro. SofÃ­a olha pra Miguel. Miguel olha pra vocÃª. VocÃª decide comeÃ§ar.",
+                    "text": "Don Miguel quer ouvir vocês primeiro. Sofía olha pra Miguel. Miguel olha pra você. Você decide começar.",
                 },
             ],
             "exercises": [
@@ -85,22 +85,22 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel cumprimentou vocÃªs â€” amanhecer cedo:",
+                    "question": "Don Miguel cumprimentou vocês — amanhecer cedo:",
                     "options": [
-                        {"id": "a", "text": "Buenos dÃ­as, Don Miguel"},
+                        {"id": "a", "text": "Buenos días, Don Miguel"},
                         {"id": "b", "text": "Buenas noches"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Mal"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Buenos dÃ­as. Hijo â€” empieza.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "Buenos días. Hijo — empieza.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Lo que tenemos que decidir hoy es importante. Pero la verdad â€” Â¿quÃ© sentimos sobre MarÃ­a?",
-                    "translation": "O que temos que decidir hoje Ã© importante. Mas a verdade â€” o que sentimos sobre MarÃ­a?",
+                    "line": "Lo que tenemos que decidir hoy es importante. Pero la verdad — ¿qué sentimos sobre María?",
+                    "translation": "O que temos que decidir hoje é importante. Mas a verdade — o que sentimos sobre María?",
                     "pace": "slow",
                 },
                 {
@@ -108,7 +108,7 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "question": "Don Miguel falou 'la verdad'. Significa:",
                     "options": [
-                        {"id": "a", "text": "Verdade (o que Ã© real)"},
+                        {"id": "a", "text": "Verdade (o que é real)"},
                         {"id": "b", "text": "Mentira"},
                         {"id": "c", "text": "Pergunta"},
                         {"id": "d", "text": "Resposta"},
@@ -120,7 +120,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "SofÃ­a responde â€” 'no es que MarÃ­a mienta. Es que oculta cosas.' A palavra 'mentir' significa:",
+                    "question": "Sofía responde — 'no es que María mienta. Es que oculta cosas.' A palavra 'mentir' significa:",
                     "options": [
                         {"id": "a", "text": "Dizer algo falso"},
                         {"id": "b", "text": "Dizer a verdade"},
@@ -129,116 +129,116 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mentir", "target": "mentir", "native": "mentir",
-                    "npc_reaction": "Mentir. Decir algo falso. SofÃ­a hace bien la distinciÃ³n â€” MarÃ­a no miente. Calla.",
+                    "npc_reaction": "Mentir. Decir algo falso. Sofía hace bien la distinción — María no miente. Calla.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel: 'La pregunta es â€” Â¿podemos confiar en ella?' A palavra 'confiar' significa:",
+                    "question": "Miguel: 'La pregunta es — ¿podemos confiar en ella?' A palavra 'confiar' significa:",
                     "options": [
-                        {"id": "a", "text": "Acreditar que alguÃ©m Ã© seguro"},
+                        {"id": "a", "text": "Acreditar que alguém é seguro"},
                         {"id": "b", "text": "Esconder coisas"},
                         {"id": "c", "text": "Lutar"},
                         {"id": "d", "text": "Sair"},
                     ],
                     "correct": "a",
                     "word_id": "es_confiar", "target": "confiar", "native": "confiar",
-                    "npc_reaction": "Confiar. Creer que alguien no te va a hacer daÃ±o. Esa palabra siempre se gana â€” nunca se da.",
+                    "npc_reaction": "Confiar. Creer que alguien no te va a hacer daño. Esa palabra siempre se gana — nunca se da.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Os 3 contam pra Don Miguel as 3 pistas em detalhe. 100% revisÃ£o F1-F17.
+    # ── Seção 2: Revisão SRS ──────────────────────────────────────────────────
+    # Os 3 contam pra Don Miguel as 3 pistas em detalhe. 100% revisão F1-F17.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
         "content": {
             "recap": {
-                "characters": ["Don Miguel", "SofÃ­a", "Miguel"],
+                "characters": ["Don Miguel", "Sofía", "Miguel"],
                 "story": (
-                    "Don Miguel pegou um pedaÃ§o de papel velho e uma pena. "
-                    "Quer anotar â€” pra ter clareza.\n\n"
-                    "'Empezamos. Primero â€” lo de Carmen. SofÃ­a â€” cuÃ©ntalo tÃº.'"
+                    "Don Miguel pegou um pedaço de papel velho e uma pena. "
+                    "Quer anotar — pra ter clareza.\n\n"
+                    "'Empezamos. Primero — lo de Carmen. Sofía — cuéntalo tú.'"
                 ),
-                "now": "Cada pista Ã© contada do que jÃ¡ passou. Don Miguel anota.",
+                "now": "Cada pista é contada do que já passou. Don Miguel anota.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Carmen nos contÃ³ que fue novia del Alcalde hace veinticinco aÃ±os. El padre del Alcalde rompiÃ³ el compromiso.",
-                    "translation": "Carmen nos contou que foi noiva do Alcalde hÃ¡ vinte e cinco anos. O pai do Alcalde quebrou o noivado.",
+                    "npc": "Sofía",
+                    "line": "Carmen nos contó que fue novia del Alcalde hace veinticinco años. El padre del Alcalde rompió el compromiso.",
+                    "translation": "Carmen nos contou que foi noiva do Alcalde há vinte e cinco anos. O pai do Alcalde quebrou o noivado.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "SofÃ­a disse 'Carmen nos contÃ³'. 'ContÃ³' significa que Carmen:",
+                    "question": "Sofía disse 'Carmen nos contó'. 'Contó' significa que Carmen:",
                     "options": [
-                        {"id": "a", "text": "Contou (jÃ¡ passou)"},
+                        {"id": "a", "text": "Contou (já passou)"},
                         {"id": "b", "text": "Conta (agora)"},
                         {"id": "c", "text": "Vai contar"},
                         {"id": "d", "text": "Sou contar"},
                     ],
                     "correct": "a",
-                    "word_id": "es_conto", "target": "contÃ³", "native": "contou",
-                    "npc_reaction": "ContÃ³. Ya pasÃ³. Anotando.",
+                    "word_id": "es_conto", "target": "contó", "native": "contou",
+                    "npc_reaction": "Contó. Ya pasó. Anotando.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Y mi madre â€” anoche en la cocina â€” me dijo que conoce a MarÃ­a de algÃºn sitio. No recuerda de dÃ³nde.",
-                    "translation": "E minha mÃ£e â€” ontem Ã  noite na cozinha â€” me disse que conhece MarÃ­a de algum lugar. NÃ£o lembra de onde.",
+                    "line": "Y mi madre — anoche en la cocina — me dijo que conoce a María de algún sitio. No recuerda de dónde.",
+                    "translation": "E minha mãe — ontem à noite na cozinha — me disse que conhece María de algum lugar. Não lembra de onde.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Miguel disse 'me dijo'. Pra vocÃª confirmar pra Don Miguel â€” vocÃª ouviu o sussurro tambÃ©m:",
+                    "question": "Miguel disse 'me dijo'. Pra você confirmar pra Don Miguel — você ouviu o sussurro também:",
                     "options": [
-                        {"id": "a", "text": "Yo tambiÃ©n lo oÃ­"},
+                        {"id": "a", "text": "Yo también lo oí"},
                         {"id": "b", "text": "Yo oigo"},
-                        {"id": "c", "text": "Voy a oÃ­r"},
+                        {"id": "c", "text": "Voy a oír"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_oi", "target": "oÃ­", "native": "ouvi",
-                    "npc_reaction": "OÃ­. Bueno. Dos puntos confirmados.",
+                    "word_id": "es_oi", "target": "oí", "native": "ouvi",
+                    "npc_reaction": "Oí. Bueno. Dos puntos confirmados.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Y ayer â€” la marca de Eduardo. MarÃ­a la reconociÃ³ sin disfrazar. Dijo que su familia tenÃ­a relaciÃ³n con esa gente.",
-                    "translation": "E ontem â€” a marca de Eduardo. MarÃ­a a reconheceu sem disfarÃ§ar. Disse que sua famÃ­lia tinha relaÃ§Ã£o com essa gente.",
+                    "line": "Y ayer — la marca de Eduardo. María la reconoció sin disfrazar. Dijo que su familia tenía relación con esa gente.",
+                    "translation": "E ontem — a marca de Eduardo. María a reconheceu sem disfarçar. Disse que sua família tinha relação com essa gente.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel resumiu trÃªs pistas. Pra vocÃª confirmar que entendeu:",
+                    "question": "Don Miguel resumiu três pistas. Pra você confirmar que entendeu:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, ya entiendo las tres"},
-                        {"id": "b", "text": "TodavÃ­a no entiendo"},
+                        {"id": "a", "text": "Sí, ya entiendo las tres"},
+                        {"id": "b", "text": "Todavía no entiendo"},
                         {"id": "c", "text": "Voy a entender"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_ya", "target": "ya", "native": "jÃ¡",
+                    "word_id": "es_ya", "target": "ya", "native": "já",
                     "npc_reaction": "Ya entiendes. Bueno.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Y hay otra cosa que solo el forastero y yo sabemos. Lo de la cena con MarÃ­a â€” ella sabÃ­a cosas que el forastero nunca contÃ³.",
-                    "translation": "E tem outra coisa que sÃ³ o forasteiro e eu sabemos. Aquilo do jantar com MarÃ­a â€” ela sabia coisas que o forasteiro nunca contou.",
+                    "npc": "Sofía",
+                    "line": "Y hay otra cosa que solo el forastero y yo sabemos. Lo de la cena con María — ella sabía cosas que el forastero nunca contó.",
+                    "translation": "E tem outra coisa que só o forasteiro e eu sabemos. Aquilo do jantar com María — ela sabia coisas que o forasteiro nunca contou.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel: 'Cuatro pistas. Â¿Y quÃ© siente cada uno?' VocÃª responde honesto â€” tem medo:",
+                    "question": "Don Miguel: 'Cuatro pistas. ¿Y qué siente cada uno?' Você responde honesto — tem medo:",
                     "options": [
                         {"id": "a", "text": "Tengo miedo"},
                         {"id": "b", "text": "Estoy miedo"},
@@ -247,49 +247,49 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_tengo_miedo", "target": "tengo miedo", "native": "tenho medo",
-                    "npc_reaction": "Tengo miedo. Es vÃ¡lido â€” y necesario.",
+                    "npc_reaction": "Tengo miedo. Es válido — y necesario.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a pergunta â€” 'Don Miguel â€” Â¿tÃº la conoces de antes?' Pra Don Miguel ela usa 'tu' formal? NÃ£o â€” informal. Resposta dela:",
+                    "npc": "Sofía",
+                    "question": "Sofía pergunta — 'Don Miguel — ¿tú la conoces de antes?' Pra Don Miguel ela usa 'tu' formal? Não — informal. Resposta dela:",
                     "options": [
                         {"id": "a", "text": "No, no la conozco de antes"},
-                        {"id": "b", "text": "SÃ­, la conozco"},
+                        {"id": "b", "text": "Sí, la conozco"},
                         {"id": "c", "text": "Voy a conocerla"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_no", "target": "no", "native": "nÃ£o",
-                    "npc_reaction": "No. Pero mi mujer sÃ­. Y eso pesa.",
+                    "word_id": "es_no", "target": "no", "native": "não",
+                    "npc_reaction": "No. Pero mi mujer sí. Y eso pesa.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: PrÃ¡tica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Don Miguel apresenta "poder + verbo" pelo uso. "Â¿Podemos confrontarla?
-    # Â¿Podemos echarla? Â¿Puedo confiar?" Cada exercÃ­cio uma situaÃ§Ã£o. Mistura
-    # revisÃ£o pesada com nova linguagem.
+    # ── Seção 3: Prática Aplicada ──────────────────────────────────────────────
+    # Don Miguel apresenta "poder + verbo" pelo uso. "¿Podemos confrontarla?
+    # ¿Podemos echarla? ¿Puedo confiar?" Cada exercício uma situação. Mistura
+    # revisão pesada com nova linguagem.
     {
         "section_number": 3,
         "section_type": "pratica_aplicada",
         "content": {
             "recap": {
-                "characters": ["Don Miguel", "SofÃ­a", "Miguel"],
+                "characters": ["Don Miguel", "Sofía", "Miguel"],
                 "story": (
-                    "Don Miguel pousou a pena. Cruzou as mÃ£os. Pensa.\n\n"
-                    "'Tenemos cuatro pistas. Pero la pregunta es â€” Â¿podemos "
+                    "Don Miguel pousou a pena. Cruzou as mãos. Pensa.\n\n"
+                    "'Tenemos cuatro pistas. Pero la pregunta es — ¿podemos "
                     "hacer algo con esto ahora?'"
                 ),
-                "now": "DiscussÃ£o tensa. DecisÃ£o pendente. Don Miguel orienta.",
+                "now": "Discussão tensa. Decisão pendente. Don Miguel orienta.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Â¿Podemos confrontarla hoy mismo?",
-                    "translation": "Podemos confrontÃ¡-la hoje mesmo?",
+                    "line": "¿Podemos confrontarla hoy mismo?",
+                    "translation": "Podemos confrontá-la hoje mesmo?",
                     "pace": "slow",
                 },
                 {
@@ -297,142 +297,142 @@ SECTIONS = [
                     "npc": "Don Miguel",
                     "question": "Don Miguel disse 'podemos confrontarla'. A palavra 'podemos' significa:",
                     "options": [
-                        {"id": "a", "text": "NÃ³s podemos (se quisermos / temos a opÃ§Ã£o)"},
-                        {"id": "b", "text": "NÃ³s devemos"},
-                        {"id": "c", "text": "NÃ³s vamos"},
-                        {"id": "d", "text": "NÃ³s somos"},
+                        {"id": "a", "text": "Nós podemos (se quisermos / temos a opção)"},
+                        {"id": "b", "text": "Nós devemos"},
+                        {"id": "c", "text": "Nós vamos"},
+                        {"id": "d", "text": "Nós somos"},
                     ],
                     "correct": "a",
                     "word_id": "es_podemos", "target": "podemos", "native": "podemos",
-                    "npc_reaction": "Podemos. Significa que tenemos la opciÃ³n â€” pero no la obligaciÃ³n.",
+                    "npc_reaction": "Podemos. Significa que tenemos la opción — pero no la obligación.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Yo creo que no podemos. Si la enfrentamos ahora sin pruebas, ella se va a defender â€” y vamos a perder lo poco que sabemos.",
-                    "translation": "Eu acho que nÃ£o podemos. Se a enfrentarmos agora sem provas, ela vai se defender â€” e vamos perder o pouco que sabemos.",
+                    "npc": "Sofía",
+                    "line": "Yo creo que no podemos. Si la enfrentamos ahora sin pruebas, ella se va a defender — y vamos a perder lo poco que sabemos.",
+                    "translation": "Eu acho que não podemos. Se a enfrentarmos agora sem provas, ela vai se defender — e vamos perder o pouco que sabemos.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a disse 'no podemos'. Pra Miguel concordar â€” ele tambÃ©m acha que nÃ£o podem:",
+                    "npc": "Sofía",
+                    "question": "Sofía disse 'no podemos'. Pra Miguel concordar — ele também acha que não podem:",
                     "options": [
-                        {"id": "a", "text": "Tienes razÃ³n â€” no podemos"},
+                        {"id": "a", "text": "Tienes razón — no podemos"},
                         {"id": "b", "text": "Vamos a confrontarla"},
                         {"id": "c", "text": "Yo voy"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_no_podemos", "target": "no podemos", "native": "nÃ£o podemos",
-                    "npc_reaction": "No podemos. Por ahora. Bueno â€” pensemos quÃ© sÃ­ podemos hacer.",
+                    "word_id": "es_no_podemos", "target": "no podemos", "native": "não podemos",
+                    "npc_reaction": "No podemos. Por ahora. Bueno — pensemos qué sí podemos hacer.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Yo puedo seguir observÃ¡ndola. SofÃ­a puede hablar mÃ¡s con Carmen â€” quizÃ¡ Carmen sabe algo mÃ¡s.",
-                    "translation": "Eu posso seguir observando ela. SofÃ­a pode falar mais com Carmen â€” talvez Carmen saiba algo mais.",
+                    "line": "Yo puedo seguir observándola. Sofía puede hablar más con Carmen — quizá Carmen sabe algo más.",
+                    "translation": "Eu posso seguir observando ela. Sofía pode falar mais com Carmen — talvez Carmen saiba algo mais.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel disse 'yo puedo seguir observÃ¡ndola'. A palavra 'puedo' significa:",
+                    "question": "Don Miguel disse 'yo puedo seguir observándola'. A palavra 'puedo' significa:",
                     "options": [
-                        {"id": "a", "text": "Eu posso (tenho a opÃ§Ã£o)"},
+                        {"id": "a", "text": "Eu posso (tenho a opção)"},
                         {"id": "b", "text": "Tu podes"},
                         {"id": "c", "text": "Ele pode"},
-                        {"id": "d", "text": "NÃ³s podemos"},
+                        {"id": "d", "text": "Nós podemos"},
                     ],
                     "correct": "a",
                     "word_id": "es_puedo", "target": "puedo", "native": "posso",
-                    "npc_reaction": "Puedo. Yo â€” primera. Cuando hablo de mÃ­ mismo.",
+                    "npc_reaction": "Puedo. Yo — primera. Cuando hablo de mí mismo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Forastero â€” tÃº puedes seguir cerca de ella. TÃº eres quien le importa mÃ¡s. Si te abres un poco, ella va a decirte mÃ¡s.",
-                    "translation": "Forasteiro â€” vocÃª pode seguir perto dela. VocÃª Ã© quem mais interessa pra ela. Se vocÃª se abrir um pouco, ela vai te dizer mais.",
+                    "line": "Forastero — tú puedes seguir cerca de ella. Tú eres quien le importa más. Si te abres un poco, ella va a decirte más.",
+                    "translation": "Forasteiro — você pode seguir perto dela. Você é quem mais interessa pra ela. Se você se abrir um pouco, ela vai te dizer mais.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel disse 'tÃº puedes seguir cerca'. A palavra 'puedes' significa:",
+                    "question": "Miguel disse 'tú puedes seguir cerca'. A palavra 'puedes' significa:",
                     "options": [
-                        {"id": "a", "text": "Tu podes / vocÃª pode"},
+                        {"id": "a", "text": "Tu podes / você pode"},
                         {"id": "b", "text": "Eu posso"},
                         {"id": "c", "text": "Ela pode"},
-                        {"id": "d", "text": "NÃ³s podemos"},
+                        {"id": "d", "text": "Nós podemos"},
                     ],
                     "correct": "a",
                     "word_id": "es_puedes", "target": "puedes", "native": "podes",
-                    "npc_reaction": "Puedes. TÃº â€” segunda. Cuando le hablas a alguien.",
+                    "npc_reaction": "Puedes. Tú — segunda. Cuando le hablas a alguien.",
                 },
                 {
                     "kind": "player",
                     "text": (
-                        "VocÃª pensa. Ficar perto de MarÃ­a. Pegar mais informaÃ§Ã£o. "
-                        "Mas sem comprometer o grupo. Ã‰ possÃ­vel? VocÃª nÃ£o sabe."
+                        "Você pensa. Ficar perto de María. Pegar mais informação. "
+                        "Mas sem comprometer o grupo. É possível? Você não sabe."
                     ),
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "VocÃª concorda â€” pode tentar. Mas vocÃª nÃ£o quer mentir muito pra ela. Honesto:",
+                    "question": "Você concorda — pode tentar. Mas você não quer mentir muito pra ela. Honesto:",
                     "options": [
-                        {"id": "a", "text": "Puedo intentarlo, pero todavÃ­a no sÃ© bien"},
+                        {"id": "a", "text": "Puedo intentarlo, pero todavía no sé bien"},
                         {"id": "b", "text": "Voy a mentir mucho"},
                         {"id": "c", "text": "Soy bien"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_puedo", "target": "puedo intentarlo", "native": "posso tentar",
-                    "npc_reaction": "Bueno. Honestidad â€” eso es lo que vale. Si no puedes â€” paras. Nadie te obliga.",
+                    "npc_reaction": "Bueno. Honestidad — eso es lo que vale. Si no puedes — paras. Nadie te obliga.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Bueno. Plan â€” SofÃ­a habla con Carmen. Miguel observa por las calles. Yo me quedo en casa con MarÃ­a cuando vuelva. Y el forastero â€” habla conmigo aparte.",
-                    "translation": "Bom. Plano â€” SofÃ­a fala com Carmen. Miguel observa pelas ruas. Eu fico em casa com MarÃ­a quando ela voltar. E o forasteiro â€” fala comigo separado.",
+                    "line": "Bueno. Plan — Sofía habla con Carmen. Miguel observa por las calles. Yo me quedo en casa con María cuando vuelva. Y el forastero — habla conmigo aparte.",
+                    "translation": "Bom. Plano — Sofía fala com Carmen. Miguel observa pelas ruas. Eu fico em casa com María quando ela voltar. E o forasteiro — fala comigo separado.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Pra vocÃª confirmar pra Don Miguel â€” vocÃª concorda em ficar separado com ele:",
+                    "question": "Pra você confirmar pra Don Miguel — você concorda em ficar separado com ele:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, contigo"},
+                        {"id": "a", "text": "Sí, contigo"},
                         {"id": "b", "text": "Voy a salir"},
                         {"id": "c", "text": "Soy aparte"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
-                    "word_id": "es_si", "target": "sÃ­", "native": "sim",
-                    "npc_reaction": "Bueno. Antes de que vuelva â€” quiero enseÃ±arte la carta.",
+                    "word_id": "es_si", "target": "sí", "native": "sim",
+                    "npc_reaction": "Bueno. Antes de que vuelva — quiero enseñarte la carta.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a: 'Â¿QuÃ© carta?' Don Miguel: 'Una que guardo hace veinte aÃ±os.' Pra vocÃª expressar que NÃƒO sabe o que Ã© ainda:",
+                    "npc": "Sofía",
+                    "question": "Sofía: '¿Qué carta?' Don Miguel: 'Una que guardo hace veinte años.' Pra você expressar que NÃO sabe o que é ainda:",
                     "options": [
-                        {"id": "a", "text": "TodavÃ­a no sÃ© quÃ© es"},
-                        {"id": "b", "text": "Ya sÃ© quÃ© es"},
+                        {"id": "a", "text": "Todavía no sé qué es"},
+                        {"id": "b", "text": "Ya sé qué es"},
                         {"id": "c", "text": "Voy a saber"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_todavia_no", "target": "todavÃ­a no", "native": "ainda nÃ£o",
-                    "npc_reaction": "TodavÃ­a no sabes. Pero pronto. Hoy mismo.",
+                    "word_id": "es_todavia_no", "target": "todavía no", "native": "ainda não",
+                    "npc_reaction": "Todavía no sabes. Pero pronto. Hoy mismo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: GramÃ¡tica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # SofÃ­a e Miguel saem. VocÃª fica com Don Miguel. ApresentaÃ§Ã£o formal de
-    # "poder + verbo" â€” sem nomear "verbo modal". Apenas: "puedo, puedes,
-    # podemos â€” quando algo Ã© possÃ­vel ou nÃ£o".
+    # ── Seção 4: Gramática Narrativa ──────────────────────────────────────────
+    # Sofía e Miguel saem. Você fica com Don Miguel. Apresentação formal de
+    # "poder + verbo" — sem nomear "verbo modal". Apenas: "puedo, puedes,
+    # podemos — quando algo é possível ou não".
     {
         "section_number": 4,
         "section_type": "gramatica_narrativa",
@@ -440,11 +440,11 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "SofÃ­a saiu pra falar com Carmen. Miguel saiu pelo lado dos "
-                    "fundos pra circular pela praÃ§a. Sobrou vocÃª e Don Miguel "
+                    "Sofía saiu pra falar com Carmen. Miguel saiu pelo lado dos "
+                    "fundos pra circular pela praça. Sobrou você e Don Miguel "
                     "na cozinha.\n\n"
-                    "'Antes de enseÃ±arte la carta â€” quiero aclararte algo de las "
-                    "palabras que oÃ­ste mucho esta maÃ±ana. Puedo, puedes, podemos.'"
+                    "'Antes de enseñarte la carta — quiero aclararte algo de las "
+                    "palabras que oíste mucho esta mañana. Puedo, puedes, podemos.'"
                 ),
                 "now": "Don Miguel explica como 'puedo + verbo' funciona.",
             },
@@ -452,39 +452,39 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "'Poder' es lo que te dice si algo es posible o no. Yo puedo hablar â€” quiere decir, soy capaz de hablar. Yo no puedo volar â€” quiere decir, no soy capaz.",
-                    "translation": "'Poder' Ã© o que te diz se algo Ã© possÃ­vel ou nÃ£o. Yo puedo hablar â€” quer dizer, sou capaz de falar. Yo no puedo volar â€” quer dizer, nÃ£o sou capaz.",
+                    "line": "'Poder' es lo que te dice si algo es posible o no. Yo puedo hablar — quiere decir, soy capaz de hablar. Yo no puedo volar — quiere decir, no soy capaz.",
+                    "translation": "'Poder' é o que te diz se algo é possível ou não. Yo puedo hablar — quer dizer, sou capaz de falar. Yo no puedo volar — quer dizer, não sou capaz.",
                     "pace": "slow",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Puedo + verbo",
-                    "meaning": "O que vocÃª Ã© capaz de fazer / tem permissÃ£o de fazer",
-                    "note": "junta dos palabras â€” puedo hablar, puedo entrar, puedo confiar",
+                    "meaning": "O que você é capaz de fazer / tem permissão de fazer",
+                    "note": "junta dos palabras — puedo hablar, puedo entrar, puedo confiar",
                 },
                 {
                     "kind": "pattern",
                     "parts": [
                         {"text": "Yo puedo ", "isKey": True},
-                        {"text": "hablar Â· ", "isKey": False},
-                        {"text": "TÃº puedes ","isKey": True},
-                        {"text": "ver Â· ",    "isKey": False},
+                        {"text": "hablar · ", "isKey": False},
+                        {"text": "Tú puedes ","isKey": True},
+                        {"text": "ver · ",    "isKey": False},
                         {"text": "Ella puede ","isKey": True},
-                        {"text": "decidir Â· ", "isKey": False},
+                        {"text": "decidir · ", "isKey": False},
                         {"text": "Podemos ",  "isKey": True},
                         {"text": "salir",     "isKey": False},
                     ],
-                    "example": "Yo puedo cuidarte. TÃº puedes confiar en mÃ­. Ella puede salir cuando quiera. Podemos hablar maÃ±ana.",
-                    "translation": "Eu posso cuidar de vocÃª. Tu podes confiar em mim. Ela pode sair quando quiser. Podemos falar amanhÃ£.",
-                    "note": "puedo / puedes / puede / podemos â€” cambia con quien puede.",
+                    "example": "Yo puedo cuidarte. Tú puedes confiar en mí. Ella puede salir cuando quiera. Podemos hablar mañana.",
+                    "translation": "Eu posso cuidar de você. Tu podes confiar em mim. Ela pode sair quando quiser. Podemos falar amanhã.",
+                    "note": "puedo / puedes / puede / podemos — cambia con quien puede.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Pra vocÃª dizer que pode tentar ficar perto de MarÃ­a:",
+                    "question": "Pra você dizer que pode tentar ficar perto de María:",
                     "options": [
                         {"id": "a", "text": "Yo puedo intentarlo"},
-                        {"id": "b", "text": "TÃº puedes intentar"},
+                        {"id": "b", "text": "Tú puedes intentar"},
                         {"id": "c", "text": "Ella puede"},
                         {"id": "d", "text": "Soy"},
                     ],
@@ -495,7 +495,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel: 'CuÃ©ntame sobre ___ familia ahora â€” la tuya, lo que recuerdes.' Pra falar da SUA famÃ­lia (tua):",
+                    "question": "Don Miguel: 'Cuéntame sobre ___ familia ahora — la tuya, lo que recuerdes.' Pra falar da SUA família (tua):",
                     "options": [
                         {"id": "a", "text": "tu"},
                         {"id": "b", "text": "mi"},
@@ -503,13 +503,13 @@ SECTIONS = [
                         {"id": "d", "text": "nuestra"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tu", "target": "tu familia", "native": "tua famÃ­lia",
-                    "npc_reaction": "Tu familia. Cuando te hablo a ti â€” lo tuyo es 'tu'.",
+                    "word_id": "es_tu", "target": "tu familia", "native": "tua família",
+                    "npc_reaction": "Tu familia. Cuando te hablo a ti — lo tuyo es 'tu'.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel aponta pra SofÃ­a: 'Mira a SofÃ­a â€” es ___' (SofÃ­a tem 18 anos, alta, magra). Pra descrever a altura dela (mulher):",
+                    "question": "Don Miguel aponta pra Sofía: 'Mira a Sofía — es ___' (Sofía tem 18 anos, alta, magra). Pra descrever a altura dela (mulher):",
                     "options": [
                         {"id": "a", "text": "alta"},
                         {"id": "b", "text": "alto"},
@@ -518,12 +518,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_alta", "target": "alta", "native": "alta",
-                    "npc_reaction": "Alta. SofÃ­a â€” mujer, alta. La palabra termina en '-a'.",
+                    "npc_reaction": "Alta. Sofía — mujer, alta. La palabra termina en '-a'.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "E pra vocÃª descrever a casa de Don Miguel â€” 'palavra de mulher, uma sÃ³':",
+                    "question": "E pra você descrever a casa de Don Miguel — 'palavra de mulher, uma só':",
                     "options": [
                         {"id": "a", "text": "la casa"},
                         {"id": "b", "text": "el casa"},
@@ -532,19 +532,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_la", "target": "la casa", "native": "a casa",
-                    "npc_reaction": "La casa. Mi casa â€” y por estos dÃ­as, tambiÃ©n tuya.",
+                    "npc_reaction": "La casa. Mi casa — y por estos días, también tuya.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Y la forma negativa â€” 'no puedo'. 'No puedo decirte todavÃ­a' significa que aÃºn no eres capaz, o que aÃºn no tienes permiso.",
-                    "translation": "E a forma negativa â€” 'no puedo'. 'No puedo decirte todavÃ­a' significa que ainda nÃ£o Ã©s capaz, ou que ainda nÃ£o tens permissÃ£o.",
+                    "line": "Y la forma negativa — 'no puedo'. 'No puedo decirte todavía' significa que aún no eres capaz, o que aún no tienes permiso.",
+                    "translation": "E a forma negativa — 'no puedo'. 'No puedo decirte todavía' significa que ainda não és capaz, ou que ainda não tens permissão.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª quer dizer que NÃƒO pode mentir pra MarÃ­a descaradamente â€” nÃ£o Ã© capaz:",
+                    "question": "Você quer dizer que NÃO pode mentir pra María descaradamente — não é capaz:",
                     "options": [
                         {"id": "a", "text": "No puedo mentirle"},
                         {"id": "b", "text": "Puedo mentirle"},
@@ -552,17 +552,17 @@ SECTIONS = [
                         {"id": "d", "text": "Soy mentir"},
                     ],
                     "correct": "a",
-                    "word_id": "es_no_puedo", "target": "no puedo", "native": "nÃ£o posso",
+                    "word_id": "es_no_puedo", "target": "no puedo", "native": "não posso",
                     "npc_reaction": "No puedes. Eso es honesto contigo mismo. Te ayuda a no romperte.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Don Miguel finalmente abre o assunto da carta. Ainda nÃ£o mostra â€” sÃ³
-    # explica como ela chegou nas mÃ£os dele. Conversa Ã­ntima. Foco em revisÃ£o
-    # orgÃ¢nica + uso de poder/quero/ya/todavÃ­a no.
+    # ── Seção 5: Reforço ──────────────────────────────────────────────────────
+    # Don Miguel finalmente abre o assunto da carta. Ainda não mostra — só
+    # explica como ela chegou nas mãos dele. Conversa íntima. Foco em revisão
+    # orgânica + uso de poder/quero/ya/todavía no.
     {
         "section_number": 5,
         "section_type": "reforco",
@@ -570,127 +570,127 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "Don Miguel se levantou da mesa. Foi atÃ© o canto da cozinha "
-                    "onde fica o baÃº velho â€” coberto por um pano grosso. NÃ£o "
-                    "abriu ainda. SÃ³ pousou a mÃ£o nele.\n\n"
-                    "'Esta carta llegÃ³ a mis manos hace veinte aÃ±os. Te voy a "
-                    "contar cÃ³mo.'"
+                    "Don Miguel se levantou da mesa. Foi até o canto da cozinha "
+                    "onde fica o baú velho — coberto por um pano grosso. Não "
+                    "abriu ainda. Só pousou a mão nele.\n\n"
+                    "'Esta carta llegó a mis manos hace veinte años. Te voy a "
+                    "contar cómo.'"
                 ),
-                "now": "Don Miguel conta a histÃ³ria da carta. VocÃª ouve.",
+                "now": "Don Miguel conta a história da carta. Você ouve.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Yo tenÃ­a veintiocho aÃ±os. Trabajaba en el campo de mi padre. Un dÃ­a llegÃ³ un viejo al pueblo â€” viajero, cansado, con una capa rota.",
-                    "translation": "Eu tinha vinte e oito anos. Trabalhava no campo do meu pai. Um dia chegou um velho ao pueblo â€” viajante, cansado, com uma capa rota.",
+                    "line": "Yo tenía veintiocho años. Trabajaba en el campo de mi padre. Un día llegó un viejo al pueblo — viajero, cansado, con una capa rota.",
+                    "translation": "Eu tinha vinte e oito anos. Trabalhava no campo do meu pai. Um dia chegou um velho ao pueblo — viajante, cansado, com uma capa rota.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel disse 'yo tenÃ­a veintiocho'. 'TenÃ­a' significa:",
+                    "question": "Don Miguel disse 'yo tenía veintiocho'. 'Tenía' significa:",
                     "options": [
                         {"id": "a", "text": "Tinha (idade dele naquele tempo)"},
                         {"id": "b", "text": "Tem (agora)"},
                         {"id": "c", "text": "Vai ter"},
-                        {"id": "d", "text": "Ã‰"},
+                        {"id": "d", "text": "É"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tenia", "target": "tenÃ­a", "native": "tinha",
-                    "npc_reaction": "TenÃ­a. Como 'tengo' del pasado lejano. Yo tenÃ­a esa edad cuando pasÃ³ esto.",
+                    "word_id": "es_tenia", "target": "tenía", "native": "tinha",
+                    "npc_reaction": "Tenía. Como 'tengo' del pasado lejano. Yo tenía esa edad cuando pasó esto.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "El viejo tenÃ­a la marca de los Buscadores â€” igual que Eduardo. Yo entonces no la conocÃ­a. Pero la vi.",
-                    "translation": "O velho tinha a marca dos Buscadores â€” igual a Eduardo. Eu naquela Ã©poca nÃ£o conhecia. Mas vi.",
+                    "line": "El viejo tenía la marca de los Buscadores — igual que Eduardo. Yo entonces no la conocía. Pero la vi.",
+                    "translation": "O velho tinha a marca dos Buscadores — igual a Eduardo. Eu naquela época não conhecia. Mas vi.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel disse 'no la conocÃ­a'. Pra vocÃª reagir â€” vocÃª AGORA jÃ¡ conhece a marca (depois de F17):",
+                    "question": "Don Miguel disse 'no la conocía'. Pra você reagir — você AGORA já conhece a marca (depois de F17):",
                     "options": [
-                        {"id": "a", "text": "Ya la conozco yo tambiÃ©n"},
-                        {"id": "b", "text": "TodavÃ­a no la conozco"},
+                        {"id": "a", "text": "Ya la conozco yo también"},
+                        {"id": "b", "text": "Todavía no la conozco"},
                         {"id": "c", "text": "Voy a conocer"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_ya", "target": "ya", "native": "jÃ¡",
-                    "npc_reaction": "Ya la conoces. Eso me alegra â€” vas mÃ¡s rÃ¡pido que yo a tu edad.",
+                    "word_id": "es_ya", "target": "ya", "native": "já",
+                    "npc_reaction": "Ya la conoces. Eso me alegra — vas más rápido que yo a tu edad.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "El viejo se quedÃ³ tres dÃ­as. Me observÃ³. Me preguntÃ³ cosas â€” 'puedes guardar silencio?', 'puedes esperar veinte aÃ±os?'",
-                    "translation": "O velho ficou trÃªs dias. Me observou. Me perguntou coisas â€” 'podes guardar silÃªncio?', 'podes esperar vinte anos?'",
+                    "line": "El viejo se quedó tres días. Me observó. Me preguntó cosas — 'puedes guardar silencio?', 'puedes esperar veinte años?'",
+                    "translation": "O velho ficou três dias. Me observou. Me perguntou coisas — 'podes guardar silêncio?', 'podes esperar vinte anos?'",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "O velho perguntou 'puedes guardar silencio?'. Pra Don Miguel responder ao velho â€” sim, ele podia:",
+                    "question": "O velho perguntou 'puedes guardar silencio?'. Pra Don Miguel responder ao velho — sim, ele podia:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, puedo"},
-                        {"id": "b", "text": "TÃº puedes"},
+                        {"id": "a", "text": "Sí, puedo"},
+                        {"id": "b", "text": "Tú puedes"},
                         {"id": "c", "text": "Voy a poder"},
                         {"id": "d", "text": "Soy puedo"},
                     ],
                     "correct": "a",
                     "word_id": "es_puedo", "target": "puedo", "native": "posso",
-                    "npc_reaction": "SÃ­, puedo. Dije eso. Y cumplÃ­. Veinte aÃ±os.",
+                    "npc_reaction": "Sí, puedo. Dije eso. Y cumplí. Veinte años.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Me dio la carta. Me dijo: 'Cuando llegue alguien al pueblo con la palabra encendida â€” abrÃ­rsela.' Me marchÃ©. MuriÃ³ a la semana siguiente.",
-                    "translation": "Me deu a carta. Me disse: 'Quando chegar alguÃ©m ao pueblo com a palavra acesa â€” abrir pra ele.' Foi embora. Morreu na semana seguinte.",
+                    "line": "Me dio la carta. Me dijo: 'Cuando llegue alguien al pueblo con la palabra encendida — abrírsela.' Me marché. Murió a la semana siguiente.",
+                    "translation": "Me deu a carta. Me disse: 'Quando chegar alguém ao pueblo com a palavra acesa — abrir pra ele.' Foi embora. Morreu na semana seguinte.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel disse 'cuando llegue alguien con la palabra encendida'. Pra vocÃª processar â€” vocÃª Ã© quem fez o fogo aparecer na F5. VocÃª confirma:",
+                    "question": "Don Miguel disse 'cuando llegue alguien con la palabra encendida'. Pra você processar — você é quem fez o fogo aparecer na F5. Você confirma:",
                     "options": [
                         {"id": "a", "text": "Soy yo. Ya entiendo"},
-                        {"id": "b", "text": "TodavÃ­a no soy"},
+                        {"id": "b", "text": "Todavía no soy"},
                         {"id": "c", "text": "Voy a ser"},
                         {"id": "d", "text": "Tengo"},
                     ],
                     "correct": "a",
                     "word_id": "es_soy", "target": "soy yo", "native": "sou eu",
-                    "npc_reaction": "Soy yo. Eso es. Eres tÃº.",
+                    "npc_reaction": "Soy yo. Eso es. Eres tú.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "EsperÃ© veinte aÃ±os. Cuando vi el fuego en el pasillo aquella noche â€” supe que ya era el momento. Pero querÃ­a estar seguro. Ahora â€” con todo lo que sabemos â€” ya no tengo dudas.",
-                    "translation": "Esperei vinte anos. Quando vi o fogo no corredor aquela noite â€” soube que jÃ¡ era o momento. Mas queria ter certeza. Agora â€” com tudo que sabemos â€” jÃ¡ nÃ£o tenho dÃºvidas.",
+                    "line": "Esperé veinte años. Cuando vi el fuego en el pasillo aquella noche — supe que ya era el momento. Pero quería estar seguro. Ahora — con todo lo que sabemos — ya no tengo dudas.",
+                    "translation": "Esperei vinte anos. Quando vi o fogo no corredor aquela noite — soube que já era o momento. Mas queria ter certeza. Agora — com tudo que sabemos — já não tenho dúvidas.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Pra vocÃª responder firme â€” vocÃª confia em Don Miguel (verbo confiar, com 'en'):",
+                    "question": "Pra você responder firme — você confia em Don Miguel (verbo confiar, com 'en'):",
                     "options": [
-                        {"id": "a", "text": "ConfÃ­o en ti"},
-                        {"id": "b", "text": "ConfÃ­as en ti"},
+                        {"id": "a", "text": "Confío en ti"},
+                        {"id": "b", "text": "Confías en ti"},
                         {"id": "c", "text": "Voy a confiar"},
                         {"id": "d", "text": "Soy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_confiar", "target": "confÃ­o", "native": "confio",
-                    "npc_reaction": "ConfÃ­as. Bueno. Eso me importa. Vamos al baÃºl.",
+                    "word_id": "es_confiar", "target": "confío", "native": "confio",
+                    "npc_reaction": "Confías. Bueno. Eso me importa. Vamos al baúl.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃ¡culo (gate) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Don Miguel se aproxima do baÃº. Hesita. Pergunta uma Ãºltima vez se vocÃª
-    # estÃ¡ pronto. Gate: errar trava. Closing prepara F19 (carta revelada).
+    # ── Seção 6: Obstáculo (gate) ─────────────────────────────────────────────
+    # Don Miguel se aproxima do baú. Hesita. Pergunta uma última vez se você
+    # está pronto. Gate: errar trava. Closing prepara F19 (carta revelada).
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -698,55 +698,55 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel"],
                 "story": (
-                    "Don Miguel estÃ¡ em pÃ© do lado do baÃº. A mÃ£o sobre a tampa. "
-                    "VocÃª sentado na mesa, cafÃ© frio na frente. Nenhum dos dois "
-                    "falou nos Ãºltimos dois minutos.\n\n"
-                    "'Antes de abrirlo â€” quiero preguntarte algo. Y quiero la "
+                    "Don Miguel está em pé do lado do baú. A mão sobre a tampa. "
+                    "Você sentado na mesa, café frio na frente. Nenhum dos dois "
+                    "falou nos últimos dois minutos.\n\n"
+                    "'Antes de abrirlo — quiero preguntarte algo. Y quiero la "
                     "verdad.'"
                 ),
-                "now": "DecisÃ£o final. VocÃª precisa estar pronto.",
+                "now": "Decisão final. Você precisa estar pronto.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸ“¦ BaÃº velho Â· Tampa fechada Â· Don Miguel com a mÃ£o sobre ele",
+                    "text": "📦 Baú velho · Tampa fechada · Don Miguel com a mão sobre ele",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Â¿EstÃ¡s listo para ver una cosa que va a cambiar lo que sabes de ti?",
-                    "translation": "EstÃ¡ pronto pra ver uma coisa que vai mudar o que sabe de vocÃª?",
+                    "line": "¿Estás listo para ver una cosa que va a cambiar lo que sabes de ti?",
+                    "translation": "Está pronto pra ver uma coisa que vai mudar o que sabe de você?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª precisa decidir. Honesto â€” tem medo, mas quer ver. Resposta com ya / todavÃ­a no e querer:",
+                    "question": "Você precisa decidir. Honesto — tem medo, mas quer ver. Resposta com ya / todavía no e querer:",
                     "options": [
                         {"id": "a", "text": "Tengo miedo, pero ya quiero verla"},
-                        {"id": "b", "text": "TodavÃ­a no quiero"},
+                        {"id": "b", "text": "Todavía no quiero"},
                         {"id": "c", "text": "Soy listo"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
-                    "word_id": "es_ya", "target": "ya quiero", "native": "jÃ¡ quero",
-                    "npc_reaction": "Bueno. Es la respuesta correcta. El miedo no se va â€” pero el querer es mÃ¡s fuerte.",
+                    "word_id": "es_ya", "target": "ya quiero", "native": "já quero",
+                    "npc_reaction": "Bueno. Es la respuesta correcta. El miedo no se va — pero el querer es más fuerte.",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Una pregunta mÃ¡s â€” Â¿puedes guardar lo que vamos a ver? Aunque MarÃ­a pregunte directamente?",
-                    "translation": "Uma pergunta mais â€” vocÃª pode guardar o que vamos ver? Mesmo se MarÃ­a perguntar diretamente?",
+                    "line": "Una pregunta más — ¿puedes guardar lo que vamos a ver? Aunque María pregunte directamente?",
+                    "translation": "Uma pergunta mais — você pode guardar o que vamos ver? Mesmo se María perguntar diretamente?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "VocÃª responde â€” sim, pode. Junte 'puedo' com 'guardar':",
+                    "question": "Você responde — sim, pode. Junte 'puedo' com 'guardar':",
                     "options": [
-                        {"id": "a", "text": "SÃ­, puedo guardarlo"},
-                        {"id": "b", "text": "SÃ­, tÃº puedes"},
+                        {"id": "a", "text": "Sí, puedo guardarlo"},
+                        {"id": "b", "text": "Sí, tú puedes"},
                         {"id": "c", "text": "Voy a guardar"},
                         {"id": "d", "text": "Soy guardar"},
                     ],
@@ -758,55 +758,55 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Ãšltima â€” Â¿confÃ­as en mÃ­?",
-                    "translation": "Ãšltima â€” confia em mim?",
+                    "line": "Última — ¿confías en mí?",
+                    "translation": "Última — confia em mim?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Resposta firme â€” sim, confia em Don Miguel:",
+                    "question": "Resposta firme — sim, confia em Don Miguel:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, confÃ­o en ti"},
-                        {"id": "b", "text": "No confÃ­o"},
+                        {"id": "a", "text": "Sí, confío en ti"},
+                        {"id": "b", "text": "No confío"},
                         {"id": "c", "text": "Voy a confiar"},
-                        {"id": "d", "text": "Soy confÃ­o"},
+                        {"id": "d", "text": "Soy confío"},
                     ],
                     "correct": "a",
-                    "word_id": "es_confiar", "target": "confÃ­o", "native": "confio",
-                    "npc_reaction": "ConfÃ­as. Y yo en ti tambiÃ©n. Bueno â€” vamos.",
+                    "word_id": "es_confiar", "target": "confío", "native": "confio",
+                    "npc_reaction": "Confías. Y yo en ti también. Bueno — vamos.",
                     "gated": True,
                 },
-                # â”€â”€ Closing beats â€” transiÃ§Ã£o pra F19 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                # ── Closing beats — transição pra F19 ────────────────────────
                 {
                     "kind": "scene",
-                    "text": "ðŸ“¦ Don Miguel levanta a tampa do baÃº Â· Dentro: papÃ©is velhos, livros, um envelope selado em cera vermelha",
+                    "text": "📦 Don Miguel levanta a tampa do baú · Dentro: papéis velhos, livros, um envelope selado em cera vermelha",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Don Miguel pegou o envelope. Mostrou pra vocÃª. O selo em "
-                        "cera tinha o mesmo sÃ­mbolo da marca de Eduardo â€” o sol "
+                        "Don Miguel pegou o envelope. Mostrou pra você. O selo em "
+                        "cera tinha o mesmo símbolo da marca de Eduardo — o sol "
                         "partido.\n\n"
-                        "VocÃª nunca tinha visto. Mas sentiu o peito apertar â€” "
+                        "Você nunca tinha visto. Mas sentiu o peito apertar — "
                         "como quando 'fuego' saiu na F5. Algo dentro reconheceu."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "MaÃ±ana â€” al amanecer â€” la abrimos juntos. Hoy dormimos. Necesitas la cabeza clara.",
-                    "translation": "AmanhÃ£ â€” ao amanhecer â€” abrimos juntos. Hoje dormimos. VocÃª precisa da cabeÃ§a clara.",
+                    "line": "Mañana — al amanecer — la abrimos juntos. Hoy dormimos. Necesitas la cabeza clara.",
+                    "translation": "Amanhã — ao amanhecer — abrimos juntos. Hoje dormimos. Você precisa da cabeça clara.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Don Miguel fechou o baÃº. Trancou. PÃ´s o pano em cima. "
-                        "MarÃ­a nÃ£o tinha voltado ainda do mercado.\n\n"
-                        "VocÃª foi pro quarto. Deitou de olhos abertos. A imagem do "
-                        "envelope com cera vermelha nÃ£o saÃ­a da cabeÃ§a.\n\n"
-                        "AmanhÃ£."
+                        "Don Miguel fechou o baú. Trancou. Pôs o pano em cima. "
+                        "María não tinha voltado ainda do mercado.\n\n"
+                        "Você foi pro quarto. Deitou de olhos abertos. A imagem do "
+                        "envelope com cera vermelha não saía da cabeça.\n\n"
+                        "Amanhã."
                     ),
                 },
             ],
@@ -815,4 +815,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

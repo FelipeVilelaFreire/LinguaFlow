@@ -1,31 +1,31 @@
-﻿"""
-Seed das 6 seÃ§Ãµes da Fase 1 Espanhol A1 â€” Miguel el Campesino.
+"""
+Seed das 6 seções da Fase 1 Espanhol A1 — Miguel el Campesino.
 
-PrÃ©-requisito: python manage.py seed_es_full (cria chapter + fase)
+Pré-requisito: python manage.py seed_es_full (cria chapter + fase)
 Uso:           python manage.py seed_es_sections [--reset]
 
-âš ï¸  PadrÃ£o obrigatÃ³rio: chat conversacional do comeÃ§o ao fim.
-Toda multiple_choice carrega 'npc' (situaÃ§Ã£o) + 'npc_reaction' (reaÃ§Ã£o ao acerto).
-Miguel Ã© o fio condutor â€” nunca exercÃ­cio solto, nunca pergunta seca.
+⚠️  Padrão obrigatório: chat conversacional do começo ao fim.
+Toda multiple_choice carrega 'npc' (situação) + 'npc_reaction' (reação ao acerto).
+Miguel é o fio condutor — nunca exercício solto, nunca pergunta seca.
 
-LÃ­ngua por personagem:
-  Don Miguel  â†’ sÃ³ espanhol â€” chama o filho quando nÃ£o consegue comunicar
-  Miguel      â†’ portuguÃªs quebrado + exclamaÃ§Ãµes em espanhol (guia/ponte)
-  Rosa        â†’ sÃ³ espanhol (imersÃ£o â€” player aprende pelo contexto)
-  Carmen      â†’ sÃ³ espanhol (imersÃ£o â€” player aprende pelo contexto)
+Língua por personagem:
+  Don Miguel  → só espanhol — chama o filho quando não consegue comunicar
+  Miguel      → português quebrado + exclamações em espanhol (guia/ponte)
+  Rosa        → só espanhol (imersão — player aprende pelo contexto)
+  Carmen      → só espanhol (imersão — player aprende pelo contexto)
 """
 
 
 
-# â”€â”€â”€ ConteÃºdo das seÃ§Ãµes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Conteúdo das seções ──────────────────────────────────────────────────────
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Pura imersÃ£o â€” o player entra no pueblo e nÃ£o entende nada. Rosa tenta
-    # vender pÃ£o, confusÃ£o com as moedas. Don Miguel intervÃ©m, chama o filho.
-    # Falas 100% em espanhol, sem traduÃ§Ã£o â€” o player nÃ£o entende, e isso Ã©
-    # intencional. Vocab aparece sÃ³ no vocab_list e exercÃ­cios de reconhecimento.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Pura imersão — o player entra no pueblo e não entende nada. Rosa tenta
+    # vender pão, confusão com as moedas. Don Miguel intervém, chama o filho.
+    # Falas 100% em espanhol, sem tradução — o player não entende, e isso é
+    # intencional. Vocab aparece só no vocab_list e exercícios de reconhecimento.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -33,35 +33,35 @@ SECTIONS = [
             "beats": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ…  San CristÃ³bal del Pueblo Â· ManhÃ£ Â· Dia 1",
+                    "text": "🌅  San Cristóbal del Pueblo · Manhã · Dia 1",
                 },
                 {
                     "kind": "narrative",
-                    "text": "VocÃª atravessa o portÃ£o de adobe. Ruas de pedra, sol novo. Vozes por todo lado â€” vocÃª nÃ£o entende nada.",
+                    "text": "Você atravessa o portão de adobe. Ruas de pedra, sol novo. Vozes por todo lado — você não entende nada.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Rosa",
-                    "line": "Â¡SeÃ±or! Â¡SeÃ±or, espere! Â¿Quiere pan? Â¡Pan fresco, reciÃ©n salido del horno!",
+                    "line": "¡Señor! ¡Señor, espere! ¿Quiere pan? ¡Pan fresco, recién salido del horno!",
                     "is_new_npc": True,
                 },
                 {
                     "kind": "player",
-                    "text": "Uma mulher de avental empoeirado bloqueia o caminho. Estende um pÃ£o quente. Diz alguma coisa â€” vocÃª nÃ£o entende.",
+                    "text": "Uma mulher de avental empoeirado bloqueia o caminho. Estende um pão quente. Diz alguma coisa — você não entende.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Rosa",
-                    "line": "Â¡Veinte pesos, seÃ±or! Â¡El mejor pan del pueblo, se lo juro!",
+                    "line": "¡Veinte pesos, señor! ¡El mejor pan del pueblo, se lo juro!",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª tira moedas do bolso â€” as suas. As erradas.",
+                    "text": "Você tira moedas do bolso — as suas. As erradas.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Rosa",
-                    "line": "Â¿QuÃ© es esto? Â¡Estas no son monedas de aquÃ­!",
+                    "line": "¿Qué es esto? ¡Estas no son monedas de aquí!",
                 },
                 {
                     "kind": "narrative",
@@ -70,22 +70,22 @@ SECTIONS = [
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Â¡Rosa, espera! Este es forastero â€” no habla espaÃ±ol.",
+                    "line": "¡Rosa, espera! Este es forastero — no habla español.",
                     "is_new_npc": True,
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "Um homem mais velho. ChapÃ©u de palha largo, braÃ§os cruzados. Examina vocÃª como quem avalia uma situaÃ§Ã£o.",
+                    "text": "Um homem mais velho. Chapéu de palha largo, braços cruzados. Examina você como quem avalia uma situação.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Â¿Habla usted espaÃ±ol? Â¿No?",
+                    "line": "¿Habla usted español? ¿No?",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª balanÃ§a a cabeÃ§a. NÃ£o.",
+                    "text": "Você balança a cabeça. Não.",
                 },
                 {
                     "kind": "npc",
@@ -100,12 +100,12 @@ SECTIONS = [
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Â¡MIGUEL! Â¡MIJO, VEN AQUÃ! Â¡HAY UN FORASTERO!",
+                    "line": "¡MIGUEL! ¡MIJO, VEN AQUÍ! ¡HAY UN FORASTERO!",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "A voz ressoa pela rua inteira. Rosa ri e guarda o pÃ£o.",
+                    "text": "A voz ressoa pela rua inteira. Rosa ri e guarda o pão.",
                 },
             ],
             "exercises": [
@@ -113,18 +113,18 @@ SECTIONS = [
                     "kind": "vocab_list",
                     "items": [
                         {"target": "forastero", "native": "estrangeiro / forasteiro"},
-                        {"target": "pan",       "native": "pÃ£o"},
-                        {"target": "espaÃ±ol",   "native": "espanhol (a lÃ­ngua)"},
+                        {"target": "pan",       "native": "pão"},
+                        {"target": "español",   "native": "espanhol (a língua)"},
                     ],
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel te chamou de algo ao te ver na rua. O que vocÃª Ã© aqui no pueblo?",
+                    "question": "Don Miguel te chamou de algo ao te ver na rua. O que você é aqui no pueblo?",
                     "options": [
                         {"id": "a", "text": "Forastero"},
                         {"id": "b", "text": "Campesino"},
-                        {"id": "c", "text": "SeÃ±or"},
+                        {"id": "c", "text": "Señor"},
                         {"id": "d", "text": "Amigo"},
                     ],
                     "correct": "a",
@@ -134,26 +134,26 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Rosa",
-                    "question": "Rosa te estendeu algo e disse 'Â¡pan fresco!'. O que Ã© pan?",
+                    "question": "Rosa te estendeu algo e disse '¡pan fresco!'. O que é pan?",
                     "options": [
-                        {"id": "a", "text": "PÃ£o"},
-                        {"id": "b", "text": "Ãgua"},
+                        {"id": "a", "text": "Pão"},
+                        {"id": "b", "text": "Água"},
                         {"id": "c", "text": "Moeda"},
-                        {"id": "d", "text": "ChapÃ©u"},
+                        {"id": "d", "text": "Chapéu"},
                     ],
                     "correct": "a",
-                    "word_id": "es_pan", "target": "pan", "native": "pÃ£o",
-                    "npc_reaction": "Â¡Pan! SÃ­, seÃ±or. El mejor del pueblo.",
+                    "word_id": "es_pan", "target": "pan", "native": "pão",
+                    "npc_reaction": "¡Pan! Sí, señor. El mejor del pueblo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: Aquecimento contextual (primeira fase da temporada) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Miguel chega correndo â€” Don Miguel vai embora, Miguel conecta via portuguÃªs
-    # (aprendeu com o avÃ´, que era forasteiro). Apresenta hola, me llamo,
-    # buenos dÃ­as. Rosa reaparece como callback da S1 â€” dessa vez dÃ¡ o pÃ£o.
-    # Miguel faz a ponte em portuguÃªs quebrado (Ãºnica lÃ­ngua compartilhada).
+    # ── Seção 2: Aquecimento contextual (primeira fase da temporada) ───────────
+    # Miguel chega correndo — Don Miguel vai embora, Miguel conecta via português
+    # (aprendeu com o avô, que era forasteiro). Apresenta hola, me llamo,
+    # buenos días. Rosa reaparece como callback da S1 — dessa vez dá o pão.
+    # Miguel faz a ponte em português quebrado (única língua compartilhada).
     {
         "section_number": 2,
         "section_type": "revisao_srs",
@@ -161,52 +161,52 @@ SECTIONS = [
             "recap": {
                 "characters": ["Don Miguel", "Rosa"],
                 "story": (
-                    "VocÃª chegou ao pueblo de San CristÃ³bal de manhÃ£ cedo. "
-                    "Rosa tentou te vender pÃ£o â€” vocÃª ofereceu as moedas erradas. "
-                    "Don Miguel apareceu, te chamou de 'forastero', tentou espanhol â€” nÃ£o funcionou.\n\n"
-                    "AÃ­ ele gritou pra rua inteira: 'Â¡MIGUEL!'"
+                    "Você chegou ao pueblo de San Cristóbal de manhã cedo. "
+                    "Rosa tentou te vender pão — você ofereceu as moedas erradas. "
+                    "Don Miguel apareceu, te chamou de 'forastero', tentou espanhol — não funcionou.\n\n"
+                    "Aí ele gritou pra rua inteira: '¡MIGUEL!'"
                 ),
-                "now": "AlguÃ©m vem correndo.",
+                "now": "Alguém vem correndo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
-                    "text": "Passos. RÃ¡pidos. VÃªm de longe.",
+                    "text": "Passos. Rápidos. Vêm de longe.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Â¡PapÃ¡! Â¡AquÃ­ estoy! â€” oi?",
-                    "translation": "Pai! TÃ´ aqui! â€” oi?",
+                    "line": "¡Papá! ¡Aquí estoy! — oi?",
+                    "translation": "Pai! Tô aqui! — oi?",
                     "is_new_npc": True,
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "Um cara da sua idade. Mesmo chapÃ©u de palha do pai. Para na sua frente, ofegando.",
+                    "text": "Um cara da sua idade. Mesmo chapéu de palha do pai. Para na sua frente, ofegando.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Este forastero no habla espaÃ±ol. MuÃ©strale el pueblo, mijo.",
-                    "translation": "Esse forasteiro nÃ£o fala espanhol. Mostra o pueblo pra ele, filho.",
+                    "line": "Este forastero no habla español. Muéstrale el pueblo, mijo.",
+                    "translation": "Esse forasteiro não fala espanhol. Mostra o pueblo pra ele, filho.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Uh... vocÃª... fala portuguÃªs?",
-                    "translation": "(portuguÃªs quebrado)",
+                    "line": "Uh... você... fala português?",
+                    "translation": "(português quebrado)",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª para.\n\nSotaque pesado. Mas na sua lÃ­ngua.",
+                    "text": "Você para.\n\nSotaque pesado. Mas na sua língua.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Â¡Bueno! Â¡Mijo, cuÃ­dalo! Â¡Forastero â€” bienvenido a San CristÃ³bal!",
-                    "translation": "Bom! Filho, cuida dele! Forasteiro â€” bem-vindo a San CristÃ³bal!",
+                    "line": "¡Bueno! ¡Mijo, cuídalo! ¡Forastero — bienvenido a San Cristóbal!",
+                    "translation": "Bom! Filho, cuida dele! Forasteiro — bem-vindo a San Cristóbal!",
                     "pace": "urgent",
                 },
                 {
@@ -216,21 +216,21 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Hola. Me llamo Miguel. Campesino â€” trabalho na terra.",
-                    "translation": "OlÃ¡. Meu nome Ã© Miguel.",
+                    "line": "Hola. Me llamo Miguel. Campesino — trabalho na terra.",
+                    "translation": "Olá. Meu nome é Miguel.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Meu avÃ´ era forastero tambÃ©m â€” por isso sei um pouco da sua lÃ­ngua. De manhÃ£: 'buenos dÃ­as'. De tarde: 'buenas tardes'.",
-                    "translation": "buenos dÃ­as = bom dia | buenas tardes = boa tarde",
+                    "line": "Meu avô era forastero também — por isso sei um pouco da sua língua. De manhã: 'buenos días'. De tarde: 'buenas tardes'.",
+                    "translation": "buenos días = bom dia | buenas tardes = boa tarde",
                 },
                 {
                     "kind": "vocab_list",
                     "items": [
-                        {"target": "hola",          "native": "olÃ¡"},
-                        {"target": "me llamo",      "native": "meu nome Ã©"},
-                        {"target": "buenos dÃ­as",   "native": "bom dia"},
+                        {"target": "hola",          "native": "olá"},
+                        {"target": "me llamo",      "native": "meu nome é"},
+                        {"target": "buenos días",   "native": "bom dia"},
                         {"target": "buenas tardes", "native": "boa tarde"},
                         {"target": "gracias",       "native": "obrigado/a"},
                     ],
@@ -238,40 +238,40 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel acabou de se apresentar: 'Me llamo Miguel.' Agora Ã© sua vez. VocÃª diz:",
+                    "question": "Miguel acabou de se apresentar: 'Me llamo Miguel.' Agora é sua vez. Você diz:",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Hola, gracias"},
-                        {"id": "c", "text": "Buenos dÃ­as"},
+                        {"id": "c", "text": "Buenos días"},
                         {"id": "d", "text": "Forastero"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Â¡Eso! Agora ele sabe quem vocÃª Ã©.",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "¡Eso! Agora ele sabe quem você é.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Sol de manhÃ£ cedo. Miguel te olha esperando. Como vocÃª cumprimenta?",
+                    "question": "Sol de manhã cedo. Miguel te olha esperando. Como você cumprimenta?",
                     "options": [
-                        {"id": "a", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "b", "text": "Â¡Buenas tardes!"},
-                        {"id": "c", "text": "Â¡Buenas noches!"},
-                        {"id": "d", "text": "Â¡Hola!"},
+                        {"id": "a", "text": "¡Buenos días!"},
+                        {"id": "b", "text": "¡Buenas tardes!"},
+                        {"id": "c", "text": "¡Buenas noches!"},
+                        {"id": "d", "text": "¡Hola!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Buenos dÃ­as â€” atÃ© o meio-dia.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "Buenos días — até o meio-dia.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "VocÃªs dobram uma rua. Rosa na porta da padaria â€” reconhece vocÃª.",
+                    "text": "Vocês dobram uma rua. Rosa na porta da padaria — reconhece você.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Rosa",
-                    "line": "Â¡Ah! Â¡El forastero de antes! Toma â€” Â¡sin monedas esta vez!",
-                    "translation": "O forasteiro de antes! Toma â€” sem pagar desta vez!",
+                    "line": "¡Ah! ¡El forastero de antes! Toma — ¡sin monedas esta vez!",
+                    "translation": "O forasteiro de antes! Toma — sem pagar desta vez!",
                 },
                 {
                     "kind": "npc_speak",
@@ -282,12 +282,12 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Rosa",
-                    "question": "Rosa te dÃ¡ o pÃ£o de graÃ§a. VocÃª responde:",
+                    "question": "Rosa te dá o pão de graça. Você responde:",
                     "options": [
-                        {"id": "a", "text": "Â¡Gracias!"},
-                        {"id": "b", "text": "Â¡Hola!"},
-                        {"id": "c", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "d", "text": "Â¡Mal!"},
+                        {"id": "a", "text": "¡Gracias!"},
+                        {"id": "b", "text": "¡Hola!"},
+                        {"id": "c", "text": "¡Buenos días!"},
+                        {"id": "d", "text": "¡Mal!"},
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
@@ -297,10 +297,10 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: GramÃ¡tica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 3: Gramática Narrativa ───────────────────────────────────────────
     # Miguel senta com o player num murinho e ensina as estruturas de forma direta,
-    # como amigo explicando â€” nÃ£o como professor. Intercala beats com exercÃ­cios.
-    # Ensina: Â¿cÃ³mo te llamas? / me llamo + Â¿cÃ³mo estÃ¡s? / bien o mal.
+    # como amigo explicando — não como professor. Intercala beats com exercícios.
+    # Ensina: ¿cómo te llamas? / me llamo + ¿cómo estás? / bien o mal.
     {
         "section_number": 3,
         "section_type": "gramatica_narrativa",
@@ -308,14 +308,14 @@ SECTIONS = [
             "recap": {
                 "characters": ["Miguel"],
                 "story": (
-                    "Miguel passou a tarde te fazendo repetir as saudaÃ§Ãµes que ele "
-                    "tinha soltado na rua: 'Â¡Hola!', 'Buenos dÃ­as', 'Buenas tardes'. "
-                    "Quando vocÃª acertou 'Gracias' com Rosa e ela respondeu 'De nada', "
-                    "ele bateu palma uma vez sÃ³. Satisfeito.\n\n"
-                    "AÃ­ ele puxou vocÃª pra um murinho na sombra de uma parede de adobe. "
-                    "'Tem mais umas coisas que vocÃª precisa saber.'"
+                    "Miguel passou a tarde te fazendo repetir as saudações que ele "
+                    "tinha soltado na rua: '¡Hola!', 'Buenos días', 'Buenas tardes'. "
+                    "Quando você acertou 'Gracias' com Rosa e ela respondeu 'De nada', "
+                    "ele bateu palma uma vez só. Satisfeito.\n\n"
+                    "Aí ele puxou você pra um murinho na sombra de uma parede de adobe. "
+                    "'Tem mais umas coisas que você precisa saber.'"
                 ),
-                "now": "Miguel vai te ensinar a pedir nomes e responder como vocÃª estÃ¡.",
+                "now": "Miguel vai te ensinar a pedir nomes e responder como você está.",
             },
             "steps": [
                 {
@@ -325,64 +325,64 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Primero: Â¿cÃ³mo te llamas?",
-                    "translation": "Primeiro: como vocÃª se chama?",
+                    "line": "Primero: ¿cómo te llamas?",
+                    "translation": "Primeiro: como você se chama?",
                 },
                 {
                     "kind": "reveal",
-                    "phrase": "Â¿CÃ³mo te llamas?",
-                    "meaning": "Como vocÃª se chama?",
-                    "note": "Pergunta padrÃ£o pra pedir o nome de alguÃ©m",
+                    "phrase": "¿Cómo te llamas?",
+                    "meaning": "Como você se chama?",
+                    "note": "Pergunta padrão pra pedir o nome de alguém",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Y la respuesta: 'Me llamo' â€” y dices tu nombre.",
-                    "translation": "E a resposta: 'Me llamo' â€” e vocÃª diz seu nome.",
+                    "line": "Y la respuesta: 'Me llamo' — y dices tu nombre.",
+                    "translation": "E a resposta: 'Me llamo' — e você diz seu nome.",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Me llamo ___",
-                    "meaning": "Meu nome Ã© ___",
-                    "note": "Use seu prÃ³prio nome: 'Me llamo [nome]'",
+                    "meaning": "Meu nome é ___",
+                    "note": "Use seu próprio nome: 'Me llamo [nome]'",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel aponta pra vocÃª: 'Â¿CÃ³mo te llamas?' Como vocÃª responde?",
+                    "question": "Miguel aponta pra você: '¿Cómo te llamas?' Como você responde?",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Soy llamo [seu nome]"},
-                        {"id": "c", "text": "TÃº llamas [seu nome]"},
+                        {"id": "c", "text": "Tú llamas [seu nome]"},
                         {"id": "d", "text": "Hola Miguel"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Â¡Mucho gusto, amigo!",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "¡Mucho gusto, amigo!",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Ahora otra: 'Â¿CÃ³mo estÃ¡s?'",
-                    "translation": "Agora outra: 'como vocÃª estÃ¡?'",
+                    "line": "Ahora otra: '¿Cómo estás?'",
+                    "translation": "Agora outra: 'como você está?'",
                 },
                 {
                     "kind": "pattern",
                     "parts": [
-                        {"text": "Â¿CÃ³mo estÃ¡s?", "isKey": False},
-                        {"text": " â†’ ",          "isKey": False},
+                        {"text": "¿Cómo estás?", "isKey": False},
+                        {"text": " → ",          "isKey": False},
                         {"text": "Bien",          "isKey": True},
                         {"text": " / ",           "isKey": False},
                         {"text": "Mal",           "isKey": True},
                     ],
-                    "example": "â€” Â¿CÃ³mo estÃ¡s? â€” Bien, gracias.",
-                    "translation": "â€” Como vocÃª estÃ¡? â€” Bem, obrigado.",
+                    "example": "— ¿Cómo estás? — Bien, gracias.",
+                    "translation": "— Como você está? — Bem, obrigado.",
                     "note": "Bien = bem | Mal = mal",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "O sol tÃ¡ bom, o pÃ£o da Rosa ainda quente no seu bolso. Miguel: 'Â¿CÃ³mo estÃ¡s?'",
+                    "question": "O sol tá bom, o pão da Rosa ainda quente no seu bolso. Miguel: '¿Cómo estás?'",
                     "options": [
                         {"id": "a", "text": "Bien"},
                         {"id": "b", "text": "Mal"},
@@ -391,19 +391,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Â¡Bien! Ã‰ isso.",
+                    "npc_reaction": "¡Bien! É isso.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Pero si no estÃ¡s bien, dilo. No finjas.",
-                    "translation": "Mas se vocÃª nÃ£o estÃ¡ bem, fala. NÃ£o finge.",
+                    "line": "Pero si no estás bien, dilo. No finjas.",
+                    "translation": "Mas se você não está bem, fala. Não finge.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Seus pÃ©s doem, suas pÃ¡lpebras pesam. Faz dias que vocÃª caminha sem parar. Miguel: 'Â¿CÃ³mo estÃ¡s?'",
+                    "question": "Seus pés doem, suas pálpebras pesam. Faz dias que você caminha sem parar. Miguel: '¿Cómo estás?'",
                     "options": [
                         {"id": "a", "text": "Mal"},
                         {"id": "b", "text": "Bien"},
@@ -417,26 +417,26 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "VocÃª quer saber o nome de alguÃ©m. Pergunta:",
+                    "question": "Você quer saber o nome de alguém. Pergunta:",
                     "options": [
-                        {"id": "a", "text": "Â¿CÃ³mo te llamas?"},
-                        {"id": "b", "text": "Â¿CÃ³mo estÃ¡s?"},
-                        {"id": "c", "text": "Â¿DÃ³nde estÃ¡s?"},
-                        {"id": "d", "text": "Â¿Y tÃº?"},
+                        {"id": "a", "text": "¿Cómo te llamas?"},
+                        {"id": "b", "text": "¿Cómo estás?"},
+                        {"id": "c", "text": "¿Dónde estás?"},
+                        {"id": "d", "text": "¿Y tú?"},
                     ],
                     "correct": "a",
-                    "word_id": "es_como_te_llamas", "target": "Â¿cÃ³mo te llamas?", "native": "como vocÃª se chama?",
+                    "word_id": "es_como_te_llamas", "target": "¿cómo te llamas?", "native": "como você se chama?",
                     "npc_reaction": "Isso. E olha pro peito do outro enquanto pergunta.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Miguel tira uma manzana do bolso e te passa sem cerimÃ´nia. 'Del Ã¡rbol detrÃ¡s de mi casa.'",
+                    "text": "Miguel tira uma manzana do bolso e te passa sem cerimônia. 'Del árbol detrás de mi casa.'",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Â¿Sabes cÃ³mo se llama esto? Manzana. Del campo.",
-                    "translation": "manzana = maÃ§Ã£",
+                    "line": "¿Sabes cómo se llama esto? Manzana. Del campo.",
+                    "translation": "manzana = maçã",
                 },
                 {
                     "kind": "multiple_choice",
@@ -449,31 +449,31 @@ SECTIONS = [
                         {"id": "d", "text": "Moneda"},
                     ],
                     "correct": "a",
-                    "word_id": "es_manzana", "target": "manzana", "native": "maÃ§Ã£",
-                    "npc_reaction": "Manzana. Roja, del Ã¡rbol. Gratis.",
+                    "word_id": "es_manzana", "target": "manzana", "native": "maçã",
+                    "npc_reaction": "Manzana. Roja, del árbol. Gratis.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel cruza os braÃ§os, satisfeito. 'Â¿CÃ³mo estÃ¡s?'",
+                    "question": "Miguel cruza os braços, satisfeito. '¿Cómo estás?'",
                     "options": [
-                        {"id": "a", "text": "Bien, Â¿y tÃº?"},
+                        {"id": "a", "text": "Bien, ¿y tú?"},
                         {"id": "b", "text": "Mal, gracias"},
                         {"id": "c", "text": "Hola, Miguel"},
                         {"id": "d", "text": "De nada"},
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Â¡Excelente! E o 'Â¿y tÃº?' no final â€” isso Ã© o que separa.",
+                    "npc_reaction": "¡Excelente! E o '¿y tú?' no final — isso é o que separa.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: Encontro com Carmen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Miguel leva o player pra plaza e apresenta doÃ±a Carmen â€” vizinha antiga,
-    # conhece todo o pueblo. Narrativa-heavy. Carmen fala sÃ³ espanhol.
-    # adiÃ³s Ã© apresentado por Miguel antes de Carmen testar.
+    # ── Seção 4: Encontro com Carmen ──────────────────────────────────────────
+    # Miguel leva o player pra plaza e apresenta doña Carmen — vizinha antiga,
+    # conhece todo o pueblo. Narrativa-heavy. Carmen fala só espanhol.
+    # adiós é apresentado por Miguel antes de Carmen testar.
     {
         "section_number": 4,
         "section_type": "pratica_aplicada",
@@ -481,19 +481,19 @@ SECTIONS = [
             "recap": {
                 "characters": ["Miguel"],
                 "story": (
-                    "Miguel ficou te testando atÃ© as palavras saÃ­rem sem hesitar. "
-                    "SaudaÃ§Ãµes, perguntas, respostas â€” vocÃª foi acertando uma a uma.\n\n"
-                    "Quando ele cruzou os braÃ§os satisfeito vocÃª soube que tinha "
-                    "passado por algo. 'Bueno, forastero. Tem alguÃ©m que quero que "
-                    "vocÃª conheÃ§a.'"
+                    "Miguel ficou te testando até as palavras saírem sem hesitar. "
+                    "Saudações, perguntas, respostas — você foi acertando uma a uma.\n\n"
+                    "Quando ele cruzou os braços satisfeito você soube que tinha "
+                    "passado por algo. 'Bueno, forastero. Tem alguém que quero que "
+                    "você conheça.'"
                 ),
-                "now": "Miguel vai te apresentar alguÃ©m importante do pueblo.",
+                "now": "Miguel vai te apresentar alguém importante do pueblo.",
             },
             "steps": [
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs entram na plaza central. Sombra de Ã¡rvores antigas, "
+                        "Vocês entram na plaza central. Sombra de árvores antigas, "
                         "fonte de pedra no meio. Uma mulher mais velha sentada num "
                         "banco, costurando com agulha fina."
                     ),
@@ -501,50 +501,50 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Mira â€” esa es doÃ±a Carmen. Conoce a todos en el pueblo. Si quieres saber algo, ella te dice.",
-                    "translation": "Olha â€” essa Ã© doÃ±a Carmen. Conhece todo mundo no pueblo. Se quiser saber algo, ela conta.",
+                    "line": "Mira — esa es doña Carmen. Conoce a todos en el pueblo. Si quieres saber algo, ella te dice.",
+                    "translation": "Olha — essa é doña Carmen. Conhece todo mundo no pueblo. Se quiser saber algo, ela conta.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Ah â€” e se for embora de alguÃ©m, fala 'adiÃ³s'. Aprende antes de chegar nela.",
-                    "translation": "adiÃ³s = tchau / adeus",
+                    "line": "Ah — e se for embora de alguém, fala 'adiós'. Aprende antes de chegar nela.",
+                    "translation": "adiós = tchau / adeus",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Carmen levanta os olhos do bordado. Sorri pra Miguel, depois pra vocÃª.",
+                    "text": "Carmen levanta os olhos do bordado. Sorri pra Miguel, depois pra você.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¡Hola, Miguel! Â¿Y este forastero?",
-                    "translation": "OlÃ¡, Miguel! E esse forasteiro?",
+                    "line": "¡Hola, Miguel! ¿Y este forastero?",
+                    "translation": "Olá, Miguel! E esse forasteiro?",
                     "is_new_npc": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Mi forastero. Lo estoy enseÃ±ando. Ya sabe saludar.",
-                    "translation": "Meu forasteiro. TÃ´ ensinando ele. JÃ¡ sabe cumprimentar.",
+                    "line": "Mi forastero. Lo estoy enseñando. Ya sabe saludar.",
+                    "translation": "Meu forasteiro. Tô ensinando ele. Já sabe cumprimentar.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Carmen tira os Ã³culos pequenos do nariz e te examina de cima "
+                        "Carmen tira os óculos pequenos do nariz e te examina de cima "
                         "a baixo. Gesto materno, sem maldade."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "AcÃ©rcate, hijo. DÃ©jame verte mejor.",
+                    "line": "Acércate, hijo. Déjame verte mejor.",
                     "translation": "Chega mais perto, filho. Deixa eu te ver melhor.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen aponta o banco do lado dela: 'Â¿Y tÃº, hijo? Â¿CÃ³mo te llamas?'",
+                    "question": "Carmen aponta o banco do lado dela: '¿Y tú, hijo? ¿Cómo te llamas?'",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Bien, gracias"},
@@ -552,48 +552,48 @@ SECTIONS = [
                         {"id": "d", "text": "Hola Carmen"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
                     "npc_reaction": "Mucho gusto. Yo soy Carmen. Llevo toda mi vida en este pueblo.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª se senta no banco de pedra ao lado dela. As mÃ£os de "
-                        "Carmen voltam ao bordado â€” Ã¡geis, apesar dos anos."
+                        "Você se senta no banco de pedra ao lado dela. As mãos de "
+                        "Carmen voltam ao bordado — ágeis, apesar dos anos."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Quieres agua del pozo? AquÃ­ el agua es buena, forastero.",
-                    "translation": "agua = Ã¡gua",
+                    "line": "¿Quieres agua del pozo? Aquí el agua es buena, forastero.",
+                    "translation": "agua = água",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen aponta pro poÃ§o da plaza e oferece algo fresco. O que Ã© 'agua'?",
+                    "question": "Carmen aponta pro poço da plaza e oferece algo fresco. O que é 'agua'?",
                     "options": [
-                        {"id": "a", "text": "Ãgua"},
-                        {"id": "b", "text": "PÃ£o"},
-                        {"id": "c", "text": "MaÃ§Ã£"},
+                        {"id": "a", "text": "Água"},
+                        {"id": "b", "text": "Pão"},
+                        {"id": "c", "text": "Maçã"},
                         {"id": "d", "text": "Moeda"},
                     ],
                     "correct": "a",
-                    "word_id": "es_agua", "target": "agua", "native": "Ã¡gua",
+                    "word_id": "es_agua", "target": "agua", "native": "água",
                     "npc_reaction": "El agua del pozo. La mejor del pueblo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Dime una cosa â€” Â¿cÃ³mo estÃ¡s hoy? El primer dÃ­a siempre es duro.",
-                    "translation": "Me diz uma coisa â€” como vocÃª estÃ¡ hoje? O primeiro dia sempre Ã© duro.",
+                    "line": "Dime una cosa — ¿cómo estás hoy? El primer día siempre es duro.",
+                    "translation": "Me diz uma coisa — como você está hoje? O primeiro dia sempre é duro.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "O sol da tarde te aquece, o pÃ£o da Rosa ainda morno no bolso. VocÃª responde:",
+                    "question": "O sol da tarde te aquece, o pão da Rosa ainda morno no bolso. Você responde:",
                     "options": [
                         {"id": "a", "text": "Bien"},
                         {"id": "b", "text": "Mal"},
@@ -602,59 +602,59 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Me alegro. AquÃ­ siempre se estÃ¡ bien si el cuerpo aguanta y la gente saluda.",
+                    "npc_reaction": "Me alegro. Aquí siempre se está bien si el cuerpo aguanta y la gente saluda.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Y sabes despedirte tambiÃ©n, forastero?",
-                    "translation": "E vocÃª sabe se despedir tambÃ©m, forasteiro?",
+                    "line": "¿Y sabes despedirte también, forastero?",
+                    "translation": "E você sabe se despedir também, forasteiro?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen te olha esperando. VocÃª precisa dizer tchau em espanhol.",
+                    "question": "Carmen te olha esperando. Você precisa dizer tchau em espanhol.",
                     "options": [
-                        {"id": "a", "text": "AdiÃ³s"},
+                        {"id": "a", "text": "Adiós"},
                         {"id": "b", "text": "Hola"},
                         {"id": "c", "text": "Gracias"},
                         {"id": "d", "text": "Bien"},
                     ],
                     "correct": "a",
-                    "word_id": "es_adios", "target": "adiÃ³s", "native": "tchau / adeus",
+                    "word_id": "es_adios", "target": "adiós", "native": "tchau / adeus",
                     "npc_reaction": "Bien. Aunque espero que no tan pronto, hijo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Ahora â€” pregÃºntale a Miguel cÃ³mo estÃ¡.",
-                    "translation": "Agora â€” pergunta pro Miguel como ele tÃ¡.",
+                    "line": "Ahora — pregúntale a Miguel cómo está.",
+                    "translation": "Agora — pergunta pro Miguel como ele tá.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Carmen aponta pra Miguel. Ã‰ a sua vez de perguntar.",
+                    "question": "Carmen aponta pra Miguel. É a sua vez de perguntar.",
                     "options": [
-                        {"id": "a", "text": "Â¿CÃ³mo estÃ¡s?"},
-                        {"id": "b", "text": "Â¿CÃ³mo te llamas?"},
-                        {"id": "c", "text": "Â¿Y tÃº?"},
-                        {"id": "d", "text": "Â¿AdiÃ³s?"},
+                        {"id": "a", "text": "¿Cómo estás?"},
+                        {"id": "b", "text": "¿Cómo te llamas?"},
+                        {"id": "c", "text": "¿Y tú?"},
+                        {"id": "d", "text": "¿Adiós?"},
                     ],
                     "correct": "a",
                     "npc_reaction": "Bien. Como siempre que tengo a alguien queriendo aprender.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Miguel observa de pÃ©, satisfeito. Carmen continua costurando.",
+                    "text": "Miguel observa de pé, satisfeito. Carmen continua costurando.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ConvivÃªncia com Carmen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 5: Convivência com Carmen ────────────────────────────────────────
     # Carmen ensina sobre o ritmo social do pueblo enquanto costura.
-    # Poucos exercÃ­cios â€” foco em desenvolver o personagem e contextualizar
+    # Poucos exercícios — foco em desenvolver o personagem e contextualizar
     # o vocab em sabedoria local. buenas noches apresentado antes de ser testado.
     {
         "section_number": 5,
@@ -663,50 +663,50 @@ SECTIONS = [
             "recap": {
                 "characters": ["Miguel", "Carmen"],
                 "story": (
-                    "Miguel te apresentou a doÃ±a Carmen na plaza. Uma mulher mais "
+                    "Miguel te apresentou a doña Carmen na plaza. Uma mulher mais "
                     "velha, costurando num banco de pedra, com olhar calmo de quem "
                     "viu tudo.\n\n"
-                    "VocÃª se apresentou, disse que estava bem. Carmen sorriu â€” 'aqui "
-                    "sempre se estÃ¡ bem se o corpo aguanta e a gente cumprimenta'. "
+                    "Você se apresentou, disse que estava bem. Carmen sorriu — 'aqui "
+                    "sempre se está bem se o corpo aguanta e a gente cumprimenta'. "
                     "Agora ela quer te contar como o pueblo funciona."
                 ),
-                "now": "Carmen vai te ensinar o ritmo social â€” quando cumprimentar como, e por quÃª.",
+                "now": "Carmen vai te ensinar o ritmo social — quando cumprimentar como, e por quê.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "AquÃ­ en el pueblo, somos pocos. Pero todos nos conocemos.",
+                    "line": "Aquí en el pueblo, somos pocos. Pero todos nos conocemos.",
                     "translation": "Aqui no pueblo, somos poucos. Mas todos nos conhecemos.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Miguel acena com a cabeÃ§a concordando, mas deixa Carmen falar.",
+                    "text": "Miguel acena com a cabeça concordando, mas deixa Carmen falar.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Si saludas a alguien, te recordarÃ¡. Si dices 'gracias', te invitarÃ¡. Es asÃ­.",
-                    "translation": "Se vocÃª cumprimenta alguÃ©m, vÃ£o lembrar. Se diz 'gracias', vÃ£o te convidar. Ã‰ assim.",
+                    "line": "Si saludas a alguien, te recordará. Si dices 'gracias', te invitará. Es así.",
+                    "translation": "Se você cumprimenta alguém, vão lembrar. Se diz 'gracias', vão te convidar. É assim.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "La palabra mÃ¡s bonita del espaÃ±ol es 'gracias'. No la olvides nunca.",
-                    "translation": "A palavra mais bonita do espanhol Ã© 'gracias'. NÃ£o esqueÃ§a nunca.",
+                    "line": "La palabra más bonita del español es 'gracias'. No la olvides nunca.",
+                    "translation": "A palavra mais bonita do espanhol é 'gracias'. Não esqueça nunca.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen aponta pra Miguel: 'Cuando Ã©l te dÃ© algo â€” pan, agua, una palabra â€” Â¿quÃ© dices?'",
+                    "question": "Carmen aponta pra Miguel: 'Cuando él te dé algo — pan, agua, una palabra — ¿qué dices?'",
                     "options": [
                         {"id": "a", "text": "Gracias"},
                         {"id": "b", "text": "Hola"},
                         {"id": "c", "text": "Bien"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
@@ -715,7 +715,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Miguel te entrega a manzana que estava no bolso dele. VocÃª diz 'gracias'. Como ele responde?",
+                    "question": "Miguel te entrega a manzana que estava no bolso dele. Você diz 'gracias'. Como ele responde?",
                     "options": [
                         {"id": "a", "text": "De nada"},
                         {"id": "b", "text": "Hola"},
@@ -724,40 +724,40 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_de_nada", "target": "de nada", "native": "de nada",
-                    "npc_reaction": "Ese es el ciclo, hijo. Saludo, palabra, respuesta. AsÃ­ vivimos.",
+                    "npc_reaction": "Ese es el ciclo, hijo. Saludo, palabra, respuesta. Así vivimos.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
                     "line": "Y cuando el sol se pone y llega la noche, decimos 'buenas noches'.",
-                    "translation": "E quando o sol se pÃµe e chega a noite, dizemos 'buenas noches' â€” boa noite.",
+                    "translation": "E quando o sol se põe e chega a noite, dizemos 'buenas noches' — boa noite.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "O sol sumiu. VocÃª encontra alguÃ©m na rua Ã  noite. Como cumprimenta?",
+                    "question": "O sol sumiu. Você encontra alguém na rua à noite. Como cumprimenta?",
                     "options": [
                         {"id": "a", "text": "Buenas noches"},
-                        {"id": "b", "text": "Buenos dÃ­as"},
+                        {"id": "b", "text": "Buenos días"},
                         {"id": "c", "text": "Buenas tardes"},
                         {"id": "d", "text": "Hola noche"},
                     ],
                     "correct": "a",
                     "word_id": "es_buenas_noches", "target": "buenas noches", "native": "boa noite",
-                    "npc_reaction": "AsÃ­. Cada hora tiene su saludo.",
+                    "npc_reaction": "Así. Cada hora tiene su saludo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Una Ãºltima cosa, forastero â€” Â¿cÃ³mo te llamas?",
-                    "translation": "Uma Ãºltima coisa, forasteiro â€” como vocÃª se chama?",
+                    "line": "Una última cosa, forastero — ¿cómo te llamas?",
+                    "translation": "Uma última coisa, forasteiro — como você se chama?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen te olha com um sorriso. Ela quer ouvir vocÃª dizer seu nome.",
+                    "question": "Carmen te olha com um sorriso. Ela quer ouvir você dizer seu nome.",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Bien, gracias"},
@@ -765,37 +765,37 @@ SECTIONS = [
                         {"id": "d", "text": "Soy forastero"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
                     "npc_reaction": "Eso. Nunca olvides tu nombre cuando alguien te lo pida.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Carmen volta ao bordado. O sol comeÃ§ou a baixar mais â€” "
-                        "sombras compridas no chÃ£o de pedra."
+                        "Carmen volta ao bordado. O sol começou a baixar mais — "
+                        "sombras compridas no chão de pedra."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Vuelve maÃ±ana si quieres. Siempre estoy aquÃ­ â€” en este banco, con la aguja en la mano.",
-                    "translation": "Volta amanhÃ£ se quiser. Sempre estou aqui â€” neste banco, com a agulha na mÃ£o.",
+                    "line": "Vuelve mañana si quieres. Siempre estoy aquí — en este banco, con la aguja en la mano.",
+                    "translation": "Volta amanhã se quiser. Sempre estou aqui — neste banco, com a agulha na mão.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Vamos, forastero. Tem uma Ãºltima coisa antes de vocÃª descansar.",
-                    "translation": "Vamos. Tem uma Ãºltima coisa antes de vocÃª descansar.",
+                    "line": "Vamos, forastero. Tem uma última coisa antes de você descansar.",
+                    "translation": "Vamos. Tem uma última coisa antes de você descansar.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃ¡culo (gate final â€” gated) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Miguel vira examinador. Cada exercÃ­cio Ã© um desafio dele direto.
-    # Errar trava (frontend aplica isGated). Closing beats fazem a transiÃ§Ã£o
-    # pra la posada â€” onde a Fase 2 comeÃ§a.
+    # ── Seção 6: Obstáculo (gate final — gated) ────────────────────────────────
+    # Miguel vira examinador. Cada exercício é um desafio dele direto.
+    # Errar trava (frontend aplica isGated). Closing beats fazem a transição
+    # pra la posada — onde a Fase 2 começa.
     {
         "section_number": 6,
         "section_type": "obstaculo",
@@ -803,46 +803,46 @@ SECTIONS = [
             "recap": {
                 "characters": ["Miguel"],
                 "story": (
-                    "Miguel encaixou tudo numa sequÃªncia e fez vocÃª repetir atÃ© "
-                    "sair natural: 'Â¡Hola! Â¿CÃ³mo estÃ¡s?' â€” pausa â€” resposta â€” "
-                    "'Â¿Y tÃº, cÃ³mo te llamas?'\n\n"
-                    "Na terceira vez ele nÃ£o corrigiu nada. SÃ³ tirou o chapÃ©u por "
-                    "um segundo â€” gesto sÃ©rio. 'Bueno. JÃ¡ pode falar com qualquer um.'\n\n"
-                    "AÃ­ o sorriso saiu do rosto. 'Agora vamos ver de verdade.'"
+                    "Miguel encaixou tudo numa sequência e fez você repetir até "
+                    "sair natural: '¡Hola! ¿Cómo estás?' — pausa — resposta — "
+                    "'¿Y tú, cómo te llamas?'\n\n"
+                    "Na terceira vez ele não corrigiu nada. Só tirou o chapéu por "
+                    "um segundo — gesto sério. 'Bueno. Já pode falar com qualquer um.'\n\n"
+                    "Aí o sorriso saiu do rosto. 'Agora vamos ver de verdade.'"
                 ),
-                "now": "Teste final. Errar trava â€” vocÃª precisa acertar pra passar.",
+                "now": "Teste final. Errar trava — você precisa acertar pra passar.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
                     "line": "Ya basta de explicaciones. Si te equivocas, repites. Sin atajos.",
-                    "translation": "Chega de explicaÃ§Ãµes. Se errar, repete. Sem atalho.",
+                    "translation": "Chega de explicações. Se errar, repete. Sem atalho.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "'Es la maÃ±ana. Llego a tu lado. Â¿QuÃ© dices?'",
+                    "question": "'Es la mañana. Llego a tu lado. ¿Qué dices?'",
                     "options": [
-                        {"id": "a", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "b", "text": "Â¡Buenas tardes!"},
-                        {"id": "c", "text": "Â¡Buenas noches!"},
-                        {"id": "d", "text": "Â¡Hola noche!"},
+                        {"id": "a", "text": "¡Buenos días!"},
+                        {"id": "b", "text": "¡Buenas tardes!"},
+                        {"id": "c", "text": "¡Buenas noches!"},
+                        {"id": "d", "text": "¡Hola noche!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Â¡Eso! Pasa.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "¡Eso! Pasa.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
                     "question": "'Te di un pedazo de pan. Responde.'",
                     "options": [
-                        {"id": "a", "text": "Â¡Gracias!"},
-                        {"id": "b", "text": "Â¡Hola!"},
-                        {"id": "c", "text": "Â¡Bien!"},
-                        {"id": "d", "text": "Â¡AdiÃ³s!"},
+                        {"id": "a", "text": "¡Gracias!"},
+                        {"id": "b", "text": "¡Hola!"},
+                        {"id": "c", "text": "¡Bien!"},
+                        {"id": "d", "text": "¡Adiós!"},
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
@@ -851,7 +851,7 @@ SECTIONS = [
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "'Dijiste gracias. Â¿QuÃ© te respondo yo?'",
+                    "question": "'Dijiste gracias. ¿Qué te respondo yo?'",
                     "options": [
                         {"id": "a", "text": "De nada"},
                         {"id": "b", "text": "Hola"},
@@ -860,12 +860,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_de_nada", "target": "de nada", "native": "de nada",
-                    "npc_reaction": "Â¡Eso! Ã‰ o ciclo.",
+                    "npc_reaction": "¡Eso! É o ciclo.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "'Yo te pregunto cÃ³mo te llamas. Tu respuesta empieza con...'",
+                    "question": "'Yo te pregunto cómo te llamas. Tu respuesta empieza con...'",
                     "options": [
                         {"id": "a", "text": "Me llamo"},
                         {"id": "b", "text": "Soy llamo"},
@@ -873,13 +873,13 @@ SECTIONS = [
                         {"id": "d", "text": "Te llamo"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Â¡Eso!",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "¡Eso!",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "'Â¿CÃ³mo estÃ¡s? EstÃ¡s bien.'",
+                    "question": "'¿Cómo estás? Estás bien.'",
                     "options": [
                         {"id": "a", "text": "Bien"},
                         {"id": "b", "text": "Mal"},
@@ -890,34 +890,34 @@ SECTIONS = [
                     "word_id": "es_bien", "target": "bien", "native": "bem",
                     "npc_reaction": "Bien.",
                 },
-                # â”€â”€ Closing beats â€” transiÃ§Ã£o pra la posada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                # ── Closing beats — transição pra la posada ──────────────────
                 {
                     "kind": "narrative",
                     "text": (
-                        "Miguel ajeita o chapÃ©u. O sol jÃ¡ tÃ¡ baixo, sombras compridas "
-                        "no chÃ£o de terra. Ele te dÃ¡ um tapinha no ombro."
+                        "Miguel ajeita o chapéu. O sol já tá baixo, sombras compridas "
+                        "no chão de terra. Ele te dá um tapinha no ombro."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
                     "line": "Ya hiciste mucho por hoy. Ven, vamos a la posada.",
-                    "translation": "JÃ¡ fez bastante por hoje. Vem, vamos pra posada.",
+                    "translation": "Já fez bastante por hoje. Vem, vamos pra posada.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Descansa. MaÃ±ana hay mÃ¡s pueblo para conocer.",
-                    "translation": "Descansa. AmanhÃ£ tem mais pueblo pra conhecer.",
+                    "line": "Descansa. Mañana hay más pueblo para conocer.",
+                    "translation": "Descansa. Amanhã tem mais pueblo pra conhecer.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs caminham pelas ruas de pedra. Primeiras luzes nas janelas. "
-                        "Miguel te aponta uma casa de dois andares no canto da plaza â€” "
-                        "la posada. Onde vocÃª vai dormir essa noite."
+                        "Vocês caminham pelas ruas de pedra. Primeiras luzes nas janelas. "
+                        "Miguel te aponta uma casa de dois andares no canto da plaza — "
+                        "la posada. Onde você vai dormir essa noite."
                     ),
                 },
             ],
@@ -926,4 +926,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

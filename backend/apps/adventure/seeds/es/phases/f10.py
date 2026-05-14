@@ -1,50 +1,50 @@
-﻿"""
-Seed das 6 seÃ§Ãµes da Fase 10 Espanhol A1 â€” "La sombra del Vigilante".
+"""
+Seed das 6 seções da Fase 10 Espanhol A1 — "La sombra del Vigilante".
 
-Fechamento do mini-arco F6-F10. NÃ£o hÃ¡ milestone interno do grupo â€”
-mas planta o gancho temÃ¡tico da T1 inteira: a hostilidade institucional
-do pueblo. El Vigilante reaparece como ameaÃ§a funcional â€” pista para o
+Fechamento do mini-arco F6-F10. Não há milestone interno do grupo —
+mas planta o gancho temático da T1 inteira: a hostilidade institucional
+do pueblo. El Vigilante reaparece como ameaça funcional — pista para o
 boss da T1 (El Alcalde / El Jefe del Pueblo).
 
-SequÃªncia: amanhecer cedo. Grupo decidiu na noite anterior ir falar com
+Sequência: amanhecer cedo. Grupo decidiu na noite anterior ir falar com
 o Alcalde. No caminho, El Vigilante bloqueia uma rua estreita. Pede o
-"pase de forastero". O protagonista nÃ£o tem. El Vigilante diz que sem
-pase, sai do pueblo atÃ© o pÃ´r do sol. Miguel grita. SofÃ­a aparece de
-outra esquina com MarÃ­a. MarÃ­a se aproxima de El Vigilante e fala trÃªs
-frases baixinho â€” o jogador nÃ£o escuta. El Vigilante recua, lanÃ§a um
-olhar duro pro protagonista, vai embora. Miguel olha pra MarÃ­a. MarÃ­a
-sorri: "Conocidos antiguos. No te preocupes." â€” primeira pista DIRETA
-pro jogador (nÃ£o pros personagens) de que MarÃ­a tem ligaÃ§Ãµes que
-ninguÃ©m imagina.
+"pase de forastero". O protagonista não tem. El Vigilante diz que sem
+pase, sai do pueblo até o pôr do sol. Miguel grita. Sofía aparece de
+outra esquina com María. María se aproxima de El Vigilante e fala três
+frases baixinho — o jogador não escuta. El Vigilante recua, lança um
+olhar duro pro protagonista, vai embora. Miguel olha pra María. María
+sorri: "Conocidos antiguos. No te preocupes." — primeira pista DIRETA
+pro jogador (não pros personagens) de que María tem ligações que
+ninguém imagina.
 
-Ã€ noite, Don Miguel diz que o pase sÃ³ Ã© dado pelo Alcalde â€” e que isso
+À noite, Don Miguel diz que o pase só é dado pelo Alcalde — e que isso
 vai ser um problema.
 
-Novos vocab (2-3): pase Â· alcalde Â· ven/para/mira (imperativo simples)
-GramÃ¡tica nova: 1. Imperativo simples (ven, para, mira, habla) â€” ecoa o
+Novos vocab (2-3): pase · alcalde · ven/para/mira (imperativo simples)
+Gramática nova: 1. Imperativo simples (ven, para, mira, habla) — ecoa o
                    que El Vigilante usa pra dar ordens
-                2. ExpansÃ£o do paradigma IR â€” F6 ensinou yo voy / tÃº vienes /
-                   Ã©l Â· ella va. F10 fecha com NOSOTROS VAMOS e ELLOS VAN
+                2. Expansão do paradigma IR — F6 ensinou yo voy / tú vienes /
+                   él · ella va. F10 fecha com NOSOTROS VAMOS e ELLOS VAN
                    (grupo se locomove pro ayuntamiento)
-RevisÃ£o F1-F9:  saudaÃ§Ãµes, Â¿cÃ³mo estÃ¡s?, me llamo, tengo X aÃ±os,
+Revisão F1-F9:  saudações, ¿cómo estás?, me llamo, tengo X años,
                 no me gusta, hay, yo voy, lugares (calle, plaza, fuente)
-NPC principais: Os 4 do grupo Â· Don Miguel Â· El Vigilante (antagonista)
-Arco emocional: falsa seguranÃ§a (F9) â†’ ameaÃ§a institucional explÃ­cita
-                â†’ identificaÃ§Ã£o do antagonista da temporada
-TransiÃ§Ã£o:      F11 abre na manhÃ£ seguinte com o grupo decidindo
-                ir pedir o pase ao Alcalde. ComeÃ§a a estrada
+NPC principais: Os 4 do grupo · Don Miguel · El Vigilante (antagonista)
+Arco emocional: falsa segurança (F9) → ameaça institucional explícita
+                → identificação do antagonista da temporada
+Transição:      F11 abre na manhã seguinte com o grupo decidindo
+                ir pedir o pase ao Alcalde. Começa a estrada
                 que termina no boss da T1.
 
-PrÃ©-requisito: python manage.py seed_es_full
+Pré-requisito: python manage.py seed_es_full
 Uso:           python manage.py seed_es_f10_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Amanhecer. O grupo se prepara em silÃªncio. Don Miguel passa as
-    # instruÃ§Ãµes. Os quatro saem. Pelo caminho, encontram a primeira
-    # tensÃ£o da manhÃ£. ImersÃ£o â€” falas sem traduÃ§Ã£o.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Amanhecer. O grupo se prepara em silêncio. Don Miguel passa as
+    # instruções. Os quatro saem. Pelo caminho, encontram a primeira
+    # tensão da manhã. Imersão — falas sem tradução.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -53,32 +53,32 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ„ Amanhecer cedo Â· Casa de Don Miguel Â· Mesa baixa de madeira\n\n"
-                        "O cÃ©u ainda escuro pelas frestas. Lamparina baixa. Os quatro "
-                        "sentados em volta da mesa, junto com Don Miguel. PÃ£o da "
-                        "noite anterior, cafÃ© morno. NinguÃ©m com fome de verdade."
+                        "🌄 Amanhecer cedo · Casa de Don Miguel · Mesa baixa de madeira\n\n"
+                        "O céu ainda escuro pelas frestas. Lamparina baixa. Os quatro "
+                        "sentados em volta da mesa, junto com Don Miguel. Pão da "
+                        "noite anterior, café morno. Ninguém com fome de verdade."
                     ),
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "Hoy van al ayuntamiento. El Alcalde da el pase a los forasteros â€” sin pase, hay problema.",
+                    "line": "Hoy van al ayuntamiento. El Alcalde da el pase a los forasteros — sin pase, hay problema.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc",
                     "npc": "Don Miguel",
-                    "line": "El Vigilante ya escalÃ³ esto. Si te encuentran sin pase, te sacan del pueblo. Por eso vamos temprano.",
+                    "line": "El Vigilante ya escaló esto. Si te encuentran sin pase, te sacan del pueblo. Por eso vamos temprano.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª ouve as palavras 'pase' e 'Alcalde' pela primeira vez. NÃ£o sabe exatamente o que sÃ£o â€” mas pelo tom, sÃ£o portas.",
+                    "text": "Você ouve as palavras 'pase' e 'Alcalde' pela primeira vez. Não sabe exatamente o que são — mas pelo tom, são portas.",
                 },
                 {
                     "kind": "npc",
-                    "npc": "SofÃ­a",
-                    "line": "Â¿Y si el Alcalde se niega? Â¿QuÃ© hacemos?",
+                    "npc": "Sofía",
+                    "line": "¿Y si el Alcalde se niega? ¿Qué hacemos?",
                     "pace": "urgent",
                 },
                 {
@@ -89,24 +89,24 @@ SECTIONS = [
                 },
                 {
                     "kind": "narrative",
-                    "text": "MarÃ­a come metade do pÃ£o em silÃªncio. NÃ£o estÃ¡ preocupada â€” estÃ¡ pensando.",
+                    "text": "María come metade do pão em silêncio. Não está preocupada — está pensando.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Miguel",
-                    "line": "Vamos juntos. Si paran al forastero â€” paran a los cuatro.",
+                    "line": "Vamos juntos. Si paran al forastero — paran a los cuatro.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ«ï¸ Rua deserta Â· Primeira luz azulada Â· VocÃªs saem pela porta",
+                    "text": "🌫️ Rua deserta · Primeira luz azulada · Vocês saem pela porta",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs quatro andam pela rua principal, sem pressa mas "
-                        "sem parar. MarÃ­a lidera â€” passos certos como se jÃ¡ "
-                        "soubesse o caminho. SofÃ­a do seu lado. Miguel atrÃ¡s "
-                        "vigiando atrÃ¡s."
+                        "Vocês quatro andam pela rua principal, sem pressa mas "
+                        "sem parar. María lidera — passos certos como se já "
+                        "soubesse o caminho. Sofía do seu lado. Miguel atrás "
+                        "vigiando atrás."
                     ),
                 },
             ],
@@ -114,9 +114,9 @@ SECTIONS = [
                 {
                     "kind": "vocab_list",
                     "items": [
-                        {"target": "pase",     "native": "passe / permissÃ£o"},
+                        {"target": "pase",     "native": "passe / permissão"},
                         {"target": "alcalde",  "native": "alcaide / prefeito (a maior autoridade do pueblo)"},
-                        {"target": "ayuntamiento", "native": "cÃ¢mara / prefeitura"},
+                        {"target": "ayuntamiento", "native": "câmara / prefeitura"},
                     ],
                 },
                 {
@@ -125,18 +125,18 @@ SECTIONS = [
                     "question": "Don Miguel acabou de explicar que o forastero precisa de um documento pra ficar no pueblo. Como esse documento se chama?",
                     "options": [
                         {"id": "a", "text": "Pase"},
-                        {"id": "b", "text": "LÃ¡mpara"},
+                        {"id": "b", "text": "Lámpara"},
                         {"id": "c", "text": "Naranja"},
-                        {"id": "d", "text": "MaÃ±ana"},
+                        {"id": "d", "text": "Mañana"},
                     ],
                     "correct": "a",
                     "word_id": "es_pase", "target": "pase", "native": "passe",
-                    "npc_reaction": "Pase. Un papel con sello. Sin Ã©l no eres legal aquÃ­.",
+                    "npc_reaction": "Pase. Un papel con sello. Sin él no eres legal aquí.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Quem dÃ¡ o pase no pueblo? A maior autoridade polÃ­tica â€” se chama:",
+                    "question": "Quem dá o pase no pueblo? A maior autoridade política — se chama:",
                     "options": [
                         {"id": "a", "text": "Alcalde"},
                         {"id": "b", "text": "Campesino"},
@@ -145,16 +145,16 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_alcalde", "target": "alcalde", "native": "alcaide / prefeito",
-                    "npc_reaction": "Alcalde. Hombre polÃ­tico. Vamos a tener que tratarlo con respeto â€” y con cuidado.",
+                    "npc_reaction": "Alcalde. Hombre político. Vamos a tener que tratarlo con respeto — y con cuidado.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel olha pra vocÃª caminhando. 'Forastero â€” Â¿estÃ¡s listo para esto?' VocÃª responde com honestidade:",
+                    "question": "Miguel olha pra você caminhando. 'Forastero — ¿estás listo para esto?' Você responde com honestidade:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "No, tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
@@ -163,12 +163,12 @@ SECTIONS = [
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pra esquina que dobra na rua estreita. 'Por aquÃ­ es mÃ¡s rÃ¡pido. Â¿TÃº vienes?' VocÃª confirma:",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pra esquina que dobra na rua estreita. 'Por aquí es más rápido. ¿Tú vienes?' Você confirma:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "No tengo hambre"},
-                        {"id": "c", "text": "AdiÃ³s SofÃ­a"},
+                        {"id": "c", "text": "Adiós Sofía"},
                         {"id": "d", "text": "Mal"},
                     ],
                     "correct": "a",
@@ -179,77 +179,77 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Caminho atÃ© o ayuntamiento. RevisÃ£o pesada â€” saudaÃ§Ãµes, estado fÃ­sico,
-    # vizinhos que cumprimentam, MarÃ­a testando enquanto caminha. F1-F9.
+    # ── Seção 2: Revisão SRS ─────────────────────────────────────────────────
+    # Caminho até o ayuntamiento. Revisão pesada — saudações, estado físico,
+    # vizinhos que cumprimentam, María testando enquanto caminha. F1-F9.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
         "content": {
             "recap": {
-                "characters": ["MarÃ­a", "SofÃ­a", "Miguel"],
+                "characters": ["María", "Sofía", "Miguel"],
                 "story": (
-                    "VocÃªs cortaram caminho pela rua estreita. Pedras desniveladas, "
-                    "vasos de barro nas janelas. Algumas pessoas jÃ¡ abrindo "
-                    "lojas â€” saudaÃ§Ãµes trocadas pelos cantos.\n\n"
-                    "MarÃ­a se vira pra vocÃª enquanto andam. 'Mientras llegamos â€” "
+                    "Vocês cortaram caminho pela rua estreita. Pedras desniveladas, "
+                    "vasos de barro nas janelas. Algumas pessoas já abrindo "
+                    "lojas — saudações trocadas pelos cantos.\n\n"
+                    "María se vira pra você enquanto andam. 'Mientras llegamos — "
                     "repaso. Si te paran, no quiero que tartamudees.'"
                 ),
-                "now": "MarÃ­a testa rapidamente F1-F9 â€” saudaÃ§Ãµes, identidade, idade.",
+                "now": "María testa rapidamente F1-F9 — saudações, identidade, idade.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Primero â€” si te paran y te preguntan tu nombre. Â¿QuÃ© dices?",
-                    "translation": "Primeiro â€” se te param e te perguntam seu nome. O que vocÃª fala?",
+                    "npc": "María",
+                    "line": "Primero — si te paran y te preguntan tu nombre. ¿Qué dices?",
+                    "translation": "Primeiro — se te param e te perguntam seu nome. O que você fala?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "Pergunta direta: 'Me llamo + nome'. VocÃª responde com seu nome:",
+                    "npc": "María",
+                    "question": "Pergunta direta: 'Me llamo + nome'. Você responde com seu nome:",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Soy forastero"},
-                        {"id": "c", "text": "Tengo veinte aÃ±os"},
-                        {"id": "d", "text": "Buenos dÃ­as"},
+                        {"id": "c", "text": "Tengo veinte años"},
+                        {"id": "d", "text": "Buenos días"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Bueno. Sin titubear. Tu nombre es tuyo â€” di que es tuyo.",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "Bueno. Sin titubear. Tu nombre es tuyo — di que es tuyo.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Si te preguntan tu edad â€” Â¿quÃ© dices?",
-                    "translation": "Se te perguntam sua idade â€” o que vocÃª fala?",
+                    "npc": "María",
+                    "line": "Si te preguntan tu edad — ¿qué dices?",
+                    "translation": "Se te perguntam sua idade — o que você fala?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "A idade Ã© fÃ¡cil â€” vocÃª tem vinte. Resposta correta Ã©:",
+                    "npc": "María",
+                    "question": "A idade é fácil — você tem vinte. Resposta correta é:",
                     "options": [
-                        {"id": "a", "text": "Tengo veinte aÃ±os"},
+                        {"id": "a", "text": "Tengo veinte años"},
                         {"id": "b", "text": "Soy veinte"},
                         {"id": "c", "text": "Me llamo veinte"},
                         {"id": "d", "text": "Estoy veinte"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tengo_anos", "target": "tengo veinte aÃ±os", "native": "tenho vinte anos",
-                    "npc_reaction": "Veinte. Hombre joven, no niÃ±o. Eso le importa al Alcalde.",
+                    "word_id": "es_tengo_anos", "target": "tengo veinte años", "native": "tenho vinte anos",
+                    "npc_reaction": "Veinte. Hombre joven, no niño. Eso le importa al Alcalde.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Antes de seguir â€” Â¿cÃ³mo estÃ¡ la cabeza hoy?",
-                    "translation": "Antes de continuar â€” como estÃ¡ a cabeÃ§a hoje?",
+                    "npc": "María",
+                    "line": "Antes de seguir — ¿cómo está la cabeza hoy?",
+                    "translation": "Antes de continuar — como está a cabeça hoje?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "VocÃª dormiu bem, sem febre. A cabeÃ§a tÃ¡ clara. VocÃª responde com a palavra de F8:",
+                    "npc": "María",
+                    "question": "Você dormiu bem, sem febre. A cabeça tá clara. Você responde com a palavra de F8:",
                     "options": [
                         {"id": "a", "text": "Estoy mejor"},
                         {"id": "b", "text": "Tengo fiebre"},
@@ -262,38 +262,38 @@ SECTIONS = [
                 },
                 {
                     "kind": "narrative",
-                    "text": "Uma vizinha abre a janela do segundo andar pra estender lenÃ§Ã³is. Cumprimenta vocÃªs.",
+                    "text": "Uma vizinha abre a janela do segundo andar pra estender lençóis. Cumprimenta vocês.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Vecina",
-                    "line": "Â¡Buenos dÃ­as, MarÃ­a! Â¡Y los jÃ³venes!",
-                    "translation": "Bom dia, MarÃ­a! E os jovens!",
+                    "line": "¡Buenos días, María! ¡Y los jóvenes!",
+                    "translation": "Bom dia, María! E os jovens!",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Vecina",
-                    "question": "A vizinha cumprimenta de manhÃ£ cedo. VocÃª responde do mesmo jeito:",
+                    "question": "A vizinha cumprimenta de manhã cedo. Você responde do mesmo jeito:",
                     "options": [
-                        {"id": "a", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "b", "text": "Â¡Buenas tardes!"},
-                        {"id": "c", "text": "Â¡Buenas noches!"},
-                        {"id": "d", "text": "Â¡AdiÃ³s!"},
+                        {"id": "a", "text": "¡Buenos días!"},
+                        {"id": "b", "text": "¡Buenas tardes!"},
+                        {"id": "c", "text": "¡Buenas noches!"},
+                        {"id": "d", "text": "¡Adiós!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "Eso. Si gentes te ven cumpliendo el saludo, te suman â€” no te restan.",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "Eso. Si gentes te ven cumpliendo el saludo, te suman — no te restan.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Mira esa casa allÃ¡ â€” la de las macetas rojas. Es de un vecino mÃ­o. Â¿CÃ³mo lo describes?",
-                    "translation": "Olha aquela casa ali â€” a dos vasos vermelhos. Ã‰ de um vizinho meu. Como vocÃª descreve?",
+                    "npc": "Sofía",
+                    "line": "Mira esa casa allá — la de las macetas rojas. Es de un vecino mío. ¿Cómo lo describes?",
+                    "translation": "Olha aquela casa ali — a dos vasos vermelhos. É de um vizinho meu. Como você descreve?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a espera que vocÃª junte 'hay' (tem) + objeto. 'Hay flores rojas allÃ­.' Mas pra falar sobre o dono, como vocÃª diz que Ã© um vizinho?",
+                    "npc": "Sofía",
+                    "question": "Sofía espera que você junte 'hay' (tem) + objeto. 'Hay flores rojas allí.' Mas pra falar sobre o dono, como você diz que é um vizinho?",
                     "options": [
                         {"id": "a", "text": "Es un vecino"},
                         {"id": "b", "text": "Tengo vecino"},
@@ -302,19 +302,19 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_vecino", "target": "vecino", "native": "vizinho",
-                    "npc_reaction": "Eso. Cada casa tiene su gente. AquÃ­ nadie es anÃ³nimo.",
+                    "npc_reaction": "Eso. Cada casa tiene su gente. Aquí nadie es anónimo.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Â¿CÃ³mo te sientes ahora? Estamos por llegar a la plaza grande.",
-                    "translation": "Como vocÃª se sente agora? Tamos quase chegando na plaza grande.",
+                    "npc": "María",
+                    "line": "¿Cómo te sientes ahora? Estamos por llegar a la plaza grande.",
+                    "translation": "Como você se sente agora? Tamos quase chegando na plaza grande.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "VocÃª sente nervosismo â€” mas pelo menos nÃ£o tem febre nem dor. VocÃª estÃ¡... funcional. VocÃª diz:",
+                    "npc": "María",
+                    "question": "Você sente nervosismo — mas pelo menos não tem febre nem dor. Você está... funcional. Você diz:",
                     "options": [
                         {"id": "a", "text": "Estoy bien"},
                         {"id": "b", "text": "Estoy mal"},
@@ -323,152 +323,152 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bueno. Si necesitas decir 'tengo miedo', dilo â€” pero no hace falta esconderlo bajo 'mal'.",
+                    "npc_reaction": "Bueno. Si necesitas decir 'tengo miedo', dilo — pero no hace falta esconderlo bajo 'mal'.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Forastero â€” Â¿te gusta caminar por este pueblo? DespuÃ©s de todo lo que vivimos.",
-                    "translation": "Forasteiro â€” vocÃª gosta de caminhar por esse pueblo? Depois de tudo que a gente viveu.",
+                    "line": "Forastero — ¿te gusta caminar por este pueblo? Después de todo lo que vivimos.",
+                    "translation": "Forasteiro — você gosta de caminhar por esse pueblo? Depois de tudo que a gente viveu.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "VocÃª gosta â€” apesar de tudo. As ruas, os cheiros, as pessoas. VocÃª diz:",
+                    "question": "Você gosta — apesar de tudo. As ruas, os cheiros, as pessoas. Você diz:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, me gusta"},
+                        {"id": "a", "text": "Sí, me gusta"},
                         {"id": "b", "text": "No me gusta"},
                         {"id": "c", "text": "Tengo hambre"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_me_gusta", "target": "me gusta", "native": "gosto",
-                    "npc_reaction": "Bueno. Ya es 'tu' pueblo tambiÃ©n â€” aunque no quiera el Vigilante.",
+                    "npc_reaction": "Bueno. Ya es 'tu' pueblo también — aunque no quiera el Vigilante.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: PrÃ¡tica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 3: Prática Aplicada ──────────────────────────────────────────────
     # CONFRONTO. El Vigilante bloqueia a rua estreita. Exige o pase. Cada
-    # exercÃ­cio Ã© uma fala dele â€” gated quando crÃ­tico. TensÃ£o alta, ritmo
-    # rÃ¡pido. MarÃ­a intervÃ©m no final. Falas de Vigilante autoritÃ¡rias.
+    # exercício é uma fala dele — gated quando crítico. Tensão alta, ritmo
+    # rápido. María intervém no final. Falas de Vigilante autoritárias.
     {
         "section_number": 3,
         "section_type": "pratica_aplicada",
         "content": {
             "recap": {
-                "characters": ["MarÃ­a", "SofÃ­a", "Miguel"],
+                "characters": ["María", "Sofía", "Miguel"],
                 "story": (
-                    "VocÃªs dobraram a esquina pra outra rua. Estreita, paredes "
-                    "altas de adobe nos dois lados. No fundo â€” uma silhueta no "
-                    "meio do caminho. ChapÃ©u baixo. Casaco escuro.\n\n"
+                    "Vocês dobraram a esquina pra outra rua. Estreita, paredes "
+                    "altas de adobe nos dois lados. No fundo — uma silhueta no "
+                    "meio do caminho. Chapéu baixo. Casaco escuro.\n\n"
                     "El Vigilante del Mercado bloqueia a passagem."
                 ),
-                "now": "Confronto. Cada palavra importa. Errar trava â€” vocÃª tem que se sair.",
+                "now": "Confronto. Cada palavra importa. Errar trava — você tem que se sair.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸ‘¤ El Vigilante Â· Meio da rua Â· Sem desviar",
+                    "text": "👤 El Vigilante · Meio da rua · Sem desviar",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
-                    "line": "Para. No avancen mÃ¡s.",
-                    "translation": "Para. NÃ£o avancem mais.",
+                    "line": "Para. No avancen más.",
+                    "translation": "Para. Não avancem mais.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
-                    "text": "MarÃ­a estende o braÃ§o pra trÃ¡s â€” gesto de parar SofÃ­a e vocÃª. Miguel se posiciona meio passo Ã  frente de MarÃ­a.",
+                    "text": "María estende o braço pra trás — gesto de parar Sofía e você. Miguel se posiciona meio passo à frente de María.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
-                    "line": "Ustedes â€” yo no quiero problema. SÃ³lo el forastero. Forastero â€” ven aquÃ­.",
-                    "translation": "VocÃªs â€” eu nÃ£o quero problema. SÃ³ o forasteiro. Forasteiro â€” vem aqui.",
+                    "line": "Ustedes — yo no quiero problema. Sólo el forastero. Forastero — ven aquí.",
+                    "translation": "Vocês — eu não quero problema. Só o forasteiro. Forasteiro — vem aqui.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "El Vigilante",
-                    "question": "Ele te chama. VocÃª precisa cumprimentar primeiro pra ganhar tempo â€” formal, sem provocaÃ§Ã£o:",
+                    "question": "Ele te chama. Você precisa cumprimentar primeiro pra ganhar tempo — formal, sem provocação:",
                     "options": [
-                        {"id": "a", "text": "Buenos dÃ­as, seÃ±or"},
-                        {"id": "b", "text": "AdiÃ³s"},
+                        {"id": "a", "text": "Buenos días, señor"},
+                        {"id": "b", "text": "Adiós"},
                         {"id": "c", "text": "Mal"},
                         {"id": "d", "text": "Tengo miedo"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
-                    "npc_reaction": "El Vigilante mira con desprecio. 'Buenos dÃ­as no me cubre la espalda. Â¿Tienes el pase?'",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
+                    "npc_reaction": "El Vigilante mira con desprecio. 'Buenos días no me cubre la espalda. ¿Tienes el pase?'",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
-                    "line": "Â¿CÃ³mo te llamas, forastero?",
-                    "translation": "Como vocÃª se chama, forasteiro?",
+                    "line": "¿Cómo te llamas, forastero?",
+                    "translation": "Como você se chama, forasteiro?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "El Vigilante",
-                    "question": "Pergunta direta. Mentir agora seria pior. VocÃª responde claro:",
+                    "question": "Pergunta direta. Mentir agora seria pior. Você responde claro:",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Soy forastero"},
                         {"id": "c", "text": "No tengo nombre"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Anotado. Â¿CuÃ¡ntos aÃ±os tienes?",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "Anotado. ¿Cuántos años tienes?",
                     "gated": True,
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "El Vigilante",
-                    "question": "El Vigilante quer sua idade â€” exata. Vinte anos:",
+                    "question": "El Vigilante quer sua idade — exata. Vinte anos:",
                     "options": [
-                        {"id": "a", "text": "Tengo veinte aÃ±os"},
+                        {"id": "a", "text": "Tengo veinte años"},
                         {"id": "b", "text": "Soy veinte"},
                         {"id": "c", "text": "No me acuerdo"},
                         {"id": "d", "text": "Tengo miedo"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tengo_anos", "target": "tengo veinte aÃ±os", "native": "tenho vinte anos",
-                    "npc_reaction": "Veinte. Edad de servir o de huir. Â¿De dÃ³nde vienes?",
+                    "word_id": "es_tengo_anos", "target": "tengo veinte años", "native": "tenho vinte anos",
+                    "npc_reaction": "Veinte. Edad de servir o de huir. ¿De dónde vienes?",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
-                    "line": "Â¿De dÃ³nde vienes? Habla.",
-                    "translation": "De onde vocÃª vem? Fala.",
+                    "line": "¿De dónde vienes? Habla.",
+                    "translation": "De onde você vem? Fala.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "El Vigilante",
-                    "question": "VocÃª nÃ£o lembra. Mentir agora seria pego. A verdade pode ajudar â€” vocÃª nÃ£o tem nada a esconder mesmo:",
+                    "question": "Você não lembra. Mentir agora seria pego. A verdade pode ajudar — você não tem nada a esconder mesmo:",
                     "options": [
                         {"id": "a", "text": "No me acuerdo. Soy forastero."},
                         {"id": "b", "text": "Soy del pueblo"},
-                        {"id": "c", "text": "Tengo veinte aÃ±os"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Tengo veinte años"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "El Vigilante levanta una ceja. 'Conveniente. Â¿Tienes el pase o no?'",
+                    "npc_reaction": "El Vigilante levanta una ceja. 'Conveniente. ¿Tienes el pase o no?'",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
                     "line": "Sin pase del Alcalde, sales del pueblo antes del atardecer. Es la ley.",
-                    "translation": "Sem pase do Alcalde, vocÃª sai do pueblo antes do entardecer. Ã‰ a lei.",
+                    "translation": "Sem pase do Alcalde, você sai do pueblo antes do entardecer. É a lei.",
                     "pace": "urgent",
                 },
                 {
@@ -487,61 +487,61 @@ SECTIONS = [
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª sente o ar virar pesado. MarÃ­a dÃ¡ um passo Ã  frente â€” nÃ£o rÃ¡pido, mas firme. SofÃ­a aperta o seu braÃ§o atrÃ¡s.",
+                    "text": "Você sente o ar virar pesado. María dá um passo à frente — não rápido, mas firme. Sofía aperta o seu braço atrás.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Vigilante â€” un momento.",
-                    "translation": "Vigilante â€” um momento.",
+                    "npc": "María",
+                    "line": "Vigilante — un momento.",
+                    "translation": "Vigilante — um momento.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "MarÃ­a passa do lado de Miguel e se aproxima de El Vigilante "
-                        "a passos curtos. Para a um metro dele. Fala trÃªs frases "
-                        "baixinho â€” voz tÃ£o baixa que ninguÃ©m do grupo escuta.\n\n"
-                        "El Vigilante muda a expressÃ£o. A primeira coisa Ã© "
-                        "surpresa. Depois alguma coisa mais difÃ­cil de nomear â€” "
-                        "respeito? medo? cÃ¡lculo?\n\n"
+                        "María passa do lado de Miguel e se aproxima de El Vigilante "
+                        "a passos curtos. Para a um metro dele. Fala três frases "
+                        "baixinho — voz tão baixa que ninguém do grupo escuta.\n\n"
+                        "El Vigilante muda a expressão. A primeira coisa é "
+                        "surpresa. Depois alguma coisa mais difícil de nomear — "
+                        "respeito? medo? cálculo?\n\n"
                         "Ele recua meio passo."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "El Vigilante",
-                    "line": "...MaÃ±ana. Si no hay pase maÃ±ana â€” lo busco yo mismo.",
-                    "translation": "...AmanhÃ£. Se nÃ£o tiver pase amanhÃ£ â€” eu mesmo procuro ele.",
+                    "line": "...Mañana. Si no hay pase mañana — lo busco yo mismo.",
+                    "translation": "...Amanhã. Se não tiver pase amanhã — eu mesmo procuro ele.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
-                    "text": "El Vigilante lanÃ§a um olhar duro pra vocÃª. Vira. Vai embora pela rua. MarÃ­a nÃ£o se vira pra ver ele sair â€” espera que os passos sumam.",
+                    "text": "El Vigilante lança um olhar duro pra você. Vira. Vai embora pela rua. María não se vira pra ver ele sair — espera que os passos sumam.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "MarÃ­a vira pro grupo. 'Vamos a la fuente. Necesitamos sentarnos un momento.' VocÃª responde:",
+                    "npc": "María",
+                    "question": "María vira pro grupo. 'Vamos a la fuente. Necesitamos sentarnos un momento.' Você responde:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "No, tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s MarÃ­a"},
+                        {"id": "c", "text": "Adiós María"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
                     "word_id": "es_yo_voy", "target": "yo voy", "native": "eu vou",
-                    "npc_reaction": "Sigan caminando como si nada. Esta calle todavÃ­a tiene ojos.",
+                    "npc_reaction": "Sigan caminando como si nada. Esta calle todavía tiene ojos.",
                     "gated": True,
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel, baixo, do seu lado enquanto caminham: 'Forastero â€” Â¿estÃ¡s bien?' VocÃª responde verdade â€” nÃ£o tÃ¡ 100%, mas tÃ¡:",
+                    "question": "Miguel, baixo, do seu lado enquanto caminham: 'Forastero — ¿estás bien?' Você responde verdade — não tá 100%, mas tá:",
                     "options": [
                         {"id": "a", "text": "Mejor que hace cinco minutos"},
-                        {"id": "b", "text": "Tengo veinte aÃ±os"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "b", "text": "Tengo veinte años"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Soy forastero"},
                     ],
                     "correct": "a",
@@ -552,51 +552,51 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: GramÃ¡tica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Na fonte da plaza. MarÃ­a ensina o imperativo â€” porque o protagonista
-    # acabou de ouvir El Vigilante usando: 'Para', 'Habla', 'Ven aquÃ­'.
-    # Ela quer que ele reconheÃ§a quando alguÃ©m dÃ¡ ordem.
+    # ── Seção 4: Gramática Narrativa ──────────────────────────────────────────
+    # Na fonte da plaza. María ensina o imperativo — porque o protagonista
+    # acabou de ouvir El Vigilante usando: 'Para', 'Habla', 'Ven aquí'.
+    # Ela quer que ele reconheça quando alguém dá ordem.
     {
         "section_number": 4,
         "section_type": "gramatica_narrativa",
         "content": {
             "recap": {
-                "characters": ["MarÃ­a", "SofÃ­a", "Miguel"],
+                "characters": ["María", "Sofía", "Miguel"],
                 "story": (
-                    "VocÃªs chegaram Ã  fonte de pedra do centro da plaza. MarÃ­a "
-                    "se senta na beira. SofÃ­a bebe Ã¡gua com as mÃ£os. Miguel fica "
-                    "de pÃ© olhando ao redor.\n\n"
-                    "MarÃ­a: 'Ya viste cÃ³mo te hablÃ³ El Vigilante? Todas las "
-                    "palabras eran cortas. Ã“rdenes. Eso es importante que "
+                    "Vocês chegaram à fonte de pedra do centro da plaza. María "
+                    "se senta na beira. Sofía bebe água com as mãos. Miguel fica "
+                    "de pé olhando ao redor.\n\n"
+                    "María: 'Ya viste cómo te habló El Vigilante? Todas las "
+                    "palabras eran cortas. Órdenes. Eso es importante que "
                     "reconozcas.'"
                 ),
-                "now": "MarÃ­a vai te ensinar imperativo â€” como ouvir ordens e dar.",
+                "now": "María vai te ensinar imperativo — como ouvir ordens e dar.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "El Vigilante dijo 'para', 'habla', 'ven aquÃ­'. Esas son Ã³rdenes. Cortas, directas. Sin 'por favor'.",
-                    "translation": "El Vigilante disse 'para', 'fala', 'vem aqui'. Essas sÃ£o ordens. Curtas, diretas. Sem 'por favor'.",
+                    "npc": "María",
+                    "line": "El Vigilante dijo 'para', 'habla', 'ven aquí'. Esas son órdenes. Cortas, directas. Sin 'por favor'.",
+                    "translation": "El Vigilante disse 'para', 'fala', 'vem aqui'. Essas são ordens. Curtas, diretas. Sem 'por favor'.",
                     "pace": "slow",
                 },
                 {
                     "kind": "reveal",
-                    "phrase": "Ven aquÃ­",
+                    "phrase": "Ven aquí",
                     "meaning": "Vem aqui",
-                    "note": "ordem de movimento â€” do verbo 'venir'",
+                    "note": "ordem de movimento — do verbo 'venir'",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Para",
                     "meaning": "Para (de parar)",
-                    "note": "ordem pra parar de fazer algo â€” uma das mais comuns",
+                    "note": "ordem pra parar de fazer algo — uma das mais comuns",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Mira",
                     "meaning": "Olha",
-                    "note": "chamar a atenÃ§Ã£o pra alguma coisa â€” 'mira' Ã© amigÃ¡vel OU autoritÃ¡rio pelo tom",
+                    "note": "chamar a atenção pra alguma coisa — 'mira' é amigável OU autoritário pelo tom",
                 },
                 {
                     "kind": "pattern",
@@ -609,14 +609,14 @@ SECTIONS = [
                         {"text": " / ",   "isKey": False},
                         {"text": "Habla", "isKey": True},
                     ],
-                    "example": "â€” Para. Mira. Habla. Ven.",
-                    "translation": "â€” Para. Olha. Fala. Vem.",
-                    "note": "imperativo informal â€” quem dÃ¡ ordem usa estas formas curtas",
+                    "example": "— Para. Mira. Habla. Ven.",
+                    "translation": "— Para. Olha. Fala. Vem.",
+                    "note": "imperativo informal — quem dá ordem usa estas formas curtas",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "El Vigilante usou esta palavra quando vocÃªs se aproximaram. 'No avancen mÃ¡s.' A palavra curta dele foi:",
+                    "npc": "María",
+                    "question": "El Vigilante usou esta palavra quando vocês se aproximaram. 'No avancen más.' A palavra curta dele foi:",
                     "options": [
                         {"id": "a", "text": "Para"},
                         {"id": "b", "text": "Ven"},
@@ -629,8 +629,8 @@ SECTIONS = [
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "Depois ele te chamou: 'Forastero â€” ___ aquÃ­'. A palavra de chamada foi:",
+                    "npc": "María",
+                    "question": "Depois ele te chamou: 'Forastero — ___ aquí'. A palavra de chamada foi:",
                     "options": [
                         {"id": "a", "text": "Ven"},
                         {"id": "b", "text": "Para"},
@@ -639,22 +639,22 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_ven", "target": "ven", "native": "vem",
-                    "npc_reaction": "Ven. Movimiento hacia el que habla. Cuando alguien te dice 'ven' â€” decide rÃ¡pido si vas o no.",
+                    "npc_reaction": "Ven. Movimiento hacia el que habla. Cuando alguien te dice 'ven' — decide rápido si vas o no.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "SofÃ­a senta do lado de MarÃ­a na beira da fonte. Olha pra vocÃª atenta â€” quer ver se vocÃª tÃ¡ pegando.",
+                    "text": "Sofía senta do lado de María na beira da fonte. Olha pra você atenta — quer ver se você tá pegando.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Y si yo quiero que tÃº mires algo importante â€” te digo:",
-                    "translation": "E se eu quero que vocÃª olhe alguma coisa importante â€” eu digo:",
+                    "npc": "Sofía",
+                    "line": "Y si yo quiero que tú mires algo importante — te digo:",
+                    "translation": "E se eu quero que você olhe alguma coisa importante — eu digo:",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pra um pombo na fonte. 'Forastero â€” ___' â€” a palavra pra chamar sua atenÃ§Ã£o Ã©:",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pra um pombo na fonte. 'Forastero — ___' — a palavra pra chamar sua atenção é:",
                     "options": [
                         {"id": "a", "text": "Mira"},
                         {"id": "b", "text": "Ven"},
@@ -663,46 +663,46 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mira", "target": "mira", "native": "olha",
-                    "npc_reaction": "Mira. Se usa para seÃ±alar â€” entre amigos, entre extraÃ±os, en cualquier sitio.",
+                    "npc_reaction": "Mira. Se usa para señalar — entre amigos, entre extraños, en cualquier sitio.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Miguel se levanta da beira da fonte, sacode a poeira da calÃ§a. Olha pros trÃªs e diz uma palavra sÃ³, decidida.",
+                    "text": "Miguel se levanta da beira da fonte, sacode a poeira da calça. Olha pros três e diz uma palavra só, decidida.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Bueno â€” vamos. Los cuatro. Yo voy delante, MarÃ­a atrÃ¡s, SofÃ­a y el forastero en medio.",
-                    "translation": "Bom â€” vamos. Os quatro. Eu vou na frente, MarÃ­a atrÃ¡s, SofÃ­a e o forasteiro no meio.",
+                    "line": "Bueno — vamos. Los cuatro. Yo voy delante, María atrás, Sofía y el forastero en medio.",
+                    "translation": "Bom — vamos. Os quatro. Eu vou na frente, María atrás, Sofía e o forasteiro no meio.",
                     "pace": "slow",
                 },
                 {
                     "kind": "reveal",
                     "phrase": "Vamos / vais / van",
-                    "meaning": "NÃ³s vamos / vocÃªs vÃ£o / eles vÃ£o",
-                    "note": "expansÃ£o de 'yo voy / tÃº vienes' (F6). Quando o grupo se move: vamos. Quando outros se movem: van.",
+                    "meaning": "Nós vamos / vocês vão / eles vão",
+                    "note": "expansão de 'yo voy / tú vienes' (F6). Quando o grupo se move: vamos. Quando outros se movem: van.",
                 },
                 {
                     "kind": "pattern",
                     "parts": [
                         {"text": "Yo voy", "isKey": True},
-                        {"text": " Â· ",    "isKey": False},
-                        {"text": "TÃº vas", "isKey": True},
-                        {"text": " Â· ",    "isKey": False},
+                        {"text": " · ",    "isKey": False},
+                        {"text": "Tú vas", "isKey": True},
+                        {"text": " · ",    "isKey": False},
                         {"text": "Ella va","isKey": True},
-                        {"text": " Â· ",    "isKey": False},
+                        {"text": " · ",    "isKey": False},
                         {"text": "Nosotros vamos", "isKey": True},
-                        {"text": " Â· ",    "isKey": False},
+                        {"text": " · ",    "isKey": False},
                         {"text": "Ellos van",      "isKey": True},
                     ],
-                    "example": "Yo voy a la fuente. TÃº vas conmigo. Ella va detrÃ¡s. Nosotros vamos juntos. Los vecinos van por otra calle.",
-                    "translation": "Eu vou Ã  fonte. Tu vais comigo. Ela vai atrÃ¡s. NÃ³s vamos juntos. Os vizinhos vÃ£o por outra rua.",
-                    "note": "MESMO verbo (IR) â€” muda com quem faz: yo / tÃº / Ã©l Â· ella / nosotros / ellos",
+                    "example": "Yo voy a la fuente. Tú vas conmigo. Ella va detrás. Nosotros vamos juntos. Los vecinos van por otra calle.",
+                    "translation": "Eu vou à fonte. Tu vais comigo. Ela vai atrás. Nós vamos juntos. Os vizinhos vão por outra rua.",
+                    "note": "MESMO verbo (IR) — muda com quem faz: yo / tú / él · ella / nosotros / ellos",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel quer confirmar que vÃ£o JUNTOS. 'Los cuatro â€” ___ al ayuntamiento maÃ±ana.' A palavra do verbo IR para 'nÃ³s' Ã©:",
+                    "question": "Miguel quer confirmar que vão JUNTOS. 'Los cuatro — ___ al ayuntamiento mañana.' A palavra do verbo IR para 'nós' é:",
                     "options": [
                         {"id": "a", "text": "vamos"},
                         {"id": "b", "text": "voy"},
@@ -710,13 +710,13 @@ SECTIONS = [
                         {"id": "d", "text": "va"},
                     ],
                     "correct": "a",
-                    "word_id": "es_vamos", "target": "nosotros vamos", "native": "nÃ³s vamos",
-                    "npc_reaction": "Vamos. Cuando es el grupo, no eres tÃº solo â€” 'vamos'. Nunca 'yo vamos'.",
+                    "word_id": "es_vamos", "target": "nosotros vamos", "native": "nós vamos",
+                    "npc_reaction": "Vamos. Cuando es el grupo, no eres tú solo — 'vamos'. Nunca 'yo vamos'.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "Uns vizinhos passam do outro lado da plaza indo pro mercado. Como SofÃ­a descreve o que eles fazem? 'Ellos ___ al mercado.'",
+                    "npc": "Sofía",
+                    "question": "Uns vizinhos passam do outro lado da plaza indo pro mercado. Como Sofía descreve o que eles fazem? 'Ellos ___ al mercado.'",
                     "options": [
                         {"id": "a", "text": "van"},
                         {"id": "b", "text": "vamos"},
@@ -724,155 +724,155 @@ SECTIONS = [
                         {"id": "d", "text": "vas"},
                     ],
                     "correct": "a",
-                    "word_id": "es_van", "target": "ellos van", "native": "eles vÃ£o",
-                    "npc_reaction": "Van. Otros â€” 'ellos van'. La forma cambia con la gente, no contigo.",
+                    "word_id": "es_van", "target": "ellos van", "native": "eles vão",
+                    "npc_reaction": "Van. Otros — 'ellos van'. La forma cambia con la gente, no contigo.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Y si vienes a buscarme y no sabes dÃ³nde estoy â€” pregÃºntame con voz fuerte: 'MarÃ­a â€” Â¿dÃ³nde estÃ¡s?'",
-                    "translation": "E se vocÃª vem me buscar e nÃ£o sabe onde estou â€” me pergunta com voz forte: 'MarÃ­a â€” onde vocÃª estÃ¡?'",
+                    "npc": "María",
+                    "line": "Y si vienes a buscarme y no sabes dónde estoy — pregúntame con voz fuerte: 'María — ¿dónde estás?'",
+                    "translation": "E se você vem me buscar e não sabe onde estou — me pergunta com voz forte: 'María — onde você está?'",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "MarÃ­a explica que perguntar onde alguÃ©m estÃ¡ Ã© simples. A pergunta Ã©:",
+                    "npc": "María",
+                    "question": "María explica que perguntar onde alguém está é simples. A pergunta é:",
                     "options": [
-                        {"id": "a", "text": "Â¿DÃ³nde estÃ¡s?"},
-                        {"id": "b", "text": "Â¿CÃ³mo estÃ¡s?"},
-                        {"id": "c", "text": "Â¿CuÃ¡ntos aÃ±os?"},
-                        {"id": "d", "text": "Â¿TÃº vienes?"},
+                        {"id": "a", "text": "¿Dónde estás?"},
+                        {"id": "b", "text": "¿Cómo estás?"},
+                        {"id": "c", "text": "¿Cuántos años?"},
+                        {"id": "d", "text": "¿Tú vienes?"},
                     ],
                     "correct": "a",
-                    "word_id": "es_donde_estas", "target": "Â¿dÃ³nde estÃ¡s?", "native": "onde vocÃª estÃ¡?",
-                    "npc_reaction": "Eso. Si gritas 'Â¿dÃ³nde estÃ¡s?' en este pueblo, alguien te responde. Te lo prometo.",
+                    "word_id": "es_donde_estas", "target": "¿dónde estás?", "native": "onde você está?",
+                    "npc_reaction": "Eso. Si gritas '¿dónde estás?' en este pueblo, alguien te responde. Te lo prometo.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    # ── Seção 5: Reforço ──────────────────────────────────────────────────────
     # De volta pra casa de Don Miguel. Tarde. Don Miguel ouve o relato.
-    # DecisÃ£o sobre o que fazer amanhÃ£ com o Alcalde. MarÃ­a sutilmente
-    # se posiciona â€” confiÃ¡vel, calma, indispensÃ¡vel. Poucos exercÃ­cios,
-    # foco em dinÃ¢mica de grupo e tensÃ£o.
+    # Decisão sobre o que fazer amanhã com o Alcalde. María sutilmente
+    # se posiciona — confiável, calma, indispensável. Poucos exercícios,
+    # foco em dinâmica de grupo e tensão.
     {
         "section_number": 5,
         "section_type": "reforco",
         "content": {
             "recap": {
-                "characters": ["MarÃ­a", "SofÃ­a", "Miguel", "Don Miguel"],
+                "characters": ["María", "Sofía", "Miguel", "Don Miguel"],
                 "story": (
-                    "VocÃªs voltaram pra casa de Don Miguel sem ir ao ayuntamiento "
-                    "hoje. MarÃ­a decidiu: 'MaÃ±ana â€” con calma, no con sustos.' "
-                    "Don Miguel jÃ¡ estava esperando â€” Carmen tinha mandado um "
+                    "Vocês voltaram pra casa de Don Miguel sem ir ao ayuntamiento "
+                    "hoje. María decidiu: 'Mañana — con calma, no con sustos.' "
+                    "Don Miguel já estava esperando — Carmen tinha mandado um "
                     "recado.\n\n"
                     "Agora os cinco sentados em volta da mesa, tarde caindo. "
-                    "MarÃ­a contando a Don Miguel o que aconteceu â€” em espanhol "
+                    "María contando a Don Miguel o que aconteceu — em espanhol "
                     "lento, palavra por palavra."
                 ),
-                "now": "DecisÃ£o do grupo sobre como abordar o Alcalde amanhÃ£.",
+                "now": "Decisão do grupo sobre como abordar o Alcalde amanhã.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ‡ Tarde Â· Casa de Don Miguel Â· Cinco em volta da mesa baixa",
+                    "text": "🌇 Tarde · Casa de Don Miguel · Cinco em volta da mesa baixa",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "MarÃ­a â€” me contaste todo. Pero hay algo que no me contaste. Â¿QuÃ© le dijiste al Vigilante para que se fuera?",
-                    "translation": "MarÃ­a â€” vocÃª me contou tudo. Mas tem algo que nÃ£o me contou. O que vocÃª falou pro Vigilante pra ele ir embora?",
+                    "line": "María — me contaste todo. Pero hay algo que no me contaste. ¿Qué le dijiste al Vigilante para que se fuera?",
+                    "translation": "María — você me contou tudo. Mas tem algo que não me contou. O que você falou pro Vigilante pra ele ir embora?",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
-                    "text": "MarÃ­a olha pra Don Miguel um momento mais longo que o normal. Pondera. Decide responder uma versÃ£o.",
+                    "text": "María olha pra Don Miguel um momento mais longo que o normal. Pondera. Decide responder uma versão.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Lo conocÃ­ hace aÃ±os, antes de venir al pueblo. SÃ© cosas de Ã©l que Ã©l prefiere no recordar. Nada mÃ¡s.",
-                    "translation": "Eu o conheci faz anos, antes de vir pro pueblo. Sei coisas dele que ele prefere nÃ£o lembrar. Nada mais.",
+                    "npc": "María",
+                    "line": "Lo conocí hace años, antes de venir al pueblo. Sé cosas de él que él prefiere no recordar. Nada más.",
+                    "translation": "Eu o conheci faz anos, antes de vir pro pueblo. Sei coisas dele que ele prefere não lembrar. Nada mais.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
                     "text": (
-                        "A resposta Ã© razoÃ¡vel. Don Miguel aceita. Mas Miguel â€” "
-                        "do seu lado â€” nÃ£o acredita. VocÃª vÃª na cara dele. "
-                        "Ele nÃ£o diz nada."
+                        "A resposta é razoável. Don Miguel aceita. Mas Miguel — "
+                        "do seu lado — não acredita. Você vê na cara dele. "
+                        "Ele não diz nada."
                     ),
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel se vira pra vocÃª. 'Forastero â€” maÃ±ana al amanecer vamos al ayuntamiento. Â¿TÃº vienes con calma?' VocÃª responde:",
+                    "question": "Don Miguel se vira pra você. 'Forastero — mañana al amanecer vamos al ayuntamiento. ¿Tú vienes con calma?' Você responde:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "No, tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
                     "word_id": "es_yo_voy", "target": "yo voy", "native": "eu vou",
-                    "npc_reaction": "Bueno. Pero esta vez vas tÃº adelante, no atrÃ¡s. El Alcalde tiene que verte la cara.",
+                    "npc_reaction": "Bueno. Pero esta vez vas tú adelante, no atrás. El Alcalde tiene que verte la cara.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Yo voy tambiÃ©n. Y MarÃ­a. Y Miguel. Los cuatro al frente del Alcalde, no sÃ³lo el forastero.",
-                    "translation": "Eu vou tambÃ©m. E MarÃ­a. E Miguel. Os quatro na frente do Alcalde, nÃ£o sÃ³ o forasteiro.",
+                    "npc": "Sofía",
+                    "line": "Yo voy también. Y María. Y Miguel. Los cuatro al frente del Alcalde, no sólo el forastero.",
+                    "translation": "Eu vou também. E María. E Miguel. Os quatro na frente do Alcalde, não só o forasteiro.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "MarÃ­a",
-                    "line": "Cenamos algo simple â€” sobrÃ³ comida de ayer. Â¿Te gusta el guiso?",
-                    "translation": "Jantamos algo simples â€” sobrou comida de ontem. VocÃª gosta de ensopado?",
+                    "npc": "María",
+                    "line": "Cenamos algo simple — sobró comida de ayer. ¿Te gusta el guiso?",
+                    "translation": "Jantamos algo simples — sobrou comida de ontem. Você gosta de ensopado?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "MarÃ­a coloca uma tigela na sua frente. Cheiro de ensopado quente. VocÃª prova â€” vocÃª gosta:",
+                    "npc": "María",
+                    "question": "María coloca uma tigela na sua frente. Cheiro de ensopado quente. Você prova — você gosta:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, me gusta"},
+                        {"id": "a", "text": "Sí, me gusta"},
                         {"id": "b", "text": "No tengo miedo"},
                         {"id": "c", "text": "Estoy enfermo"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_me_gusta", "target": "me gusta", "native": "gosto",
-                    "npc_reaction": "Bueno. Necesitas energÃ­a. MaÃ±ana es dÃ­a largo.",
+                    "npc_reaction": "Bueno. Necesitas energía. Mañana es día largo.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a pergunta 'Â¿CuÃ¡ndo vamos al ayuntamiento?'. Don Miguel responde com a palavra que indica o dia que vem:",
+                    "npc": "Sofía",
+                    "question": "Sofía pergunta '¿Cuándo vamos al ayuntamiento?'. Don Miguel responde com a palavra que indica o dia que vem:",
                     "options": [
-                        {"id": "a", "text": "MaÃ±ana"},
+                        {"id": "a", "text": "Mañana"},
                         {"id": "b", "text": "Hoy"},
                         {"id": "c", "text": "Ayer"},
                         {"id": "d", "text": "Vecino"},
                     ],
                     "correct": "a",
-                    "word_id": "es_manana", "target": "maÃ±ana", "native": "amanhÃ£",
-                    "npc_reaction": "MaÃ±ana al amanecer. Antes de que el pueblo despierte del todo.",
+                    "word_id": "es_manana", "target": "mañana", "native": "amanhã",
+                    "npc_reaction": "Mañana al amanecer. Antes de que el pueblo despierte del todo.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Mejor. El Alcalde respeta grupo mÃ¡s que solo. Pero hablar â€” habla el forastero.",
-                    "translation": "Melhor. O Alcalde respeita grupo mais que sozinho. Mas falar â€” fala o forasteiro.",
+                    "line": "Mejor. El Alcalde respeta grupo más que solo. Pero hablar — habla el forastero.",
+                    "translation": "Melhor. O Alcalde respeita grupo mais que sozinho. Mas falar — fala o forasteiro.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Don Miguel",
-                    "question": "Don Miguel quer que VOCÃŠ fale com o Alcalde â€” nÃ£o eles. VocÃª precisa aceitar a responsabilidade:",
+                    "question": "Don Miguel quer que VOCÊ fale com o Alcalde — não eles. Você precisa aceitar a responsabilidade:",
                     "options": [
                         {"id": "a", "text": "Yo voy a hablar"},
                         {"id": "b", "text": "Tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "No me gusta"},
                     ],
                     "correct": "a",
@@ -882,219 +882,219 @@ SECTIONS = [
                 {
                     "kind": "narrative",
                     "text": (
-                        "Miguel se levanta da mesa. Vai atÃ© a janela. Olha pra rua "
-                        "que jÃ¡ tÃ¡ escurecendo. NÃ£o diz nada por um tempo.\n\n"
-                        "Volta. Senta. Olha pra MarÃ­a sem disfarÃ§ar."
+                        "Miguel se levanta da mesa. Vai até a janela. Olha pra rua "
+                        "que já tá escurecendo. Não diz nada por um tempo.\n\n"
+                        "Volta. Senta. Olha pra María sem disfarçar."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "MarÃ­a â€” gracias. Por lo del Vigilante. No sÃ© quÃ© le dijiste pero funcionÃ³.",
-                    "translation": "MarÃ­a â€” obrigado. Pelo que aconteceu com o Vigilante. NÃ£o sei o que vocÃª falou pra ele mas funcionou.",
+                    "line": "María — gracias. Por lo del Vigilante. No sé qué le dijiste pero funcionó.",
+                    "translation": "María — obrigado. Pelo que aconteceu com o Vigilante. Não sei o que você falou pra ele mas funcionou.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "Miguel agradeceu â€” mas o tom nÃ£o foi 100% gratidÃ£o pura. MarÃ­a sorri sem pressa e responde:",
+                    "npc": "María",
+                    "question": "Miguel agradeceu — mas o tom não foi 100% gratidão pura. María sorri sem pressa e responde:",
                     "options": [
                         {"id": "a", "text": "De nada, Miguel"},
-                        {"id": "b", "text": "AdiÃ³s Miguel"},
+                        {"id": "b", "text": "Adiós Miguel"},
                         {"id": "c", "text": "Tengo miedo"},
                         {"id": "d", "text": "Mal"},
                     ],
                     "correct": "a",
                     "word_id": "es_de_nada", "target": "de nada", "native": "de nada",
-                    "npc_reaction": "Para esto estoy. Y voy a estar maÃ±ana tambiÃ©n.",
+                    "npc_reaction": "Para esto estoy. Y voy a estar mañana también.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
                         "Lamparina baixa. Don Miguel olha pra cada um deles em volta "
-                        "da mesa. Para um momento em MarÃ­a. Outro em vocÃª. "
-                        "NÃ£o decide nada â€” mas pensou em decidir alguma coisa."
+                        "da mesa. Para um momento em María. Outro em você. "
+                        "Não decide nada — mas pensou em decidir alguma coisa."
                     ),
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃ¡culo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Noite tarde. Don Miguel, MarÃ­a e Miguel saem pra organizar coisas pra
-    # manhÃ£. VocÃª fica com SofÃ­a na sala. Conversa difÃ­cil sobre o que ela
-    # viu â€” e o que ela acha que estÃ¡ acontecendo. Gate: errar trava.
-    # TransiÃ§Ã£o direta pra F11.
+    # ── Seção 6: Obstáculo ────────────────────────────────────────────────────
+    # Noite tarde. Don Miguel, María e Miguel saem pra organizar coisas pra
+    # manhã. Você fica com Sofía na sala. Conversa difícil sobre o que ela
+    # viu — e o que ela acha que está acontecendo. Gate: errar trava.
+    # Transição direta pra F11.
     {
         "section_number": 6,
         "section_type": "obstaculo",
         "content": {
             "recap": {
-                "characters": ["MarÃ­a", "SofÃ­a", "Miguel", "Don Miguel"],
+                "characters": ["María", "Sofía", "Miguel", "Don Miguel"],
                 "story": (
-                    "Don Miguel saiu pra ver dois vizinhos â€” pedir que servissem "
-                    "de testemunha amanhÃ£. MarÃ­a saiu com ele â€” disse que precisa "
-                    "ver algo na casa de hÃ³spedes. Miguel saiu atrÃ¡s dela 'para "
-                    "ayudar', mas vocÃª sabe â€” ele tÃ¡ seguindo.\n\n"
-                    "Sobrou vocÃª e SofÃ­a na sala. Ela fechou a porta da frente."
+                    "Don Miguel saiu pra ver dois vizinhos — pedir que servissem "
+                    "de testemunha amanhã. María saiu com ele — disse que precisa "
+                    "ver algo na casa de hóspedes. Miguel saiu atrás dela 'para "
+                    "ayudar', mas você sabe — ele tá seguindo.\n\n"
+                    "Sobrou você e Sofía na sala. Ela fechou a porta da frente."
                 ),
-                "now": "Conversa difÃ­cil. Cada palavra importa. VocÃª precisa estar presente.",
+                "now": "Conversa difícil. Cada palavra importa. Você precisa estar presente.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸ•¯ï¸ Sala Â· Noite Â· SofÃ­a sentada na cadeira em frente Â· Lamparina baixa",
+                    "text": "🕯️ Sala · Noite · Sofía sentada na cadeira em frente · Lamparina baixa",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Forastero â€” necesito hablar contigo. Solos.",
-                    "translation": "Forasteiro â€” preciso falar com vocÃª. Sozinhos.",
+                    "npc": "Sofía",
+                    "line": "Forastero — necesito hablar contigo. Solos.",
+                    "translation": "Forasteiro — preciso falar com você. Sozinhos.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a parece sÃ©ria â€” diferente do jeito dela. VocÃª confirma que tÃ¡ ouvindo:",
+                    "npc": "Sofía",
+                    "question": "Sofía parece séria — diferente do jeito dela. Você confirma que tá ouvindo:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, te escucho"},
+                        {"id": "a", "text": "Sí, te escucho"},
                         {"id": "b", "text": "No tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
-                    "word_id": "es_si", "target": "sÃ­", "native": "sim",
-                    "npc_reaction": "Bueno. Lo que voy a decirte â€” no se lo cuentes a nadie. Ni a Miguel.",
+                    "word_id": "es_si", "target": "sí", "native": "sim",
+                    "npc_reaction": "Bueno. Lo que voy a decirte — no se lo cuentes a nadie. Ni a Miguel.",
                     "gated": True,
                 },
                 {
                     "kind": "narrative",
-                    "text": "SofÃ­a olha pra porta â€” fechada. Pra janela â€” vazia. Volta pra vocÃª. Voz baixa.",
+                    "text": "Sofía olha pra porta — fechada. Pra janela — vazia. Volta pra você. Voz baixa.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Yo vi lo que MarÃ­a le dijo al Vigilante. Estaba mÃ¡s cerca que ustedes.",
-                    "translation": "Eu vi o que MarÃ­a falou pro Vigilante. Eu tava mais perto que vocÃªs.",
+                    "npc": "Sofía",
+                    "line": "Yo vi lo que María le dijo al Vigilante. Estaba más cerca que ustedes.",
+                    "translation": "Eu vi o que María falou pro Vigilante. Eu tava mais perto que vocês.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª gela. SofÃ­a vai dizer alguma coisa que muda tudo. VocÃª nÃ£o sabe ainda se quer saber.",
+                    "text": "Você gela. Sofía vai dizer alguma coisa que muda tudo. Você não sabe ainda se quer saber.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "No oÃ­ las palabras â€” pero leÃ­ la cara del Vigilante. Y conozco esa cara. Es la cara de quien recibe orden de un superior.",
-                    "translation": "NÃ£o ouvi as palavras â€” mas li o rosto do Vigilante. E conheÃ§o esse rosto. Ã‰ o rosto de quem recebe ordem de um superior.",
+                    "npc": "Sofía",
+                    "line": "No oí las palabras — pero leí la cara del Vigilante. Y conozco esa cara. Es la cara de quien recibe orden de un superior.",
+                    "translation": "Não ouvi as palavras — mas li o rosto do Vigilante. E conheço esse rosto. É o rosto de quem recebe ordem de um superior.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a espera vocÃª processar. A informaÃ§Ã£o Ã© pesada. VocÃª pergunta â€” em palavras que vocÃª tem:",
+                    "npc": "Sofía",
+                    "question": "Sofía espera você processar. A informação é pesada. Você pergunta — em palavras que você tem:",
                     "options": [
-                        {"id": "a", "text": "Â¿MarÃ­a es...?"},
+                        {"id": "a", "text": "¿María es...?"},
                         {"id": "b", "text": "Estoy bien"},
-                        {"id": "c", "text": "AdiÃ³s SofÃ­a"},
-                        {"id": "d", "text": "Tengo veinte aÃ±os"},
+                        {"id": "c", "text": "Adiós Sofía"},
+                        {"id": "d", "text": "Tengo veinte años"},
                     ],
                     "correct": "a",
-                    "word_id": "es_es", "target": "es", "native": "Ã©",
-                    "npc_reaction": "No sÃ© quÃ© es. Pero no es sÃ³lo una curandera. Eso sÃ­.",
+                    "word_id": "es_es", "target": "es", "native": "é",
+                    "npc_reaction": "No sé qué es. Pero no es sólo una curandera. Eso sí.",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Por eso te digo â€” no se lo cuentes a nadie. Ni a Miguel. Si Miguel sabe, va a hacer algo. Y si MarÃ­a descubre que sabemos â€” no sÃ© quÃ© hace.",
-                    "translation": "Por isso te digo â€” nÃ£o conta pra ninguÃ©m. Nem pro Miguel. Se Miguel souber, ele vai fazer alguma coisa. E se MarÃ­a descobrir que sabemos â€” nÃ£o sei o que ela faz.",
+                    "npc": "Sofía",
+                    "line": "Por eso te digo — no se lo cuentes a nadie. Ni a Miguel. Si Miguel sabe, va a hacer algo. Y si María descubre que sabemos — no sé qué hace.",
+                    "translation": "Por isso te digo — não conta pra ninguém. Nem pro Miguel. Se Miguel souber, ele vai fazer alguma coisa. E se María descobrir que sabemos — não sei o que ela faz.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a precisa da sua promessa. VocÃª diz que entendeu, que vai guardar:",
+                    "npc": "Sofía",
+                    "question": "Sofía precisa da sua promessa. Você diz que entendeu, que vai guardar:",
                     "options": [
                         {"id": "a", "text": "No le digo a nadie"},
                         {"id": "b", "text": "Tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Buenos noches"},
                     ],
                     "correct": "a",
-                    "word_id": "es_no", "target": "no", "native": "nÃ£o",
-                    "npc_reaction": "Bueno. MaÃ±ana al ayuntamiento â€” todo normal. Como si nada. DespuÃ©s â€” los dos vigilamos.",
+                    "word_id": "es_no", "target": "no", "native": "não",
+                    "npc_reaction": "Bueno. Mañana al ayuntamiento — todo normal. Como si nada. Después — los dos vigilamos.",
                     "gated": True,
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸ‘ï¸ SofÃ­a olha pra porta. Passos vindo. MarÃ­a e Miguel voltando juntos.",
+                    "text": "👁️ Sofía olha pra porta. Passos vindo. María e Miguel voltando juntos.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Como si nada, forastero. Mira normal â€” habla normal.",
-                    "translation": "Como se nada. Olha normal â€” fala normal.",
+                    "npc": "Sofía",
+                    "line": "Como si nada, forastero. Mira normal — habla normal.",
+                    "translation": "Como se nada. Olha normal — fala normal.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "A porta abre. MarÃ­a entra primeiro. Sorri ao ver vocÃªs "
-                        "dois. 'Ya volvieron Don Miguel y los vecinos. MaÃ±ana al "
+                        "A porta abre. María entra primeiro. Sorri ao ver vocês "
+                        "dois. 'Ya volvieron Don Miguel y los vecinos. Mañana al "
                         "amanecer vamos.'\n\n"
-                        "Miguel vem atrÃ¡s. Olha pra SofÃ­a. Olha pra vocÃª. Pensa "
-                        "em perguntar algo â€” mas nÃ£o pergunta."
+                        "Miguel vem atrás. Olha pra Sofía. Olha pra você. Pensa "
+                        "em perguntar algo — mas não pergunta."
                     ),
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "MarÃ­a",
-                    "question": "MarÃ­a se aproxima de vocÃª normal â€” calorosa como sempre. 'Forastero â€” Â¿cÃ³mo estÃ¡s? Tienes que dormir temprano hoy.' VocÃª responde como se nada tivesse acontecido:",
+                    "npc": "María",
+                    "question": "María se aproxima de você normal — calorosa como sempre. 'Forastero — ¿cómo estás? Tienes que dormir temprano hoy.' Você responde como se nada tivesse acontecido:",
                     "options": [
                         {"id": "a", "text": "Estoy bien, gracias"},
                         {"id": "b", "text": "Tengo miedo"},
                         {"id": "c", "text": "No me gusta"},
-                        {"id": "d", "text": "AdiÃ³s MarÃ­a"},
+                        {"id": "d", "text": "Adiós María"},
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bueno. Voy a preparar una infusiÃ³n suave para que duermas profundo. MaÃ±ana es dÃ­a largo.",
+                    "npc_reaction": "Bueno. Voy a preparar una infusión suave para que duermas profundo. Mañana es día largo.",
                     "gated": True,
                 },
-                # â”€â”€ Closing beats â€” transiÃ§Ã£o pra F11 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                # ── Closing beats — transição pra F11 ───────────────────────
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ™ Casa silenciosa Â· Lamparina apagada Â· Quarto",
+                    "text": "🌙 Casa silenciosa · Lamparina apagada · Quarto",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª deitou na cama com a infusÃ£o de MarÃ­a nas mÃ£os. "
+                        "Você deitou na cama com a infusão de María nas mãos. "
                         "Olhou pro frasco por um longo tempo antes de tomar. "
                         "Aquele que ela tinha deixado na F8.\n\n"
-                        "Tomou. NÃ£o tinha como recusar sem levantar suspeita. "
-                        "O gosto era diferente esta noite â€” mais amargo. Ou era "
-                        "a sua imaginaÃ§Ã£o."
+                        "Tomou. Não tinha como recusar sem levantar suspeita. "
+                        "O gosto era diferente esta noite — mais amargo. Ou era "
+                        "a sua imaginação."
                     ),
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "MaÃ±ana, forastero. MaÃ±ana.",
-                    "translation": "AmanhÃ£, forasteiro. AmanhÃ£.",
+                    "npc": "Sofía",
+                    "line": "Mañana, forastero. Mañana.",
+                    "translation": "Amanhã, forasteiro. Amanhã.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "SofÃ­a sussurrou da cadeira no canto onde ela dormiu de "
-                        "novo â€” ela tinha avisado que ia ficar. VocÃª fechou os "
+                        "Sofía sussurrou da cadeira no canto onde ela dormiu de "
+                        "novo — ela tinha avisado que ia ficar. Você fechou os "
                         "olhos.\n\n"
-                        "O sono veio rÃ¡pido. Sonho com mÃ£os de MarÃ­a na sua "
+                        "O sono veio rápido. Sonho com mãos de María na sua "
                         "testa. Com o rosto de El Vigilante recuando. Com a "
-                        "palavra 'fuego' queimando atrÃ¡s dos olhos.\n\n"
-                        "AmanhÃ£ â€” o Alcalde."
+                        "palavra 'fuego' queimando atrás dos olhos.\n\n"
+                        "Amanhã — o Alcalde."
                     ),
                 },
             ],
@@ -1103,4 +1103,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────

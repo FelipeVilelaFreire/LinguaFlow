@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from apps.learning.models import Language, Phrase, Scenario, StudyModule
+from apps.adventure.seeds.es.chapter import PHASES
+from apps.learning.models import Language, Lesson, Phrase, Scenario, StudyDay, StudyModule
 
 MODULES = [
     {
@@ -288,6 +289,71 @@ class Command(BaseCommand):
                     )
                     total_phrases += 1
 
+        canonical_titles = []
+        fallback_phrases = list(
+            Phrase.objects.filter(
+                source_language=pt,
+                target_language=es,
+                difficulty="A1",
+            )
+            .select_related("scenario")
+            .order_by("id")[:12]
+        )
+
+        StudyDay.objects.filter(
+            is_active=True,
+            lesson__phrases__source_language=pt,
+            lesson__phrases__target_language=es,
+            lesson__phrases__difficulty="A1",
+        ).exclude(lesson__title__startswith="ES A1 T1 Dia ").update(is_active=False)
+
+        created_days = 0
+        for phase in PHASES:
+            day_number = phase["number"]
+            title = f"ES A1 T1 Dia {day_number:02d}: {phase['title']}"
+            canonical_titles.append(title)
+            scenario = Scenario.objects.get(slug=phase["scenario_slug"])
+            phase_phrases = list(
+                Phrase.objects.filter(
+                    source_language=pt,
+                    target_language=es,
+                    difficulty="A1",
+                    scenario=scenario,
+                ).order_by("id")[:12]
+            )
+            if len(phase_phrases) < 8:
+                seen = {phrase.id for phrase in phase_phrases}
+                phase_phrases.extend([phrase for phrase in fallback_phrases if phrase.id not in seen])
+            phase_phrases = phase_phrases[:12]
+
+            duplicates = Lesson.objects.filter(title=title).order_by("id")
+            if duplicates.count() > 1:
+                duplicates.exclude(pk=duplicates.first().pk).delete()
+
+            lesson, _ = Lesson.objects.update_or_create(
+                title=title,
+                defaults={
+                    "day_number": day_number,
+                    "scenario": scenario,
+                    "video_title": f"ES A1 T1 - {phase['title']}",
+                    "video_url": "",
+                    "video_duration": "10 min",
+                },
+            )
+            lesson.phrases.set(phase_phrases)
+
+            day_dupes = StudyDay.objects.filter(day_number=day_number, lesson=lesson).order_by("id")
+            if day_dupes.count() > 1:
+                day_dupes.exclude(pk=day_dupes.first().pk).delete()
+
+            _, created = StudyDay.objects.update_or_create(
+                day_number=day_number,
+                lesson=lesson,
+                defaults={"is_active": True},
+            )
+            created_days += 1 if created else 0
+
         self.stdout.write(self.style.SUCCESS(
-            f"\nDone. {len(MODULES)} modules, 8 scenarios, {total_phrases} phrases seeded for ES A1."
+            f"\nDone. {len(MODULES)} modules, 8 scenarios, {total_phrases} phrases, "
+            f"25 canonical study days seeded for ES A1 T1 ({created_days} new)."
         ))

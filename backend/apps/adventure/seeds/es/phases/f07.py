@@ -1,33 +1,33 @@
-﻿"""
-Seed das 6 seÃ§Ãµes da Fase 7 Espanhol A1 â€” "El dÃ­a normal".
+"""
+Seed das 6 seções da Fase 7 Espanhol A1 — "El día normal".
 
-Fase de respiraÃ§Ã£o â€” falsa normalidade. Depois da noite do dom (F5) e da
-entrada da SofÃ­a (F6), o grupo decide passar um dia inteiro como se nada
-tivesse acontecido. SofÃ­a aparece na plaza como amiga de anos. Miguel
+Fase de respiração — falsa normalidade. Depois da noite do dom (F5) e da
+entrada da Sofía (F6), o grupo decide passar um dia inteiro como se nada
+tivesse acontecido. Sofía aparece na plaza como amiga de anos. Miguel
 leva o grupo a Carmen pra aprender a 'viver como gente daqui'. Carmen
 ensina perguntar idade.
 
-No final da fase: febre. SofÃ­a sussurra sobre a 'dor de cabeÃ§a da primeira
-vez'. O dom tem custo fÃ­sico. Miguel sai Ã  noite buscar uma curandera.
+No final da fase: febre. Sofía sussurra sobre a 'dor de cabeça da primeira
+vez'. O dom tem custo físico. Miguel sai à noite buscar uma curandera.
 
-Novos vocab (3): hoy Â· maÃ±ana Â· vecino
-GramÃ¡tica nova:  tener + idade  (tengo veinte aÃ±os)
-RevisÃ£o F1-F6:   saudaÃ§Ãµes, Â¿cÃ³mo estÃ¡s?, me llamo, gracias, luz, yo voy
-NPC principais:  SofÃ­a (no grupo agora) Â· Miguel Â· Carmen (reaparece)
+Novos vocab (3): hoy · mañana · vecino
+Gramática nova:  tener + idade  (tengo veinte años)
+Revisão F1-F6:   saudações, ¿cómo estás?, me llamo, gracias, luz, yo voy
+NPC principais:  Sofía (no grupo agora) · Miguel · Carmen (reaparece)
 Cameo:           Rosa la Panadera (acena)
-Arco emocional:  alÃ­vio enganoso â†’ primeira pontada de fadiga
-TransiÃ§Ã£o:       febre â†’ Miguel sai pela rua escura buscar MarÃ­a (F8)
+Arco emocional:  alívio enganoso → primeira pontada de fadiga
+Transição:       febre → Miguel sai pela rua escura buscar María (F8)
 
-PrÃ©-requisito: python manage.py seed_es_full
+Pré-requisito: python manage.py seed_es_full
 Uso:           python manage.py seed_es_f7_sections [--reset]
 """
 
 SECTIONS = [
 
-    # â”€â”€ SeÃ§Ã£o 1: Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # ManhÃ£ na plaza. SofÃ­a aparece como se nada tivesse acontecido â€” alegre,
-    # rÃ¡pida, falando alto. O grupo decide gastar o dia em coisas pequenas.
-    # Cameo de Rosa na padaria. ImersÃ£o â€” falas dos NPCs sem traduÃ§Ã£o.
+    # ── Seção 1: Narrativa ────────────────────────────────────────────────────
+    # Manhã na plaza. Sofía aparece como se nada tivesse acontecido — alegre,
+    # rápida, falando alto. O grupo decide gastar o dia em coisas pequenas.
+    # Cameo de Rosa na padaria. Imersão — falas dos NPCs sem tradução.
     {
         "section_number": 1,
         "section_type": "narrativa",
@@ -36,57 +36,57 @@ SECTIONS = [
                 {
                     "kind": "scene",
                     "text": (
-                        "ðŸŒ… Plaza central Â· ManhÃ£ clara Â· Dia depois\n\n"
-                        "O sol jÃ¡ estÃ¡ alto. Cheiro de pÃ£o da padaria de Rosa, "
-                        "vozes de mulheres no mercado, crianÃ§a correndo atrÃ¡s "
-                        "de um cÃ£o. San CristÃ³bal acordou inteiro."
+                        "🌅 Plaza central · Manhã clara · Dia depois\n\n"
+                        "O sol já está alto. Cheiro de pão da padaria de Rosa, "
+                        "vozes de mulheres no mercado, criança correndo atrás "
+                        "de um cão. San Cristóbal acordou inteiro."
                     ),
                 },
                 {
                     "kind": "npc",
-                    "npc": "SofÃ­a",
-                    "line": "Â¡Forastero! Â¡AquÃ­ estÃ¡s! Â¿Dormiste algo?",
+                    "npc": "Sofía",
+                    "line": "¡Forastero! ¡Aquí estás! ¿Dormiste algo?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "player",
                     "text": (
-                        "SofÃ­a aparece da esquina como se vocÃªs fossem amigos hÃ¡ "
-                        "anos. Nenhuma menÃ§Ã£o da noite anterior. Nenhum peso na cara."
+                        "Sofía aparece da esquina como se vocês fossem amigos há "
+                        "anos. Nenhuma menção da noite anterior. Nenhum peso na cara."
                     ),
                 },
                 {
                     "kind": "npc",
                     "npc": "Miguel",
-                    "line": "Buenos dÃ­as. Hoy nada raro, Â¿eh? SÃ³lo pueblo.",
+                    "line": "Buenos días. Hoy nada raro, ¿eh? Sólo pueblo.",
                     "pace": "normal",
                 },
                 {
                     "kind": "narrative",
-                    "text": "Miguel chega devagar. Olhos cansados de quem nÃ£o dormiu direito â€” mas sorriso firme.",
+                    "text": "Miguel chega devagar. Olhos cansados de quem não dormiu direito — mas sorriso firme.",
                 },
                 {
                     "kind": "npc",
-                    "npc": "SofÃ­a",
-                    "line": "Tienes que aprender a vivir aquÃ­ como gente normal. Hoy te enseÃ±o.",
+                    "npc": "Sofía",
+                    "line": "Tienes que aprender a vivir aquí como gente normal. Hoy te enseño.",
                 },
                 {
                     "kind": "scene",
-                    "text": "ðŸž Rosa na porta da padaria, farinha nas mÃ£os, acena ao ver vocÃªs.",
+                    "text": "🍞 Rosa na porta da padaria, farinha nas mãos, acena ao ver vocês.",
                 },
                 {
                     "kind": "npc",
                     "npc": "Rosa",
-                    "line": "Â¡Buenos dÃ­as, hijos! Â¡El pan estÃ¡ caliente!",
+                    "line": "¡Buenos días, hijos! ¡El pan está caliente!",
                 },
                 {
                     "kind": "player",
-                    "text": "Rosa estende trÃªs pÃ£es pequenos pra SofÃ­a. NÃ£o cobra. SofÃ­a sorri e devolve um aceno.",
+                    "text": "Rosa estende três pães pequenos pra Sofía. Não cobra. Sofía sorri e devolve um aceno.",
                 },
                 {
                     "kind": "npc",
-                    "npc": "SofÃ­a",
-                    "line": "Â¡Gracias, Rosa! Que tengas un buen dÃ­a.",
+                    "npc": "Sofía",
+                    "line": "¡Gracias, Rosa! Que tengas un buen día.",
                 },
             ],
             "exercises": [
@@ -94,17 +94,17 @@ SECTIONS = [
                     "kind": "vocab_list",
                     "items": [
                         {"target": "hoy",     "native": "hoje"},
-                        {"target": "maÃ±ana",  "native": "amanhÃ£ / manhÃ£"},
+                        {"target": "mañana",  "native": "amanhã / manhã"},
                         {"target": "vecino",  "native": "vizinho"},
                     ],
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a estende um pÃ£o pra vocÃª dizendo 'CÃ³mete esto. AÃºn sin almuerzo, Â¿no?'. VocÃª diz:",
+                    "npc": "Sofía",
+                    "question": "Sofía estende um pão pra você dizendo 'Cómete esto. Aún sin almuerzo, ¿no?'. Você diz:",
                     "options": [
                         {"id": "a", "text": "Gracias"},
-                        {"id": "b", "text": "AdiÃ³s"},
+                        {"id": "b", "text": "Adiós"},
                         {"id": "c", "text": "Mal"},
                         {"id": "d", "text": "Tengo miedo"},
                     ],
@@ -114,22 +114,22 @@ SECTIONS = [
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pro sol. 'Es...' â€” Qual palavra ela usa pra dizer 'hoje'?",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pro sol. 'Es...' — Qual palavra ela usa pra dizer 'hoje'?",
                     "options": [
                         {"id": "a", "text": "Hoy"},
-                        {"id": "b", "text": "MaÃ±ana"},
+                        {"id": "b", "text": "Mañana"},
                         {"id": "c", "text": "Vecino"},
                         {"id": "d", "text": "Bien"},
                     ],
                     "correct": "a",
                     "word_id": "es_hoy", "target": "hoy", "native": "hoje",
-                    "npc_reaction": "Hoy. El dÃ­a que estamos viviendo ahora mismo.",
+                    "npc_reaction": "Hoy. El día que estamos viviendo ahora mismo.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Um senhor da casa ao lado passa de bicicleta e acena. Miguel: 'Es nuestro...' â€” quem Ã© esse senhor pra Miguel?",
+                    "question": "Um senhor da casa ao lado passa de bicicleta e acena. Miguel: 'Es nuestro...' — quem é esse senhor pra Miguel?",
                     "options": [
                         {"id": "a", "text": "Vecino"},
                         {"id": "b", "text": "Forastero"},
@@ -138,14 +138,14 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_vecino", "target": "vecino", "native": "vizinho",
-                    "npc_reaction": "Vecino. Vive en la casa de al lado. Lo conozco desde niÃ±o.",
+                    "npc_reaction": "Vecino. Vive en la casa de al lado. Lo conozco desde niño.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a diz 'Carmen estÃ¡ cosiendo en la plaza. Â¿Vamos a verla?' VocÃª responde:",
+                    "npc": "Sofía",
+                    "question": "Sofía diz 'Carmen está cosiendo en la plaza. ¿Vamos a verla?' Você responde:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "No tengo hambre"},
                         {"id": "c", "text": "Mal"},
                         {"id": "d", "text": "Buenos noches"},
@@ -158,66 +158,66 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 2: RevisÃ£o SRS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Caminhada pela plaza. Vizinhos cumprimentam. RevisÃ£o de saudaÃ§Ãµes,
-    # nome, estado fÃ­sico â€” F1 vocab em mÃºltiplas situaÃ§Ãµes reais. SofÃ­a e
+    # ── Seção 2: Revisão SRS ─────────────────────────────────────────────────
+    # Caminhada pela plaza. Vizinhos cumprimentam. Revisão de saudações,
+    # nome, estado físico — F1 vocab em múltiplas situações reais. Sofía e
     # Miguel se revezam testando.
     {
         "section_number": 2,
         "section_type": "revisao_srs",
         "content": {
             "recap": {
-                "characters": ["SofÃ­a", "Miguel"],
+                "characters": ["Sofía", "Miguel"],
                 "story": (
-                    "VocÃªs caminham pra Carmen. Pelo caminho, SofÃ­a decide testar "
+                    "Vocês caminham pra Carmen. Pelo caminho, Sofía decide testar "
                     "se 'el pueblo conoce al forastero ya o no'. Aponta pessoas, "
-                    "espera que vocÃª cumprimente cada uma."
+                    "espera que você cumprimente cada uma."
                 ),
-                "now": "Pratique cumprimentos vivos â€” uma rua cheia de vizinhos.",
+                "now": "Pratique cumprimentos vivos — uma rua cheia de vizinhos.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Mira â€” son las nueve. AÃºn es maÃ±ana. Â¿CÃ³mo saludas?",
-                    "translation": "Olha â€” sÃ£o nove horas. Ainda Ã© manhÃ£. Como vocÃª cumprimenta?",
+                    "npc": "Sofía",
+                    "line": "Mira — son las nueve. Aún es mañana. ¿Cómo saludas?",
+                    "translation": "Olha — são nove horas. Ainda é manhã. Como você cumprimenta?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "Uma vizinha de SofÃ­a passa carregando uma cesta. Sol da manhÃ£, dia novo. VocÃª diz:",
+                    "npc": "Sofía",
+                    "question": "Uma vizinha de Sofía passa carregando uma cesta. Sol da manhã, dia novo. Você diz:",
                     "options": [
-                        {"id": "a", "text": "Â¡Buenos dÃ­as!"},
-                        {"id": "b", "text": "Â¡Buenas tardes!"},
-                        {"id": "c", "text": "Â¡Buenas noches!"},
-                        {"id": "d", "text": "Â¡AdiÃ³s!"},
+                        {"id": "a", "text": "¡Buenos días!"},
+                        {"id": "b", "text": "¡Buenas tardes!"},
+                        {"id": "c", "text": "¡Buenas noches!"},
+                        {"id": "d", "text": "¡Adiós!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_buenos_dias", "target": "buenos dÃ­as", "native": "bom dia",
+                    "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
                     "npc_reaction": "Bueno. Ella va a recordar tu cara.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "A vizinha sorri pra vocÃª e responde com a mesma saudaÃ§Ã£o. Continua o caminho.",
+                    "text": "A vizinha sorri pra você e responde com a mesma saudação. Continua o caminho.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Ahora ese seÃ±or â€” el del sombrero â€” te va a preguntar tu nombre. Te aviso.",
-                    "translation": "Agora aquele senhor â€” o do chapÃ©u â€” vai te perguntar seu nome. Te aviso.",
+                    "line": "Ahora ese señor — el del sombrero — te va a preguntar tu nombre. Te aviso.",
+                    "translation": "Agora aquele senhor — o do chapéu — vai te perguntar seu nome. Te aviso.",
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Vecino",
-                    "line": "Buenos dÃ­as, joven. Â¿CÃ³mo te llamas? Eres nuevo aquÃ­, Â¿no?",
-                    "translation": "Bom dia, jovem. Como vocÃª se chama? VocÃª Ã© novo aqui, nÃ©?",
+                    "line": "Buenos días, joven. ¿Cómo te llamas? Eres nuevo aquí, ¿no?",
+                    "translation": "Bom dia, jovem. Como você se chama? Você é novo aqui, né?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Vecino",
-                    "question": "O senhor para na sua frente, olhando educado. Quer saber seu nome. VocÃª responde:",
+                    "question": "O senhor para na sua frente, olhando educado. Quer saber seu nome. Você responde:",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Soy forastero"},
@@ -225,42 +225,42 @@ SECTIONS = [
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
-                    "npc_reaction": "Mucho gusto. Yo soy Eduardo. Tengo la herrerÃ­a al fondo de la calle.",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
+                    "npc_reaction": "Mucho gusto. Yo soy Eduardo. Tengo la herrería al fondo de la calle.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Vecino",
-                    "question": "Eduardo se apresentou: 'Yo soy Eduardo.' Para descrever a profissÃ£o dele que ele mencionou â€” ferreiro â€” vocÃª completa: 'Eduardo ___ herrero.'",
+                    "question": "Eduardo se apresentou: 'Yo soy Eduardo.' Para descrever a profissão dele que ele mencionou — ferreiro — você completa: 'Eduardo ___ herrero.'",
                     "options": [
                         {"id": "a", "text": "es"},
                         {"id": "b", "text": "tiene"},
-                        {"id": "c", "text": "estÃ¡"},
+                        {"id": "c", "text": "está"},
                         {"id": "d", "text": "voy"},
                     ],
                     "correct": "a",
-                    "word_id": "es_es", "target": "es", "native": "Ã© (de SER, ele/ela)",
-                    "npc_reaction": "Eduardo es herrero. 'Es' es 'soy' cuando hablamos de otra persona. Soy yo, eres tÃº, es Ã©l.",
+                    "word_id": "es_es", "target": "es", "native": "é (de SER, ele/ela)",
+                    "npc_reaction": "Eduardo es herrero. 'Es' es 'soy' cuando hablamos de otra persona. Soy yo, eres tú, es él.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Ahora Ã©l te va a preguntar si te gusta el pueblo. Â¿CÃ³mo le respondes?",
-                    "translation": "Agora ele vai te perguntar como vocÃª estÃ¡. Como vocÃª responde?",
+                    "npc": "Sofía",
+                    "line": "Ahora él te va a preguntar si te gusta el pueblo. ¿Cómo le respondes?",
+                    "translation": "Agora ele vai te perguntar como você está. Como você responde?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Vecino",
-                    "question": "'Â¿Y cÃ³mo estÃ¡s hoy, joven? Â¿El pueblo te trata bien?' VocÃª responde:",
+                    "question": "'¿Y cómo estás hoy, joven? ¿El pueblo te trata bien?' Você responde:",
                     "options": [
                         {"id": "a", "text": "Bien, gracias"},
                         {"id": "b", "text": "Mal"},
                         {"id": "c", "text": "Tengo sed"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bueno. Si necesitas algo de hierro o herramienta â€” ya sabes dÃ³nde estoy.",
+                    "npc_reaction": "Bueno. Si necesitas algo de hierro o herramienta — ya sabes dónde estoy.",
                 },
                 {
                     "kind": "narrative",
@@ -268,34 +268,34 @@ SECTIONS = [
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Vamos por el otro lado de la plaza. MÃ¡s vecinos para conocer.",
+                    "npc": "Sofía",
+                    "line": "Vamos por el otro lado de la plaza. Más vecinos para conocer.",
                     "translation": "Vamos pelo outro lado da plaza. Mais vizinhos pra conhecer.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "Uma crianÃ§a passa correndo, para de repente, te olha e ri. VocÃª cumprimenta de volta:",
+                    "npc": "Sofía",
+                    "question": "Uma criança passa correndo, para de repente, te olha e ri. Você cumprimenta de volta:",
                     "options": [
-                        {"id": "a", "text": "Â¡Hola!"},
-                        {"id": "b", "text": "Â¡AdiÃ³s!"},
-                        {"id": "c", "text": "Â¡Mal!"},
-                        {"id": "d", "text": "Â¡Forastero!"},
+                        {"id": "a", "text": "¡Hola!"},
+                        {"id": "b", "text": "¡Adiós!"},
+                        {"id": "c", "text": "¡Mal!"},
+                        {"id": "d", "text": "¡Forastero!"},
                     ],
                     "correct": "a",
-                    "word_id": "es_hola", "target": "hola", "native": "olÃ¡",
-                    "npc_reaction": "Hola. Simple. La niÃ±a ya te aceptÃ³.",
+                    "word_id": "es_hola", "target": "hola", "native": "olá",
+                    "npc_reaction": "Hola. Simple. La niña ya te aceptó.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Y si alguien te da algo en este pueblo â€” Â¿quÃ© dices siempre?",
-                    "translation": "E se alguÃ©m te dÃ¡ algo nesse pueblo â€” o que vocÃª fala sempre?",
+                    "line": "Y si alguien te da algo en este pueblo — ¿qué dices siempre?",
+                    "translation": "E se alguém te dá algo nesse pueblo — o que você fala sempre?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a te dÃ¡ metade do pÃ£o que sobrou da Rosa. Quente ainda. VocÃª diz:",
+                    "npc": "Sofía",
+                    "question": "Sofía te dá metade do pão que sobrou da Rosa. Quente ainda. Você diz:",
                     "options": [
                         {"id": "a", "text": "Gracias"},
                         {"id": "b", "text": "Hola"},
@@ -304,14 +304,14 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada, forastero. TÃº harÃ­as lo mismo.",
+                    "npc_reaction": "De nada, forastero. Tú harías lo mismo.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pro outro lado da plaza: 'Carmen estÃ¡ allÃ¡, sentada en su banco.' VocÃª caminha pra lÃ¡. SofÃ­a pergunta: 'Â¿TÃº vienes conmigo?' VocÃª:",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pro outro lado da plaza: 'Carmen está allá, sentada en su banco.' Você caminha pra lá. Sofía pergunta: '¿Tú vienes conmigo?' Você:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy"},
+                        {"id": "a", "text": "Sí, yo voy"},
                         {"id": "b", "text": "Tengo miedo"},
                         {"id": "c", "text": "Mal"},
                         {"id": "d", "text": "Tengo sed"},
@@ -324,55 +324,55 @@ SECTIONS = [
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 3: PrÃ¡tica Aplicada â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # No banco da Carmen. Carmen pergunta sobre o forastero. SofÃ­a e Miguel
-    # respondem por ele Ã s vezes, mas o protagonista tambÃ©m fala. Rapid-fire.
+    # ── Seção 3: Prática Aplicada ──────────────────────────────────────────────
+    # No banco da Carmen. Carmen pergunta sobre o forastero. Sofía e Miguel
+    # respondem por ele às vezes, mas o protagonista também fala. Rapid-fire.
     {
         "section_number": 3,
         "section_type": "pratica_aplicada",
         "content": {
             "recap": {
-                "characters": ["SofÃ­a", "Miguel"],
+                "characters": ["Sofía", "Miguel"],
                 "story": (
-                    "Carmen tÃ¡ no banco de pedra com o bordado, como sempre. Ergue "
-                    "os Ã³culos pequenos do nariz ao ver vocÃªs trÃªs chegando.\n\n"
-                    "'Â¡Hola, hijos! Â¡Y tÃº â€” el forastero! Â¿CÃ³mo estÃ¡s hoy?'"
+                    "Carmen tá no banco de pedra com o bordado, como sempre. Ergue "
+                    "os óculos pequenos do nariz ao ver vocês três chegando.\n\n"
+                    "'¡Hola, hijos! ¡Y tú — el forastero! ¿Cómo estás hoy?'"
                 ),
-                "now": "Carmen vai fazer vÃ¡rias perguntas â€” vocÃª responde sem hesitar.",
+                "now": "Carmen vai fazer várias perguntas — você responde sem hesitar.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¡Hola, joven! Â¿CÃ³mo estÃ¡s hoy? Te ves mÃ¡s asentado que ayer.",
-                    "translation": "OlÃ¡, jovem! Como vocÃª estÃ¡ hoje? TÃ¡ com cara mais firme que ontem.",
+                    "line": "¡Hola, joven! ¿Cómo estás hoy? Te ves más asentado que ayer.",
+                    "translation": "Olá, jovem! Como você está hoje? Tá com cara mais firme que ontem.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "VocÃª dormiu pouco, mas comeu pÃ£o da Rosa e tÃ¡ na sombra da plaza. Carmen quer uma resposta direta:",
+                    "question": "Você dormiu pouco, mas comeu pão da Rosa e tá na sombra da plaza. Carmen quer uma resposta direta:",
                     "options": [
                         {"id": "a", "text": "Bien, gracias"},
                         {"id": "b", "text": "Mal"},
                         {"id": "c", "text": "Tengo miedo"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Me alegro. SiÃ©ntate aquÃ­, dÃ©jame verte.",
+                    "npc_reaction": "Me alegro. Siéntate aquí, déjame verte.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Ya sÃ© tu nombre â€” SofÃ­a me lo dijo. Pero quiero oÃ­rlo de tu boca.",
-                    "translation": "JÃ¡ sei seu nome â€” SofÃ­a me falou. Mas quero ouvir da sua boca.",
+                    "line": "Ya sé tu nombre — Sofía me lo dijo. Pero quiero oírlo de tu boca.",
+                    "translation": "Já sei seu nome — Sofía me falou. Mas quero ouvir da sua boca.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen larga o bordado e te olha de frente. Quer ouvir seu nome dito por vocÃª.",
+                    "question": "Carmen larga o bordado e te olha de frente. Quer ouvir seu nome dito por você.",
                     "options": [
                         {"id": "a", "text": "Me llamo [seu nome]"},
                         {"id": "b", "text": "Soy forastero"},
@@ -380,20 +380,20 @@ SECTIONS = [
                         {"id": "d", "text": "Tengo sed"},
                     ],
                     "correct": "a",
-                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome Ã©",
+                    "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
                     "npc_reaction": "Mucho gusto, hijo. Ya eres parte de la plaza.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Y de dÃ³nde vienes, joven? Â¿Es lejos?",
-                    "translation": "E de onde vocÃª vem, jovem? Ã‰ longe?",
+                    "line": "¿Y de dónde vienes, joven? ¿Es lejos?",
+                    "translation": "E de onde você vem, jovem? É longe?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "VocÃª nÃ£o lembra de onde vem â€” Ã© a verdade. Mas Carmen sabe que vocÃª Ã© de fora. VocÃª responde:",
+                    "question": "Você não lembra de onde vem — é a verdade. Mas Carmen sabe que você é de fora. Você responde:",
                     "options": [
                         {"id": "a", "text": "Soy forastero"},
                         {"id": "b", "text": "Soy campesino"},
@@ -402,47 +402,47 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Forastero. AquÃ­ los recibimos, hijo. Si te quedas, dejas de ser forastero pronto.",
+                    "npc_reaction": "Forastero. Aquí los recibimos, hijo. Si te quedas, dejas de ser forastero pronto.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "SofÃ­a senta no chÃ£o de pernas cruzadas perto do banco. "
-                        "Miguel apoia no muro atrÃ¡s. Carmen volta ao bordado, "
+                        "Sofía senta no chão de pernas cruzadas perto do banco. "
+                        "Miguel apoia no muro atrás. Carmen volta ao bordado, "
                         "mas continua falando."
                     ),
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "SofÃ­a, Â¿le diste pan hoy?",
-                    "translation": "SofÃ­a, vocÃª deu pÃ£o pra ele hoje?",
+                    "line": "Sofía, ¿le diste pan hoy?",
+                    "translation": "Sofía, você deu pão pra ele hoje?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a olha pra vocÃª esperando que vocÃª responda por ela. VocÃª diz pra Carmen:",
+                    "npc": "Sofía",
+                    "question": "Sofía olha pra você esperando que você responda por ela. Você diz pra Carmen:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, gracias"},
+                        {"id": "a", "text": "Sí, gracias"},
                         {"id": "b", "text": "No, mal"},
-                        {"id": "c", "text": "AdiÃ³s Carmen"},
+                        {"id": "c", "text": "Adiós Carmen"},
                         {"id": "d", "text": "Forastero"},
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "Bueno. AquÃ­ no se anda con hambre.",
+                    "npc_reaction": "Bueno. Aquí no se anda con hambre.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Tienes sed, hijo? Hay agua del pozo fresca.",
-                    "translation": "VocÃª tÃ¡ com sede, filho? Tem Ã¡gua do poÃ§o fresca.",
+                    "line": "¿Tienes sed, hijo? Hay agua del pozo fresca.",
+                    "translation": "Você tá com sede, filho? Tem água do poço fresca.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Sol jÃ¡ a pino, garganta seca de tanto falar. Carmen te oferece Ã¡gua. VocÃª responde honestamente:",
+                    "question": "Sol já a pino, garganta seca de tanto falar. Carmen te oferece água. Você responde honestamente:",
                     "options": [
                         {"id": "a", "text": "Tengo sed"},
                         {"id": "b", "text": "Tengo miedo"},
@@ -451,22 +451,22 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Vete al pozo, hijo. AllÃ¡ la sacas tÃº mismo.",
+                    "npc_reaction": "Vete al pozo, hijo. Allá la sacas tú mismo.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "VocÃª vai atÃ© o poÃ§o de pedra no centro da plaza, tira Ã¡gua com a corda. Volta com a cantil cheia. Carmen acena aprovando.",
+                    "text": "Você vai até o poço de pedra no centro da plaza, tira água com a corda. Volta com a cantil cheia. Carmen acena aprovando.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Bueno. Y ahora â€” Â¿ya conoces a algÃºn vecino mÃ¡s?",
-                    "translation": "Bom. E agora â€” vocÃª jÃ¡ conhece algum vizinho mais?",
+                    "line": "Bueno. Y ahora — ¿ya conoces a algún vecino más?",
+                    "translation": "Bom. E agora — você já conhece algum vizinho mais?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "VocÃª conheceu Eduardo o ferreiro na rua. Pra Carmen vocÃª diz: 'SÃ­, Eduardo es mi...'",
+                    "question": "Você conheceu Eduardo o ferreiro na rua. Pra Carmen você diz: 'Sí, Eduardo es mi...'",
                     "options": [
                         {"id": "a", "text": "Vecino"},
                         {"id": "b", "text": "Forastero"},
@@ -480,14 +480,14 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "SofÃ­a me dijo algo extraÃ±o anoche. Que viste un fuego que no era de hogar. Â¿Es verdad?",
-                    "translation": "SofÃ­a me disse uma coisa estranha ontem Ã  noite. Que vocÃª viu um fogo que nÃ£o era de fogueira. Ã‰ verdade?",
+                    "line": "Sofía me dijo algo extraño anoche. Que viste un fuego que no era de hogar. ¿Es verdad?",
+                    "translation": "Sofía me disse uma coisa estranha ontem à noite. Que você viu um fogo que não era de fogueira. É verdade?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen sabe parte. VocÃª nÃ£o pode mentir mas tambÃ©m nÃ£o pode contar tudo. Sobre o que aconteceu, o que vocÃª sentiu primeiro foi:",
+                    "question": "Carmen sabe parte. Você não pode mentir mas também não pode contar tudo. Sobre o que aconteceu, o que você sentiu primeiro foi:",
                     "options": [
                         {"id": "a", "text": "Miedo"},
                         {"id": "b", "text": "Hambre"},
@@ -496,12 +496,12 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Lo entiendo. SofÃ­a te ayuda a no sentirlo solo. Eso es bueno.",
+                    "npc_reaction": "Miedo. Lo entiendo. Sofía te ayuda a no sentirlo solo. Eso es bueno.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen aponta pra lamparina de aceite que SofÃ­a te deu â€” vocÃª levou ao bolso. 'Esa lÃ¡mpara da...' Que palavra completa?",
+                    "question": "Carmen aponta pra lamparina de aceite que Sofía te deu — você levou ao bolso. 'Esa lámpara da...' Que palavra completa?",
                     "options": [
                         {"id": "a", "text": "Luz"},
                         {"id": "b", "text": "Fuego"},
@@ -510,22 +510,22 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_luz", "target": "luz", "native": "luz",
-                    "npc_reaction": "Luz. PequeÃ±a, segura. Las que mÃ¡s cuidan son las que menos asustan.",
+                    "npc_reaction": "Luz. Pequeña, segura. Las que más cuidan son las que menos asustan.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Y tÃº vas a quedarte hoy con SofÃ­a y Miguel?",
-                    "translation": "E vocÃª vai ficar hoje com SofÃ­a e Miguel?",
+                    "line": "¿Y tú vas a quedarte hoy con Sofía y Miguel?",
+                    "translation": "E você vai ficar hoje com Sofía e Miguel?",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "SofÃ­a levanta a cabeÃ§a esperando sua resposta. Miguel sorri. VocÃª diz:",
+                    "question": "Sofía levanta a cabeça esperando sua resposta. Miguel sorri. Você diz:",
                     "options": [
-                        {"id": "a", "text": "SÃ­, yo voy con ellos"},
+                        {"id": "a", "text": "Sí, yo voy con ellos"},
                         {"id": "b", "text": "Tengo miedo"},
-                        {"id": "c", "text": "AdiÃ³s Carmen"},
+                        {"id": "c", "text": "Adiós Carmen"},
                         {"id": "d", "text": "Mal"},
                     ],
                     "correct": "a",
@@ -534,65 +534,65 @@ SECTIONS = [
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pra vocÃª: 'Â¿Y maÃ±ana â€” quÃ© hacemos?' Como vocÃª diz 'amanhÃ£' em espanhol pra continuar a conversa?",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pra você: '¿Y mañana — qué hacemos?' Como você diz 'amanhã' em espanhol pra continuar a conversa?",
                     "options": [
-                        {"id": "a", "text": "MaÃ±ana"},
+                        {"id": "a", "text": "Mañana"},
                         {"id": "b", "text": "Hoy"},
                         {"id": "c", "text": "Vecino"},
                         {"id": "d", "text": "Bien"},
                     ],
                     "correct": "a",
-                    "word_id": "es_manana", "target": "maÃ±ana", "native": "amanhÃ£",
-                    "npc_reaction": "MaÃ±ana. El dÃ­a que viene despuÃ©s de hoy. La misma palabra que 'manhÃ£' del portuguÃ©s.",
+                    "word_id": "es_manana", "target": "mañana", "native": "amanhã",
+                    "npc_reaction": "Mañana. El día que viene después de hoy. La misma palabra que 'manhã' del portugués.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 4: GramÃ¡tica Narrativa â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Carmen ensina perguntar idade. Tener + aÃ±os â€” extensÃ£o direta de
-    # 'tengo hambre' que o protagonista jÃ¡ conhece. SofÃ­a e Miguel
-    # exemplificam falando as prÃ³prias idades.
+    # ── Seção 4: Gramática Narrativa ──────────────────────────────────────────
+    # Carmen ensina perguntar idade. Tener + años — extensão direta de
+    # 'tengo hambre' que o protagonista já conhece. Sofía e Miguel
+    # exemplificam falando as próprias idades.
     {
         "section_number": 4,
         "section_type": "gramatica_narrativa",
         "content": {
             "recap": {
-                "characters": ["Carmen", "SofÃ­a", "Miguel"],
+                "characters": ["Carmen", "Sofía", "Miguel"],
                 "story": (
                     "Carmen quer saber tudo. Bordando devagar, ela faz perguntas "
-                    "como quem comenta o clima â€” mas cada pergunta Ã© precisa.\n\n"
-                    "Os trÃªs sentaram em volta dela. SofÃ­a no chÃ£o de pernas "
-                    "cruzadas. Miguel apoiado no muro. VocÃª no banco do lado."
+                    "como quem comenta o clima — mas cada pergunta é precisa.\n\n"
+                    "Os três sentaram em volta dela. Sofía no chão de pernas "
+                    "cruzadas. Miguel apoiado no muro. Você no banco do lado."
                 ),
-                "now": "Carmen vai te ensinar a falar idade â€” e quer saber a sua.",
+                "now": "Carmen vai te ensinar a falar idade — e quer saber a sua.",
             },
             "steps": [
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Ya sabes 'tengo hambre' y 'tengo sed'. Hay otro 'tengo' importante: 'tengo X aÃ±os'.",
-                    "translation": "VocÃª jÃ¡ sabe 'tengo hambre' e 'tengo sed'. Tem outro 'tengo' importante: 'tengo X aÃ±os' (tenho X anos).",
+                    "line": "Ya sabes 'tengo hambre' y 'tengo sed'. Hay otro 'tengo' importante: 'tengo X años'.",
+                    "translation": "Você já sabe 'tengo hambre' e 'tengo sed'. Tem outro 'tengo' importante: 'tengo X años' (tenho X anos).",
                     "pace": "slow",
                 },
                 {
                     "kind": "reveal",
-                    "phrase": "Tengo X aÃ±os",
+                    "phrase": "Tengo X años",
                     "meaning": "Eu tenho X anos",
-                    "note": "mesmo padrÃ£o de 'tengo hambre' â€” o que vocÃª 'tem' aqui Ã© a idade",
+                    "note": "mesmo padrão de 'tengo hambre' — o que você 'tem' aqui é a idade",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Yo tengo dieciocho aÃ±os. Joven todavÃ­a.",
+                    "npc": "Sofía",
+                    "line": "Yo tengo dieciocho años. Joven todavía.",
                     "translation": "Eu tenho dezoito anos. Jovem ainda.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Y yo tengo veinte. Igual que tÃº, Â¿no, forastero?",
-                    "translation": "E eu tenho vinte. Igual a vocÃª, nÃ©, forasteiro?",
+                    "line": "Y yo tengo veinte. Igual que tú, ¿no, forastero?",
+                    "translation": "E eu tenho vinte. Igual a você, né, forasteiro?",
                 },
                 {
                     "kind": "pattern",
@@ -601,109 +601,109 @@ SECTIONS = [
                         {"text": " + ",     "isKey": False},
                         {"text": "veinte",  "isKey": True},
                         {"text": " ",       "isKey": False},
-                        {"text": "aÃ±os",    "isKey": True},
+                        {"text": "años",    "isKey": True},
                     ],
-                    "example": "â€” Â¿CuÃ¡ntos aÃ±os tienes? â€” Tengo veinte aÃ±os.",
-                    "translation": "â€” Quantos anos vocÃª tem? â€” Tenho vinte anos.",
-                    "note": "nÃºmero + 'aÃ±os' depois de 'tengo'. Sempre.",
+                    "example": "— ¿Cuántos años tienes? — Tengo veinte años.",
+                    "translation": "— Quantos anos você tem? — Tenho vinte anos.",
+                    "note": "número + 'años' depois de 'tengo'. Sempre.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Carmen",
-                    "question": "Carmen tira os Ã³culos do nariz pra te olhar de frente. 'Â¿Y tÃº? Â¿CuÃ¡ntos aÃ±os tienes?' VocÃª responde:",
+                    "question": "Carmen tira os óculos do nariz pra te olhar de frente. '¿Y tú? ¿Cuántos años tienes?' Você responde:",
                     "options": [
-                        {"id": "a", "text": "Tengo veinte aÃ±os"},
+                        {"id": "a", "text": "Tengo veinte años"},
                         {"id": "b", "text": "Tengo hambre"},
                         {"id": "c", "text": "Soy forastero"},
                         {"id": "d", "text": "Me llamo veinte"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tengo_anos", "target": "tengo veinte aÃ±os", "native": "tenho vinte anos",
-                    "npc_reaction": "Veinte. La edad en que un hombre todavÃ­a cree que sabe todo. Espera, hijo. Espera.",
+                    "word_id": "es_tengo_anos", "target": "tengo veinte años", "native": "tenho vinte anos",
+                    "npc_reaction": "Veinte. La edad en que un hombre todavía cree que sabe todo. Espera, hijo. Espera.",
                 },
                 {
                     "kind": "narrative",
-                    "text": "SofÃ­a ri da resposta da Carmen. Miguel ri tambÃ©m, baixo. VocÃª nÃ£o entende exatamente â€” mas ri junto.",
+                    "text": "Sofía ri da resposta da Carmen. Miguel ri também, baixo. Você não entende exatamente — mas ri junto.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "Â¿Y ahora pregunta tÃº a Miguel â€” 'Â¿cuÃ¡ntos aÃ±os tienes?'.",
-                    "translation": "E agora pergunta vocÃª pro Miguel â€” 'quantos anos vocÃª tem?'.",
+                    "line": "¿Y ahora pregunta tú a Miguel — '¿cuántos años tienes?'.",
+                    "translation": "E agora pergunta você pro Miguel — 'quantos anos você tem?'.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "VocÃª se vira pra Miguel e quer saber a idade dele. A pergunta comeÃ§a com:",
+                    "question": "Você se vira pra Miguel e quer saber a idade dele. A pergunta começa com:",
                     "options": [
-                        {"id": "a", "text": "Â¿CuÃ¡ntos aÃ±os tienes?"},
-                        {"id": "b", "text": "Â¿CÃ³mo te llamas?"},
-                        {"id": "c", "text": "Â¿DÃ³nde estÃ¡s?"},
-                        {"id": "d", "text": "Â¿TÃº vienes?"},
+                        {"id": "a", "text": "¿Cuántos años tienes?"},
+                        {"id": "b", "text": "¿Cómo te llamas?"},
+                        {"id": "c", "text": "¿Dónde estás?"},
+                        {"id": "d", "text": "¿Tú vienes?"},
                     ],
                     "correct": "a",
-                    "word_id": "es_cuantos_anos", "target": "Â¿cuÃ¡ntos aÃ±os tienes?", "native": "quantos anos vocÃª tem?",
-                    "npc_reaction": "Tengo veinte, forastero. Como tÃº. Por eso conectamos rÃ¡pido.",
+                    "word_id": "es_cuantos_anos", "target": "¿cuántos años tienes?", "native": "quantos anos você tem?",
+                    "npc_reaction": "Tengo veinte, forastero. Como tú. Por eso conectamos rápido.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Y la respuesta â€” recuerda â€” siempre 'tengo X aÃ±os'.",
-                    "translation": "E a resposta â€” lembra â€” sempre 'tengo X aÃ±os'.",
+                    "npc": "Sofía",
+                    "line": "Y la respuesta — recuerda — siempre 'tengo X años'.",
+                    "translation": "E a resposta — lembra — sempre 'tengo X años'.",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a repete pra fixar: 'Si alguien te pregunta cuÃ¡ntos aÃ±os tienes, tÃº dices:'",
+                    "npc": "Sofía",
+                    "question": "Sofía repete pra fixar: 'Si alguien te pregunta cuántos años tienes, tú dices:'",
                     "options": [
-                        {"id": "a", "text": "Tengo veinte aÃ±os"},
+                        {"id": "a", "text": "Tengo veinte años"},
                         {"id": "b", "text": "Soy veinte"},
-                        {"id": "c", "text": "Mi veinte aÃ±os"},
-                        {"id": "d", "text": "Veinte tengo aÃ±os"},
+                        {"id": "c", "text": "Mi veinte años"},
+                        {"id": "d", "text": "Veinte tengo años"},
                     ],
                     "correct": "a",
-                    "word_id": "es_tengo_anos", "target": "tengo veinte aÃ±os", "native": "tenho vinte anos",
+                    "word_id": "es_tengo_anos", "target": "tengo veinte años", "native": "tenho vinte anos",
                     "npc_reaction": "Eso. Memoriza ese 'tengo'. Vas a usarlo mucho.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 5: ReforÃ§o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Tarde caindo. Voltando pra casa de Don Miguel. SofÃ­a sussurra sobre a
-    # primeira vez da avÃ³ dela â€” 'duele la cabeza'. Primeira pista de que o
-    # dom tem custo fÃ­sico. Conversa Ã­ntima â€” poucos exercÃ­cios, foco em
+    # ── Seção 5: Reforço ──────────────────────────────────────────────────────
+    # Tarde caindo. Voltando pra casa de Don Miguel. Sofía sussurra sobre a
+    # primeira vez da avó dela — 'duele la cabeza'. Primeira pista de que o
+    # dom tem custo físico. Conversa íntima — poucos exercícios, foco em
     # desenvolver lore e personagem.
     {
         "section_number": 5,
         "section_type": "reforco",
         "content": {
             "recap": {
-                "characters": ["SofÃ­a", "Miguel", "Carmen"],
+                "characters": ["Sofía", "Miguel", "Carmen"],
                 "story": (
-                    "VocÃªs ficaram com Carmen atÃ© o sol comeÃ§ar a baixar. A tarde "
-                    "passou em conversa â€” vizinhos parando pra cumprimentar, "
-                    "SofÃ­a testando vocÃª de leve, Miguel rindo Ã s vezes do que "
-                    "vocÃª falava errado.\n\n"
+                    "Vocês ficaram com Carmen até o sol começar a baixar. A tarde "
+                    "passou em conversa — vizinhos parando pra cumprimentar, "
+                    "Sofía testando você de leve, Miguel rindo às vezes do que "
+                    "você falava errado.\n\n"
                     "Quando a sombra do banco virou metade da plaza, Carmen "
-                    "guardou o bordado. 'Vayan, hijos. MaÃ±ana otro dÃ­a.'"
+                    "guardou o bordado. 'Vayan, hijos. Mañana otro día.'"
                 ),
-                "now": "Voltando pra posada â€” SofÃ­a caminha do seu lado, vira a voz baixa.",
+                "now": "Voltando pra posada — Sofía caminha do seu lado, vira a voz baixa.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ‡ Rua estreita, luz alaranjada batendo nas paredes de adobe. Miguel uns passos Ã  frente.",
+                    "text": "🌇 Rua estreita, luz alaranjada batendo nas paredes de adobe. Miguel uns passos à frente.",
                 },
                 {
                     "kind": "item_moment",
-                    "npc": "SofÃ­a",
-                    "situation": "O calor da tarde ainda pesa. SofÃ­a passa a mÃ£o na testa, garganta seca de tanto falar o dia inteiro.",
-                    "npc_line": "Forastero â€” Â¿tienes algo de beber? HablÃ© todo el dÃ­a y la garganta me arde.",
+                    "npc": "Sofía",
+                    "situation": "O calor da tarde ainda pesa. Sofía passa a mão na testa, garganta seca de tanto falar o dia inteiro.",
+                    "npc_line": "Forastero — ¿tienes algo de beber? Hablé todo el día y la garganta me arde.",
                     "item_tag": "bebida",
                     "on_use": {
-                        "narrative": "VocÃª tira algo de beber da mochila e estende pra SofÃ­a. Ela bebe um gole longo, devolve, respira.",
-                        "npc_reaction": "Gracias. Ahora sÃ­ â€” puedo seguir hablando sin sonar a cuervo.",
+                        "narrative": "Você tira algo de beber da mochila e estende pra Sofía. Ela bebe um gole longo, devolve, respira.",
+                        "npc_reaction": "Gracias. Ahora sí — puedo seguir hablando sin sonar a cuervo.",
                         "bonus": "extra_dialogue",
                     },
                     "on_skip": {
@@ -712,55 +712,55 @@ SECTIONS = [
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Forastero â€” Â¿no te duele la cabeza? La primera vez a mi abuela le doliÃ³ por dÃ­as, dicen.",
-                    "translation": "Forasteiro â€” sua cabeÃ§a nÃ£o estÃ¡ doendo? A primeira vez da minha avÃ³ doeu por dias, dizem.",
+                    "npc": "Sofía",
+                    "line": "Forastero — ¿no te duele la cabeza? La primera vez a mi abuela le dolió por días, dicen.",
+                    "translation": "Forasteiro — sua cabeça não está doendo? A primeira vez da minha avó doeu por dias, dizem.",
                     "pace": "slow",
                 },
                 {
                     "kind": "player",
-                    "text": "VocÃª parou. Uma pontada atrÃ¡s dos olhos que vocÃª tinha ignorado todo o dia. Como se ela tivesse acabado de nomeÃ¡-la.",
+                    "text": "Você parou. Uma pontada atrás dos olhos que você tinha ignorado todo o dia. Como se ela tivesse acabado de nomeá-la.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Mi abuela decÃ­a que era el cuerpo aprendiendo a cargar la palabra. Como un mÃºsculo nuevo.",
-                    "translation": "Minha avÃ³ dizia que era o corpo aprendendo a carregar a palavra. Como um mÃºsculo novo.",
+                    "npc": "Sofía",
+                    "line": "Mi abuela decía que era el cuerpo aprendiendo a cargar la palabra. Como un músculo nuevo.",
+                    "translation": "Minha avó dizia que era o corpo aprendendo a carregar a palavra. Como um músculo novo.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pra sua testa, esperando uma resposta honesta. VocÃª sente a dor â€” pequena, mas real:",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pra sua testa, esperando uma resposta honesta. Você sente a dor — pequena, mas real:",
                     "options": [
                         {"id": "a", "text": "Mal"},
                         {"id": "b", "text": "Bien"},
-                        {"id": "c", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Adiós"},
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
                     "word_id": "es_mal", "target": "mal", "native": "mal",
-                    "npc_reaction": "Mal. Lo pensÃ©. Mi abuela hablaba de eso â€” todavÃ­a me acuerdo.",
+                    "npc_reaction": "Mal. Lo pensé. Mi abuela hablaba de eso — todavía me acuerdo.",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃªs continuam caminhando. Miguel olha pra trÃ¡s de vez "
+                        "Vocês continuam caminhando. Miguel olha pra trás de vez "
                         "em quando, sem perguntar. Sabe que tem coisa sendo dita "
-                        "que nÃ£o precisa entrar nela ainda."
+                        "que não precisa entrar nela ainda."
                     ),
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Ella dormÃ­a mucho la primera semana. ComÃ­a menos. Hablaba poco. DespuÃ©s se le pasaba.",
+                    "npc": "Sofía",
+                    "line": "Ella dormía mucho la primera semana. Comía menos. Hablaba poco. Después se le pasaba.",
                     "translation": "Ela dormia muito a primeira semana. Comia menos. Falava pouco. Depois passava.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a aponta pro bolso onde vocÃª guarda a lamparina dela. 'Si tienes miedo de noche, enciÃ©ndela. La luz cura mÃ¡s que las palabras.' Sobre a lamparina, o que ela faz?",
+                    "npc": "Sofía",
+                    "question": "Sofía aponta pro bolso onde você guarda a lamparina dela. 'Si tienes miedo de noche, enciéndela. La luz cura más que las palabras.' Sobre a lamparina, o que ela faz?",
                     "options": [
                         {"id": "a", "text": "Da luz"},
                         {"id": "b", "text": "Tiene miedo"},
@@ -769,154 +769,154 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_luz", "target": "luz", "native": "luz",
-                    "npc_reaction": "Eso. Si te despiertas con miedo â€” la enciendes. Funciona.",
+                    "npc_reaction": "Eso. Si te despiertas con miedo — la enciendes. Funciona.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Hoy descansas. MaÃ±ana â€” vamos a ver cÃ³mo estÃ¡s. Â¿Vale?",
-                    "translation": "Hoje vocÃª descansa. AmanhÃ£ â€” a gente vÃª como vocÃª tÃ¡. Beleza?",
+                    "npc": "Sofía",
+                    "line": "Hoy descansas. Mañana — vamos a ver cómo estás. ¿Vale?",
+                    "translation": "Hoje você descansa. Amanhã — a gente vê como você tá. Beleza?",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "SofÃ­a espera sua resposta. VocÃªs param na porta da casa de Don Miguel. VocÃª diz:",
+                    "npc": "Sofía",
+                    "question": "Sofía espera sua resposta. Vocês param na porta da casa de Don Miguel. Você diz:",
                     "options": [
-                        {"id": "a", "text": "Gracias, SofÃ­a"},
-                        {"id": "b", "text": "AdiÃ³s Carmen"},
+                        {"id": "a", "text": "Gracias, Sofía"},
+                        {"id": "b", "text": "Adiós Carmen"},
                         {"id": "c", "text": "Tengo miedo"},
                         {"id": "d", "text": "Mal"},
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada. Para esto estoy yo en esto contigo, Â¿no?",
+                    "npc_reaction": "De nada. Para esto estoy yo en esto contigo, ¿no?",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Entra, forastero. Come algo. DespuÃ©s duermes.",
+                    "line": "Entra, forastero. Come algo. Después duermes.",
                     "translation": "Entra, forasteiro. Come alguma coisa. Depois dorme.",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Sua cabeÃ§a pesa mais agora. A pontada virou uma pressÃ£o. VocÃª responde a Miguel honestamente sobre como estÃ¡:",
+                    "question": "Sua cabeça pesa mais agora. A pontada virou uma pressão. Você responde a Miguel honestamente sobre como está:",
                     "options": [
                         {"id": "a", "text": "Mal, la cabeza"},
                         {"id": "b", "text": "Bien, gracias"},
                         {"id": "c", "text": "Tengo hambre"},
-                        {"id": "d", "text": "Buenos dÃ­as"},
+                        {"id": "d", "text": "Buenos días"},
                     ],
                     "correct": "a",
                     "word_id": "es_mal", "target": "mal", "native": "mal",
-                    "npc_reaction": "La cabeza. SofÃ­a me habÃ­a avisado. Vamos â€” descansa.",
+                    "npc_reaction": "La cabeza. Sofía me había avisado. Vamos — descansa.",
                 },
             ],
         },
     },
 
-    # â”€â”€ SeÃ§Ã£o 6: ObstÃ¡culo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    # Noite. Febre subindo. SofÃ­a e Miguel cuidando. O protagonista precisa
-    # responder mesmo com a cabeÃ§a queimando. SofÃ­a decide: vai buscar uma
-    # curandera que ela conhece â€” MarÃ­a. TransiÃ§Ã£o direta pra F8.
-    # Gate: errar trava. Mas situaÃ§Ã£o extrema, exercÃ­cios curtos.
+    # ── Seção 6: Obstáculo ────────────────────────────────────────────────────
+    # Noite. Febre subindo. Sofía e Miguel cuidando. O protagonista precisa
+    # responder mesmo com a cabeça queimando. Sofía decide: vai buscar uma
+    # curandera que ela conhece — María. Transição direta pra F8.
+    # Gate: errar trava. Mas situação extrema, exercícios curtos.
     {
         "section_number": 6,
         "section_type": "obstaculo",
         "content": {
             "recap": {
-                "characters": ["SofÃ­a", "Miguel"],
+                "characters": ["Sofía", "Miguel"],
                 "story": (
-                    "VocÃª entrou na casa, comeu metade do pÃ£o que sobrou, deitou "
-                    "no quarto. SofÃ­a nÃ£o foi embora â€” ficou na sala com Miguel. "
-                    "Acertaram entre eles em voz baixa que nÃ£o te deixariam sÃ³.\n\n"
-                    "A febre comeÃ§ou ao escurecer. AtrÃ¡s dos olhos primeiro. "
-                    "Depois cabeÃ§a inteira. SofÃ­a bateu na sua porta."
+                    "Você entrou na casa, comeu metade do pão que sobrou, deitou "
+                    "no quarto. Sofía não foi embora — ficou na sala com Miguel. "
+                    "Acertaram entre eles em voz baixa que não te deixariam só.\n\n"
+                    "A febre começou ao escurecer. Atrás dos olhos primeiro. "
+                    "Depois cabeça inteira. Sofía bateu na sua porta."
                 ),
-                "now": "VocÃª precisa responder mesmo doente. SofÃ­a precisa decidir o que fazer.",
+                "now": "Você precisa responder mesmo doente. Sofía precisa decidir o que fazer.",
             },
             "steps": [
                 {
                     "kind": "scene",
-                    "text": "ðŸŒ™ Noite Â· Quarto Â· Lamparina baixa\n\nVocÃª deitado, suando frio. SofÃ­a senta na beira da cama. Miguel encostado no batente da porta.",
+                    "text": "🌙 Noite · Quarto · Lamparina baixa\n\nVocê deitado, suando frio. Sofía senta na beira da cama. Miguel encostado no batente da porta.",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Forastero â€” Â¿cÃ³mo estÃ¡s? Necesito que me digas.",
-                    "translation": "Forasteiro â€” como vocÃª tÃ¡? Preciso que vocÃª me fale.",
+                    "npc": "Sofía",
+                    "line": "Forastero — ¿cómo estás? Necesito que me digas.",
+                    "translation": "Forasteiro — como você tá? Preciso que você me fale.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "CabeÃ§a queimando, corpo pesado, garganta seca. VocÃª diz a verdade â€” nÃ£o dÃ¡ pra esconder:",
+                    "npc": "Sofía",
+                    "question": "Cabeça queimando, corpo pesado, garganta seca. Você diz a verdade — não dá pra esconder:",
                     "options": [
                         {"id": "a", "text": "Mal"},
                         {"id": "b", "text": "Bien"},
-                        {"id": "c", "text": "Buenos dÃ­as"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "c", "text": "Buenos días"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_mal", "target": "mal", "native": "mal",
-                    "npc_reaction": "Mal. Lo veo. Tienes fiebre â€” la frente caliente.",
+                    "npc_reaction": "Mal. Lo veo. Tienes fiebre — la frente caliente.",
                     "gated": True,
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Â¿Tienes sed? Â¿Quieres agua?",
-                    "translation": "TÃ¡ com sede? Quer Ã¡gua?",
+                    "npc": "Sofía",
+                    "line": "¿Tienes sed? ¿Quieres agua?",
+                    "translation": "Tá com sede? Quer água?",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "Sua boca seca como pedra. SofÃ­a jÃ¡ estende a cantil. VocÃª diz:",
+                    "npc": "Sofía",
+                    "question": "Sua boca seca como pedra. Sofía já estende a cantil. Você diz:",
                     "options": [
                         {"id": "a", "text": "Tengo sed"},
                         {"id": "b", "text": "Tengo hambre"},
                         {"id": "c", "text": "Estoy bien"},
-                        {"id": "d", "text": "AdiÃ³s"},
+                        {"id": "d", "text": "Adiós"},
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. Toma â€” bebe despacio.",
+                    "npc_reaction": "Sed. Toma — bebe despacio.",
                     "gated": True,
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "SofÃ­a levanta. Vai atÃ© Miguel na porta, fala baixo: 'Esto no "
-                        "es sÃ³lo cansancio. Es lo que decÃ­a mi abuela. Hay que "
+                        "Sofía levanta. Vai até Miguel na porta, fala baixo: 'Esto no "
+                        "es sólo cansancio. Es lo que decía mi abuela. Hay que "
                         "buscarla.'"
                     ),
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Miguel â€” conozco a una. Llega de fuera, pero cura bien. Ve a buscarla.",
-                    "translation": "Miguel â€” conheÃ§o uma. Vem de fora, mas cura bem. Vai buscar ela.",
+                    "npc": "Sofía",
+                    "line": "Miguel — conozco a una. Llega de fuera, pero cura bien. Ve a buscarla.",
+                    "translation": "Miguel — conheço uma. Vem de fora, mas cura bem. Vai buscar ela.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Â¿QuiÃ©n?",
+                    "line": "¿Quién?",
                     "translation": "Quem?",
                     "pace": "urgent",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Una curandera. MarÃ­a. LlegÃ³ al pueblo hace dos meses. PregÃºntale a Carmen â€” sabe dÃ³nde estÃ¡.",
-                    "translation": "Uma curandera. MarÃ­a. Chegou ao pueblo faz dois meses. Pergunta pra Carmen â€” ela sabe onde tÃ¡.",
+                    "npc": "Sofía",
+                    "line": "Una curandera. María. Llegó al pueblo hace dos meses. Pregúntale a Carmen — sabe dónde está.",
+                    "translation": "Uma curandera. María. Chegou ao pueblo faz dois meses. Pergunta pra Carmen — ela sabe onde tá.",
                     "pace": "urgent",
                 },
                 {
                     "kind": "multiple_choice",
                     "npc": "Miguel",
-                    "question": "Miguel jÃ¡ vestiu o casaco. Aperta seu ombro antes de sair. 'Aguanta, forastero. Vuelvo pronto.' VocÃª responde com o que consegue:",
+                    "question": "Miguel já vestiu o casaco. Aperta seu ombro antes de sair. 'Aguanta, forastero. Vuelvo pronto.' Você responde com o que consegue:",
                     "options": [
                         {"id": "a", "text": "Gracias"},
                         {"id": "b", "text": "Mal"},
@@ -925,59 +925,59 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada. Ve a dormir un poco â€” yo vuelvo con ella.",
+                    "npc_reaction": "De nada. Ve a dormir un poco — yo vuelvo con ella.",
                     "gated": True,
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "Miguel sai correndo. Passos rÃ¡pidos na rua, depois silÃªncio. "
-                        "SofÃ­a senta de novo na beira da cama. Coloca a mÃ£o fria na "
+                        "Miguel sai correndo. Passos rápidos na rua, depois silêncio. "
+                        "Sofía senta de novo na beira da cama. Coloca a mão fria na "
                         "sua testa quente."
                     ),
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Mi abuela decÃ­a que despuÃ©s de la primera, viene la fiebre. Y despuÃ©s la fiebre se va. Aguanta hasta maÃ±ana.",
-                    "translation": "Minha avÃ³ dizia que depois da primeira, vem a febre. E depois a febre passa. Aguenta atÃ© amanhÃ£.",
+                    "npc": "Sofía",
+                    "line": "Mi abuela decía que después de la primera, viene la fiebre. Y después la fiebre se va. Aguanta hasta mañana.",
+                    "translation": "Minha avó dizia que depois da primeira, vem a febre. E depois a febre passa. Aguenta até amanhã.",
                     "pace": "slow",
                 },
                 {
                     "kind": "multiple_choice",
-                    "npc": "SofÃ­a",
-                    "question": "Sua cabeÃ§a pesa, os olhos fecham. VocÃª quer perguntar o nome da curandera que vem. A pergunta Ã©:",
+                    "npc": "Sofía",
+                    "question": "Sua cabeça pesa, os olhos fecham. Você quer perguntar o nome da curandera que vem. A pergunta é:",
                     "options": [
-                        {"id": "a", "text": "Â¿CÃ³mo se llama?"},
-                        {"id": "b", "text": "Â¿CÃ³mo estÃ¡s?"},
-                        {"id": "c", "text": "Â¿TÃº vienes?"},
-                        {"id": "d", "text": "Â¿Tengo sed?"},
+                        {"id": "a", "text": "¿Cómo se llama?"},
+                        {"id": "b", "text": "¿Cómo estás?"},
+                        {"id": "c", "text": "¿Tú vienes?"},
+                        {"id": "d", "text": "¿Tengo sed?"},
                     ],
                     "correct": "a",
-                    "word_id": "es_como_se_llama", "target": "Â¿cÃ³mo se llama?", "native": "como se chama?",
-                    "npc_reaction": "Se llama MarÃ­a. Vas a conocerla pronto, forastero.",
+                    "word_id": "es_como_se_llama", "target": "¿cómo se llama?", "native": "como se chama?",
+                    "npc_reaction": "Se llama María. Vas a conocerla pronto, forastero.",
                     "gated": True,
                 },
-                # â”€â”€ Closing beats â€” transiÃ§Ã£o pra F8 â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+                # ── Closing beats — transição pra F8 ────────────────────────
                 {
                     "kind": "scene",
-                    "text": "ðŸ•¯ï¸ Quarto escuro Â· A febre subindo Â· SofÃ­a velando",
+                    "text": "🕯️ Quarto escuro · A febre subindo · Sofía velando",
                 },
                 {
                     "kind": "npc_speak",
-                    "npc": "SofÃ­a",
-                    "line": "Duerme, forastero. Cuando despiertes ella ya estarÃ¡ aquÃ­.",
-                    "translation": "Dorme, forasteiro. Quando vocÃª acordar ela jÃ¡ vai estar aqui.",
+                    "npc": "Sofía",
+                    "line": "Duerme, forastero. Cuando despiertes ella ya estará aquí.",
+                    "translation": "Dorme, forasteiro. Quando você acordar ela já vai estar aqui.",
                     "pace": "slow",
                 },
                 {
                     "kind": "narrative",
                     "text": (
-                        "VocÃª fecha os olhos. A Ãºltima coisa que ouve antes de "
-                        "dormir Ã© o pano molhado da SofÃ­a na sua testa.\n\n"
-                        "LÃ¡ fora â€” passos correndo na rua escura. Miguel batendo "
+                        "Você fecha os olhos. A última coisa que ouve antes de "
+                        "dormir é o pano molhado da Sofía na sua testa.\n\n"
+                        "Lá fora — passos correndo na rua escura. Miguel batendo "
                         "na porta de Carmen pra perguntar onde encontrar uma "
-                        "mulher chamada MarÃ­a."
+                        "mulher chamada María."
                     ),
                 },
             ],
@@ -986,4 +986,4 @@ SECTIONS = [
 ]
 
 
-# â”€â”€â”€ Command â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Command ──────────────────────────────────────────────────────────────────
