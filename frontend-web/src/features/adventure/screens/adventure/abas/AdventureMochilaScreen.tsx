@@ -1,4 +1,4 @@
-import { Backpack, X } from "lucide-react";
+import { Backpack, Lock, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useStrings } from "../../../../../contexts/StringsContext";
@@ -7,6 +7,8 @@ import { getAdventureColors } from "../../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../../theme/adventureColors";
 import Emoji from "../../../../../components/Emoji";
 import type { ApiAdventureItem, ApiUserInventoryItem, ItemRarity } from "../../../../../types/adventure";
+
+type LockedItem = ApiAdventureItem & { unlock_hint_word_id: string };
 
 interface AdventureMochilaScreenProps {
   langCode: string;
@@ -26,7 +28,7 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
   const c = getAdventureColors(langCode, themeMode);
 
   const [inventory, setInventory] = useState<ApiUserInventoryItem[]>([]);
-  const [chapterItems, setChapterItems] = useState<ApiAdventureItem[]>([]);
+  const [lockedItems, setLockedItems] = useState<LockedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | null>(null);
 
@@ -35,14 +37,12 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
     setLoading(true);
     Promise.all([
       adventureService.listInventory(),
-      adventureService.listItems(chapterSlug),
+      adventureService.listLockedItems(chapterSlug),
     ])
-      .then(([inv, items]) => { setInventory(inv); setChapterItems(items); })
+      .then(([inv, lockedRes]) => { setInventory(inv); setLockedItems(lockedRes.locked); })
       .finally(() => setLoading(false));
   }, [chapterSlug]);
 
-  const earnedItemIds = new Set(inventory.map(i => i.item.id));
-  const locked = chapterItems.filter(i => !earnedItemIds.has(i.id));
   const expandedEntry = inventory.find(e => e.item.id === expanded);
 
   async function handleUseItem(itemId: number) {
@@ -114,6 +114,24 @@ export default function AdventureMochilaScreen({ langCode, themeMode, chapterSlu
               rarityLabel={s.adventure.itemRarity[entry.item.rarity]}
             />
           ))}
+        </div>
+      )}
+
+      {lockedItems.length > 0 && (
+        <div className="mt-8">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: c.textFaint }}>
+            {s.adventure.toDiscover}
+          </p>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+            {lockedItems.map(item => (
+              <LockedItemCard
+                key={item.id}
+                item={item}
+                c={c}
+                hint={s.adventure.itemLockedHint(item.word_id ?? "")}
+              />
+            ))}
+          </div>
         </div>
       )}
 
@@ -226,6 +244,45 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
             </button>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function LockedItemCard({ item, c, hint }: {
+  item: LockedItem;
+  c: ReturnType<typeof getAdventureColors>;
+  hint: string;
+}) {
+  return (
+    <div
+      className="flex flex-col items-center gap-2.5 rounded-2xl px-3 pb-4 pt-4 text-center"
+      style={{
+        background: c.surface,
+        border: `1px dashed ${c.borderFaint}`,
+      }}
+    >
+      <div
+        className="relative flex h-16 w-16 items-center justify-center rounded-full"
+        style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+      >
+        <span style={{ opacity: 0.25, filter: "grayscale(1)" }}>
+          <Emoji char={item.emoji} size={40} />
+        </span>
+        <div
+          className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full"
+          style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+        >
+          <Lock size={12} style={{ color: c.textFaint }} />
+        </div>
+      </div>
+      <div className="min-w-0 w-full">
+        <p className="truncate text-sm font-bold leading-tight" style={{ color: c.textFaint }}>
+          {item.name}
+        </p>
+        <p className="mt-0.5 text-[10px] leading-tight" style={{ color: c.textFaint }}>
+          {hint}
+        </p>
       </div>
     </div>
   );

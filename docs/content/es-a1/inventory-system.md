@@ -64,15 +64,60 @@ Mítico:    ~5 itens  (1 por temporada — momento único)
 
 ---
 
-## Modelo de Shuffle — "Todos chegam com tudo, em ordens diferentes"
+## Modelo de Baú — "Sorte + Mérito" (estilo Clash Royale)
 
-No início da série, o sistema embaralha a fila de itens de cada tier para aquele usuário. A cada baú aberto, o próximo item da fila é entregue — sem repetição, sem lacuna. No final da série, todo jogador tem a coleção completa, mas cada um viveu uma ordem diferente.
+> **Mudança de filosofia (2026-05):** o modelo antigo ("todos chegam com tudo,
+> só a ordem muda") foi substituído. Agora **dois jogadores terminam a
+> temporada com mochilas diferentes** — a coleção completa é rara, não
+> garantida. Quem joga bem ganha mais e melhor; mas a sorte decide *quais*.
+
+O baú funciona em **3 camadas**:
+
+### Camada 1 — Score da fase → TIER do baú (mérito)
+
+A porcentagem de acerto na fase decide qual baú o jogador abre:
+
+| Score da fase | Tier do baú |
+|---------------|-------------|
+| 95-100% | Lendário |
+| 85-94%  | Épico |
+| 70-84%  | Raro |
+| 0-69%   | Comum |
+
+### Camada 2 — Tier do baú → DROP RATE da raridade (sorte)
+
+Cada tier de baú tem uma tabela de probabilidade. O baú **não garante** a
+raridade máxima — dá uma *chance*. Até um baú comum pode soltar um raro.
+
+| Baú \ Item | Comum | Raro | Épico | Lendário |
+|------------|-------|------|-------|----------|
+| **Comum**    | 75% | 22% | 3%  | 0%  |
+| **Raro**     | 40% | 42% | 16% | 2%  |
+| **Épico**    | 15% | 38% | 35% | 12% |
+| **Lendário** | 5%  | 25% | 40% | 30% |
+
+### Camada 3 — Raridade sorteada → ITEM elegível (mérito + sorte)
+
+- O item é sorteado aleatoriamente da raridade que saiu, **entre os que o
+  usuário ainda não tem** (sem repetição).
+- **Itens raros/épicos/lendários com `word_id`** só entram no sorteio do
+  usuário **se ele dominou aquela palavra** (`WordMastery` tier ≥ bronze).
+  Comuns nunca filtram — jogador iniciante não pode ficar com mochila vazia.
+- Se a raridade sorteada estiver esgotada pro usuário, **desce um nível**
+  (lendário → épico → raro → comum).
+
+### Resultado
+
+O **pool é grande** (~46 itens na T1, contra 15 baús). Cada usuário só
+sorteia uma fração. A coleção completa é conquista — não inevitabilidade.
 
 ```python
-# Conceitual
-pool_raro = [navaja, mapa_rasgado, carta_sellada, ...]  # lista fixa
-fila_do_usuario = shuffle(pool_raro, seed=user_id)       # embaralha 1x
-# a cada baú raro → pop(0) da fila
+# Conceitual (backend: AdventurePhaseViewSet.open_chest)
+score        = phase_completion.score
+chest_tier   = score_to_tier(score)              # camada 1
+rolled       = weighted_choice(DROP_RATES[chest_tier])  # camada 2
+pool         = items[rolled] - owned - word_gated_locked  # camada 3
+item         = random.choice(pool) or descend_rarity()
 ```
 
 ---

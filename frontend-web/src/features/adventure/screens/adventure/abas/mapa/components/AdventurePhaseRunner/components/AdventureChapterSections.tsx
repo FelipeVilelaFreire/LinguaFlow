@@ -491,6 +491,17 @@ export default function AdventureChapterSections({
   const [sessionId,    setSessionId]    = useState(0);
   const [phase,        setPhase]        = useState<"auto" | "tap" | "choosing" | "done" | "summary">("auto");
   const [activeChoice, setActiveChoice] = useState<ActiveChoice | null>(null);
+  const [activeItemMoment, setActiveItemMoment] = useState<{
+    npc:        string;
+    situation:  string;
+    npc_line:   string;
+    item_tag:   string;
+    on_use:     { narrative: string; npc_reaction: string; bonus: string };
+    on_skip:    { npc_reaction: string };
+    available:  { name: string; emoji: string; is_degraded: boolean } | null;
+    checking:   boolean;
+    using:      boolean;
+  } | null>(null);
   const [sceneCard,    setSceneCard]    = useState<string | null>(null);
   const [currentTime,  setCurrentTime]  = useState<string | null>(null);
   const [currentDay,   setCurrentDay]   = useState<string | null>(null);
@@ -557,6 +568,7 @@ export default function AdventureChapterSections({
     setCursor(0);
     setPhase("auto");
     setActiveChoice(null);
+    setActiveItemMoment(null);
     setSceneCard(null);
     setCurrentTime(null);
     setCurrentDay(null);
@@ -674,6 +686,47 @@ export default function AdventureChapterSections({
         });
         break;
 
+      // ── Item moment — usar item da mochila por tag ───────────────────────
+      case "item_moment":
+        addEntry({ id: `${id}-sit`, kind: "narrative", text: step.situation });
+        addEntry({
+          id, kind: "npc",
+          npc: step.npc, line: step.npc_line,
+        });
+        if (step.npc && !metNpcs.current.has(step.npc)) {
+          metNpcs.current.add(step.npc);
+          adventureService.meetCharacterByName(step.npc).catch(() => {});
+        }
+        setActiveItemMoment({
+          npc:       step.npc,
+          situation: step.situation,
+          npc_line:  step.npc_line,
+          item_tag:  step.item_tag,
+          on_use:    step.on_use,
+          on_skip:   step.on_skip,
+          available: null,
+          checking:  true,
+          using:     false,
+        });
+        setPhase("choosing");
+        adventureService.listInventoryByTag(step.item_tag)
+          .then(res => {
+            const first = res.items.find(i => !i.is_used) ?? null;
+            setActiveItemMoment(prev => prev ? {
+              ...prev,
+              available: first ? {
+                name:        first.item.name,
+                emoji:       first.item.emoji,
+                is_degraded: !!first.item.is_degraded,
+              } : null,
+              checking: false,
+            } : null);
+          })
+          .catch(() => {
+            setActiveItemMoment(prev => prev ? { ...prev, checking: false, available: null } : null);
+          });
+        break;
+
       default:
         setPhase("tap");
     }
@@ -734,6 +787,37 @@ export default function AdventureChapterSections({
     setSceneCard(null);
     setPhase("auto");
     setCursor(n => n + 1);
+  }
+
+  function handleItemMomentUse() {
+    if (!activeItemMoment || !activeItemMoment.available || activeItemMoment.checking || activeItemMoment.using) return;
+    const id      = `${sessionId}-${cursor}`;
+    const moment  = activeItemMoment;
+    adventureService.useByTag(moment.item_tag).catch(() => {});
+    // Dispara a animação do item saindo da mochila, depois resolve.
+    setActiveItemMoment(prev => prev ? { ...prev, using: true } : null);
+    timerRef.current = setTimeout(() => {
+      addEntry({
+        id: `${id}-used`,
+        kind: "narrative",
+        text: s.adventure.itemMomentUsed(moment.available!.name),
+      });
+      addEntry({ id: `${id}-onuse`, kind: "narrative", text: moment.on_use.narrative });
+      addEntry({ id: `${id}-react`, kind: "npc", npc: moment.npc, line: moment.on_use.npc_reaction });
+      setActiveItemMoment(null);
+      setPhase("auto");
+      timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
+    }, 620);
+  }
+
+  function handleItemMomentSkip() {
+    if (!activeItemMoment) return;
+    const id     = `${sessionId}-${cursor}`;
+    const moment = activeItemMoment;
+    addEntry({ id: `${id}-skip`, kind: "npc", npc: moment.npc, line: moment.on_skip.npc_reaction });
+    setActiveItemMoment(null);
+    setPhase("auto");
+    timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
   }
 
   function handleChoice(chosenId: string) {
@@ -1263,6 +1347,57 @@ export default function AdventureChapterSections({
                 {text}
               </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {phase === "choosing" && activeItemMoment && (
+        <div
+          ref={choicesFootRef}
+          className="shrink-0 px-4 pb-6 pt-3"
+          style={{
+            borderTop: `1px solid ${c.borderFaint}`,
+            background: `linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5))`,
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            {activeItemMoment.checking && (
+              <p className="px-1 text-[14px]" style={{ color: c.textFaint }}>
+                …
+              </p>
+            )}
+            {!activeItemMoment.checking && activeItemMoment.available && (
+              <button
+                type="button"
+                onClick={() => handleItemMomentUse()}
+                disabled={activeItemMoment.using}
+                className={`w-full rounded-xl px-4 py-3.5 text-left text-[15px] font-semibold transition active:scale-[0.97] ${activeItemMoment.using ? "item-fly-out" : ""}`}
+                style={{
+                  background: activeItemMoment.available.is_degraded ? `${c.goldAccent}30` : c.goldAccent,
+                  color:      activeItemMoment.available.is_degraded ? c.textOnBg : "#1a0800",
+                  border:    `1px solid ${c.borderFaint}`,
+                }}
+              >
+                <span className="mr-2">{activeItemMoment.available.emoji}</span>
+                {activeItemMoment.available.is_degraded
+                  ? s.adventure.itemMomentUseDegraded(activeItemMoment.available.name)
+                  : s.adventure.itemMomentUse(activeItemMoment.available.name)}
+              </button>
+            )}
+            {!activeItemMoment.checking && !activeItemMoment.using && (
+              <button
+                type="button"
+                onClick={() => handleItemMomentSkip()}
+                className="w-full rounded-xl px-4 py-3 text-left text-[14px] transition active:scale-[0.97]"
+                style={{
+                  background: c.surfaceMid,
+                  border: `1px solid ${c.borderFaint}`,
+                  color: c.textOnBg,
+                }}
+              >
+                {s.adventure.itemMomentSkip}
+              </button>
+            )}
           </div>
         </div>
       )}

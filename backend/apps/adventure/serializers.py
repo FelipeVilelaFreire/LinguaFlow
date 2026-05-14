@@ -29,7 +29,7 @@ class AdventurePhaseSerializer(serializers.ModelSerializer):
         fields = [
             "id", "number", "title", "narrative_intro", "narrative_outro",
             "key_words", "scenario_slug", "phrase_count",
-            "phase_type", "is_boss",
+            "phase_type", "is_boss", "has_chest", "chest_tier",
             "is_completed", "score", "completed_sections",
         ]
 
@@ -144,6 +144,7 @@ class AdventureItemSerializer(serializers.ModelSerializer):
         fields = [
             "id", "slug", "emoji", "name", "lore", "rarity", "action", "order",
             "source_phase_number", "source_character_name",
+            "word_id", "item_tag", "is_degraded",
         ]
 
 

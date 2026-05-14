@@ -87,6 +87,8 @@ class WordMastery(models.Model):
     lang_code    = models.CharField(max_length=5, blank=True)
     tier         = models.CharField(max_length=12, choices=TIER_CHOICES, default=TIER_BRONZE)
     streak       = models.PositiveSmallIntegerField(default=0)
+    error_count  = models.PositiveIntegerField(default=0)
+    ever_correct = models.BooleanField(default=False)
     last_seen_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -96,18 +98,23 @@ class WordMastery(models.Model):
     def __str__(self):
         return f"{self.user} — {self.word_id} ({self.tier}, streak={self.streak})"
 
+    # Erros acumulados sem nunca acertar → libera item degradado
+    ERRORS_TO_DEGRADE = 5
+
     def record_answer(self, correct: bool) -> bool:
-        """Update streak/tier. Returns True if tier was promoted."""
+        """Update streak/tier/error tracking. Returns True if tier was promoted."""
         from django.utils import timezone
 
         self.last_seen_at = timezone.now()
 
         if not correct:
             self.streak = 0
-            self.save(update_fields=["streak", "last_seen_at"])
+            self.error_count += 1
+            self.save(update_fields=["streak", "error_count", "last_seen_at"])
             return False
 
         self.streak += 1
+        self.ever_correct = True
         threshold = self.STREAK_TO_ADVANCE.get(self.tier)
         promoted = False
 
@@ -118,8 +125,13 @@ class WordMastery(models.Model):
                 self.streak = 0
                 promoted = True
 
-        self.save(update_fields=["tier", "streak", "last_seen_at"])
+        self.save(update_fields=["tier", "streak", "ever_correct", "last_seen_at"])
         return promoted
+
+    @property
+    def should_degrade(self) -> bool:
+        """Palavra errada o bastante e nunca acertada → item pleno vira degradado."""
+        return self.error_count >= self.ERRORS_TO_DEGRADE and not self.ever_correct
 
 
 # ─── Adventure flags — personalization signals ────────────────────────────────

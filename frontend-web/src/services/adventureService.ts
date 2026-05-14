@@ -113,4 +113,35 @@ export const adventureService = {
       method: "POST",
       body: JSON.stringify({ score }),
     }),
+
+  // ── Item dynamics (item_moment + chest) ────────────────────────────────────
+
+  listInventoryByTag: (tag: string) =>
+    apiRequest<{ tag: string; items: ApiUserInventoryItem[] }>(
+      `/adventure/inventory/by-tag/?tag=${encodeURIComponent(tag)}`,
+    ),
+
+  listLockedItems: (chapterSlug?: string) =>
+    apiRequest<{ locked: Array<ApiAdventureItem & { unlock_hint_word_id: string }> }>(
+      `/adventure/inventory/locked/${chapterSlug ? `?chapter=${chapterSlug}` : ""}`,
+    ),
+
+  useByTag: (tag: string) =>
+    apiRequest<{
+      used_item:   ApiAdventureItem;
+      is_degraded: boolean;
+      consumed:    boolean;
+    }>("/adventure/inventory/use-by-tag/", {
+      method: "POST",
+      body:   JSON.stringify({ tag }),
+    }),
+
+  openPhaseChest: (phaseId: number) =>
+    apiRequest<{
+      from_chest:    true;
+      chest_tier:    string;
+      rolled_rarity: string | null;
+      phase_score?:  number;
+      earned_item:   ApiAdventureItem | null;
+    }>(`/adventure/phases/${phaseId}/open-chest/`, { method: "POST" }),
 };

@@ -23,6 +23,7 @@ from .models import (
     PhaseSection,
     UserCharacterMet,
     UserInventoryItem,
+    UserItemQueue,
 )
 from .serializers import (
     AdventureCharacterSerializer,
@@ -345,6 +346,122 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             "streak":            streak_data,
         })
 
+    # ── Sistema de baú estilo Clash Royale ──────────────────────────────────
+    # 1. Score da fase → TIER do baú (jogar bem = baú melhor)
+    # 2. Tier do baú → DROP RATE: sorteia a raridade do item (nunca garantido)
+    # 3. Raridade sorteada → item elegível: word-linked raros/épicos só caem
+    #    pra quem dominou a palavra (WordMastery). Comuns caem pra todos.
+    # 4. Sem repetição: se o user já tem todos daquela raridade, desce um nível.
+    #    Pool grande >> nº de baús → cada usuário termina com mochila diferente.
+
+    _SCORE_TO_CHEST_TIER = [
+        (95, "lendario"),
+        (85, "epico"),
+        (70, "raro"),
+        (0,  "comum"),
+    ]
+
+    _CHEST_DROP_RATES = {
+        # tier do baú : { raridade do item : peso }
+        "comum":    {"comum": 75, "raro": 22, "epico": 3,  "lendario": 0},
+        "raro":     {"comum": 40, "raro": 42, "epico": 16, "lendario": 2},
+        "epico":    {"comum": 15, "raro": 38, "epico": 35, "lendario": 12},
+        "lendario": {"comum": 5,  "raro": 25, "epico": 40, "lendario": 30},
+    }
+
+    _RARITY_DESCENDING = ["lendario", "epico", "raro", "comum"]
+
+    # Raridades cujos itens word-linked só caem se o user dominou a palavra.
+    # Comuns nunca filtram (jogador iniciante não pode ficar com mochila vazia).
+    _WORD_GATED_RARITIES = {"raro", "epico", "lendario"}
+
+    @action(detail=True, methods=["post"], url_path="open-chest")
+    def open_chest(self, request, pk=None):
+        """
+        Abre baú da fase (se has_chest=True). Estilo Clash Royale:
+        score da fase decide o tier do baú · tier sorteia a raridade do
+        item por drop rate · raridade entrega item elegível que o user
+        ainda não tem. Dois usuários terminam com mochilas diferentes.
+        """
+        phase = self.get_object()
+        if not phase.has_chest:
+            return Response(
+                {"detail": "Esta fase não tem baú."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        chapter = phase.chapter
+
+        # ── 1. Score da fase → tier do baú ───────────────────────────────────
+        completion = AdventurePhaseCompletion.objects.filter(
+            user=request.user, phase=phase,
+        ).first()
+        score = completion.score if completion else 0
+        chest_tier = next(t for floor, t in self._SCORE_TO_CHEST_TIER if score >= floor)
+
+        # ── 2. Tier do baú → sorteia raridade do item por drop rate ──────────
+        rates = self._CHEST_DROP_RATES[chest_tier]
+        rarities = list(rates.keys())
+        weights  = list(rates.values())
+        rolled_rarity = random.choices(rarities, weights=weights, k=1)[0]
+
+        # ── 3. Mastery do usuário — quais word_ids ele domina ────────────────
+        mastered_word_ids = set(
+            WordMastery.objects.filter(user=request.user)
+            .values_list("word_id", flat=True)
+        )
+
+        # ── 4. Itens que o user já tem (não repetir) ─────────────────────────
+        owned_item_ids = set(
+            UserInventoryItem.objects.filter(user=request.user)
+            .values_list("item_id", flat=True)
+        )
+
+        def eligible_items(rarity):
+            qs = AdventureItem.objects.filter(
+                chapter=chapter, rarity=rarity, is_degraded=False,
+                source_phase__isnull=True,
+            ).exclude(id__in=owned_item_ids)
+            items = []
+            for it in qs:
+                # word-linked raros/épicos/lendários: só se dominou a palavra
+                if (rarity in self._WORD_GATED_RARITIES
+                        and it.word_id
+                        and it.word_id not in mastered_word_ids):
+                    continue
+                items.append(it)
+            return items
+
+        # ── 5. Desce de raridade se a sorteada estiver esgotada ──────────────
+        item = None
+        start_idx = self._RARITY_DESCENDING.index(rolled_rarity)
+        for rarity in self._RARITY_DESCENDING[start_idx:]:
+            candidates = eligible_items(rarity)
+            if candidates:
+                item = random.choice(candidates)
+                rolled_rarity = rarity
+                break
+
+        if item is None:
+            # User já tem tudo elegível — sem item, mas não é erro de fluxo
+            return Response({
+                "from_chest":  True,
+                "chest_tier":  chest_tier,
+                "rolled_rarity": None,
+                "earned_item": None,
+                "detail": "Coleção desta raridade completa.",
+            })
+
+        UserInventoryItem.objects.get_or_create(user=request.user, item=item)
+
+        return Response({
+            "from_chest":    True,
+            "chest_tier":    chest_tier,    # tier do baú (do score)
+            "rolled_rarity": rolled_rarity, # raridade que saiu no sorteio
+            "phase_score":   score,
+            "earned_item":   AdventureItemSerializer(item).data,
+        })
+
     @action(detail=True, methods=["get"], url_path="sections")
     def sections(self, request, pk=None):
         phase = self.get_object()
@@ -532,8 +649,10 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
         # Award item tied to this word_id on first correct answer
         earned_item_data = None
+        degraded_item_data = None
         if correct:
-            item = AdventureItem.objects.filter(word_id=word_id).first()
+            # Acerto: entrega o item pleno (não-degradado) ligado à palavra.
+            item = AdventureItem.objects.filter(word_id=word_id, is_degraded=False).first()
             if item:
                 inv, item_created = UserInventoryItem.objects.get_or_create(
                     user=request.user, item=item
@@ -547,16 +666,42 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                         "rarity": item.rarity,
                         "action": item.action,
                     }
+            # Palavra finalmente dominada → remove a versão degradada da mochila.
+            degraded = AdventureItem.objects.filter(word_id=word_id, is_degraded=True).first()
+            if degraded:
+                UserInventoryItem.objects.filter(
+                    user=request.user, item=degraded
+                ).delete()
+        else:
+            # Erro: se passou do limite e nunca acertou, libera versão degradada.
+            if mastery.should_degrade:
+                degraded = AdventureItem.objects.filter(word_id=word_id, is_degraded=True).first()
+                if degraded:
+                    _, deg_created = UserInventoryItem.objects.get_or_create(
+                        user=request.user, item=degraded
+                    )
+                    if deg_created:
+                        degraded_item_data = {
+                            "slug":   degraded.slug,
+                            "emoji":  degraded.emoji,
+                            "name":   degraded.name,
+                            "lore":   degraded.lore,
+                            "rarity": degraded.rarity,
+                            "action": degraded.action,
+                            "is_degraded": True,
+                        }
 
         return Response({
-            "word_id":    mastery.word_id,
-            "target":     mastery.target,
-            "native":     mastery.native,
-            "tier":       mastery.tier,
-            "streak":     mastery.streak,
-            "promoted":   promoted,
-            "created":    created,
-            "earned_item": earned_item_data,
+            "word_id":      mastery.word_id,
+            "target":       mastery.target,
+            "native":       mastery.native,
+            "tier":         mastery.tier,
+            "streak":       mastery.streak,
+            "error_count":  mastery.error_count,
+            "promoted":     promoted,
+            "created":      created,
+            "earned_item":  earned_item_data,
+            "degraded_item": degraded_item_data,
         })
 
 
@@ -728,3 +873,98 @@ class UserInventoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         inv.used_at = timezone.now()
         inv.save(update_fields=["is_used", "used_at"])
         return Response(UserInventoryItemSerializer(inv).data)
+
+    @action(detail=False, methods=["get"], url_path="locked")
+    def locked(self, request):
+        """
+        Itens "vistos mas ainda não conquistados" — a palavra ligada ao item
+        já apareceu pro usuário (existe WordMastery) mas ele não tem o item.
+        A Mochila mostra estes em cinza com cadeado: 'acerte X para desbloquear'.
+
+        Query opcional: ?chapter=es-a1-t1
+        """
+        chapter_slug = request.query_params.get("chapter")
+
+        seen_word_ids = set(
+            WordMastery.objects.filter(user=request.user)
+            .values_list("word_id", flat=True)
+        )
+        owned_item_ids = set(
+            UserInventoryItem.objects.filter(user=request.user)
+            .values_list("item_id", flat=True)
+        )
+
+        qs = AdventureItem.objects.filter(word_id__in=seen_word_ids, is_degraded=False)
+        if chapter_slug:
+            qs = qs.filter(chapter__slug=chapter_slug)
+        qs = qs.exclude(id__in=owned_item_ids).order_by("rarity", "order")
+
+        return Response({
+            "locked": [
+                {
+                    **AdventureItemSerializer(it).data,
+                    "unlock_hint_word_id": it.word_id,
+                }
+                for it in qs
+            ],
+        })
+
+    @action(detail=False, methods=["get"], url_path="by-tag")
+    def by_tag(self, request):
+        """
+        Lista itens da mochila do usuário com uma tag específica.
+        Usado pelo frontend ANTES de renderizar item_moment, pra saber se
+        o player tem algo daquela categoria. Prioridade: item pleno > degradado.
+
+        Query: ?tag=comida
+        """
+        tag = request.query_params.get("tag", "").strip()
+        if not tag:
+            return Response({"items": []})
+
+        qs = UserInventoryItem.objects.filter(
+            user=request.user, is_used=False, item__item_tag=tag,
+        ).select_related("item").order_by("item__is_degraded", "item__order")
+
+        return Response({
+            "tag":   tag,
+            "items": UserInventoryItemSerializer(qs, many=True).data,
+        })
+
+    @action(detail=False, methods=["post"], url_path="use-by-tag")
+    def use_by_tag(self, request):
+        """
+        Resolve um item_moment consumindo o primeiro item da mochila com
+        a tag pedida. Prioriza item pleno sobre degradado. Marca como usado.
+
+        Body: {"tag": "comida"}
+        """
+        tag = request.data.get("tag", "").strip()
+        if not tag:
+            return Response({"detail": "tag required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        inv = (
+            UserInventoryItem.objects
+            .filter(user=request.user, is_used=False, item__item_tag=tag)
+            .select_related("item")
+            .order_by("item__is_degraded", "item__order")
+            .first()
+        )
+        if not inv:
+            return Response(
+                {"detail": f"Nenhum item com tag '{tag}' na mochila."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Apenas items consumíveis somem da mochila ao usar.
+        is_consumable = inv.item.action in (AdventureItem.ACTION_USAR, AdventureItem.ACTION_ENTREGAR)
+        if is_consumable:
+            inv.is_used = True
+            inv.used_at = timezone.now()
+            inv.save(update_fields=["is_used", "used_at"])
+
+        return Response({
+            "used_item":    AdventureItemSerializer(inv.item).data,
+            "is_degraded":  inv.item.is_degraded,
+            "consumed":     is_consumable,
+        })

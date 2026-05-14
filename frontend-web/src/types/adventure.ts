@@ -109,8 +109,9 @@ export interface ApiAdventureCharacter {
 
 // ─── Items / Inventory ────────────────────────────────────────────────────────
 
-export type ItemRarity = "comum" | "raro" | "epico" | "lendario";
+export type ItemRarity = "comum" | "raro" | "epico" | "lendario" | "mitico";
 export type ItemAction = "examinar" | "entregar" | "usar" | "equipar";
+export type ItemTag    = "comida" | "bebida" | "arma" | "documento" | "moneda" | "remedio" | "comum" | "";
 
 export interface ApiAdventureItem {
   id: number;
@@ -123,6 +124,9 @@ export interface ApiAdventureItem {
   order: number;
   source_phase_number: number | null;
   source_character_name: string | null;
+  word_id?: string;
+  item_tag?: ItemTag;
+  is_degraded?: boolean;
 }
 
 export interface ApiUserInventoryItem {

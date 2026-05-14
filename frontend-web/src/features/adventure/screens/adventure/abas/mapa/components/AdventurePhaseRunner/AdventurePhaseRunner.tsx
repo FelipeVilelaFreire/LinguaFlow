@@ -69,7 +69,23 @@ export default function AdventurePhaseRunner({
     if (sectionIdx >= sections.length - 1) {
       try {
         const result = await adventureService.completePhase(phaseId, Math.max(0, 100 - sectionMistakes * 5));
-        setEarnedItem(result.earned_item ?? null);
+        let chestEarned: EarnedItemData | null = null;
+        try {
+          const chestRes = await adventureService.openPhaseChest(phaseId);
+          if (chestRes.earned_item) {
+            chestEarned = {
+              slug:   chestRes.earned_item.slug,
+              emoji:  chestRes.earned_item.emoji,
+              name:   chestRes.earned_item.name,
+              lore:   chestRes.earned_item.lore,
+              rarity: chestRes.earned_item.rarity,
+              action: chestRes.earned_item.action,
+            };
+          }
+        } catch {
+          // phase has_chest=false — silent
+        }
+        setEarnedItem(chestEarned ?? result.earned_item ?? null);
         setServerWords(result.key_words ?? []);
         setStreakData(result.streak ?? null);
       } catch {

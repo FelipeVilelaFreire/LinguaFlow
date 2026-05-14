@@ -63,6 +63,19 @@ class AdventurePhase(models.Model):
         (PHASE_TYPE_BOSS,   "Boss"),
     ]
 
+    CHEST_TIER_COMUM    = "comum"
+    CHEST_TIER_RARO     = "raro"
+    CHEST_TIER_EPICO    = "epico"
+    CHEST_TIER_LENDARIO = "lendario"
+    CHEST_TIER_MITICO   = "mitico"
+    CHEST_TIER_CHOICES = [
+        (CHEST_TIER_COMUM,    "Comum"),
+        (CHEST_TIER_RARO,     "Raro"),
+        (CHEST_TIER_EPICO,    "Épico"),
+        (CHEST_TIER_LENDARIO, "Lendário"),
+        (CHEST_TIER_MITICO,   "Mítico"),
+    ]
+
     chapter = models.ForeignKey(AdventureChapter, related_name="phases", on_delete=models.CASCADE)
     number = models.PositiveIntegerField()
     title = models.CharField(max_length=140)
@@ -73,6 +86,8 @@ class AdventurePhase(models.Model):
     phrase_count = models.PositiveIntegerField(default=6)
     phase_type = models.CharField(max_length=10, choices=PHASE_TYPE_CHOICES, default=PHASE_TYPE_STORY)
     is_boss = models.BooleanField(default=False)
+    has_chest = models.BooleanField(default=False)
+    chest_tier = models.CharField(max_length=10, choices=CHEST_TIER_CHOICES, blank=True, default="")
 
     class Meta:
         ordering = ["number"]
@@ -178,6 +193,15 @@ class AdventureItem(models.Model):
         (ACTION_EQUIPAR,  "Equipar"),
     ]
 
+    # Tags para item_moment — qualquer item com a tag matching pode ser usado
+    TAG_COMIDA    = "comida"
+    TAG_BEBIDA    = "bebida"
+    TAG_ARMA      = "arma"
+    TAG_DOCUMENTO = "documento"
+    TAG_MONEDA    = "moneda"
+    TAG_REMEDIO   = "remedio"
+    TAG_COMUM     = "comum"
+
     chapter      = models.ForeignKey(AdventureChapter, related_name="items", on_delete=models.CASCADE)
     slug         = models.SlugField(max_length=80)
     emoji        = models.CharField(max_length=10)
@@ -186,6 +210,12 @@ class AdventureItem(models.Model):
     rarity       = models.CharField(max_length=10, choices=RARITY_CHOICES, default=RARITY_COMUM)
     action       = models.CharField(max_length=10, choices=ACTION_CHOICES, default=ACTION_EXAMINAR)
     word_id      = models.CharField(max_length=60, blank=True, default="")
+    item_tag     = models.CharField(max_length=20, blank=True, default="")
+    is_degraded  = models.BooleanField(default=False)
+    degrades_to  = models.ForeignKey(
+        "self", related_name="degraded_versions",
+        on_delete=models.SET_NULL, null=True, blank=True,
+    )
     source_phase = models.ForeignKey(
         AdventurePhase, related_name="reward_items",
         on_delete=models.SET_NULL, null=True, blank=True,
@@ -263,3 +293,37 @@ class AdventurePhaseCompletion(models.Model):
 
     def __str__(self):
         return f"{self.user} — {self.phase} ({self.score}%)"
+
+
+# ─── Item Queue (shuffle por usuário) ─────────────────────────────────────────
+
+class UserItemQueue(models.Model):
+    """
+    Cada usuário tem uma fila embaralhada por tier de baú em cada capítulo.
+    No início da temporada, embaralha pool de items[tier] e guarda a ordem.
+    A cada baú aberto, entrega item[next_index] e incrementa.
+    No fim da temporada, todo jogador tem a coleção completa — mas viveu
+    em ordem diferente.
+    """
+    TIER_CHOICES = AdventurePhase.CHEST_TIER_CHOICES
+
+    user             = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="item_queues", on_delete=models.CASCADE)
+    chapter          = models.ForeignKey(AdventureChapter, related_name="user_queues", on_delete=models.CASCADE)
+    tier             = models.CharField(max_length=10, choices=TIER_CHOICES)
+    ordered_item_ids = models.JSONField(default=list)
+    next_index       = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ("user", "chapter", "tier")
+
+    def __str__(self):
+        return f"{self.user} — {self.chapter.slug} — {self.tier} ({self.next_index}/{len(self.ordered_item_ids)})"
+
+    def pop_next(self):
+        """Returns the next item_id to deliver, or None if queue exhausted."""
+        if self.next_index >= len(self.ordered_item_ids):
+            return None
+        item_id = self.ordered_item_ids[self.next_index]
+        self.next_index += 1
+        self.save(update_fields=["next_index"])
+        return item_id

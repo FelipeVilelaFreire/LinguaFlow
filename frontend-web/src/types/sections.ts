@@ -19,6 +19,33 @@ export type NarrativaBeat =
 
 // ── Step types — all step-based sections ─────────────────────────────────────
 
+// ── Item moment — usar item da mochila durante uma fase ─────────────────────
+// O renderer chama o backend (use-by-tag) para ver se o player tem item da tag.
+// Se tiver: mostra "Usar" (✓ pleno ou ⚠️ degradado).
+// Se não: mostra "Tentar recuperar" (mini-exercício) ou "Pular".
+
+export type ItemBonusKind =
+  | "skip_exercise"        // pula o próximo exercício
+  | "extra_dialogue"       // libera uma fala extra do NPC
+  | "relationship_boost"   // +afinidade com NPC
+  | "reduce_gated";        // S6 ganha 1 chance de erro a mais
+
+export interface ItemMomentStep {
+  kind:        "item_moment";
+  npc:         string;
+  situation:   string;          // texto narrativo do momento
+  npc_line:    string;          // fala do NPC sugerindo o uso
+  item_tag:    string;          // tag necessária (comida/bebida/...)
+  on_use: {
+    narrative:    string;        // o que aparece quando usa
+    npc_reaction: string;
+    bonus:        ItemBonusKind;
+  };
+  on_skip: {
+    npc_reaction: string;        // NPC aceita sem item — sem punição
+  };
+}
+
 export type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
@@ -30,7 +57,8 @@ export type SectionStep =
   | { kind: "multiple_choice"; question: string; options: Array<{ id: string; text: string }>; correct: string; explanation?: string; word_id?: string; target?: string; native?: string; tier?: WordTier; npc?: string; npc_reaction?: string }
   | { kind: "fill_blank";      prompt: string; answer: string }
   | { kind: "translate";       source: string; answer: string }
-  | { kind: "write_word";      prompt: string; word_id: string; answer: string; tier: Extract<WordTier, "diamante" | "esmeralda">; hint?: string };
+  | { kind: "write_word";      prompt: string; word_id: string; answer: string; tier: Extract<WordTier, "diamante" | "esmeralda">; hint?: string }
+  | ItemMomentStep;
 
 // ── Section recap — "Me relembre onde paramos" card, triggered by the player ──
 // `story` is a narrative continuation of what literally happened in the

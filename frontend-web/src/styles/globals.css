@@ -158,6 +158,28 @@ input {
   }
 }
 
+/* Item saindo da mochila — usado no botão "Usar item" do item_moment.
+   O item dá um salto curto e desaparece, como se fosse entregue ao NPC. */
+@keyframes itemFlyOut {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: translateY(-14px) scale(1.18);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px) scale(0.4);
+    opacity: 0;
+  }
+}
+
+.item-fly-out {
+  animation: itemFlyOut 620ms cubic-bezier(0.4, 0, 0.2, 1) both;
+  pointer-events: none;
+}
+
 @keyframes celebrationRise {
   0% {
     opacity: 0;
