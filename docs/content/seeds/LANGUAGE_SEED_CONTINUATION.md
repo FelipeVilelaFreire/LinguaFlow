@@ -146,6 +146,14 @@ Basic cleanup already done:
 
 Italian T1 is complete through `f25`.
 
+ES study seed is no longer missing.
+
+```text
+backend/apps/learning/management/commands/seed_es_study.py
+```
+
+It creates ES study modules, 8 scenarios, 120 phrases, and 25 canonical StudyDays. The ES bats already call it. The remaining study-seed question is whether IT and DE should get equivalent `seed_it_study.py` and `seed_de_study.py` commands, ideally extracted into `backend/apps/learning/seeds/`.
+
 German has now been rebuilt with the same operational rule:
 
 - ES A1 T1 remains the matrix.

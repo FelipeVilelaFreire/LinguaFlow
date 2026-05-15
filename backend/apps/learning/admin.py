@@ -29,9 +29,9 @@ class PhraseAdmin(admin.ModelAdmin):
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ("id", "day_number", "scenario", "title", "video_duration")
+    list_display = ("id", "day_number", "scenario", "title", "objective", "video_duration")
     list_filter = ("scenario",)
-    search_fields = ("title", "video_title", "video_url")
+    search_fields = ("title", "objective", "explanation", "video_title", "video_url")
     autocomplete_fields = ("scenario", "phrases")
     ordering = ("day_number", "id")
 

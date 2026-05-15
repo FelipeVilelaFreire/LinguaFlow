@@ -513,7 +513,7 @@ SECTIONS = [
                     "kind": "reveal",
                     "phrase": "El (de hombre) · La (de mujer)",
                     "meaning": "Palavrinhas que vão na fronte da coisa.",
-                    "note": "cada palabra del español es 'de hombre' o 'de mujer'. No hay neutro.",
+                    "note": "cada palavra italiana tem gênero: masculina ou feminina. Aqui o neutro não entra.",
                 },
                 {
                     "kind": "npc_speak",

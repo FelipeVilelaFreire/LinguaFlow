@@ -1,172 +1,166 @@
-# Study Seed ES A1 — O que precisa ser feito
+# Study Seed ES A1 - Estado Atual
+
+Este documento explica como o seed de estudo se encaixa com a aventura ES A1 T1.
 
 ## Contexto
 
-O Talkly tem dois caminhos de aprendizado paralelos e independentes:
+Talkly tem dois caminhos de aprendizado paralelos:
 
+```text
+AVENTURA -> fases narrativas + vocabulário em contexto RPG
+ESTUDO   -> sessão do dia + cenários + prática estruturada
 ```
-AVENTURA ──→ fases narrativas + vocab em contexto RPG
-                    ↕  (WordMastery compartilhado — mesmo tier)
-ESTUDO   ──→ sessão do dia + cenários + prática estruturada
+
+Os dois caminhos compartilham progresso por palavra via `WordMastery`/progresso de estudo. O usuário pode jogar só aventura, estudar só pelo modo Estudo, ou usar os dois juntos.
+
+## Estado Atual
+
+O seed de estudo ES A1 já existe:
+
+```text
+backend/apps/learning/management/commands/seed_es_study.py
 ```
 
-- O usuário pode seguir só a aventura, só o estudo, ou os dois.
-- O estudo **mostra onde o usuário está na aventura** como referência visual — mas não depende dela para funcionar.
-- O `WordMastery` (tier: bronze → esmeralda) é **compartilhado**: acertar uma palavra na aventura avança o tier dela no estudo também, e vice-versa.
+Esse comando cria:
 
----
+- 5 módulos de estudo
+- 8 cenários temáticos
+- 120 frases ES A1
+- 25 `StudyDay` canônicos alinhados às fases ES A1 T1
+- 25 explicações curtas com objetivo e notas de exercício
 
-## O problema atual
+Os bats de ES já chamam esse seed:
 
-O app `learning/` (cenários, frases, lições) **não tem conteúdo para ES A1**. O seed existente cobre IT ou DE. Sem esse seed, o modo Estudo mostra tela vazia para quem escolheu Espanhol.
+```text
+backend/bats/idiomas/es.bat
+backend/bats/seeds/es.bat
+```
 
----
+Importante: seed de estudo pertence ao app `learning/`, não ao app `adventure/`.
 
-## O que precisa ser criado
+## Cenários ES A1
 
-### 1. Cenários ES A1 (`Scenario`)
+O seed atual cobre estes cenários:
 
-8–10 cenários temáticos, alinhados com os temas das fases da aventura:
+| Cenário | Slug | Fases relacionadas |
+|---|---|---|
+| Social | `es-social` | F1, F7, F13 |
+| Comida e bebida | `es-comida` | F2, F9 |
+| Lugares | `es-lugares` | F3 |
+| Mercado e números | `es-mercado` | F4 |
+| Salud | `es-salud` | F8 |
+| Trabajo | `es-trabalho` | apoio temático do pueblo |
+| Historia | `es-historia` | F6, F12, F14, F16-F19, F21-F22 |
+| Desafío | `es-desafio` | F5, F10-F11, F15, F20, F23-F25 |
 
-| Cenário | Slug | Fases da aventura que se relacionam |
-|---------|------|-------------------------------------|
-| Saudações e apresentações | `es-saudacoes` | F1 (hola, buenos días, me llamo) |
-| Comida e bebida | `es-comida` | F2 (pan, agua, tengo hambre) |
-| Natureza e ambiente | `es-natureza` | F3 (árbol, piedra, río, flor) |
-| Mercado e números | `es-mercado` | F4 (naranja, uno/dos/tres, mucho/poco) |
-| Emoções e sensações | `es-emocoes` | F5 (miedo, bien/mal, cansado) |
-| Lugares e direções | `es-lugares` | F6+ (aquí, allá, cerca, lejos) |
-| Família e pessoas | `es-pessoas` | F7+ (amigo, señor, señora) |
-| Tempo e clima | `es-tempo` | F8+ (hoy, mañana, hace calor) |
+Esses slugs são os mesmos usados pela aventura em:
 
-### 2. Frases por cenário (`Phrase`)
+```text
+backend/apps/adventure/seeds/es/chapter.py
+```
 
-~15 frases por cenário. Campos obrigatórios:
+O comando remove os slugs e módulos legados do seed antigo (`es-saudacoes`, `es-natureza`, `es-emocoes`, `es-pessoas`, `es-tempo`; `O Mundo Natural`, `Dentro de Você`, `Pessoas e Tempo`, `Pueblo e Mercado`, `Mistério e Decisão`) para manter o banco alinhado ao cânone atual.
+
+## Módulos ES A1
+
+| Módulo | Conteúdo |
+|---|---|
+| Primeiros Passos | `es-social`, `es-comida` |
+| Orientação e Mercado | `es-lugares`, `es-mercado` |
+| Cuidado e Ofícios | `es-salud`, `es-trabalho` |
+| Memória e Segredos | `es-historia` |
+| Julgamento e Desafio | `es-desafio` |
+
+Cada cenário tem 15 frases, com:
+
 - `source_language`: PT
 - `target_language`: ES
-- `source_text`: frase em português
-- `target_text`: frase em espanhol
-- `category`: ex. `"saudacao"`, `"comida"`, `"numero"`
-- `difficulty`: `"A1"`
-- `scenario`: FK para o cenário acima
+- `source_text`: português
+- `target_text`: espanhol
+- `difficulty`: A1
+- `scenario`: cenário temático
 
-Exemplo para `es-saudacoes`:
-```python
-{ "source": "Olá",                    "target": "Hola" },
-{ "source": "Bom dia",                "target": "Buenos días" },
-{ "source": "Boa tarde",              "target": "Buenas tardes" },
-{ "source": "Boa noite",              "target": "Buenas noches" },
-{ "source": "Como vai você?",         "target": "¿Cómo estás?" },
-{ "source": "Eu estou bem",           "target": "Estoy bien" },
-{ "source": "Qual é o seu nome?",     "target": "¿Cómo te llamas?" },
-{ "source": "Meu nome é...",          "target": "Me llamo..." },
-{ "source": "Com licença",            "target": "Con permiso" },
-{ "source": "Desculpe",               "target": "Perdón" },
-{ "source": "Por favor",              "target": "Por favor" },
-{ "source": "Obrigado",               "target": "Gracias" },
-{ "source": "De nada",                "target": "De nada" },
-{ "source": "Até logo",               "target": "Hasta luego" },
-{ "source": "Tchau",                  "target": "Adiós" },
+## StudyDays
+
+O comando `seed_es_study` cria 25 dias canônicos:
+
+```text
+ES A1 T1 Dia 01: <titulo da fase 1>
+...
+ES A1 T1 Dia 25: <titulo da fase 25>
 ```
 
-### 3. Lições (`Lesson`) — opcional para MVP
+Cada dia usa o `scenario_slug` da fase ES correspondente em:
 
-Uma lição agrupa um cenário com suas frases + metadados de sessão. Para MVP, cada cenário pode virar automaticamente uma lição com `day_number` sequencial.
-
-### 4. O arquivo seed
-
-Criar: `backend/apps/adventure/management/commands/seed_es_study.py`
-
-```python
-from django.core.management.base import BaseCommand
-from apps.learning.models import Language, Scenario, Phrase
-
-class Command(BaseCommand):
-    help = "Seed study content for ES A1 (scenarios + phrases)"
-
-    def handle(self, *args, **options):
-        pt = Language.objects.get(code="PT")
-        es = Language.objects.get(code="ES")
-
-        SCENARIOS = [
-            {
-                "slug": "es-saudacoes",
-                "title": "Saudações",
-                "description": "Como cumprimentar e se apresentar",
-                "phrases": [
-                    ("Olá", "Hola"),
-                    ("Bom dia", "Buenos días"),
-                    # ... etc
-                ],
-            },
-            # ... outros cenários
-        ]
-
-        for s_data in SCENARIOS:
-            scenario, _ = Scenario.objects.update_or_create(
-                slug=s_data["slug"],
-                defaults={"title": s_data["title"], "description": s_data["description"]},
-            )
-            for source_text, target_text in s_data["phrases"]:
-                Phrase.objects.update_or_create(
-                    source_language=pt,
-                    target_language=es,
-                    source_text=source_text,
-                    defaults={
-                        "target_text": target_text,
-                        "difficulty": "A1",
-                        "scenario": scenario,
-                    },
-                )
+```text
+backend/apps/adventure/seeds/es/chapter.py
 ```
 
----
+O objetivo é que Estudo acompanhe a trilha da Aventura sem depender dela para funcionar.
 
-## Alinhamento temático aventura ↔ estudo
+Cada `Lesson` diária também recebe:
 
-O vocabulário do estudo **deve ser um superconjunto** do vocabulário da aventura no mesmo tema — nunca exatamente igual. O estudo vai mais fundo em cada tema enquanto a aventura dá o contexto narrativo.
+- `objective`: o objetivo pedagógico daquele dia.
+- `explanation`: explicação curta conectando a fase da aventura à prática.
+- `exercise_notes`: instruções rápidas para guiar escrita, escolha, lacuna, ordem de palavras e revisão.
 
-| Aventura F1 introduz | Estudo `es-saudacoes` cobre |
-|---------------------|----------------------------|
-| hola, buenos días, buenas tardes, gracias, de nada, me llamo, ¿cómo estás?, bien | + boa noite, perdón, por favor, hasta luego, adiós, con permiso, estoy mal |
+## Ordem De Execução
 
----
-
-## Ordem de execução dos seeds
+Via Django:
 
 ```bash
-# 1. Linguagens (já existem)
 python manage.py seed_languages
-
-# 2. Aventura ES A1
-python manage.py seed_es_full
-python manage.py seed_es_f1_sections
-python manage.py seed_es_f2_sections
-python manage.py seed_es_f3_sections
-python manage.py seed_es_f4_sections
-python manage.py seed_es_f5_sections
-
-# 3. Estudo ES A1 (a criar)
+python manage.py seed_es
+python manage.py seed_es_sections --reset
 python manage.py seed_es_study
 ```
 
----
+Via bat:
 
-## Estimativa de esforço
-
-| Item | Complexidade | Notas |
-|------|-------------|-------|
-| Escrever as frases dos 8 cenários (~120 frases) | Média | Conteúdo A1, simples |
-| Criar `seed_es_study.py` | Baixa | Segue padrão dos outros seeds |
-| Conectar `StudyDayViewSet` com ES | Baixa | Verificar se `GET /study-days/today/` filtra por idioma do goal |
-| Testar fluxo completo | Baixa | Rodar seed + testar `GET /scenarios/` + `GET /phrases/?scenario=es-saudacoes` |
-
----
+```bat
+backend\bats\idiomas\es.bat
+backend\bats\seeds\es.bat
+```
 
 ## Status
 
-- [x] Modo Aventura ES A1 — seed F1–F5 criado
-- [x] Modo Estudo — SRS session conectado ao WordMastery da aventura
-- [x] StudyScreen conectado à API (due_count real, progresso real por capítulo)
-- [ ] **Seed de cenários + frases ES A1 para o modo Estudo** ← próximo passo
-- [ ] Conectar `Sessão do Dia` ao conteúdo ES A1 (hoje usa IT/DE)
+- [x] Aventura ES A1 T1 criada de F1 a F25.
+- [x] Modo Estudo conectado à API.
+- [x] `seed_es_study.py` cria módulos, cenários, frases, explicações e StudyDays para ES A1.
+- [x] `StudyDayViewSet.today` filtra pelo idioma da meta ativa.
+- [x] Bats ES chamam `seed_es_study`.
+- [ ] Validar localmente o fluxo completo com banco populado.
+- [ ] Decidir se vamos criar `seed_it_study.py` e `seed_de_study.py`.
+
+## Próximo Passo Recomendado
+
+Hoje só existe seed de estudo completo para ES. Como agora também temos aventura IT e DE, o próximo trabalho natural é criar study seeds equivalentes:
+
+```text
+backend/apps/learning/management/commands/seed_it_study.py
+backend/apps/learning/management/commands/seed_de_study.py
+```
+
+Para manter o padrão organizado, prefira extrair os dados e a lógica para:
+
+```text
+backend/apps/learning/seeds/
+  __init__.py
+  study_runner.py
+  es.py
+  it.py
+  de.py
+```
+
+Depois os comandos ficariam finos, igual aos comandos de aventura.
+
+## Regra De Qualidade
+
+O estudo deve ser um superconjunto útil do vocabulário da aventura, não uma cópia exata.
+
+Exemplo: se a aventura F1 introduz `hola`, `buenos días`, `me llamo`, o estudo `es-social` também pode incluir `mucho gusto`, `siéntate`, `hasta luego`, família e convívio básico do pueblo.
+
+Para IT/DE, seguir a mesma ideia:
+
+- `pt -> it`: suporte em português, frases em italiano.
+- `en -> de`: suporte em inglês, frases em alemão.

@@ -63,8 +63,19 @@ export default function LessonCard({
           </p>
           <h2 className="mt-4 text-2xl font-semibold leading-tight text-slate-950 md:text-5xl">{exercise.prompt}</h2>
           <p className="mt-3 max-w-2xl font-medium leading-7 text-slate-600">
-            Primeiro veja o contexto e as frases principais. Depois a pratica vai cobrar exatamente esse conteudo e revisoes anteriores.
+            {exercise.explanation || "Primeiro veja o contexto e as frases principais. Depois a pratica vai cobrar exatamente esse conteudo e revisoes anteriores."}
           </p>
+
+          {exercise.exercise_notes?.length ? (
+            <div className="mt-5 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
+              <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary)" }}>Como praticar</p>
+              <ul className="mt-3 grid gap-2">
+                {exercise.exercise_notes.map((note) => (
+                  <li key={note} className="text-sm font-medium leading-6 text-slate-600">{note}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div className="mt-6 grid gap-3">
             {(exercise.preview_phrases ?? []).map((preview, index) => (

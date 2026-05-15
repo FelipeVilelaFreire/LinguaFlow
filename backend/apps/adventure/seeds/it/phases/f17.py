@@ -508,7 +508,7 @@ SECTIONS = [
                         {"text": "TODAVÍA NO ", "isKey": True},
                         {"text": "entiendo",   "isKey": False},
                     ],
-                    "example": "Ya entiendo el borgo. Todavía no entiendo a Lucia. Ya hablo poco español. Todavía no leo bene.",
+                    "example": "Già capisco il borgo. Non capisco ancora Lucia. Già parlo un po' di italiano. Non leggo ancora bene.",
                     "translation": "Já entendo o borgo. Ainda não entendo Lucia. Já falo um pouco de italiano. Ainda não leio bem.",
                     "note": "'ya' = cambio que ya pasó · 'todavía no' = cambio que falta",
                 },

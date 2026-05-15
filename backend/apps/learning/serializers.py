@@ -66,7 +66,19 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ["id", "title", "day_number", "scenario", "phrases", "video_title", "video_url", "video_duration"]
+        fields = [
+            "id",
+            "title",
+            "day_number",
+            "scenario",
+            "phrases",
+            "objective",
+            "explanation",
+            "exercise_notes",
+            "video_title",
+            "video_url",
+            "video_duration",
+        ]
 
 
 class StudyDaySerializer(serializers.ModelSerializer):
@@ -110,7 +122,9 @@ class StudyDaySerializer(serializers.ModelSerializer):
             "type": "intro",
             "prompt": obj.lesson.title,
             "answer": "",
-            "helper": f"Preview the {obj.lesson.scenario.title} lesson before practicing.",
+            "helper": obj.lesson.objective or f"Preview the {obj.lesson.scenario.title} lesson before practicing.",
+            "explanation": obj.lesson.explanation,
+            "exercise_notes": obj.lesson.exercise_notes,
             "options": [],
             "word_bank": [],
             "preview_phrases": [

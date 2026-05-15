@@ -48,6 +48,9 @@ export interface Lesson {
   day_number: number;
   scenario: Scenario;
   phrases: Phrase[];
+  objective: string;
+  explanation: string;
+  exercise_notes: string[];
   video_title: string;
   video_url: string;
   video_duration: string;
@@ -70,6 +73,8 @@ export interface PracticeItem {
   helper: string;
   options: string[];
   word_bank: string[];
+  explanation?: string;
+  exercise_notes?: string[];
   preview_phrases?: PreviewPhrase[];
   phrase: Phrase | null;
 }

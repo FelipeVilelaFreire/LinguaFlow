@@ -21,14 +21,14 @@ REGRA NARRATIVA DA F8:
 - Lucia fala apenas italiano — sem português.
 - O carinho dela é genuíno na superfície. O cálculo é por baixo.
 
-Novos vocab (3): testa · febbre · manni  (+ malato, mejor, descansa)
-Gramática nova: TRIO CENTRAL DO ESPANHOL — Lucia contrasta os 3 verbos
+Novos vocab (3): testa · febbre · mani  (+ malato, meglio, riposa)
+Gramática nova: TRIO CENTRAL DO ITALIANO — Lucia contrasta os 3 verbos
                 que o protagonista já usava sem saber separar:
-                · SOY  (identidad: sono forestiero / io sono Lucia)
-                · ESTOY (estado: sto bene / sto malato / sto mejor)
-                · TENGO (sensación + edad: ho fame / ho veinte años)
-                Também planta passado simple: 'stavo' come pasado de 'sto'.
-Revisão F1-F7:  ciao, grazie, bene/male, mi chiamo, ho X años,
+                · SONO (identidade: sono forestiero / io sono Lucia)
+                · STO  (estado: sto bene / sto male / sto meglio)
+                · HO   (sensação + idade: ho fame / ho vent'anni)
+                Também planta passado simples: 'stavo' como passado de 'sto'.
+Revisão F1-F7:  ciao, grazie, bene/male, mi chiamo, ho X anni,
                 io vado, tu vieni
 NPC principais: Lucia (entra no grupo) · Chiara · Nico · Antonio il Contadino
 Arco emocional: vulnerabilidade real → cuidado recebido → falsa segurança
@@ -669,7 +669,7 @@ SECTIONS = [
                     ],
                     "example": "Sono forestiero, ma sto cansado y ho fame.",
                     "translation": "Sou forasteiro, piu estou cansado e tenho fome.",
-                    "note": "SOY = quem você é (não muda) · ESTOY = come você está (muda) · TENGO = o que sente/tem",
+                    "note": "SONO = quem você é (não muda) · STO = come você está (muda) · HO = o que sente/tem",
                 },
                 {
                     "kind": "multiple_choice",
@@ -711,7 +711,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "it_fame", "target": "ho fame", "native": "tenho fome",
-                    "npc_reaction": "Ho. Nunca 'sto fame' — el portugués engaña aquí. En español el corpo TIENE.",
+                    "npc_reaction": "Ho. Nunca 'sto fame' — o português engana aqui. Em italiano o corpo usa avere: ho fame.",
                 },
                 {
                     "kind": "multiple_choice",
