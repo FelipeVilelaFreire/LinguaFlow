@@ -3,7 +3,7 @@ REM ============================================================================
 REM  Talkly Backend - Migrations
 REM
 REM  Cuida so do banco de dados, sem seeds.
-REM  Rode sempre que mexer em models.py.
+REM  Rode sempre que mexer em models.py ou antes de seedar aventura.
 REM ============================================================================
 
 pushd "%~dp0.."

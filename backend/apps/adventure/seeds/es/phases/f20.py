@@ -46,6 +46,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 2,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce escolhe uma resposta que nao provoca o Inspector e ganha tempo.",
+                    "fallback": "O Inspector nao se convence, mas tambem nao interrompe a proxima fala.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🍞 Padaria de Rosa · Manhã alta · Cheiro de pão fresco\n\n"

@@ -129,8 +129,9 @@ backend\bats\seeds\es.bat
 - [x] `seed_es_study.py` cria módulos, cenários, frases, explicações e StudyDays para ES A1.
 - [x] `StudyDayViewSet.today` filtra pelo idioma da meta ativa.
 - [x] Bats ES chamam `seed_es_study`.
+- [x] Bats IT/DE chamam `seed_it_study` e `seed_de_study`.
 - [ ] Validar localmente o fluxo completo com banco populado.
-- [ ] Decidir se vamos criar `seed_it_study.py` e `seed_de_study.py`.
+- [x] `seed_it_study.py` e `seed_de_study.py` criam estudo canonico para IT e DE.
 
 ## Próximo Passo Recomendado
 

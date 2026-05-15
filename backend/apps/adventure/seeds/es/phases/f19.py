@@ -45,6 +45,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 2,
+                    "uses_item_tag": "documento",
+                    "success": "Voce junta carta, palavra e norte antes do grupo dizer em voz alta.",
+                    "fallback": "A carta ainda parece fragmentada, mas Sofia guarda a pista e a leitura continua.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌄 Casa de Don Miguel · Amanhecer · Cozinha\n\n"

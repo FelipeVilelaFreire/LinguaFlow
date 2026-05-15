@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'The Eve - eve - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'waffen',
+                         'min_level': 3,
+                         'uses_item_tag': 'arma',
+                         'success': 'You keep the tool low and steady, making the path safer without turning the scene into a fight.',
+                         'fallback': 'The tool does not help much yet, but Otto finds another way forward.'},
                         {'kind': 'narrative',
                          'text': 'The eve of judgment prepares the final answers and makes sleep '
                                  'itself a tactical choice. This is the same ES canon beat, '
@@ -82,8 +88,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'morgen',
                              'native': 'tomorrow',
                              'npc_reaction': 'Elias der Bauer accepts the word: morgen.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Elias der Bauer', 'Marta die Heilerin', 'Otto'],
                         'story': 'The eve of judgment prepares the final answers and makes sleep '
                                  'itself a tactical choice.',

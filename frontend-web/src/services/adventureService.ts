@@ -1,5 +1,5 @@
 import { apiRequest } from "./api";
-import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserInventoryItem, AvailableLanguage, EarnedItemData, HeroStats, StreakData } from "../types/adventure";
+import type { ApiAdventureChapter, ApiAdventureCharacter, ApiAdventureItem, ApiUserChest, ApiUserInventoryItem, ApiUserSkillMastery, AvailableLanguage, EarnedItemData, HeroStats, StreakData } from "../types/adventure";
 import type { Phrase, StudySessionData } from "../types/content";
 import type { PhaseSection } from "../types/sections";
 
@@ -22,6 +22,18 @@ export const adventureService = {
     apiRequest<ApiAdventureItem[]>(
       `/adventure/items/${chapterSlug ? `?chapter=${chapterSlug}` : ""}`,
     ),
+
+  listSkillMastery: () =>
+    apiRequest<ApiUserSkillMastery[]>("/adventure/skills/mastery/"),
+
+  listChests: () =>
+    apiRequest<ApiUserChest[]>("/adventure/chests/"),
+
+  startChest: (chestId: number) =>
+    apiRequest<ApiUserChest>(`/adventure/chests/${chestId}/start/`, { method: "POST" }),
+
+  claimChest: (chestId: number) =>
+    apiRequest<ApiUserChest>(`/adventure/chests/${chestId}/claim/`, { method: "POST" }),
 
   listInventory: () =>
     apiRequest<ApiUserInventoryItem[]>("/adventure/inventory/"),
@@ -107,6 +119,7 @@ export const adventureService = {
       chapter_completed: boolean;
       earned_item:  EarnedItemData | null;
       earned_items: EarnedItemData[];
+      earned_chest: ApiUserChest | null;
       key_words:    string[];
       streak:       StreakData;
     }>(`/adventure/phases/${phaseId}/complete/`, {
@@ -143,5 +156,6 @@ export const adventureService = {
       rolled_rarity: string | null;
       phase_score?:  number;
       earned_item:   ApiAdventureItem | null;
+      stored_chest?: ApiUserChest;
     }>(`/adventure/phases/${phaseId}/open-chest/`, { method: "POST" }),
 };

@@ -26,6 +26,14 @@ SECTIONS = [
         "section_type": "narrativa",
         "content": {
             "beats": [
+                {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 2,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce nota o cheiro das ervas e entende que Marta esta escondendo cuidado, nao culpa.",
+                    "fallback": "As ervas nao dizem tudo, mas Marta segura seu olhar e a conversa continua.",
+                },
                 {"kind": "scene",     "text": "🌄 Casa de hóspedes · Amanhecer · María sentada esperando"},
                 {"kind": "npc",       "npc": "María", "line": "Sé por qué viniste. Hace días que sé.", "pace": "slow"},
                 {"kind": "player",    "text": "Sofía atrás de você. Miguel atrás dela. Don Miguel na porta. Cinco contra uma — mas a vantagem real está toda do lado dela."},

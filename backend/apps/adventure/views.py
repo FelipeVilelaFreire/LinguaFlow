@@ -20,19 +20,25 @@ from .models import (
     AdventurePhaseCompletion,
     AdventureProgress,
     AdventureSectionProgress,
+    AdventureSkill,
     PhaseSection,
     UserCharacterMet,
+    UserChest,
     UserInventoryItem,
     UserItemQueue,
+    UserSkillMastery,
 )
 from .serializers import (
     AdventureCharacterSerializer,
     AdventureChapterListSerializer,
     AdventureChapterSerializer,
     AdventureItemSerializer,
+    AdventureSkillSerializer,
     PhaseSectionSerializer,
     SectionProgressSerializer,
+    UserChestSerializer,
     UserInventoryItemSerializer,
+    UserSkillMasterySerializer,
     WordMasterySerializer,
 )
 
@@ -126,6 +132,46 @@ def _filter_steps_by_flags(steps: list, user_flags: set[str]) -> list:
             continue
         out.append(step)
     return out
+
+
+_SKILL_XP_BY_WORD_TIER = {
+    WordMastery.TIER_BRONZE:    5,
+    WordMastery.TIER_PRATA:     10,
+    WordMastery.TIER_OURO:      18,
+    WordMastery.TIER_DIAMANTE:  28,
+    WordMastery.TIER_ESMERALDA: 45,
+}
+
+_CHEST_UNLOCK_MINUTES = {
+    "comum": 2,
+    "raro": 10,
+    "epico": 30,
+    "lendario": 120,
+    "mitico": 240,
+}
+
+
+def _award_skill_xp(user, item: AdventureItem, *, used: bool = False, bonus: int = 0):
+    if not item.skill_id:
+        return None
+    mastery, _ = UserSkillMastery.objects.get_or_create(user=user, skill=item.skill)
+    word_tier = None
+    if item.word_id:
+        word = WordMastery.objects.filter(user=user, word_id=item.word_id).first()
+        word_tier = word.tier if word else None
+    amount = item.skill.base_power + bonus + _SKILL_XP_BY_WORD_TIER.get(word_tier, 0)
+    mastery.add_xp(amount, used=used)
+    return mastery
+
+
+def _score_to_chest_tier(score: int) -> str:
+    if score >= 95:
+        return "lendario"
+    if score >= 85:
+        return "epico"
+    if score >= 70:
+        return "raro"
+    return "comum"
 
 
 # ─── Chapters ─────────────────────────────────────────────────────────────────
@@ -252,6 +298,10 @@ class AdventureChapterViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, 
             "total_words":       total_words,
             "words_by_tier":     words_by_tier,
             "attributes":        attributes,
+            "skills":            UserSkillMasterySerializer(
+                UserSkillMastery.objects.filter(user=request.user).select_related("skill", "skill__chapter"),
+                many=True,
+            ).data,
             "achievements":      achievements,
         })
 
@@ -308,6 +358,7 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         earned_items = []
         for item in items:
             UserInventoryItem.objects.get_or_create(user=request.user, item=item)
+            _award_skill_xp(request.user, item, bonus=10)
             earned_items.append({
                 "slug":   item.slug,
                 "emoji":  item.emoji,
@@ -318,6 +369,18 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             })
         # Backward compat: first item also surfaces as `earned_item` (singular)
         earned_item = earned_items[0] if earned_items else None
+
+        earned_chest = None
+        if phase.has_chest:
+            earned_chest, _ = UserChest.objects.get_or_create(
+                user=request.user,
+                phase=phase,
+                defaults={
+                    "chapter": phase.chapter,
+                    "chest_tier": _score_to_chest_tier(score),
+                    "phase_score": score,
+                },
+            )
 
         # Personalization flags — fire automatic signals so future content can
         # react to what the player did. has_<slug> is synthetic (derived from
@@ -342,6 +405,7 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             "chapter_completed": progress.completed_at is not None,
             "earned_item":       earned_item,
             "earned_items":      earned_items,
+            "earned_chest":      UserChestSerializer(earned_chest).data if earned_chest else None,
             "key_words":         phase.key_words,
             "streak":            streak_data,
         })
@@ -389,6 +453,27 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
                 {"detail": "Esta fase não tem baú."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+        completion = AdventurePhaseCompletion.objects.filter(user=request.user, phase=phase).first()
+        if not completion:
+            return Response({"detail": "Conclua a fase antes de ganhar o bau."}, status=status.HTTP_400_BAD_REQUEST)
+        chest, _ = UserChest.objects.get_or_create(
+            user=request.user,
+            phase=phase,
+            defaults={
+                "chapter": phase.chapter,
+                "chest_tier": _score_to_chest_tier(completion.score),
+                "phase_score": completion.score,
+            },
+        )
+        return Response({
+            "from_chest": True,
+            "chest_tier": chest.chest_tier,
+            "rolled_rarity": None,
+            "phase_score": chest.phase_score,
+            "earned_item": None,
+            "stored_chest": UserChestSerializer(chest).data,
+        })
 
         chapter = phase.chapter
 
@@ -657,6 +742,7 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
                 inv, item_created = UserInventoryItem.objects.get_or_create(
                     user=request.user, item=item
                 )
+                _award_skill_xp(request.user, item, bonus=5)
                 if item_created:
                     earned_item_data = {
                         "slug":   item.slug,
@@ -848,7 +934,7 @@ class AdventureItemViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        qs = AdventureItem.objects.select_related("chapter")
+        qs = AdventureItem.objects.select_related("chapter", "skill")
         chapter_slug = self.request.query_params.get("chapter")
         if chapter_slug:
             qs = qs.filter(chapter__slug=chapter_slug)
@@ -857,12 +943,103 @@ class AdventureItemViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 # ─── Inventory ────────────────────────────────────────────────────────────────
 
+class AdventureSkillViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = AdventureSkillSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        qs = AdventureSkill.objects.select_related("chapter")
+        chapter_slug = self.request.query_params.get("chapter")
+        if chapter_slug:
+            qs = qs.filter(chapter__slug=chapter_slug)
+        return qs.order_by("chapter__order", "order")
+
+    @action(detail=False, methods=["get"], url_path="mastery")
+    def mastery(self, request):
+        qs = UserSkillMastery.objects.filter(user=request.user).select_related("skill", "skill__chapter")
+        return Response(UserSkillMasterySerializer(qs, many=True).data)
+
+
+class UserChestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = UserChestSerializer
+    permission_classes = [IsAuthenticated]
+
+    _CHEST_DROP_RATES = AdventurePhaseViewSet._CHEST_DROP_RATES
+    _RARITY_DESCENDING = AdventurePhaseViewSet._RARITY_DESCENDING
+    _WORD_GATED_RARITIES = AdventurePhaseViewSet._WORD_GATED_RARITIES
+
+    def get_queryset(self):
+        return (
+            UserChest.objects
+            .filter(user=self.request.user)
+            .select_related("phase", "chapter", "earned_item", "earned_item__skill")
+        )
+
+    @action(detail=True, methods=["post"], url_path="start")
+    def start(self, request, pk=None):
+        chest = self.get_object()
+        if chest.status != UserChest.STATUS_STORED:
+            return Response({"detail": "Este bau nao esta armazenado."}, status=status.HTTP_400_BAD_REQUEST)
+        if UserChest.objects.filter(user=request.user, status=UserChest.STATUS_OPENING).exclude(pk=chest.pk).exists():
+            return Response({"detail": "Ja existe um bau abrindo."}, status=status.HTTP_400_BAD_REQUEST)
+        minutes = _CHEST_UNLOCK_MINUTES.get(chest.chest_tier, 2)
+        chest.status = UserChest.STATUS_OPENING
+        chest.started_at = timezone.now()
+        chest.unlock_at = chest.started_at + timedelta(minutes=minutes)
+        chest.save(update_fields=["status", "started_at", "unlock_at"])
+        return Response(UserChestSerializer(chest).data)
+
+    @action(detail=True, methods=["post"], url_path="claim")
+    def claim(self, request, pk=None):
+        chest = self.get_object()
+        if not chest.is_ready:
+            return Response({"detail": "Este bau ainda nao esta pronto."}, status=status.HTTP_400_BAD_REQUEST)
+        if not chest.earned_item_id:
+            item, rolled_rarity = self._roll_item(request.user, chest)
+            if item:
+                UserInventoryItem.objects.get_or_create(user=request.user, item=item)
+                _award_skill_xp(request.user, item, bonus=20)
+                chest.earned_item = item
+                chest.rolled_rarity = rolled_rarity
+        chest.status = UserChest.STATUS_CLAIMED
+        chest.claimed_at = timezone.now()
+        chest.save(update_fields=["earned_item", "rolled_rarity", "status", "claimed_at"])
+        return Response(UserChestSerializer(chest).data)
+
+    def _roll_item(self, user, chest):
+        rates = self._CHEST_DROP_RATES.get(chest.chest_tier, self._CHEST_DROP_RATES["comum"])
+        rolled_rarity = random.choices(list(rates.keys()), weights=list(rates.values()), k=1)[0]
+        mastered_word_ids = set(WordMastery.objects.filter(user=user).values_list("word_id", flat=True))
+        owned_item_ids = set(UserInventoryItem.objects.filter(user=user).values_list("item_id", flat=True))
+
+        def eligible_items(rarity):
+            qs = AdventureItem.objects.filter(
+                chapter=chest.chapter,
+                rarity=rarity,
+                is_degraded=False,
+                source_phase__isnull=True,
+            ).exclude(id__in=owned_item_ids).select_related("skill")
+            items = []
+            for item in qs:
+                if rarity in self._WORD_GATED_RARITIES and item.word_id and item.word_id not in mastered_word_ids:
+                    continue
+                items.append(item)
+            return items
+
+        start_idx = self._RARITY_DESCENDING.index(rolled_rarity)
+        for rarity in self._RARITY_DESCENDING[start_idx:]:
+            candidates = eligible_items(rarity)
+            if candidates:
+                return random.choice(candidates), rarity
+        return None, ""
+
+
 class UserInventoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class   = UserInventoryItemSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return UserInventoryItem.objects.filter(user=self.request.user).select_related("item")
+        return UserInventoryItem.objects.filter(user=self.request.user).select_related("item", "item__skill")
 
     @action(detail=True, methods=["post"])
     def use(self, request, pk=None):
@@ -872,6 +1049,7 @@ class UserInventoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         inv.is_used = True
         inv.used_at = timezone.now()
         inv.save(update_fields=["is_used", "used_at"])
+        _award_skill_xp(request.user, inv.item, used=True, bonus=12)
         return Response(UserInventoryItemSerializer(inv).data)
 
     @action(detail=False, methods=["get"], url_path="locked")
@@ -962,6 +1140,7 @@ class UserInventoryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
             inv.is_used = True
             inv.used_at = timezone.now()
             inv.save(update_fields=["is_used", "used_at"])
+            _award_skill_xp(request.user, inv.item, used=True, bonus=12)
 
         return Response({
             "used_item":    AdventureItemSerializer(inv.item).data,

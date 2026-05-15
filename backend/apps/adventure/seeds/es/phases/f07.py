@@ -34,6 +34,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 1,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce responde com calma aos vizinhos e a rua fica menos hostil por um instante.",
+                    "fallback": "Os vizinhos continuam desconfiados, mas ninguem bloqueia o caminho.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌅 Plaza central · Manhã clara · Dia depois\n\n"

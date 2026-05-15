@@ -45,6 +45,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacao",
+                    "min_level": 1,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota uma marca pequena no papel antes que ela desapareca na confusao.",
+                    "fallback": "A pista passa quase despercebida, mas a cena ainda deixa caminho para perguntar depois.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Antonio il Contadino",
                     "line": "Lo que pasó allá afuera... yo no sé explicarlo, forestiero. Non ho parole.",

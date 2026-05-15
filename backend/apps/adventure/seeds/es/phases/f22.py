@@ -19,6 +19,14 @@ SECTIONS = [
         "section_number": 1, "section_type": "narrativa",
         "content": {
             "beats": [
+                {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 3,
+                    "uses_item_tag": "documento",
+                    "success": "Voce percebe a dobra falsa do envelope antes de Greta mudar de assunto.",
+                    "fallback": "Greta muda de assunto rapido, mas a verdade parcial ainda passa pela fresta.",
+                },
                 {"kind": "scene",     "text": "🌞 Plaza · Sol alto · Carmen no banco com um envelope nos joelhos"},
                 {"kind": "npc",       "npc": "Carmen", "line": "Lo guardo hace veinte años. Pertenece al forastero — no a Don Miguel.", "pace": "slow"},
                 {"kind": "player",    "text": "Sofía e Miguel atrás. Don Miguel ao seu lado. Vocês quatro encarando o envelope."},

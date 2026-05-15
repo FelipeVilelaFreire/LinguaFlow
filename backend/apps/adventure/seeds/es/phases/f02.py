@@ -29,6 +29,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "agua",
+                    "min_level": 1,
+                    "uses_item_tag": "bebida",
+                    "success": "Voce encontra agua antes da caminhada esquentar e chega mais atento a mesa.",
+                    "fallback": "A sede aperta um pouco, mas Miguel divide o caminho e a cena continua.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌅 A luz da manhã entra pela janela de madeira. Cobertor "

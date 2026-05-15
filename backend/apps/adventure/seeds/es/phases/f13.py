@@ -46,6 +46,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 2,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce escolhe palavras cuidadosas e a familia de Miguel baixa a guarda.",
+                    "fallback": "A conversa fica dura por um momento, mas Miguel segura o clima e apresenta voce.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🏡 Casa de Doña Lucía · Noite · Beira do pueblo\n\n"

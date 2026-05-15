@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': "Otto's Family - family - first tableau"},
+                        {'kind': 'skill_check',
+                         'skill': 'ueberzeugung',
+                         'min_level': 2,
+                         'uses_item_tag': 'moneda',
+                         'success': 'Your timing and tone make the villager listen before suspicion hardens.',
+                         'fallback': 'The villager does not trust you yet, but Otto keeps the exchange from closing.'},
                         {'kind': 'narrative',
                          'text': 'Klara receives the group as family and recognizes Marta from '
                                  'somewhere old. This is the same ES canon beat, adapted for EN -> '
@@ -142,8 +148,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'Rechts',
                              'native': 'right',
                              'npc_reaction': 'Rechts. The answer fits the scene.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Klara', 'Otto', 'Lina'],
                         'story': 'Klara receives the group as family and recognizes Marta from '
                                  'somewhere old.',

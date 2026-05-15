@@ -18,6 +18,14 @@ SECTIONS = [
         "section_number": 1, "section_type": "narrativa",
         "content": {
             "beats": [
+                {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 3,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce mede cada palavra diante do plano do Alcalde e evita uma ordem pior.",
+                    "fallback": "Sua fala nao muda a ordem, mas o grupo entende melhor o risco e segue junto.",
+                },
                 {"kind": "scene", "text": "🏚️ Casa de Don Miguel · Cercada · Três guardas + Inspector na porta"},
                 {"kind": "npc", "npc": "El Inspector", "line": "Don Miguel — abra. Tenemos orden del Alcalde.", "pace": "urgent"},
                 {"kind": "player", "text": "Vocês cinco do lado de dentro. María sentada na cadeira da cozinha como se fosse manhã normal."},

@@ -1,4 +1,4 @@
-import { Backpack, Lock, X } from "lucide-react";
+import { Backpack, Lock, Sparkles, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -208,6 +208,15 @@ function ItemDetailOverlay({ entry, c, onClose, onUse, actionLabel, itemUsedLabe
               >
                 {rarityLabel}
               </span>
+              {entry.item.skill && (
+                <span
+                  className="inline-flex min-w-0 items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
+                  style={{ background: c.surface, color: c.goldAccent, border: `1px solid ${c.borderFaint}` }}
+                >
+                  <span className="shrink-0">{entry.item.skill.emoji}</span>
+                  <span className="truncate">{entry.item.skill.name}</span>
+                </span>
+              )}
               {entry.is_used && (
                 <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: c.textFaint }}>
                   {itemUsedLabel}
@@ -295,6 +304,12 @@ function LockedItemCard({ item, c, hint }: {
         <p className="mt-0.5 text-[10px] leading-tight" style={{ color: c.textFaint }}>
           {hint}
         </p>
+        {item.skill && (
+          <p className="mt-1 flex items-center justify-center gap-1 truncate text-[10px] font-semibold" style={{ color: c.textFaint }}>
+            <Sparkles size={10} />
+            <span className="truncate">{item.skill.name}</span>
+          </p>
+        )}
       </div>
     </div>
   );
@@ -353,6 +368,12 @@ function ItemCard({ item, isUsed, expanded, onToggle, c, itemUsedLabel, rarityLa
         <p className="truncate text-sm font-bold leading-tight" style={{ color: isUsed ? c.textFaint : c.parchment, textShadow: isUsed ? "none" : "0 1px 8px rgba(0,0,0,0.28)" }}>
           {item.name}
         </p>
+        {item.skill && (
+          <p className="mt-1 flex items-center justify-center gap-1 truncate text-[10px] font-semibold" style={{ color: isUsed ? c.textFaint : c.goldAccent }}>
+            <span className="shrink-0">{item.skill.emoji}</span>
+            <span className="truncate">{item.skill.name}</span>
+          </p>
+        )}
       </div>
       <span
         className="rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"

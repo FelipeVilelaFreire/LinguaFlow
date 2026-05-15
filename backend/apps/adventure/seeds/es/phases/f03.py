@@ -31,6 +31,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 1,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota marcas na estrada e entende para onde o pueblo costuma olhar.",
+                    "fallback": "As marcas ainda parecem confusas, mas Pietro aponta o caminho e a fase continua.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌄 Manhã clara. Don Miguel está na porta da posada com um "

@@ -1,4 +1,4 @@
-import { Backpack, BookOpen, ChevronLeft, Map, Moon, Shield, Sun, Users } from "lucide-react";
+import { Backpack, BookOpen, ChevronLeft, Gift, Map, Moon, Shield, Sun, Users } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import LangFlag from "../../../../components/ui/LangFlag";
@@ -9,6 +9,7 @@ import { getAdventureColors } from "../../theme/adventureColors";
 import type { AdventureThemeMode } from "../../theme/adventureColors";
 import AdventurePhaseRunner from "./abas/mapa/components/AdventurePhaseRunner/AdventurePhaseRunner";
 import AdventureHeroScreen from "./abas/AdventureHeroScreen";
+import AdventureChestsScreen from "./abas/AdventureChestsScreen";
 import AdventureMapScreen from "./abas/mapa/AdventureMapScreen";
 import AdventureMochilaScreen from "./abas/AdventureMochilaScreen";
 import AdventurePersonagensScreen from "./abas/AdventurePersonagensScreen";
@@ -16,7 +17,7 @@ import AdventureWordsScreen from "./abas/AdventureWordsScreen";
 import AdventureOpeningCinematic from "./AdventureOpeningCinematic";
 import DevJumpToPhaseModal from "./components/DevJumpToPhaseModal";
 
-export type AdventureTab = "map" | "mochila" | "palavras" | "personagens" | "heroi";
+export type AdventureTab = "map" | "mochila" | "baus" | "palavras" | "personagens" | "heroi";
 
 interface AdventureModuleProps {
   langCode: string;
@@ -82,6 +83,7 @@ export default function AdventureModule({
   const TABS = [
     { id: "map"         as AdventureTab, label: s.adventure.tabMap,         Icon: Map      },
     { id: "mochila"     as AdventureTab, label: s.adventure.tabBag,         Icon: Backpack },
+    { id: "baus"        as AdventureTab, label: "Baus",                    Icon: Gift     },
     { id: "palavras"    as AdventureTab, label: s.adventure.tabWords,       Icon: BookOpen },
     { id: "personagens" as AdventureTab, label: s.adventure.tabPersonagens, Icon: Users    },
     { id: "heroi"       as AdventureTab, label: s.adventure.tabHero,        Icon: Shield   },
@@ -191,6 +193,7 @@ export default function AdventureModule({
       >
         {initialTab === "map"         && <AdventureMapScreen {...mapProps} />}
         {initialTab === "mochila"     && <AdventureMochilaScreen     langCode={effectiveLangCode} themeMode={themeMode} chapterSlug={chapters[0]?.slug} />}
+        {initialTab === "baus"        && <AdventureChestsScreen       langCode={effectiveLangCode} themeMode={themeMode} />}
         {initialTab === "palavras"    && <AdventureWordsScreen        langCode={effectiveLangCode} themeMode={themeMode} />}
         {initialTab === "personagens" && <AdventurePersonagensScreen  langCode={effectiveLangCode} themeMode={themeMode} chapterSlug={chapters[0]?.slug} />}
         {initialTab === "heroi"       && <AdventureHeroScreen         langCode={effectiveLangCode} themeMode={themeMode} storyTitle={storyTitle} firstName={firstName} />}

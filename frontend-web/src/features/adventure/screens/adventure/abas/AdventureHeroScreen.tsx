@@ -1,4 +1,4 @@
-import { type LucideIcon, Award, BookOpen, Crown, Flame, Gem, Map, Scroll, Swords, Zap } from "lucide-react";
+import { type LucideIcon, Award, BookOpen, Crown, Flame, Gem, Map, Scroll, Sparkles, Swords, Zap } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import Emoji from "../../../../../components/Emoji";
@@ -24,6 +24,15 @@ const ATTRIBUTE_DEFS: Array<{ key: keyof HeroStats["attributes"]; label: string 
   { key: "gramatica",   label: "Gramática"   },
   { key: "fluencia",    label: "Fluência"     },
 ];
+
+const SKILL_LEVEL_XP = [0, 80, 220, 500, 1000];
+
+function skillProgress(level: number, xp: number) {
+  const current = SKILL_LEVEL_XP[Math.max(0, level - 1)] ?? SKILL_LEVEL_XP[SKILL_LEVEL_XP.length - 1];
+  const next = SKILL_LEVEL_XP[level] ?? null;
+  if (!next) return { current, next, pct: 1 };
+  return { current, next, pct: Math.min(1, Math.max(0, (xp - current) / (next - current))) };
+}
 
 interface AdventureHeroScreenProps {
   langCode:    string;
@@ -229,6 +238,95 @@ export default function AdventureHeroScreen({
               );
             })}
           </div>
+        </section>
+
+        {/* Skills */}
+        <section
+          className="mb-5"
+          style={{ animation: "narrativeFadeIn 0.5s ease-out 0.3s both" }}
+        >
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
+              Poderes
+            </p>
+            <p className="text-right text-[10px] font-semibold" style={{ color: c.textFaint }}>
+              Itens fortalecem a narrativa
+            </p>
+          </div>
+
+          {stats?.skills?.length ? (
+            <div className="grid gap-2">
+              {stats.skills.map((mastery, i) => {
+                const progress = skillProgress(mastery.level, mastery.xp);
+                const nextText = progress.next ? `${mastery.xp - progress.current} / ${progress.next - progress.current}` : "max";
+
+                return (
+                  <div
+                    key={mastery.skill.id}
+                    className="rounded-2xl px-4 py-3"
+                    style={{
+                      background: c.surfaceMid,
+                      border: `1px solid ${c.borderFaint}`,
+                      animation: `narrativeFadeIn 0.35s ease-out ${i * 0.06}s both`,
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl text-lg"
+                        style={{ background: c.surface, border: `1px solid ${c.borderFaint}` }}
+                      >
+                        {mastery.skill.emoji}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-bold" style={{ color: c.parchment }}>
+                              {mastery.skill.name}
+                            </p>
+                            <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: c.textFaint }}>
+                              {mastery.skill.category} · {mastery.uses_count} usos
+                            </p>
+                          </div>
+                          <span
+                            className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
+                            style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}45` }}
+                          >
+                            Nv {mastery.level}
+                          </span>
+                        </div>
+                        <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
+                          <div
+                            className="h-full rounded-full"
+                            style={{
+                              width: `${mounted ? progress.pct * 100 : 0}%`,
+                              background: `linear-gradient(90deg, ${c.nodeActive}, ${c.goldAccent})`,
+                              transition: `width 0.8s cubic-bezier(0.16,1,0.3,1) ${0.15 + i * 0.06}s`,
+                            }}
+                          />
+                        </div>
+                        <p className="mt-1 text-[10px] font-semibold tabular-nums" style={{ color: c.textFaint }}>
+                          XP {nextText}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div
+              className="flex flex-col items-center gap-2 rounded-2xl py-8 text-center"
+              style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
+            >
+              <Sparkles size={28} style={{ color: c.textFaint }} />
+              <p className="text-sm font-semibold" style={{ color: c.textFaint }}>
+                Nenhum poder dominado ainda
+              </p>
+              <p className="max-w-xs text-xs" style={{ color: c.textFaint }}>
+                Ganhe itens de bau ou use itens na historia para criar maestria.
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Journey items */}

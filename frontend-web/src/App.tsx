@@ -30,6 +30,7 @@ const ROUTE_PATH: Partial<Record<AppRoute, string>> = {
   adventure:          ROUTES.adventure,
   "adventure-map":      ROUTES.adventureMap,
   "adventure-mochila":      ROUTES.adventureMochila,
+  "adventure-baus":         ROUTES.adventureBaus,
   "adventure-palavras":     ROUTES.adventurePalavras,
   "adventure-heroi":        ROUTES.adventureHeroi,
   "adventure-personagens":  ROUTES.adventurePersonagens,
@@ -243,10 +244,11 @@ export default function App() {
   }
 
   // ── Full-screen adventure module (map / mochila / herói) ─────────────────
-  if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-palavras" || route === "adventure-heroi" || route === "adventure-personagens") {
+  if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-baus" || route === "adventure-palavras" || route === "adventure-heroi" || route === "adventure-personagens") {
     const tabMap: Record<string, AdventureTab> = {
       "adventure-map":          "map",
       "adventure-mochila":      "mochila",
+      "adventure-baus":         "baus",
       "adventure-palavras":     "palavras",
       "adventure-heroi":        "heroi",
       "adventure-personagens":  "personagens",
@@ -298,6 +300,7 @@ function routeFromPath(pathname: string): AppRoute {
   if (pathname.startsWith(ROUTES.adventureChapterBase + "/")) return "adventure-chapter";
   if (pathname === ROUTES.adventureMap)      return "adventure-map";
   if (pathname === ROUTES.adventureMochila)     return "adventure-mochila";
+  if (pathname === ROUTES.adventureBaus)        return "adventure-baus";
   if (pathname === ROUTES.adventurePalavras)    return "adventure-palavras";
   if (pathname === ROUTES.adventureHeroi)       return "adventure-heroi";
   if (pathname === ROUTES.adventurePersonagens) return "adventure-personagens";

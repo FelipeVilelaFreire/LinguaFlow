@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'Facing Marta - confront_marta - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'heilung',
+                         'min_level': 2,
+                         'uses_item_tag': 'remedio',
+                         'success': 'You handle the injury cleanly before pain can take over the conversation.',
+                         'fallback': 'You only manage basic care, but Marta steadies the moment and the phase continues.'},
                         {'kind': 'narrative',
                          'text': 'The group confronts Marta with questions. Her answers help, but '
                                  'never fully settle. This is the same ES canon beat, adapted for '
@@ -82,8 +88,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'helfen',
                              'native': 'help',
                              'npc_reaction': 'Marta die Heilerin accepts the word: helfen.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Marta die Heilerin', 'Otto', 'Lina'],
                         'story': 'The group confronts Marta with questions. Her answers help, but '
                                  'never fully settle.',

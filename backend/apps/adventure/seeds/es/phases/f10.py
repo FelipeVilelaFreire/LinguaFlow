@@ -51,6 +51,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 2,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce usa tom firme e respeito para atrasar a ordem do Vigilante.",
+                    "fallback": "O Vigilante nao cede, mas Maria aparece antes que a rua feche de vez.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌄 Amanhecer cedo · Casa de Don Miguel · Mesa baixa de madeira\n\n"

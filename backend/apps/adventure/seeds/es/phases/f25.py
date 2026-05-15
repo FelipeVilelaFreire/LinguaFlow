@@ -27,6 +27,14 @@ SECTIONS = [
         "section_number": 1, "section_type": "narrativa",
         "content": {
             "beats": [
+                {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 3,
+                    "uses_item_tag": "documento",
+                    "success": "Voce sustenta o olhar do Alcalde e transforma respeito em vantagem no julgamento.",
+                    "fallback": "O Alcalde nao se impressiona de inicio, mas o julgamento continua e suas respostas ainda importam.",
+                },
                 {"kind": "scene", "text": "🏛️ Sala de julgamento · Manhã · Alcalde no trono central"},
                 {"kind": "narrative", "text": "Pedra fria. Bandeira pendurada. Três guardas em cada lado. El Inspector ao lado direito do Alcalde. Carmen no público — terceira fila — fingindo bordar."},
                 {"kind": "npc", "npc": "El Alcalde", "line": "Forastero — el juicio empieza ahora. Levántate.", "pace": "slow"},

@@ -47,6 +47,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 2,
+                    "uses_item_tag": "documento",
+                    "success": "Voce compara o testemunho com detalhes vistos antes e percebe uma contradicao pequena.",
+                    "fallback": "A contradicao escapa, mas a testemunha ainda entrega a pista principal.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌄 Manhã do quarto dia · Ayuntamiento · Porta de ferro\n\n"

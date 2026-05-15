@@ -6,6 +6,7 @@ export type AppRoute =
   | "adventure"
   | "adventure-map"
   | "adventure-mochila"
+  | "adventure-baus"
   | "adventure-palavras"
   | "adventure-heroi"
   | "adventure-personagens"

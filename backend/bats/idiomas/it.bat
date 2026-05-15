@@ -2,7 +2,7 @@
 REM ============================================================================
 REM  Talkly Backend - Idioma IT
 REM
-REM  Roda o setup completo do Italiano: migrations + seed IT + secoes.
+REM  Roda o setup completo do Italiano: migrations + seed IT + secoes + estudo.
 REM ============================================================================
 
 pushd "%~dp0..\.."
@@ -65,12 +65,18 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [5/5] Seed ES estudo mantido separado.
-echo Study modules for IT are not created yet.
+echo [5/5] Seed IT estudo...
+python manage.py seed_it_study
+if %errorlevel% neq 0 (
+    echo ERRO: seed_it_study
+    popd
+    pause
+    exit /b 1
+)
 
 echo.
 echo === Setup IT concluido! ===
-echo IT A1 T1: F1 a F25.
+echo IT A1 T1: F1 a F25 + estudo.
 echo.
 
 popd

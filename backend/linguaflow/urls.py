@@ -10,6 +10,8 @@ from apps.adventure.views import (
     AdventureDevViewSet,
     AdventureItemViewSet,
     AdventurePhaseViewSet,
+    AdventureSkillViewSet,
+    UserChestViewSet,
     UserInventoryViewSet,
     VocabularyViewSet,
 )
@@ -31,6 +33,8 @@ router.register("adventure/chapters",    AdventureChapterViewSet,   basename="ad
 router.register("adventure/phases",      AdventurePhaseViewSet,     basename="adventure-phase")
 router.register("adventure/characters",  AdventureCharacterViewSet, basename="adventure-character")
 router.register("adventure/items",       AdventureItemViewSet,      basename="adventure-item")
+router.register("adventure/skills",      AdventureSkillViewSet,     basename="adventure-skill")
+router.register("adventure/chests",      UserChestViewSet,          basename="adventure-chest")
 router.register("adventure/inventory",   UserInventoryViewSet,      basename="adventure-inventory")
 router.register("adventure/vocabulary",  VocabularyViewSet,         basename="adventure-vocabulary")
 router.register("adventure/dev",         AdventureDevViewSet,       basename="adventure-dev")

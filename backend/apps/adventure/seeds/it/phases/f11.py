@@ -48,6 +48,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacao",
+                    "min_level": 2,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota uma marca pequena no papel antes que ela desapareca na confusao.",
+                    "fallback": "A pista passa quase despercebida, mas a cena ainda deixa caminho para perguntar depois.",
+                },
+                {
                     "kind": "narrative",
                     "text": "Vocês cinco entram. Antonio il Contadino à fronte. O Podesta está sentado — não se levanta.",
                 },

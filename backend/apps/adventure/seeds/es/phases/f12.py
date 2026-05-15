@@ -46,6 +46,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "agua",
+                    "min_level": 1,
+                    "uses_item_tag": "bebida",
+                    "success": "Voce administra a sede nos tres dias e chega com memoria menos embaralhada.",
+                    "fallback": "A sede pesa na cabeca, mas o grupo reduz o passo e chega junto.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "☀️ Manhã do segundo dia · Casa de Don Miguel · Cozinha cheia\n\n"

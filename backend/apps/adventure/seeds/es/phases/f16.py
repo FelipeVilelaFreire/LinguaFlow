@@ -42,6 +42,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 2,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce entende o aviso de Bianca como negociacao, nao como ameaca.",
+                    "fallback": "Bianca nao entrega tudo, mas deixa uma frase solta para voces seguirem.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌞 Plaza central · Início da tarde · Carmen sozinha no banco\n\n"

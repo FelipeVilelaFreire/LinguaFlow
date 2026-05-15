@@ -43,6 +43,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 1,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce escolhe a palavra e o gesto certos; a resistencia baixa um pouco.",
+                    "fallback": "A conversa nao abre de imediato, mas Nico segura o clima e a historia continua.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Chiara",
                     "line": "¡Forestiero! ¡Aquí estás! ¿Dormiste algo?",

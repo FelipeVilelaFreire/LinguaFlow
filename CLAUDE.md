@@ -66,6 +66,23 @@ Todo desenvolvimento prioriza mobile. Desktop é aprimoramento, não base.
 
 ## Estrutura do App
 
+**Meta operacional de equivalencia:** por idioma/temporada A1 T1, manter 25 fases de aventura, 6 secoes por fase, 25 StudyDays ativos, 5 modulos de estudo, 8 cenarios e 12 frases por StudyDay. O total bruto de steps da aventura nao precisa ser identico entre idiomas, mas deve ficar na mesma ordem de grandeza; diferencas grandes precisam ser justificadas por conteudo real, nao por seed inflado ou estudo raso.
+
+### Estudo x Aventura - regra canonica de produto
+
+Estudo e Aventura sao dois modulos separados do mesmo aprendizado. Eles nao devem ser misturados como a mesma tela, o mesmo fluxo ou o mesmo modelo de progresso, mas precisam andar alinhados em idioma, nivel, temporada, vocabulario, cenarios e peso didatico.
+
+| Modulo | Regra de acesso | Papel |
+|--------|-----------------|-------|
+| Aventura | Progressiva e bloqueada. O usuario precisa passar pelas fases/secoes para avancar no mapa. | Experiencia RPG, historia, recompensa, mochila, personagens e gates de fase. |
+| Estudo | Livre. O usuario pode abrir o estudo guiado, cenarios e pratica sem depender de estar na mesma fase da aventura. | Reforco didatico, pratica direta, revisao, explicacao e consolidacao do mesmo conteudo. |
+
+**Regra de alinhamento:** cada fase da aventura deve ter uma contraparte clara no estudo. O estudo pode ser mais livre e mais explicativo, mas nao pode ser mais fraco, solto ou desalinhado. Se a aventura F3 trabalha lugares/direcoes, o estudo correspondente tambem deve trabalhar lugares/direcoes com vocabulario, frases, exercicios e explicacao em peso equivalente.
+
+**Seeds:** ao criar ou alterar seeds de idioma, manter Aventura e Estudo com o mesmo peso de conteudo e didatica. Aventura pode distribuir conteudo em narrativa, secoes e gates; Estudo deve transformar esse mesmo nucleo em modulos, cenarios, lessons, StudyDays, frases, explicacoes, notas e pratica. Nunca criar uma aventura completa para um idioma e deixar o estudo raso, incompleto ou sem correspondencia.
+
+**Progresso do usuario:** a Aventura controla desbloqueio por `AdventureProgress`, `AdventurePhaseCompletion` e `AdventureSectionProgress`. O Estudo controla conclusao por `StudyDayCompletion`, `Goal.completed_lessons` e revisao/SRS. O progresso e separado, mas o ritmo pedagogico precisa apontar para o mesmo caminho de aprendizado.
+
 ### Navegação (5 abas)
 | Rota | Aba | Conteúdo |
 |------|-----|----------|

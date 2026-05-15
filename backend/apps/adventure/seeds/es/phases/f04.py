@@ -29,6 +29,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 1,
+                    "uses_item_tag": "moneda",
+                    "success": "A moeda certa e um saludo educado fazem o vendedor falar mais baixo.",
+                    "fallback": "O vendedor nao confia de primeira, mas a proxima pergunta ainda abre o mercado.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🧺 Plaza central do pueblo. Manhã de mercado — bancas de "

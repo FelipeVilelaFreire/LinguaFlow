@@ -20,6 +20,14 @@ SECTIONS = [
             "beats": [
                 {"kind": "scene", "text": "🌒 Cela do municipio · Noite · Pedra úmida · Lamparina baixa"},
                 {"kind": "narrative", "text": "Você sentado no banco de pedra. Frio entrando pelas paredes. Ouve passos no corredor — quatro pares."},
+                {
+                    "kind": "skill_check",
+                    "skill": "arma",
+                    "min_level": 3,
+                    "uses_item_tag": "arma",
+                    "success": "Voce usa uma ferramenta simples para manter a passagem segura sem assustar o grupo.",
+                    "fallback": "A ferramenta nao ajuda muito ainda, mas Nico encontra outro jeito e a viagem continua.",
+                },
                 {"kind": "npc", "npc": "Antonio il Contadino", "line": "Le pagué al guardia. Una hora. Hablamos rápido.", "pace": "urgent"},
                 {"kind": "player", "text": "Chiara, Nico e Lucia entram atrás dele. Bianca ficou de fora — ela vai testemunhar amanhã, não pode ser vista visitando."},
             ],

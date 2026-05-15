@@ -39,6 +39,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacao",
+                    "min_level": 1,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota uma marca pequena no papel antes que ela desapareca na confusao.",
+                    "fallback": "A pista passa quase despercebida, mas a cena ainda deixa caminho para perguntar depois.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Antonio",
                     "line": "Oggi usciamo. Voglio che tu veda il campo. Ci sono cose che il borgo non insegna.",

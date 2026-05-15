@@ -13,8 +13,11 @@ from apps.adventure.models import (
     AdventureChapter,
     AdventureItem,
     AdventurePhase,
+    AdventureSkill,
 )
 from apps.learning.models import Language, Phrase, Scenario
+
+from apps.adventure.seeds.skills import seed_chapter_skills, sync_chapter_item_skills
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -802,6 +805,19 @@ class Command(BaseCommand):
         self.stdout.write(f"  ✓ Chapter: {chapter.slug}")
 
         # ── 5. Fases ──────────────────────────────────────────────────────────
+        skill_defs = [
+            {"slug": "armas", "name": "Armas", "description": "Combate com ferramentas e armas.", "category": AdventureSkill.CATEGORY_COMBATE, "emoji": "W", "base_power": 12},
+            {"slug": "sustento", "name": "Sustento", "description": "Comida e recursos de sobrevivencia.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "S", "base_power": 10},
+            {"slug": "agua", "name": "Agua", "description": "Agua, sede e resistencia.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "A", "base_power": 10},
+            {"slug": "cura", "name": "Cura", "description": "Remedios, ervas e protecao do corpo.", "category": AdventureSkill.CATEGORY_SUPORTE, "emoji": "C", "base_power": 14},
+            {"slug": "persuasao", "name": "Persuasion", "description": "Moedas, documentos e autoridade social.", "category": AdventureSkill.CATEGORY_SOCIAL, "emoji": "P", "base_power": 12},
+            {"slug": "investigacion", "name": "Investigacion", "description": "Pistas, mapas, cartas e memoria.", "category": AdventureSkill.CATEGORY_INVESTIGACAO, "emoji": "I", "base_power": 12},
+        ]
+        skills = seed_chapter_skills(chapter, skill_defs)
+
+        def sync_item_skills():
+            sync_chapter_item_skills(chapter, skills, skill_defs)
+
         phase_map: dict[int, AdventurePhase] = {}
         for p in PHASES:
             phase_obj, _ = AdventurePhase.objects.update_or_create(
@@ -1136,6 +1152,8 @@ class Command(BaseCommand):
             self.stdout.write(f"  ✓ Recompensa boss F25: {len(BOSS_REWARDS)} itens lendários")
 
         # ─────────────────────────────────────────────────────────────────────
+        sync_item_skills()
+
         self.stdout.write(self.style.SUCCESS(
             "\n✅ Seed ES A1 T1 completo!\n"
             f"   {len(PHASES)} fases · {len(CHARACTERS)} personagens · {len(PHRASES)} frases\n"

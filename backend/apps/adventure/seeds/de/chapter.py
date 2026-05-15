@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand
 
-from apps.adventure.models import AdventureCharacter, AdventureChapter, AdventureItem, AdventurePhase
+from apps.adventure.models import AdventureCharacter, AdventureChapter, AdventureItem, AdventurePhase, AdventureSkill
 from apps.learning.models import Language, Phrase, Scenario
+
+from apps.adventure.seeds.skills import seed_chapter_skills, sync_chapter_item_skills
 
 from .content import (
     BOSS_REWARDS,
@@ -81,6 +83,19 @@ class Command(BaseCommand):
             },
         )
         self.stdout.write(f"  - Chapter: {chapter.slug}")
+
+        skill_defs = [
+            {"slug": "waffen", "name": "Waffen", "description": "Combat through tools and weapons.", "category": AdventureSkill.CATEGORY_COMBATE, "emoji": "W", "base_power": 12},
+            {"slug": "versorgung", "name": "Versorgung", "description": "Food and survival resources.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "F", "base_power": 10},
+            {"slug": "wasser", "name": "Wasser", "description": "Water, thirst, and endurance.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "A", "base_power": 10},
+            {"slug": "heilung", "name": "Heilung", "description": "Remedies, herbs, and body protection.", "category": AdventureSkill.CATEGORY_SUPORTE, "emoji": "H", "base_power": 14},
+            {"slug": "ueberzeugung", "name": "Ueberzeugung", "description": "Coins, documents, and social authority.", "category": AdventureSkill.CATEGORY_SOCIAL, "emoji": "P", "base_power": 12},
+            {"slug": "ermittlung", "name": "Ermittlung", "description": "Clues, maps, letters, and memory.", "category": AdventureSkill.CATEGORY_INVESTIGACAO, "emoji": "I", "base_power": 12},
+        ]
+        skills = seed_chapter_skills(chapter, skill_defs)
+
+        def sync_item_skills():
+            sync_chapter_item_skills(chapter, skills, skill_defs)
 
         phase_map = {}
         for phase in PHASES:
@@ -222,6 +237,8 @@ class Command(BaseCommand):
                     },
                 )
             self.stdout.write(f"  - Boss rewards: {len(BOSS_REWARDS)}")
+
+        sync_item_skills()
 
         self.stdout.write(self.style.SUCCESS(
             f"\nSeed DE complete: {len(PHASES)} phases, {len(CHARACTERS)} characters, {len(PHRASES)} phrases\n"

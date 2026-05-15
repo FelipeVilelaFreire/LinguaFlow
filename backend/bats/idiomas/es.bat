@@ -2,7 +2,7 @@
 REM ============================================================================
 REM  Talkly Backend - Idioma ES
 REM
-REM  Roda o setup completo do Espanhol: migrations + seed ES + secoes.
+REM  Roda o setup completo do Espanhol: migrations + seed ES + secoes + estudo.
 REM ============================================================================
 
 pushd "%~dp0..\.."
@@ -67,6 +67,12 @@ if %errorlevel% neq 0 (
 echo.
 echo [5/5] Seed ES estudo...
 python manage.py seed_es_study
+if %errorlevel% neq 0 (
+    echo ERRO: seed_es_study
+    popd
+    pause
+    exit /b 1
+)
 
 echo.
 echo === Setup ES concluido! ===

@@ -14,6 +14,7 @@ def seed_phase_sections(
     sections,
     hydrate_section_content,
     reset=False,
+    step_targets=None,
 ):
     try:
         chapter = AdventureChapter.objects.get(slug=chapter_slug)
@@ -45,11 +46,17 @@ def seed_phase_sections(
 
     created_count = 0
     for section in sections:
+        content = hydrate_section_content(section["content"])
+        if step_targets:
+            content = _limit_section_content(
+                content,
+                max_steps=step_targets.get(section["section_type"]),
+            )
         PhaseSection.objects.create(
             phase=phase,
             section_number=section["section_number"],
             section_type=section["section_type"],
-            content=hydrate_section_content(section["content"]),
+            content=content,
         )
         created_count += 1
 
@@ -57,7 +64,22 @@ def seed_phase_sections(
     return created_count
 
 
-def seed_language_sections(stdout, style, *, lang_code, chapter_slug, phases, reset=False):
+def _limit_section_content(content, *, max_steps):
+    if not max_steps:
+        return content
+    limited = dict(content)
+    for key in ("steps", "beats"):
+        entries = limited.get(key)
+        if not isinstance(entries, list) or len(entries) <= max_steps:
+            continue
+        if max_steps <= 1:
+            limited[key] = entries[:max_steps]
+        else:
+            limited[key] = entries[: max_steps - 1] + [entries[-1]]
+    return limited
+
+
+def seed_language_sections(stdout, style, *, lang_code, chapter_slug, phases, reset=False, step_targets=None):
     voice_module = import_module(f"apps.adventure.seeds.{lang_code}.voice")
     total = 0
     for phase_number in phases:
@@ -70,5 +92,6 @@ def seed_language_sections(stdout, style, *, lang_code, chapter_slug, phases, re
             sections=module.SECTIONS,
             hydrate_section_content=voice_module.hydrate_section_content,
             reset=reset,
+            step_targets=step_targets,
         )
     return total

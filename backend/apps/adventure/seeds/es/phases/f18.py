@@ -41,6 +41,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 2,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce percebe o cansaco de Don Miguel e evita pressionar antes da verdade aparecer.",
+                    "fallback": "Voce pergunta cedo demais, mas Don Miguel respira fundo e continua mesmo assim.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌅 Casa de Don Miguel · Manhã cedo · Cozinha\n\n"

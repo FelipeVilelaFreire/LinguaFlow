@@ -49,6 +49,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "arma",
+                    "min_level": 1,
+                    "uses_item_tag": "arma",
+                    "success": "Voce usa uma ferramenta simples para manter a passagem segura sem assustar o grupo.",
+                    "fallback": "A ferramenta nao ajuda muito ainda, mas Nico encontra outro jeito e a viagem continua.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Antonio",
                     "line": "Ci sono cose che devi sapere. Non mi piace il borgo oggi.",

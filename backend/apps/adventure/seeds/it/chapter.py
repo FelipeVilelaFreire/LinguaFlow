@@ -1,7 +1,9 @@
 from django.core.management.base import BaseCommand
 
-from apps.adventure.models import AdventureCharacter, AdventureChapter, AdventureItem, AdventurePhase
+from apps.adventure.models import AdventureCharacter, AdventureChapter, AdventureItem, AdventurePhase, AdventureSkill
 from apps.learning.models import Language, Phrase, Scenario
+
+from apps.adventure.seeds.skills import seed_chapter_skills, sync_chapter_item_skills
 
 from .content import (
     BOSS_REWARDS,
@@ -65,6 +67,19 @@ class Command(BaseCommand):
                 "reward_description": CHAPTER["reward_description"],
             },
         )
+
+        skill_defs = [
+            {"slug": "arma", "name": "Armi", "description": "Combate com ferramentas e armas.", "category": AdventureSkill.CATEGORY_COMBATE, "emoji": "W", "base_power": 12},
+            {"slug": "sustento", "name": "Sostegno", "description": "Comida e recursos de sobrevivencia.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "S", "base_power": 10},
+            {"slug": "agua", "name": "Acqua", "description": "Agua, sede e resistencia.", "category": AdventureSkill.CATEGORY_SOBREVIVENCIA, "emoji": "A", "base_power": 10},
+            {"slug": "cura", "name": "Cura", "description": "Remedios, ervas e protecao do corpo.", "category": AdventureSkill.CATEGORY_SUPORTE, "emoji": "C", "base_power": 14},
+            {"slug": "persuasao", "name": "Persuasione", "description": "Moedas, documentos e autoridade social.", "category": AdventureSkill.CATEGORY_SOCIAL, "emoji": "P", "base_power": 12},
+            {"slug": "investigacao", "name": "Indagine", "description": "Pistas, mapas, cartas e memoria.", "category": AdventureSkill.CATEGORY_INVESTIGACAO, "emoji": "I", "base_power": 12},
+        ]
+        skills = seed_chapter_skills(chapter, skill_defs)
+
+        def sync_item_skills():
+            sync_chapter_item_skills(chapter, skills, skill_defs)
 
         phase_map = {}
         for phase in PHASES:
@@ -178,5 +193,7 @@ class Command(BaseCommand):
                     "order": item["order"],
                 },
             )
+
+        sync_item_skills()
 
         self.stdout.write(self.style.SUCCESS(f"\nSeed IT completo: {len(PHASES)} fases\n"))

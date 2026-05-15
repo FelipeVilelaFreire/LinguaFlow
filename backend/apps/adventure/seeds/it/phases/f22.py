@@ -21,6 +21,14 @@ SECTIONS = [
             "beats": [
                 {"kind": "scene",     "text": "🌞 Piazza · Sol alto · Bianca no banco com um envelope nos joelhos"},
                 {"kind": "npc",       "npc": "Bianca", "line": "Lo guardo hace veinte años. Pertenece al forestiero — no a Antonio il Contadino.", "pace": "slow"},
+                {
+                    "kind": "skill_check",
+                    "skill": "investigacao",
+                    "min_level": 3,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota uma marca pequena no papel antes que ela desapareca na confusao.",
+                    "fallback": "A pista passa quase despercebida, mas a cena ainda deixa caminho para perguntar depois.",
+                },
                 {"kind": "player",    "text": "Chiara e Nico atrás. Antonio il Contadino ao seu lado. Vocês quatro encarando o envelope."},
                 {"kind": "npc",       "npc": "Bianca", "line": "Ábrelo tu. Prima que arrivi el Ispettore.", "pace": "urgent"},
             ],

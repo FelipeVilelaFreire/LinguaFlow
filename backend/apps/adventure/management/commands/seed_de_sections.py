@@ -3,6 +3,16 @@ from django.core.management.base import BaseCommand
 from apps.adventure.seeds.runner import seed_language_sections
 
 
+DE_SECTION_STEP_TARGETS = {
+    "narrativa": 8,
+    "revisao_srs": 12,
+    "pratica_aplicada": 13,
+    "gramatica_narrativa": 10,
+    "reforco": 11,
+    "obstaculo": 13,
+}
+
+
 class Command(BaseCommand):
     help = "Seed EN -> DE A1 T1 sections"
 
@@ -31,5 +41,6 @@ class Command(BaseCommand):
             chapter_slug="de-a1-t1",
             phases=phases,
             reset=options["reset"],
+            step_targets=DE_SECTION_STEP_TARGETS,
         )
         self.stdout.write(self.style.SUCCESS(f"\nDE section seed complete: {total} created\n"))

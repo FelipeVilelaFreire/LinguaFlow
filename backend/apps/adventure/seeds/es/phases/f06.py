@@ -36,6 +36,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 1,
+                    "uses_item_tag": "documento",
+                    "success": "Voce percebe que a luz responde a palavra antes de Sofia terminar a frase.",
+                    "fallback": "Voce nao entende a luz ainda, mas Sofia viu o bastante para seguir com voce.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🕯️ Quarto de Don Miguel · Noite · A porta trancada\n\n"

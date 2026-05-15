@@ -41,6 +41,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "armas",
+                    "min_level": 1,
+                    "uses_item_tag": "arma",
+                    "success": "Voce segura uma ferramenta como defesa e ganha segundos antes do fogo espalhar panico.",
+                    "fallback": "Sem tecnica, voce recua com cuidado e Miguel puxa voce para longe do perigo.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌆 Tarde fechada em San Cristóbal. Nuvens pesadas, sem sol. "

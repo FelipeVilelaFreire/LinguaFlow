@@ -55,6 +55,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "agua",
+                    "min_level": 1,
+                    "uses_item_tag": "bebida",
+                    "success": "Voce percebe cedo quem esta com sede e evita que a caminhada perca ritmo.",
+                    "fallback": "A sede pesa por alguns minutos, mas o grupo reduz o passo e continua.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Bianca",
                     "line": "Ya he testificado dos veces prima en mi vida. Sé cómo se hace.",

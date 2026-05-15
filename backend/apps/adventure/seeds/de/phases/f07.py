@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'A Normal Day - ordinary_day - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'ueberzeugung',
+                         'min_level': 1,
+                         'uses_item_tag': 'moneda',
+                         'success': 'Your timing and tone make the villager listen before suspicion hardens.',
+                         'fallback': 'The villager does not trust you yet, but Otto keeps the exchange from closing.'},
                         {'kind': 'narrative',
                          'text': 'A normal day proves the village is watching. Direction words '
                                  'become survival words. This is the same ES canon beat, adapted '
@@ -143,8 +149,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'Ich habe Durst',
                              'native': 'I am thirsty',
                              'npc_reaction': 'Ich habe Durst. The answer fits the scene.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Lina', 'Otto', 'Greta'],
                         'story': 'A normal day proves the village is watching. Direction words '
                                  'become survival words.',

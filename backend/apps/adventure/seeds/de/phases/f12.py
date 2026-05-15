@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'Three Days - deadline - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'wasser',
+                         'min_level': 1,
+                         'uses_item_tag': 'bebida',
+                         'success': 'You notice thirst before it becomes weakness and keep the pace under control.',
+                         'fallback': 'Thirst slows the group for a moment, but the route remains open.'},
                         {'kind': 'narrative',
                          'text': 'Three days become a deadline. The group gathers testimony and '
                                  'reviews recent past forms. This is the same ES canon beat, '
@@ -143,8 +149,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'Links',
                              'native': 'left',
                              'npc_reaction': 'Links. The answer fits the scene.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Friedrich', 'Greta', 'Marta die Heilerin'],
                         'story': 'Three days become a deadline. The group gathers testimony and '
                                  'reviews recent past forms.',

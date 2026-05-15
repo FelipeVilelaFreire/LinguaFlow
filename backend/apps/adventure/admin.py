@@ -8,9 +8,12 @@ from .models import (
     AdventurePhaseCompletion,
     AdventureProgress,
     AdventureSectionProgress,
+    AdventureSkill,
     PhaseSection,
     UserCharacterMet,
+    UserChest,
     UserInventoryItem,
+    UserSkillMastery,
 )
 
 
@@ -35,7 +38,7 @@ class AdventureCharacterInline(admin.TabularInline):
 class AdventureItemInline(admin.TabularInline):
     model  = AdventureItem
     extra  = 0
-    fields = ["slug", "name", "emoji", "rarity", "action", "source_phase", "source_character", "order"]
+    fields = ["slug", "name", "emoji", "rarity", "action", "item_tag", "skill", "source_phase", "source_character", "order"]
 
 
 @admin.register(AdventureChapter)
@@ -67,8 +70,26 @@ class AdventureCharacterAdmin(admin.ModelAdmin):
 
 @admin.register(AdventureItem)
 class AdventureItemAdmin(admin.ModelAdmin):
-    list_display = ["name", "chapter", "rarity", "action", "source_phase", "source_character", "order"]
-    list_filter  = ["chapter", "rarity"]
+    list_display = ["name", "chapter", "rarity", "action", "item_tag", "skill", "source_phase", "source_character", "order"]
+    list_filter  = ["chapter", "rarity", "item_tag", "skill"]
+
+
+@admin.register(AdventureSkill)
+class AdventureSkillAdmin(admin.ModelAdmin):
+    list_display = ["name", "chapter", "slug", "category", "base_power", "order"]
+    list_filter = ["chapter", "category"]
+
+
+@admin.register(UserSkillMastery)
+class UserSkillMasteryAdmin(admin.ModelAdmin):
+    list_display = ["user", "skill", "level", "xp", "uses_count", "last_used_at"]
+    list_filter = ["skill__chapter", "skill"]
+
+
+@admin.register(UserChest)
+class UserChestAdmin(admin.ModelAdmin):
+    list_display = ["user", "chapter", "phase", "chest_tier", "status", "unlock_at", "earned_item"]
+    list_filter = ["chapter", "chest_tier", "status"]
 
 
 @admin.register(AdventureProgress)

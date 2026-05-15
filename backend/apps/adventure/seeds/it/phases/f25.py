@@ -29,6 +29,14 @@ SECTIONS = [
             "beats": [
                 {"kind": "scene", "text": "??? Sala de julgamento · Manhã · Podesta no trono central"},
                 {"kind": "narrative", "text": "Pedra fria. Bandeira pendurada. Três guardas em cada lado. L'Ispettore ao lado direito do Podesta. Bianca no público — terceira fila — fingindo bordar."},
+                {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 3,
+                    "uses_item_tag": "documento",
+                    "success": "Voce escolhe a palavra e o gesto certos; a resistencia baixa um pouco.",
+                    "fallback": "A conversa nao abre de imediato, mas Nico segura o clima e a historia continua.",
+                },
                 {"kind": "npc", "npc": "Il Podesta", "line": "Forestiero — el juicio empieza adesso. Levántate.", "pace": "slow"},
                 {"kind": "player", "text": "Antonio il Contadino atrás. Chiara e Nico ao lado. Lucia ao seu lado direito. Você levanta. As pernas firmes — não tremeram. A hierba ajudou."},
                 {"kind": "npc", "npc": "Il Podesta", "line": "Te acusan de entrar al borgo senza permiso, de usar la palabra de los Buscadores en público, y de albergar a una persona buscada por el distrito.", "pace": "slow"},

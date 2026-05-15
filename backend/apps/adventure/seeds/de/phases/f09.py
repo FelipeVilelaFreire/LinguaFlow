@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'Four at the Table - table - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'versorgung',
+                         'min_level': 1,
+                         'uses_item_tag': 'comida',
+                         'success': 'You read the hunger in the group early and protect the food before the walk grows harder.',
+                         'fallback': 'You misjudge the supplies at first, but someone shares enough for the story to continue.'},
                         {'kind': 'narrative',
                          'text': 'The four eat together and begin to feel like a group. Otto '
                                  'privately distrusts Marta. This is the same ES canon beat, '
@@ -146,8 +152,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'Der Wald',
                              'native': 'the forest',
                              'npc_reaction': 'Der Wald. The answer fits the scene.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Marta die Heilerin', 'Lina', 'Otto'],
                         'story': 'The four eat together and begin to feel like a group. Otto '
                                  'privately distrusts Marta.',

@@ -28,6 +28,14 @@ SECTIONS = [
             "beats": [
                 {"kind": "scene",     "text": "🌄 Casa de hóspedes · Amanhecer · Lucia sentada esperando"},
                 {"kind": "npc",       "npc": "Lucia", "line": "Sé por qué viniste. Hace días que sé.", "pace": "slow"},
+                {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 2,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce improvisa cuidado limpo antes que a dor vire problema maior.",
+                    "fallback": "Sem tecnica suficiente, voce faz o basico e aceita ajuda para seguir.",
+                },
                 {"kind": "player",    "text": "Chiara atrás de você. Nico atrás dela. Antonio il Contadino na porta. Cinco contra uma — piu a vantagem real está toda do lado dela."},
                 {"kind": "npc",       "npc": "Lucia", "line": "Pregúntame lo que quieras. Yo decido qué contesto.", "pace": "slow"},
             ],

@@ -2,7 +2,8 @@
 REM ============================================================================
 REM  Talkly Backend - Seed DE
 REM
-REM  Popula somente o conteudo EN -> DE. Nao roda migrations.
+REM  Popula o conteudo EN -> DE. Roda migrations antes porque aventura usa
+REM  tabelas de skills, baus e maestria por usuario.
 REM ============================================================================
 
 pushd "%~dp0..\.."
@@ -23,11 +24,21 @@ if %errorlevel% neq 0 (
 set PYTHONIOENCODING=utf-8
 
 echo.
-echo [1/3] Seed languages...
+echo [1/5] Migrate banco...
+python manage.py migrate
+if %errorlevel% neq 0 (
+    echo ERRO: migrate
+    popd
+    pause
+    exit /b 1
+)
+
+echo.
+echo [2/5] Seed languages...
 python manage.py seed_languages 2>nul
 
 echo.
-echo [2/3] Seed DE aventura...
+echo [3/5] Seed DE aventura...
 python manage.py seed_de
 if %errorlevel% neq 0 (
     echo ERRO: seed_de
@@ -37,10 +48,20 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo [3/3] Seed DE secoes (F1-F25)...
+echo [4/5] Seed DE secoes (F1-F25)...
 python manage.py seed_de_sections --reset
 if %errorlevel% neq 0 (
     echo ERRO: seed_de_sections
+    popd
+    pause
+    exit /b 1
+)
+
+echo.
+echo [5/5] Seed DE estudo...
+python manage.py seed_de_study
+if %errorlevel% neq 0 (
+    echo ERRO: seed_de_study
     popd
     pause
     exit /b 1

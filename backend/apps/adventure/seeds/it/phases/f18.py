@@ -51,6 +51,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 2,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce improvisa cuidado limpo antes que a dor vire problema maior.",
+                    "fallback": "Sem tecnica suficiente, voce faz o basico e aceita ajuda para seguir.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Antonio il Contadino",
                     "line": "Bene. Prima de que vuelva — andiamo a juntar todo lo que sabemos.",

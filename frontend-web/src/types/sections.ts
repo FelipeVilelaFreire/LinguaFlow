@@ -15,7 +15,8 @@ export type NarrativaBeat =
   | { kind: "scene";     text: string }
   | { kind: "narrative"; text: string }
   | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile }
-  | { kind: "player";    text: string };
+  | { kind: "player";    text: string }
+  | SkillCheckStep;
 
 // ── Step types — all step-based sections ─────────────────────────────────────
 
@@ -46,6 +47,16 @@ export interface ItemMomentStep {
   };
 }
 
+export interface SkillCheckStep {
+  kind:          "skill_check";
+  skill:         string;
+  min_level:     number;
+  success:       string;
+  fallback:      string;
+  uses_item_tag?: string;
+  reward_hint?:  string;
+}
+
 export type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
@@ -58,6 +69,7 @@ export type SectionStep =
   | { kind: "fill_blank";      prompt: string; answer: string }
   | { kind: "translate";       source: string; answer: string }
   | { kind: "write_word";      prompt: string; word_id: string; answer: string; tier: Extract<WordTier, "diamante" | "esmeralda">; hint?: string }
+  | SkillCheckStep
   | ItemMomentStep;
 
 // ── Section recap — "Me relembre onde paramos" card, triggered by the player ──

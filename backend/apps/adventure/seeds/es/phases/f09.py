@@ -43,6 +43,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "sustento",
+                    "min_level": 1,
+                    "uses_item_tag": "comida",
+                    "success": "Voce entende a ordem da mesa e evita ofender quem serviu a comida.",
+                    "fallback": "Voce hesita diante da mesa, mas Miguel traduz o gesto e todos continuam.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "☀️ Manhã clara · Mesa da cozinha · Quatro lugares postos\n\n"

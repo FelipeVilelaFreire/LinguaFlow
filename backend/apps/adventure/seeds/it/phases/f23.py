@@ -20,6 +20,14 @@ SECTIONS = [
             "beats": [
                 {"kind": "scene", "text": "??? Casa de Antonio il Contadino · Cercada · Três guardas + Ispettore na porta"},
                 {"kind": "npc", "npc": "L'Ispettore", "line": "Antonio il Contadino — abra. Tenemos ordine del Podesta.", "pace": "urgent"},
+                {
+                    "kind": "skill_check",
+                    "skill": "persuasao",
+                    "min_level": 3,
+                    "uses_item_tag": "moneda",
+                    "success": "Voce escolhe a palavra e o gesto certos; a resistencia baixa um pouco.",
+                    "fallback": "A conversa nao abre de imediato, mas Nico segura o clima e a historia continua.",
+                },
                 {"kind": "player", "text": "Vocês cinco do lado de dentro. Lucia sentada na cadeira da cozinha come se fosse manhã normale."},
                 {"kind": "npc", "npc": "Antonio il Contadino", "line": "Vado a abrir. Ma el forestiero no salee solo.", "pace": "slow"},
             ],

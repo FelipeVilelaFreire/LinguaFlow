@@ -53,6 +53,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "sustento",
+                    "min_level": 1,
+                    "uses_item_tag": "comida",
+                    "success": "Voce reconhece quando guardar comida vale mais do que gastar tudo na primeira conversa.",
+                    "fallback": "Voce ainda calcula mal os recursos, mas alguem divide o necessario e a cena segue.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Lucia",
                     "line": "¡Benes días! Hice café fuerte — vas a necesitarlo.",

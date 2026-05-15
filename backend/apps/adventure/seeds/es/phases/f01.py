@@ -32,6 +32,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "sustento",
+                    "min_level": 1,
+                    "uses_item_tag": "comida",
+                    "success": "Rosa aceita trocar o pao por ajuda simples, e voce entende melhor a primeira regra do pueblo.",
+                    "fallback": "Rosa guarda o pao, mas Don Miguel intervem e a chegada continua.",
+                },
+                {
                     "kind": "scene",
                     "text": "🌅  San Cristóbal del Pueblo · Manhã · Dia 1",
                 },

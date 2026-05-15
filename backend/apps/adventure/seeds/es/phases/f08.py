@@ -52,6 +52,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 1,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce reconhece as ervas certas e ajuda a curandeira sem atrapalhar.",
+                    "fallback": "As ervas se confundem, mas a curandeira corrige sua mao e a consulta continua.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌙 Madrugada · Quarto · Febre alta\n\n"

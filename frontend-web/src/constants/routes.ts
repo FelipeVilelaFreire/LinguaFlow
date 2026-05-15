@@ -7,6 +7,7 @@ export const ROUTES = {
   adventure: "/aventura",
   adventureMap: "/aventura/mapa",
   adventureMochila: "/aventura/mochila",
+  adventureBaus: "/aventura/baus",
   adventurePalavras: "/aventura/palavras",
   adventureHeroi: "/aventura/heroi",
   adventurePersonagens: "/aventura/personagens",

@@ -44,6 +44,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 2,
+                    "uses_item_tag": "documento",
+                    "success": "Voce reconhece o sinal antigo antes que Eduardo toque na marca.",
+                    "fallback": "A marca parece so uma cicatriz, mas Eduardo explica o bastante para seguir.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🌄 Pátio da herrería · Amanhecer · Fogo ainda apagado\n\n"

@@ -113,6 +113,17 @@ export type ItemRarity = "comum" | "raro" | "epico" | "lendario" | "mitico";
 export type ItemAction = "examinar" | "entregar" | "usar" | "equipar";
 export type ItemTag    = "comida" | "bebida" | "arma" | "documento" | "moneda" | "remedio" | "comum" | "";
 
+export interface ApiAdventureSkill {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  category: "combate" | "sobrevivencia" | "social" | "investigacao" | "suporte";
+  emoji: string;
+  base_power: number;
+  order: number;
+}
+
 export interface ApiAdventureItem {
   id: number;
   slug: string;
@@ -126,6 +137,7 @@ export interface ApiAdventureItem {
   source_character_name: string | null;
   word_id?: string;
   item_tag?: ItemTag;
+  skill?: ApiAdventureSkill | null;
   is_degraded?: boolean;
 }
 
@@ -135,6 +147,31 @@ export interface ApiUserInventoryItem {
   earned_at: string;
   is_used: boolean;
   used_at: string | null;
+}
+
+export interface ApiUserChest {
+  id: number;
+  phase_number: number;
+  chapter_slug: string;
+  chest_tier: "comum" | "raro" | "epico" | "lendario" | "mitico";
+  phase_score: number;
+  status: "stored" | "opening" | "ready" | "claimed" | "discarded";
+  rolled_rarity: ItemRarity | "";
+  earned_item: ApiAdventureItem | null;
+  created_at: string;
+  started_at: string | null;
+  unlock_at: string | null;
+  claimed_at: string | null;
+  is_ready: boolean;
+}
+
+export interface ApiUserSkillMastery {
+  id: number;
+  skill: ApiAdventureSkill;
+  xp: number;
+  level: number;
+  uses_count: number;
+  last_used_at: string | null;
 }
 
 export interface StreakData {
@@ -175,6 +212,7 @@ export interface HeroStats {
     gramatica:   number;
     fluencia:    number;
   };
+  skills?: ApiUserSkillMastery[];
   achievements: Array<{
     key:   string;
     emoji: string;

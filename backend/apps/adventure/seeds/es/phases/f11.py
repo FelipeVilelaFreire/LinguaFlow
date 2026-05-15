@@ -39,6 +39,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "investigacion",
+                    "min_level": 2,
+                    "uses_item_tag": "documento",
+                    "success": "Voce nota o selo velho no ayuntamiento antes que o funcionario cubra o livro.",
+                    "fallback": "O livro fecha rapido demais, mas a palavra pase fica clara e o pedido continua.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🏛️ Ayuntamiento de San Cristóbal · Amanhecer · Sala fria\n\n"

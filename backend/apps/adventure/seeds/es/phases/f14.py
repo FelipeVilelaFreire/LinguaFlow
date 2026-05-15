@@ -50,6 +50,14 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
+                    "kind": "skill_check",
+                    "skill": "sustento",
+                    "min_level": 2,
+                    "uses_item_tag": "comida",
+                    "success": "Voce reconhece a comida da mesa e acompanha a revisao sem quebrar o ritual da janta.",
+                    "fallback": "Voce erra a ordem dos pratos, mas Lucia ri baixo e deixa a revisao continuar.",
+                },
+                {
                     "kind": "scene",
                     "text": (
                         "🕯️ Casa de hóspedes de María · Noite · Mesa posta\n\n"

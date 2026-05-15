@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'Before the Vogt - escort - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'ueberzeugung',
+                         'min_level': 3,
+                         'uses_item_tag': 'moneda',
+                         'success': 'Your timing and tone make the villager listen before suspicion hardens.',
+                         'fallback': 'The villager does not trust you yet, but Otto keeps the exchange from closing.'},
                         {'kind': 'narrative',
                          'text': 'The Inspector escorts the group before the Vogt. A coin can '
                                  'soften a guard, not the system. This is the same ES canon beat, '
@@ -82,8 +88,7 @@ SECTIONS = [{'section_number': 1,
                              'target': 'wenn',
                              'native': 'if',
                              'npc_reaction': 'Der Inspektor accepts the word: wenn.'}]}},
- {'section_number': 2,
-  'section_type': 'revisao_srs',
+ {'section_number': 2,  'section_type': 'revisao_srs',
   'content': {'recap': {'characters': ['Der Inspektor', 'Der Vogt', 'Otto'],
                         'story': 'The Inspector escorts the group before the Vogt. A coin can '
                                  'soften a guard, not the system.',

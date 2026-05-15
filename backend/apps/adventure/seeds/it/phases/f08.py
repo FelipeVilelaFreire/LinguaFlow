@@ -62,6 +62,14 @@ SECTIONS = [
                     ),
                 },
                 {
+                    "kind": "skill_check",
+                    "skill": "cura",
+                    "min_level": 1,
+                    "uses_item_tag": "remedio",
+                    "success": "Voce improvisa cuidado limpo antes que a dor vire problema maior.",
+                    "fallback": "Sem tecnica suficiente, voce faz o basico e aceita ajuda para seguir.",
+                },
+                {
                     "kind": "npc",
                     "npc": "Chiara",
                     "line": "Aquí está. Lleva horas con la febbre subenedo.",

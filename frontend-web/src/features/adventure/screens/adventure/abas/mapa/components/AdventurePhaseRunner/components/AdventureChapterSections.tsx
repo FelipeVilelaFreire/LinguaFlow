@@ -537,6 +537,7 @@ export default function AdventureChapterSections({
   const rootRef        = useRef<HTMLDivElement>(null);
   const timerRef       = useRef<ReturnType<typeof setTimeout> | null>(null);
   const choicesFootRef = useRef<HTMLDivElement>(null);
+  const skillLevelsRef = useRef<Record<string, number>>({});
 
   function addFloat(text: string, isCombo: boolean) {
     const id = `float-${Date.now()}-${Math.random()}`;
@@ -558,6 +559,19 @@ export default function AdventureChapterSections({
       if (prev.some(e => e.id === entry.id)) return prev;
       return [...prev, entry];
     });
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    adventureService.listSkillMastery()
+      .then(masteries => {
+        if (cancelled) return;
+        skillLevelsRef.current = Object.fromEntries(
+          masteries.map(mastery => [mastery.skill.slug, mastery.level]),
+        );
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
 
   // Reset when section changes
@@ -668,6 +682,13 @@ export default function AdventureChapterSections({
         break;
 
       // ── Choice ────────────────────────────────────────────────────────────
+      case "skill_check": {
+        const level = skillLevelsRef.current[step.skill] ?? 0;
+        addEntry({ id, kind: "narrative", text: level >= step.min_level ? step.success : step.fallback });
+        setPhase("tap");
+        break;
+      }
+
       case "multiple_choice":
         withDelay(300, () => {
           if (step.npc) {
@@ -1416,4 +1437,3 @@ export default function AdventureChapterSections({
     </div>
   );
 }
-

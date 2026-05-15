@@ -6,6 +6,12 @@ Expanded from the ES canon matrix with English support text and German target sp
 SECTIONS = [{'section_number': 1,
   'section_type': 'narrativa',
   'content': {'beats': [{'kind': 'scene', 'text': 'The Market - market - first tableau'},
+                        {'kind': 'skill_check',
+                         'skill': 'ueberzeugung',
+                         'min_level': 1,
+                         'uses_item_tag': 'moneda',
+                         'success': 'Your timing and tone make the villager listen before suspicion hardens.',
+                         'fallback': 'The villager does not trust you yet, but Otto keeps the exchange from closing.'},
                         {'kind': 'narrative',
                          'text': 'The market teaches price, number, and public pressure. Greta '
                                  'notices more than she says. This is the same ES canon beat, '

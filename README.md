@@ -21,6 +21,15 @@ Documentos principais:
 - Arquitetura backend: [`docs/architecture/backend.md`](docs/architecture/backend.md)
 - Arquitetura frontend web: [`docs/architecture/frontend-web.md`](docs/architecture/frontend-web.md)
 
+## Modelo De Produto
+
+LinguaFlow separa o aprendizado em dois modulos principais:
+
+- **Aventura**: modo historia/RPG, progressivo e bloqueado. O usuario avanca passando fases, secoes e gates.
+- **Estudo**: modo livre, guiado por modulos, cenarios, lessons e StudyDays. O usuario pode praticar sem depender do desbloqueio da aventura.
+
+Os dois modulos sao separados no fluxo e no progresso, mas precisam seguir o mesmo ritmo pedagogico. Cada idioma/temporada deve ter seeds de Aventura e Estudo com peso equivalente de conteudo, vocabulario, frases, explicacoes e pratica.
+
 ## Rodar Backend
 
 ```bash
@@ -30,6 +39,8 @@ python -m venv .venv
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py seed_es_full
+python manage.py seed_it_study
+python manage.py seed_de_study
 python manage.py runserver
 ```
 

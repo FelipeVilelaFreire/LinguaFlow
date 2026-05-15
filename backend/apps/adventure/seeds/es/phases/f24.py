@@ -18,6 +18,14 @@ SECTIONS = [
         "section_number": 1, "section_type": "narrativa",
         "content": {
             "beats": [
+                {
+                    "kind": "skill_check",
+                    "skill": "armas",
+                    "min_level": 3,
+                    "uses_item_tag": "arma",
+                    "success": "Voce prepara uma ferramenta simples para abrir caminho se a vespera virar armadilha.",
+                    "fallback": "Sem preparo perfeito, voce ainda fica perto do grupo e chega ao julgamento.",
+                },
                 {"kind": "scene", "text": "🌒 Cela do ayuntamiento · Noite · Pedra úmida · Lamparina baixa"},
                 {"kind": "narrative", "text": "Você sentado no banco de pedra. Frio entrando pelas paredes. Ouve passos no corredor — quatro pares."},
                 {"kind": "npc", "npc": "Don Miguel", "line": "Le pagué al guardia. Una hora. Hablamos rápido.", "pace": "urgent"},

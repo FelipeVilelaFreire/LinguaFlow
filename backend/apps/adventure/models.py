@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 from apps.learning.models import Language, Phrase
 
@@ -170,6 +171,37 @@ class UserCharacterMet(models.Model):
 
 # ─── Items / Inventory ────────────────────────────────────────────────────────
 
+class AdventureSkill(models.Model):
+    CATEGORY_COMBATE       = "combate"
+    CATEGORY_SOBREVIVENCIA = "sobrevivencia"
+    CATEGORY_SOCIAL        = "social"
+    CATEGORY_INVESTIGACAO  = "investigacao"
+    CATEGORY_SUPORTE       = "suporte"
+    CATEGORY_CHOICES = [
+        (CATEGORY_COMBATE,       "Combate"),
+        (CATEGORY_SOBREVIVENCIA, "Sobrevivencia"),
+        (CATEGORY_SOCIAL,        "Social"),
+        (CATEGORY_INVESTIGACAO,  "Investigacao"),
+        (CATEGORY_SUPORTE,       "Suporte"),
+    ]
+
+    chapter     = models.ForeignKey(AdventureChapter, related_name="skills", on_delete=models.CASCADE)
+    slug        = models.SlugField(max_length=80)
+    name        = models.CharField(max_length=120)
+    description = models.TextField(blank=True, default="")
+    category    = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default=CATEGORY_SUPORTE)
+    emoji       = models.CharField(max_length=10, blank=True, default="")
+    base_power  = models.PositiveSmallIntegerField(default=10)
+    order       = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        ordering = ["order"]
+        unique_together = ("chapter", "slug")
+
+    def __str__(self):
+        return f"{self.chapter} - {self.name}"
+
+
 class AdventureItem(models.Model):
     RARITY_COMUM    = "comum"
     RARITY_RARO     = "raro"
@@ -211,6 +243,7 @@ class AdventureItem(models.Model):
     action       = models.CharField(max_length=10, choices=ACTION_CHOICES, default=ACTION_EXAMINAR)
     word_id      = models.CharField(max_length=60, blank=True, default="")
     item_tag     = models.CharField(max_length=20, blank=True, default="")
+    skill        = models.ForeignKey(AdventureSkill, related_name="items", on_delete=models.SET_NULL, null=True, blank=True)
     is_degraded  = models.BooleanField(default=False)
     degrades_to  = models.ForeignKey(
         "self", related_name="degraded_versions",
@@ -250,6 +283,80 @@ class UserInventoryItem(models.Model):
 
 
 # ─── Section-level progress ───────────────────────────────────────────────────
+
+class UserSkillMastery(models.Model):
+    user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="skill_mastery", on_delete=models.CASCADE)
+    skill        = models.ForeignKey(AdventureSkill, related_name="mastery_entries", on_delete=models.CASCADE)
+    xp           = models.PositiveIntegerField(default=0)
+    level        = models.PositiveSmallIntegerField(default=1)
+    uses_count   = models.PositiveIntegerField(default=0)
+    last_used_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ("user", "skill")
+        ordering = ["skill__order"]
+
+    def __str__(self):
+        return f"{self.user} - {self.skill.slug} lv {self.level}"
+
+    @staticmethod
+    def level_for_xp(xp: int) -> int:
+        if xp >= 1000:
+            return 5
+        if xp >= 500:
+            return 4
+        if xp >= 220:
+            return 3
+        if xp >= 80:
+            return 2
+        return 1
+
+    def add_xp(self, amount: int, used: bool = False):
+        self.xp += max(0, amount)
+        self.level = self.level_for_xp(self.xp)
+        if used:
+            self.uses_count += 1
+            self.last_used_at = timezone.now()
+        self.save(update_fields=["xp", "level", "uses_count", "last_used_at"])
+
+
+class UserChest(models.Model):
+    STATUS_STORED    = "stored"
+    STATUS_OPENING   = "opening"
+    STATUS_READY     = "ready"
+    STATUS_CLAIMED   = "claimed"
+    STATUS_DISCARDED = "discarded"
+    STATUS_CHOICES = [
+        (STATUS_STORED,    "Stored"),
+        (STATUS_OPENING,   "Opening"),
+        (STATUS_READY,     "Ready"),
+        (STATUS_CLAIMED,   "Claimed"),
+        (STATUS_DISCARDED, "Discarded"),
+    ]
+
+    user          = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="adventure_chests", on_delete=models.CASCADE)
+    phase         = models.ForeignKey(AdventurePhase, related_name="user_chests", on_delete=models.CASCADE)
+    chapter       = models.ForeignKey(AdventureChapter, related_name="user_chests", on_delete=models.CASCADE)
+    chest_tier    = models.CharField(max_length=10, choices=AdventurePhase.CHEST_TIER_CHOICES)
+    phase_score   = models.PositiveIntegerField(default=0)
+    status        = models.CharField(max_length=12, choices=STATUS_CHOICES, default=STATUS_STORED)
+    rolled_rarity = models.CharField(max_length=10, choices=AdventureItem.RARITY_CHOICES, blank=True, default="")
+    earned_item   = models.ForeignKey(AdventureItem, related_name="chest_drops", on_delete=models.SET_NULL, null=True, blank=True)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    started_at    = models.DateTimeField(null=True, blank=True)
+    unlock_at     = models.DateTimeField(null=True, blank=True)
+    claimed_at    = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ("user", "phase")
+        ordering = ["status", "unlock_at", "created_at"]
+
+    @property
+    def is_ready(self):
+        return self.status == self.STATUS_READY or (
+            self.status == self.STATUS_OPENING and self.unlock_at is not None and self.unlock_at <= timezone.now()
+        )
+
 
 class AdventureSectionProgress(models.Model):
     user               = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="section_progress", on_delete=models.CASCADE)

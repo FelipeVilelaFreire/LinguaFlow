@@ -11,9 +11,12 @@ from .models import (
     AdventurePhaseCompletion,
     AdventureProgress,
     AdventureSectionProgress,
+    AdventureSkill,
     PhaseSection,
     UserCharacterMet,
+    UserChest,
     UserInventoryItem,
+    UserSkillMastery,
 )
 
 
@@ -135,16 +138,23 @@ class AdventureCharacterSerializer(serializers.ModelSerializer):
 
 # ─── Item / Inventory ─────────────────────────────────────────────────────────
 
+class AdventureSkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AdventureSkill
+        fields = ["id", "slug", "name", "description", "category", "emoji", "base_power", "order"]
+
+
 class AdventureItemSerializer(serializers.ModelSerializer):
     source_phase_number    = serializers.IntegerField(source="source_phase.number",    read_only=True, default=None)
     source_character_name  = serializers.CharField(source="source_character.name",     read_only=True, default=None)
+    skill                  = AdventureSkillSerializer(read_only=True)
 
     class Meta:
         model  = AdventureItem
         fields = [
             "id", "slug", "emoji", "name", "lore", "rarity", "action", "order",
             "source_phase_number", "source_character_name",
-            "word_id", "item_tag", "is_degraded",
+            "word_id", "item_tag", "skill", "is_degraded",
         ]
 
 
@@ -154,6 +164,29 @@ class UserInventoryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model  = UserInventoryItem
         fields = ["id", "item", "earned_at", "is_used", "used_at"]
+
+
+class UserSkillMasterySerializer(serializers.ModelSerializer):
+    skill = AdventureSkillSerializer(read_only=True)
+
+    class Meta:
+        model = UserSkillMastery
+        fields = ["id", "skill", "xp", "level", "uses_count", "last_used_at"]
+
+
+class UserChestSerializer(serializers.ModelSerializer):
+    phase_number = serializers.IntegerField(source="phase.number", read_only=True)
+    chapter_slug = serializers.CharField(source="chapter.slug", read_only=True)
+    earned_item = AdventureItemSerializer(read_only=True)
+    is_ready = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = UserChest
+        fields = [
+            "id", "phase_number", "chapter_slug", "chest_tier", "phase_score",
+            "status", "rolled_rarity", "earned_item", "created_at", "started_at",
+            "unlock_at", "claimed_at", "is_ready",
+        ]
 
 
 # ─── Phase sections ───────────────────────────────────────────────────────────
@@ -185,5 +218,4 @@ class SectionProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model  = AdventureSectionProgress
         fields = ["phase_id", "completed_sections", "updated_at"]
-
 
