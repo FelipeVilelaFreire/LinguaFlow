@@ -7,7 +7,7 @@ LinguaFlow now has two admin surfaces.
 URL:
 
 ```txt
-http://localhost:8000/admin/
+http://localhost:8001/admin/
 ```
 
 Purpose:

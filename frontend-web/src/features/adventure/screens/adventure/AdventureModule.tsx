@@ -83,7 +83,7 @@ export default function AdventureModule({
   const TABS = [
     { id: "map"         as AdventureTab, label: s.adventure.tabMap,         Icon: Map      },
     { id: "mochila"     as AdventureTab, label: s.adventure.tabBag,         Icon: Backpack },
-    { id: "baus"        as AdventureTab, label: "Baus",                    Icon: Gift     },
+    { id: "baus"        as AdventureTab, label: s.adventure.tabChests,     Icon: Gift     },
     { id: "palavras"    as AdventureTab, label: s.adventure.tabWords,       Icon: BookOpen },
     { id: "personagens" as AdventureTab, label: s.adventure.tabPersonagens, Icon: Users    },
     { id: "heroi"       as AdventureTab, label: s.adventure.tabHero,        Icon: Shield   },
@@ -124,7 +124,7 @@ export default function AdventureModule({
       return (
         <div className="flex h-full items-center justify-center">
           <p className="animate-pulse text-sm font-semibold" style={{ color: c.textOnBg }}>
-            Carregando aventura...
+            {s.adventure.loadingAdventure}
           </p>
         </div>
       );
@@ -140,7 +140,7 @@ export default function AdventureModule({
             className="rounded-xl px-5 py-2.5 text-sm font-bold transition active:scale-[0.98]"
             style={{ background: c.ctaBg, color: c.ctaText }}
           >
-            Tentar novamente
+            {s.adventure.tryAgain}
           </button>
         </div>
       );
@@ -297,7 +297,7 @@ export default function AdventureModule({
           <div className="px-4">
             <div className="rounded-xl p-3" style={{ background: c.surface }}>
               <p className="mb-2.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                Temporadas
+                {s.adventure.seasonsLabel}
               </p>
               <div className="space-y-2.5">
                 {chapters.map((ch, i) => {
@@ -344,22 +344,23 @@ export default function AdventureModule({
             >
               {themeMode === "dark" ? <Sun size={14} /> : <Moon size={14} />}
               <span style={{ color: c.textOnBg }}>
-                {themeMode === "dark" ? "Modo dia" : "Modo noite"}
+                {themeMode === "dark" ? s.adventure.dayMode : s.adventure.nightMode}
               </span>
             </button>
           </div>
 
-          {/* DEV jump to phase */}
-          <div className="px-4 pb-5">
-            <button
-              type="button"
-              onClick={() => setDevModalOpen(true)}
-              className="flex w-full items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
-              style={{ background: c.surfaceMid, color: c.textFaint }}
-            >
-              {s.adventure.devResetLabel}
-            </button>
-          </div>
+          {import.meta.env.DEV && (
+            <div className="px-4 pb-5">
+              <button
+                type="button"
+                onClick={() => setDevModalOpen(true)}
+                className="flex w-full items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
+                style={{ background: c.surfaceMid, color: c.textFaint }}
+              >
+                {s.adventure.devResetLabel}
+              </button>
+            </div>
+          )}
         </aside>
 
         {/* ── Main content column ─────────────────────────────────────────── */}
@@ -460,7 +461,7 @@ export default function AdventureModule({
         </div>
       </div>
 
-      {devModalOpen && chapters[0] && (
+      {import.meta.env.DEV && devModalOpen && chapters[0] && (
         <DevJumpToPhaseModal
           chapterSlug={chapters[0].slug}
           phasesCount={chapters[0].phases.length}

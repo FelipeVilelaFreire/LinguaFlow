@@ -1,7 +1,8 @@
-import { ArrowRight, CheckCircle2, Eye, EyeOff, Sword } from "lucide-react";
+import { ArrowRight, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { APP_NAME, APP_TAGLINE_PT } from "../../../constants/app";
+import { APP_TAGLINE_PT } from "../../../constants/app";
+import { useStrings } from "../../../contexts/StringsContext";
 import { authService, type User } from "../../../services/authService";
 
 interface AuthScreenProps {
@@ -9,6 +10,7 @@ interface AuthScreenProps {
 }
 
 export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
+  const s = useStrings();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +24,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
   const [shaking, setShaking] = useState(false);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
-  const passwordRules = getPasswordRules(password);
+  const passwordRules = getPasswordRules(password, s);
   const isPasswordValid = passwordRules.every((r) => r.valid);
   const passwordsMatch = password === confirmPassword;
 
@@ -46,13 +48,13 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
 
   async function submit() {
     if (mode === "register") {
-      if (!username.trim()) { setError("Informe um nome de usuário."); triggerShake(); return; }
-      if (!email.trim()) { setError("Informe um email."); triggerShake(); return; }
-      if (!isPasswordValid) { setError("Complete os requisitos da senha."); triggerShake(); return; }
-      if (!passwordsMatch) { setError("As senhas não coincidem."); triggerShake(); return; }
+      if (!username.trim()) { setError(s.auth.usernameRequiredRegister); triggerShake(); return; }
+      if (!email.trim()) { setError(s.auth.emailRequired); triggerShake(); return; }
+      if (!isPasswordValid) { setError(s.auth.passwordRulesIncomplete); triggerShake(); return; }
+      if (!passwordsMatch) { setError(s.auth.passwordsDoNotMatch); triggerShake(); return; }
     } else {
-      if (!username.trim()) { setError("Informe seu usuário."); triggerShake(); return; }
-      if (!password) { setError("Informe sua senha."); triggerShake(); return; }
+      if (!username.trim()) { setError(s.auth.usernameRequiredLogin); triggerShake(); return; }
+      if (!password) { setError(s.auth.passwordRequired); triggerShake(); return; }
     }
 
     setLoading(true);
@@ -63,7 +65,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
         : await authService.register(username, email, password);
       onAuthenticated(user);
     } catch (err) {
-      setError(getAuthErrorMessage(err, mode));
+      setError(getAuthErrorMessage(err, mode, s));
       triggerShake();
     } finally {
       setLoading(false);
@@ -88,9 +90,8 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           }}
         >
           <div className="auth-logo-icon mb-3.5">
-            <Sword size={26} className="area-text-primary" strokeWidth={1.75} />
+            <img src="/lang-plus.svg" alt="Lang+" />
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-950">{APP_NAME}</h1>
           <p className="mt-1.5 text-sm font-medium text-slate-500">{APP_TAGLINE_PT}</p>
         </header>
 
@@ -107,10 +108,10 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           {/* Tab toggle */}
           <div className="auth-tab-pill mb-6">
             <button className={`auth-tab ${mode === "login" ? "active" : ""}`} onClick={() => switchMode("login")}>
-              Entrar
+              {s.auth.loginTab}
             </button>
             <button className={`auth-tab ${mode === "register" ? "active" : ""}`} onClick={() => switchMode("register")}>
-              Criar conta
+              {s.auth.registerTab}
             </button>
           </div>
 
@@ -119,7 +120,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             className="flex flex-col gap-3"
             style={{ animation: shaking ? "shake 0.38s ease" : "none" }}
           >
-            <Field label="Nome de usuário" htmlFor="username">
+            <Field label={s.auth.usernameLabel} htmlFor="username">
               <input
                 ref={firstInputRef}
                 id="username"
@@ -133,7 +134,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             </Field>
 
             {mode === "register" && (
-              <Field label="Email" htmlFor="email">
+              <Field label={s.auth.emailLabel} htmlFor="email">
                 <input
                   id="email"
                   value={email}
@@ -147,7 +148,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
               </Field>
             )}
 
-            <Field label="Senha" htmlFor="password">
+            <Field label={s.auth.passwordLabel} htmlFor="password">
               <PasswordInput
                 id="password"
                 value={password}
@@ -161,7 +162,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             </Field>
 
             {mode === "register" && (
-              <Field label="Confirmar senha" htmlFor="confirm">
+              <Field label={s.auth.confirmPasswordLabel} htmlFor="confirm">
                 <PasswordInput
                   id="confirm"
                   value={confirmPassword}
@@ -181,7 +182,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           {mode === "login" && (
             <div className="mt-2 text-right">
               <a href="#" className="area-text-primary text-[13px] font-medium no-underline hover:underline">
-                Esqueci a senha
+                {s.auth.forgotPassword}
               </a>
             </div>
           )}
@@ -219,7 +220,7 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           >
             {loading ? <LoadingDots /> : (
               <>
-                {mode === "login" ? "Entrar" : "Criar conta"}
+                {mode === "login" ? s.auth.loginTab : s.auth.registerTab}
                 <ArrowRight size={17} strokeWidth={2.5} />
               </>
             )}
@@ -228,26 +229,26 @@ export default function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           {/* Divisor */}
           <div className="my-5 flex items-center gap-3">
             <div className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-semibold text-slate-400">ou continue com</span>
+            <span className="text-xs font-semibold text-slate-400">{s.auth.orContinueWith}</span>
             <div className="h-px flex-1 bg-slate-200" />
           </div>
 
           {/* Google */}
           <button type="button" className="auth-google" onClick={() => { /* TODO: Google OAuth */ }}>
             <GoogleIcon />
-            Continuar com Google
+            {s.auth.continueWithGoogle}
           </button>
 
           {/* Switch mode */}
           <p className="mt-5 text-center text-[13.5px] font-medium text-slate-500">
-            {mode === "login" ? "Não tem conta? " : "Já tem conta? "}
+            {mode === "login" ? s.auth.noAccountPrompt : s.auth.hasAccountPrompt}
             <button
               type="button"
               onClick={() => switchMode(mode === "login" ? "register" : "login")}
               className="area-text-primary border-none bg-transparent p-0 text-[13.5px] font-bold"
               style={{ cursor: "pointer" }}
             >
-              {mode === "login" ? "Criar conta" : "Entrar"}
+              {mode === "login" ? s.auth.registerTab : s.auth.loginTab}
             </button>
           </p>
         </div>
@@ -321,26 +322,26 @@ function GoogleIcon() {
   );
 }
 
-function getAuthErrorMessage(error: unknown, mode: "login" | "register") {
+function getAuthErrorMessage(error: unknown, mode: "login" | "register", s: ReturnType<typeof useStrings>) {
   const message = error instanceof Error ? error.message : "";
-  if (message.includes("Username already exists")) return "Esse usuário já existe. Tente entrar ou escolha outro nome.";
-  if (message.includes("Invalid username or password")) return "Usuário ou senha incorretos.";
-  if (message.includes("uppercase")) return "A senha precisa ter uma letra maiúscula.";
-  if (message.includes("lowercase")) return "A senha precisa ter uma letra minúscula.";
-  if (message.includes("number")) return "A senha precisa ter um número.";
-  if (message.includes("password:")) return "A senha precisa ter pelo menos 6 caracteres.";
-  if (message.includes("email:")) return "Informe um email válido.";
-  if (message.includes("Failed to fetch")) return "Não consegui conectar no backend. Confirme se o Django está rodando na porta 8000.";
+  if (message.includes("Username already exists")) return s.auth.errorUsernameExists;
+  if (message.includes("Invalid username or password")) return s.auth.errorInvalidCredentials;
+  if (message.includes("uppercase")) return s.auth.errorPasswordUppercase;
+  if (message.includes("lowercase")) return s.auth.errorPasswordLowercase;
+  if (message.includes("number")) return s.auth.errorPasswordNumber;
+  if (message.includes("password:")) return s.auth.errorPasswordLength;
+  if (message.includes("email:")) return s.auth.errorEmailInvalid;
+  if (message.includes("Failed to fetch")) return s.auth.errorBackendUnavailable;
   return mode === "login"
-    ? "Não foi possível entrar. Confira usuário e senha."
-    : "Não foi possível criar a conta. Confira os dados e tente novamente.";
+    ? s.auth.errorLoginFallback
+    : s.auth.errorRegisterFallback;
 }
 
-function getPasswordRules(password: string) {
+function getPasswordRules(password: string, s: ReturnType<typeof useStrings>) {
   return [
-    { label: "Pelo menos 6 caracteres", valid: password.length >= 6 },
-    { label: "Uma letra maiúscula", valid: /[A-Z]/.test(password) },
-    { label: "Uma letra minúscula", valid: /[a-z]/.test(password) },
-    { label: "Um número", valid: /\d/.test(password) },
+    { label: s.auth.passwordRuleLength, valid: password.length >= 6 },
+    { label: s.auth.passwordRuleUppercase, valid: /[A-Z]/.test(password) },
+    { label: s.auth.passwordRuleLowercase, valid: /[a-z]/.test(password) },
+    { label: s.auth.passwordRuleNumber, valid: /\d/.test(password) },
   ];
 }

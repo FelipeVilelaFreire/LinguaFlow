@@ -18,3 +18,60 @@ button,
 input {
   font: inherit;
 }
+
+.admin-brand-logo {
+  display: block;
+  width: 106px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.admin-input {
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 0 14px;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.admin-input:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+.admin-icon-button {
+  display: grid;
+  height: 42px;
+  width: 42px;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #475569;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.admin-icon-button:hover {
+  border-color: #ccfbf1;
+  background: #f0fdfa;
+  color: #0f766e;
+}
+
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #475569;
+}
+
+.admin-badge-active,
+.admin-badge-strong {
+  background: #ccfbf1;
+  color: #0f766e;
+}

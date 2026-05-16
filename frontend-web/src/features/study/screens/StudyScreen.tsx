@@ -129,7 +129,7 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
         <div className="flex flex-col gap-4" style={{ animation: "fadeIn 260ms ease-out" }}>
 
           {/* Hero — adventure context */}
-          <div className="study-hero-card" onClick={() => onNavigate("adventure")}>
+          <div className="study-hero-card" onClick={() => onNavigate("adventure-map")}>
             <div className="study-hero-bg" />
             <div className="relative z-10 flex flex-col gap-4 p-5">
               <div>
@@ -150,7 +150,7 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
                 <button
                   type="button"
                   className="study-hero-btn-secondary"
-                  onClick={(e) => { e.stopPropagation(); onNavigate("adventure"); }}
+                  onClick={(e) => { e.stopPropagation(); onNavigate("adventure-map"); }}
                 >
                   <Sword size={15} strokeWidth={2} />
                   {s.study.continueAdventureBtn}

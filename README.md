@@ -41,10 +41,10 @@ python manage.py migrate
 python manage.py seed_es_full
 python manage.py seed_it_study
 python manage.py seed_de_study
-python manage.py runserver
+python manage.py runserver 8001
 ```
 
-API: `http://localhost:8000/api/`
+API: `http://localhost:8001/api/`
 
 ## Rodar Frontend
 

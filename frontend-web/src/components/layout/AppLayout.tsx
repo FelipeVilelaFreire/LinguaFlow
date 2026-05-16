@@ -36,7 +36,7 @@ export default function AppLayout({ activeRoute, activeGoal, children, fullWidth
   const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
   const strings = useStrings();
   const activeTheme = getStudyAreaTheme(activeGoal);
-  const activeArea = activeGoal ? activeTheme.label : uiLocale === "pt" ? "Nenhuma area ativa" : "No active area";
+  const activeArea = activeGoal ? activeTheme.label : strings.home.noActiveArea;
   const mobileNavItems = navItems.filter((item) => ["home", "adventure", "today", "vocabulary", "account"].includes(item.route));
 
   return (
@@ -51,7 +51,7 @@ export default function AppLayout({ activeRoute, activeGoal, children, fullWidth
             <Flame size={16} />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-bold leading-tight text-slate-950">{strings.app.name}</p>
+            <img src="/lang-plus.svg" alt="Lang+" className="h-7 w-auto" />
             <p className="truncate text-xs font-medium text-slate-500">{activeArea}</p>
           </div>
           {activeGoal && (
@@ -66,14 +66,9 @@ export default function AppLayout({ activeRoute, activeGoal, children, fullWidth
       <aside className="fixed inset-y-0 left-0 hidden w-80 flex-col border-r border-slate-200 bg-white md:flex">
         {/* Logo + nav */}
         <div className="flex-1 px-3 pb-3 pt-4">
-          <div className="mb-5 flex items-center gap-2.5 px-1">
-            <div className="grid h-8 w-8 shrink-0 place-items-center rounded-[8px] text-white shadow-sm" style={{ background: "var(--area-primary)" }}>
-              <Flame size={16} />
-            </div>
-            <div className="min-w-0">
-              <h1 className="truncate text-base font-bold leading-tight">{strings.app.name}</h1>
-              <p className="truncate text-[10px] font-semibold text-slate-400">{strings.app.subtitle}</p>
-            </div>
+          <div className="mb-5 px-1">
+            <img src="/lang-plus.svg" alt="Lang+" className="h-10 w-auto" />
+            <p className="mt-1 truncate text-[10px] font-semibold text-slate-400">{strings.app.subtitle}</p>
           </div>
 
           <nav className="space-y-0.5">
@@ -184,7 +179,7 @@ export default function AppLayout({ activeRoute, activeGoal, children, fullWidth
 
       {isAreaModalOpen ? (
         <div className="fixed inset-0 z-40 grid place-items-end bg-slate-950/40 px-3 pb-3 backdrop-blur-sm md:place-items-center md:px-4 md:pb-0" onClick={() => setIsAreaModalOpen(false)}>
-          <section className="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-[20px] bg-white shadow-xl md:max-h-[70vh]" style={{ animation: "sheetSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1)" }} onClick={(e) => e.stopPropagation()}>
+          <section className="flex max-h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-[16px] bg-white shadow-xl md:max-h-[70vh]" style={{ animation: "sheetSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1)" }} onClick={(e) => e.stopPropagation()}>
 
             {/* Scrollable body */}
             <div className="flex-1 overflow-y-auto p-4 md:p-5">
@@ -201,8 +196,8 @@ export default function AppLayout({ activeRoute, activeGoal, children, fullWidth
               <div className="mt-4 grid gap-2">
                 {!goals.length ? (
                   <div className="rounded-[8px] border border-dashed border-slate-300 bg-slate-50 p-5 text-center">
-                    <p className="font-semibold">{uiLocale === "pt" ? "Nenhuma area criada" : "No areas yet"}</p>
-                    <p className="mt-1 text-sm font-medium text-slate-500">{uiLocale === "pt" ? "Adicione uma area abaixo." : "Add an area below."}</p>
+                    <p className="font-semibold">{strings.layout.noAreasCreated}</p>
+                    <p className="mt-1 text-sm font-medium text-slate-500">{strings.layout.addAreaBelow}</p>
                   </div>
                 ) : null}
                 {goals.map((goal) => {

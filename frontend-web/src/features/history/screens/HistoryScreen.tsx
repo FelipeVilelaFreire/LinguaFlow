@@ -2,7 +2,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import StateMessage from "../../../components/ui/StateMessage";
-import { useLocale } from "../../../contexts/StringsContext";
+import { useLocale, useStrings } from "../../../contexts/StringsContext";
 import { useAsyncData } from "../../../hooks/useAsyncData";
 import { contentService } from "../../../services/contentService";
 import { getStudyAreaTheme } from "../../../theme/studyAreaTheme";
@@ -17,6 +17,7 @@ interface HistoryScreenProps {
 
 export default function HistoryScreen({ onBack }: HistoryScreenProps) {
   const locale = useLocale();
+  const s = useStrings();
   const [viewMode, setViewMode] = useState<"all" | "areas">("all");
   const [cursor, setCursor] = useState(() => {
     const today = new Date();
@@ -48,8 +49,8 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
   if (history.error || !history.data) return (
     <div className="history-shell">
       <StateMessage
-        title={locale === "pt" ? "Historico indisponivel." : "History unavailable."}
-        detail={locale === "pt" ? "Confira se o backend esta rodando." : "Check if the backend is running."}
+        title={s.history.unavailableTitle}
+        detail={s.history.unavailableDetail}
       />
     </div>
   );
@@ -65,7 +66,7 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
           <ArrowLeft size={18} />
         </button>
         <h1 className="history-title">
-          {locale === "pt" ? "Histórico" : "History"}
+          {s.history.title}
         </h1>
         <div className="w-9" />
       </div>
@@ -87,15 +88,15 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
         <div className="grid grid-cols-3 gap-2">
           <StatPill
             value={summary.bestStreak}
-            label={locale === "pt" ? "Melhor streak" : "Best streak"}
+            label={s.history.bestStreak}
           />
           <StatPill
             value={summary.completedDays}
-            label={locale === "pt" ? "Dias" : "Days"}
+            label={s.history.days}
           />
           <StatPill
             value={summary.sessions}
-            label={locale === "pt" ? "Sessões" : "Sessions"}
+            label={s.history.sessions}
           />
         </div>
 
@@ -106,14 +107,14 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
             onClick={() => setViewMode("all")}
             className={`h-10 rounded-[6px] text-sm font-semibold transition ${viewMode === "all" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500"}`}
           >
-            {locale === "pt" ? "Tudo" : "All"}
+            {s.history.all}
           </button>
           <button
             type="button"
             onClick={() => setViewMode("areas")}
             className={`h-10 rounded-[6px] text-sm font-semibold transition ${viewMode === "areas" ? "bg-white text-slate-950 shadow-sm" : "text-slate-500"}`}
           >
-            {locale === "pt" ? "Por área" : "By area"}
+            {s.history.byArea}
           </button>
         </div>
 
@@ -121,7 +122,7 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
         {viewMode === "all" ? (
           <AllHistoryPanel
             goals={history.data.goals}
-            locale={locale}
+            strings={s}
             year={cursor.year}
             month={cursor.month}
           />
@@ -131,7 +132,7 @@ export default function HistoryScreen({ onBack }: HistoryScreenProps) {
               key={entry.goal.id}
               goal={entry.goal}
               days={entry.days}
-              locale={locale}
+              strings={s}
               year={cursor.year}
               month={cursor.month}
             />
@@ -154,9 +155,9 @@ function StatPill({ value, label }: { value: number; label: string }) {
   );
 }
 
-function AllHistoryPanel({ goals, locale, year, month }: {
+function AllHistoryPanel({ goals, strings, year, month }: {
   goals: Array<{ goal: Goal; days: HistoryDay[] }>;
-  locale: "pt" | "en";
+  strings: ReturnType<typeof useStrings>;
   year: number;
   month: number;
 }) {
@@ -165,19 +166,19 @@ function AllHistoryPanel({ goals, locale, year, month }: {
   return (
     <section className="card p-4">
       <div className="mb-4 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
-        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluído" : "Completed"} />
-        <Legend color="#e2e8f0" label={locale === "pt" ? "Planejado" : "Planned"} />
-        <Legend color="transparent" label={locale === "pt" ? "Livre" : "Open"} border />
+        <Legend color={COMPLETED_COLOR} label={strings.history.completed} />
+        <Legend color="#e2e8f0" label={strings.history.planned} />
+        <Legend color="transparent" label={strings.history.open} border />
       </div>
-      <CalendarGrid dayMap={dayMap} softColor="#cbd5e1" locale={locale} year={year} month={month} />
+      <CalendarGrid dayMap={dayMap} softColor="#cbd5e1" strings={strings} year={year} month={month} />
     </section>
   );
 }
 
-function GoalHistoryPanel({ goal, days, locale, year, month }: {
+function GoalHistoryPanel({ goal, days, strings, year, month }: {
   goal: Goal;
   days: HistoryDay[];
-  locale: "pt" | "en";
+  strings: ReturnType<typeof useStrings>;
   year: number;
   month: number;
 }) {
@@ -187,35 +188,33 @@ function GoalHistoryPanel({ goal, days, locale, year, month }: {
   return (
     <section className="card p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <p className="text-sm font-bold text-slate-950">{formatGoal(goal, locale)}</p>
+        <p className="text-sm font-bold text-slate-950">{formatGoal(goal, strings)}</p>
         {goal.is_active && (
           <span className="rounded-full px-2.5 py-0.5 text-xs font-semibold" style={{ background: theme.primarySoft, color: theme.primaryDark }}>
-            {locale === "pt" ? "Ativa" : "Active"}
+            {strings.history.active}
           </span>
         )}
       </div>
       <div className="mb-4 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
-        <Legend color={COMPLETED_COLOR} label={locale === "pt" ? "Concluído" : "Completed"} />
-        <Legend color={theme.primarySoft} label={locale === "pt" ? "Planejado" : "Planned"} />
-        <Legend color="transparent" label={locale === "pt" ? "Livre" : "Open"} border />
+        <Legend color={COMPLETED_COLOR} label={strings.history.completed} />
+        <Legend color={theme.primarySoft} label={strings.history.planned} />
+        <Legend color="transparent" label={strings.history.open} border />
       </div>
-      <CalendarGrid dayMap={dayMap} softColor={theme.primarySoft} locale={locale} year={year} month={month} />
+      <CalendarGrid dayMap={dayMap} softColor={theme.primarySoft} strings={strings} year={year} month={month} />
     </section>
   );
 }
 
 // ── Calendar ──────────────────────────────────────────────
 
-function CalendarGrid({ dayMap, softColor, locale, year, month }: {
+function CalendarGrid({ dayMap, softColor, strings, year, month }: {
   dayMap: Map<string, HistoryDay>;
   softColor: string;
-  locale: "pt" | "en";
+  strings: ReturnType<typeof useStrings>;
   year: number;
   month: number;
 }) {
-  const weekdays = locale === "pt"
-    ? ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
-    : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const weekdays = strings.weekdays.short;
 
   const daysInMonth = new Date(year, month, 0).getDate();
   const firstDayJs = new Date(year, month - 1, 1).getDay(); // 0=Sun
@@ -347,11 +346,8 @@ function mergeGoalDays(goals: Array<{ days: HistoryDay[] }>): Map<string, Histor
   return byDate;
 }
 
-function formatGoal(goal: Goal, locale: "pt" | "en") {
-  const names = locale === "pt"
-    ? { PT: "Portugues", EN: "Ingles", DE: "Alemao", ES: "Espanhol" }
-    : { PT: "Portuguese", EN: "English", DE: "German", ES: "Spanish" };
-  const source = names[goal.source_language?.code as keyof typeof names] ?? goal.source_language?.code ?? "";
-  const target = names[goal.target_language?.code as keyof typeof names] ?? goal.target_language?.code ?? "";
-  return locale === "pt" ? `${source} para ${target} · ${goal.target_level}` : `${source} to ${target} · ${goal.target_level}`;
+function formatGoal(goal: Goal, strings: ReturnType<typeof useStrings>) {
+  const source = strings.languages[goal.source_language?.code as keyof typeof strings.languages] ?? goal.source_language?.code ?? "";
+  const target = strings.languages[goal.target_language?.code as keyof typeof strings.languages] ?? goal.target_language?.code ?? "";
+  return strings.home.languagePath(source, target, goal.target_level);
 }

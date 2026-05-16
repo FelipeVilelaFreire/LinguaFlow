@@ -94,6 +94,13 @@ export default function App() {
       replacePath(ROUTES.login);
       return;
     }
+    if (user && !goal && window.location.pathname !== ROUTES.onboarding) {
+      replacePath(ROUTES.onboarding);
+      return;
+    }
+    if (user && !goal && window.location.pathname === ROUTES.onboarding) {
+      return;
+    }
     if (user && isAuthPath(window.location.pathname)) {
       replacePath(ROUTE_PATH[route] ?? ROUTES.home);
     }
@@ -134,7 +141,14 @@ export default function App() {
         />
       );
     }
-    return <HomeScreen hasActiveGoal={Boolean(goal)} onCreateArea={() => navigate("account")} onStartToday={() => navigate("today")} />;
+    return (
+      <HomeScreen
+        hasActiveGoal={Boolean(goal)}
+        onContinueAdventure={() => navigate("adventure-map")}
+        onCreateArea={() => navigate("account")}
+        onStartToday={() => navigate("today")}
+      />
+    );
   }, [route, user, goal, goals, activeLocale]);
 
   function navigate(nextRoute: AppRoute) {
@@ -211,7 +225,7 @@ export default function App() {
           } catch {
             setGoal(null);
             setGoals([]);
-            window.history.pushState({}, "", ROUTES.onboarding);
+            replacePath(ROUTES.onboarding);
           }
         }} />
       </StringsProvider>

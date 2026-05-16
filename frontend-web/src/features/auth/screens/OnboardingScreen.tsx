@@ -1,7 +1,6 @@
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { APP_NAME } from "../../../constants/app";
 import { useStrings } from "../../../contexts/StringsContext";
 import { adventureService } from "../../../services/adventureService";
 import { contentService } from "../../../services/contentService";
@@ -13,7 +12,7 @@ interface OnboardingScreenProps {
 }
 
 const SOURCE_LANGUAGES = [
-  { code: "PT", detail: "Explicações em português" },
+  { code: "PT", detailKey: "sourceLanguageDetailPt" as const },
 ];
 
 const LEVELS = [
@@ -28,6 +27,12 @@ function estimateMonths(days: number[], minutes: number) {
   if (days.length === 0) return null;
   const weeks = 80 / ((days.length * minutes) / 60);
   return Math.max(1, Math.round(weeks / 4.3));
+}
+
+function formatSessionDuration(minutes: number, s: ReturnType<typeof useStrings>, style: "short" | "long") {
+  if (minutes === 60) return style === "long" ? s.onboarding.hourLong : s.onboarding.hourShort;
+  if (minutes === 90) return s.onboarding.hourAndHalfShort;
+  return s.onboarding.minutesShort(minutes);
 }
 
 export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) {
@@ -92,8 +97,8 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
 
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <span className="text-base font-bold tracking-tight text-slate-950">{APP_NAME}</span>
-            <span className="text-xs font-semibold text-slate-400">Passo {step} de 2</span>
+            <img src="/lang-plus.svg" alt="Lang+" className="h-8 w-auto" />
+            <span className="text-xs font-semibold text-slate-400">{s.onboarding.stepProgress(step, 2)}</span>
           </div>
           <div className="onb-progress-bar">
             <div className="onb-progress-fill" style={{ width: step === 1 ? "50%" : "100%" }} />
@@ -144,7 +149,7 @@ export default function OnboardingScreen({ onComplete }: OnboardingScreenProps) 
               className="auth-submit flex-1"
             >
               {loading ? <LoadingDots /> : step === 1
-                ? <>Próximo <ArrowRight size={17} strokeWidth={2.5} /></>
+                ? <>{s.onboarding.next} <ArrowRight size={17} strokeWidth={2.5} /></>
                 : <>{s.onboarding.start} <ArrowRight size={17} strokeWidth={2.5} /></>
               }
             </button>
@@ -172,11 +177,11 @@ function Step1({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-slate-950">Configure seu curso</h1>
-        <p className="mt-1 text-sm font-medium text-slate-500">Escolha os idiomas e seu ponto de partida</p>
+        <h1 className="text-xl font-bold tracking-tight text-slate-950">{s.onboarding.configureCourseTitle}</h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">{s.onboarding.configureCourseSubtitle}</p>
       </div>
 
-      <Section label="Você fala...">
+      <Section label={s.onboarding.youSpeak}>
         <div className="flex flex-col gap-2">
           {SOURCE_LANGUAGES.map((lang) => (
             <button
@@ -188,7 +193,7 @@ function Step1({
               <LangFlag code={lang.code} />
               <div className="flex-1 text-left">
                 <p className="text-sm font-bold text-slate-950">{s.languages[lang.code as keyof typeof s.languages] ?? lang.code}</p>
-                <p className="text-xs font-medium text-slate-500">{lang.detail}</p>
+                <p className="text-xs font-medium text-slate-500">{s.onboarding[lang.detailKey]}</p>
               </div>
               {sourceLanguage.code === lang.code && <Check size={16} className="shrink-0 area-text-primary" />}
             </button>
@@ -196,10 +201,10 @@ function Step1({
         </div>
       </Section>
 
-      <Section label="Você quer aprender...">
+      <Section label={s.onboarding.youLearn}>
         {loadingLanguages ? (
           <div className="flex items-center gap-2 py-4 text-sm text-slate-400">
-            <LoadingDots /> Carregando idiomas...
+            <LoadingDots /> {s.onboarding.loadingLanguages}
           </div>
         ) : (
           <div className="flex flex-col gap-2">
@@ -222,7 +227,7 @@ function Step1({
         )}
       </Section>
 
-      <Section label="Seu nível inicial">
+      <Section label={s.onboarding.levelLabel}>
         <div className="flex gap-2">
           {LEVELS.map((l) => (
             <button
@@ -256,11 +261,11 @@ function Step2({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-slate-950">Crie sua rotina</h1>
-        <p className="mt-1 text-sm font-medium text-slate-500">Você pode estudar qualquer dia — vamos te lembrar nesses</p>
+        <h1 className="text-xl font-bold tracking-tight text-slate-950">{s.onboarding.routineTitle}</h1>
+        <p className="mt-1 text-sm font-medium text-slate-500">{s.onboarding.routineSubtitle}</p>
       </div>
 
-      <Section label="Dias de estudo">
+      <Section label={s.onboarding.daysLabel}>
         <div className="flex justify-between gap-1">
           {WEEKDAYS.map((day) => (
             <button
@@ -278,7 +283,7 @@ function Step2({
         )}
       </Section>
 
-      <Section label="Duração da sessão">
+      <Section label={s.onboarding.durationLabel}>
         <div className="flex flex-wrap gap-2">
           {SESSION_OPTIONS.map((opt) => (
             <button
@@ -287,7 +292,7 @@ function Step2({
               onClick={() => onSelectMinutes(opt)}
               className={`onb-pill ${sessionMinutes === opt ? "selected" : ""}`}
             >
-              {opt === 60 ? "1h" : opt === 90 ? "1h30" : `${opt} min`}
+              {formatSessionDuration(opt, s, "short")}
             </button>
           ))}
         </div>
@@ -296,11 +301,10 @@ function Step2({
       {months !== null && (
         <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
           <p className="text-sm font-semibold text-slate-950">
-            No seu ritmo, você chega no <span className="area-text-primary">A1</span> em cerca de{" "}
-            <span className="area-text-primary">{months} {months === 1 ? "mês" : "meses"}</span>
+            {s.onboarding.estimateSentence(months)}
           </p>
           <p className="mt-1 text-xs font-medium text-slate-400">
-            {studyDays.length}× por semana · {sessionMinutes === 60 ? "1 hora" : sessionMinutes === 90 ? "1h30" : `${sessionMinutes} min`} por sessão
+            {s.onboarding.estimatePace(studyDays.length, formatSessionDuration(sessionMinutes, s, "long"))}
           </p>
         </div>
       )}
@@ -309,12 +313,13 @@ function Step2({
 }
 
 function LangFlag({ code }: { code: string }) {
+  const s = useStrings();
   const countryCode = code === "PT" ? "br" : code === "EN" ? "us" : code.toLowerCase();
   return (
     <img
       src={`https://flagcdn.com/w40/${countryCode}.png`}
       srcSet={`https://flagcdn.com/w80/${countryCode}.png 2x`}
-      alt={`${code} flag`}
+      alt={s.onboarding.flagAlt(code)}
       width={26}
       height={17}
       className="shrink-0 rounded object-cover shadow-sm ring-1 ring-black/[0.08]"

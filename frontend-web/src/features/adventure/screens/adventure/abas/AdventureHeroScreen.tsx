@@ -17,12 +17,10 @@ const JOURNEY_ITEMS: Array<{ key: string; Icon: LucideIcon; seasonBadge: string 
   { key: "t5", Icon: Crown,    seasonBadge: "T5" },
 ];
 
-const LEVEL_LABELS = ["", "Aprendiz", "Viajante", "Explorador", "Veterano", "Mestre", "Lendário"];
-
-const ATTRIBUTE_DEFS: Array<{ key: keyof HeroStats["attributes"]; label: string }> = [
-  { key: "vocabulario", label: "Vocabulário" },
-  { key: "gramatica",   label: "Gramática"   },
-  { key: "fluencia",    label: "Fluência"     },
+const ATTRIBUTE_DEFS: Array<{ key: keyof HeroStats["attributes"]; labelKey: "heroAttributeVocabulary" | "heroAttributeGrammar" | "heroAttributeFluency" }> = [
+  { key: "vocabulario", labelKey: "heroAttributeVocabulary" },
+  { key: "gramatica",   labelKey: "heroAttributeGrammar" },
+  { key: "fluencia",    labelKey: "heroAttributeFluency" },
 ];
 
 const SKILL_LEVEL_XP = [0, 80, 220, 500, 1000];
@@ -113,7 +111,7 @@ export default function AdventureHeroScreen({
           }}
         >
           <span className="text-3xl font-bold" style={{ color: "#fff" }}>
-            {(firstName || "F").charAt(0).toUpperCase()}
+            {(firstName || s.adventure.heroFallbackName).charAt(0).toUpperCase()}
           </span>
           <span
             className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold"
@@ -131,10 +129,10 @@ export default function AdventureHeroScreen({
           {storyTitle ?? langName}
         </p>
         <h2 className="mt-1 text-xl font-bold" style={{ color: c.parchment }}>
-          {firstName || "Forasteiro"}
+          {firstName || s.adventure.heroFallbackName}
         </h2>
         <p className="mt-0.5 text-xs" style={{ color: c.textFaint }}>
-          {langName} · {LEVEL_LABELS[level] ?? `Nível ${level}`}
+          {langName} · {s.adventure.heroLevelLabels[level] ?? s.adventure.heroLevelFallback(level)}
         </p>
 
         {/* Stats row */}
@@ -143,9 +141,9 @@ export default function AdventureHeroScreen({
           style={{ background: c.surfaceMid, borderColor: c.borderFaint }}
         >
           {[
-            { Icon: Swords, label: "Fases",     value: String(displayPhases) },
-            { Icon: Zap,    label: "XP",        value: String(displayXP)     },
-            { Icon: Flame,  label: "Sequência", value: `${displayStreak}d`   },
+            { Icon: Swords, label: s.adventure.heroStatPhases, value: String(displayPhases) },
+            { Icon: Zap,    label: s.adventure.heroStatXp,     value: String(displayXP)     },
+            { Icon: Flame,  label: s.adventure.heroStatStreak, value: `${displayStreak}d`   },
           ].map(({ Icon, label, value }) => (
             <div key={label} className="flex flex-1 flex-col items-center gap-0.5 py-3">
               <span className="text-base font-bold tabular-nums" style={{ color: c.parchment }}>{value}</span>
@@ -174,7 +172,7 @@ export default function AdventureHeroScreen({
             <div className="flex items-center gap-1.5">
               <Zap size={12} style={{ color: c.goldAccent }} />
               <span className="text-xs font-bold uppercase tracking-wide" style={{ color: c.goldAccent }}>
-                XP · {LEVEL_LABELS[level] ?? `Nível ${level}`}
+                {s.adventure.heroStatXp} · {s.adventure.heroLevelLabels[level] ?? s.adventure.heroLevelFallback(level)}
               </span>
             </div>
             <span className="text-xs font-semibold tabular-nums" style={{ color: c.textFaint }}>
@@ -194,7 +192,7 @@ export default function AdventureHeroScreen({
           </div>
           {xpNext !== null && (
             <p className="mt-1.5 text-[10px]" style={{ color: c.textFaint }}>
-              {xpNext - xp} XP para {LEVEL_LABELS[level + 1] ?? `Nível ${level + 1}`}
+              {s.adventure.heroXpToNext(xpNext - xp, s.adventure.heroLevelLabels[level + 1] ?? s.adventure.heroLevelFallback(level + 1))}
             </p>
           )}
         </div>
@@ -205,10 +203,10 @@ export default function AdventureHeroScreen({
           style={{ animation: "narrativeFadeIn 0.5s ease-out 0.25s both" }}
         >
           <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-            Atributos
+            {s.adventure.heroAttributesTitle}
           </p>
           <div className="overflow-hidden rounded-2xl" style={{ border: `1px solid ${c.borderFaint}` }}>
-            {ATTRIBUTE_DEFS.map(({ key, label }, i) => {
+            {ATTRIBUTE_DEFS.map(({ key, labelKey }, i) => {
               const pct = stats?.attributes[key] ?? 0;
               return (
                 <div
@@ -220,7 +218,7 @@ export default function AdventureHeroScreen({
                   }}
                 >
                   <div className="mb-1.5 flex items-center justify-between">
-                    <span className="text-xs font-semibold" style={{ color: c.textOnBg }}>{label}</span>
+                    <span className="text-xs font-semibold" style={{ color: c.textOnBg }}>{s.adventure[labelKey]}</span>
                     <span className="text-xs font-bold tabular-nums" style={{ color: c.textFaint }}>{pct}%</span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
@@ -247,10 +245,10 @@ export default function AdventureHeroScreen({
         >
           <div className="mb-2 flex items-center justify-between gap-3">
             <p className="text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-              Poderes
+              {s.adventure.heroPowersTitle}
             </p>
             <p className="text-right text-[10px] font-semibold" style={{ color: c.textFaint }}>
-              Itens fortalecem a narrativa
+              {s.adventure.heroPowersHint}
             </p>
           </div>
 
@@ -284,14 +282,14 @@ export default function AdventureHeroScreen({
                               {mastery.skill.name}
                             </p>
                             <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: c.textFaint }}>
-                              {mastery.skill.category} · {mastery.uses_count} usos
+                              {s.adventure.heroSkillUses(mastery.skill.category, mastery.uses_count)}
                             </p>
                           </div>
                           <span
                             className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold"
                             style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}45` }}
                           >
-                            Nv {mastery.level}
+                            {s.adventure.heroSkillLevel(mastery.level)}
                           </span>
                         </div>
                         <div className="mt-2 h-1.5 overflow-hidden rounded-full" style={{ background: c.surface }}>
@@ -320,10 +318,10 @@ export default function AdventureHeroScreen({
             >
               <Sparkles size={28} style={{ color: c.textFaint }} />
               <p className="text-sm font-semibold" style={{ color: c.textFaint }}>
-                Nenhum poder dominado ainda
+                {s.adventure.heroNoPowerTitle}
               </p>
               <p className="max-w-xs text-xs" style={{ color: c.textFaint }}>
-                Ganhe itens de bau ou use itens na historia para criar maestria.
+                {s.adventure.heroNoPowerDetail}
               </p>
             </div>
           )}
@@ -335,7 +333,7 @@ export default function AdventureHeroScreen({
           style={{ animation: "narrativeFadeIn 0.5s ease-out 0.35s both" }}
         >
           <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-            Itens da Jornada
+            {s.adventure.heroJourneyItemsTitle}
           </p>
           <div className="grid grid-cols-5 gap-2">
             {JOURNEY_ITEMS.map((item, i) => {
@@ -368,14 +366,14 @@ export default function AdventureHeroScreen({
             })}
           </div>
           <p className="mt-2 text-center text-[10px]" style={{ color: c.textFaint }}>
-            Derrote o boss de cada temporada para desbloquear
+            {s.adventure.heroJourneyUnlockHint}
           </p>
         </section>
 
         {/* Achievements */}
         <section style={{ animation: "narrativeFadeIn 0.5s ease-out 0.45s both" }}>
           <p className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: c.textFaint }}>
-            Conquistas
+            {s.adventure.heroAchievementsTitle}
           </p>
           {stats?.achievements.length ? (
             <div
@@ -406,8 +404,8 @@ export default function AdventureHeroScreen({
               style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
             >
               <Award size={32} style={{ color: c.textFaint }} />
-              <p className="text-sm font-semibold" style={{ color: c.textFaint }}>Nenhuma conquista ainda</p>
-              <p className="text-xs" style={{ color: c.textFaint }}>Complete fases para desbloquear</p>
+              <p className="text-sm font-semibold" style={{ color: c.textFaint }}>{s.adventure.heroNoAchievementTitle}</p>
+              <p className="text-xs" style={{ color: c.textFaint }}>{s.adventure.heroNoAchievementDetail}</p>
             </div>
           )}
         </section>

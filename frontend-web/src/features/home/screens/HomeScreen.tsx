@@ -9,11 +9,12 @@ import { contentService } from "../../../services/contentService";
 
 interface HomeScreenProps {
   hasActiveGoal: boolean;
+  onContinueAdventure: () => void;
   onCreateArea: () => void;
   onStartToday: () => void;
 }
 
-export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }: HomeScreenProps) {
+export default function HomeScreen({ hasActiveGoal, onContinueAdventure, onCreateArea, onStartToday }: HomeScreenProps) {
   const s = useStrings();
   const locale = useLocale();
   const goal = useAsyncData(contentService.getCurrentGoal);
@@ -87,7 +88,7 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
 
         <div className="mt-4 flex items-center gap-3">
           <LangFlag code={targetCode} size="md" />
-          <h2 className="text-3xl font-bold leading-tight text-slate-950" style={{ letterSpacing: "-0.02em" }}>{targetName}</h2>
+          <h2 className="text-3xl font-bold leading-tight text-slate-950">{targetName}</h2>
         </div>
         <p className="mt-1 text-sm font-medium text-slate-400">{s.home.languagePath(sourceName, targetName, g.target_level)}</p>
 
@@ -108,7 +109,7 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
         </div>
 
         {!g.is_study_day_today && (
-          <button type="button" onClick={onStartToday} className="area-btn mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[10px] font-semibold transition active:scale-[0.99]">
+          <button type="button" onClick={onContinueAdventure} className="area-btn mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-[10px] font-semibold transition active:scale-[0.99]">
             {s.home.continueAdventure}
             <ArrowRight size={18} />
           </button>
@@ -116,7 +117,7 @@ export default function HomeScreen({ hasActiveGoal, onCreateArea, onStartToday }
       </section>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-px overflow-hidden rounded-[20px] bg-slate-100">
+      <div className="grid grid-cols-3 gap-px overflow-hidden rounded-[12px] bg-slate-100">
         <StatCell value={g.streak_days} label={s.home.statStreak} icon={<Flame size={13} className="text-orange-400" />} />
         <StatCell value={g.learned_phrases} label={s.home.statWords} icon={<BookOpen size={13} className="text-sky-500" />} />
         <StatCell value={g.target_level} label={s.home.statLevel} icon={<Sparkles size={13} />} highlight />

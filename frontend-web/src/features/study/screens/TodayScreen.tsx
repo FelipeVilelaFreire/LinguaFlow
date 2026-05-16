@@ -46,13 +46,13 @@ export default function TodayScreen({ onCompleted }: TodayScreenProps) {
           <Trophy size={38} />
         </div>
         <p className="mt-5 text-sm font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.today.completed}</p>
-        <h2 className="mt-2 text-4xl font-semibold text-slate-950 md:text-5xl">Sessao finalizada</h2>
+        <h2 className="mt-2 text-4xl font-semibold text-slate-950 md:text-5xl">{strings.today.sessionFinished}</h2>
         <p className="mx-auto mt-3 max-w-xl font-medium leading-7 text-slate-600">{strings.today.completedDetail}</p>
 
         <div className="mx-auto mt-6 grid max-w-3xl grid-cols-3 gap-2 md:mt-7 md:gap-3">
-          <CompletionStat icon={<CheckCircle2 size={20} />} label="Exercicios" value={study.phrases.length} />
-          <CompletionStat icon={<CalendarCheck2 size={20} />} label="Dia" value={today.day_number} />
-          <CompletionStat icon={<Flame size={20} />} label="Progresso" value={100} suffix="%" />
+          <CompletionStat icon={<CheckCircle2 size={20} />} label={strings.today.statExercises} value={study.phrases.length} />
+          <CompletionStat icon={<CalendarCheck2 size={20} />} label={strings.today.statDay} value={today.day_number} />
+          <CompletionStat icon={<Flame size={20} />} label={strings.today.statProgress} value={100} suffix="%" />
         </div>
 
         <div className="mx-auto mt-7 max-w-xl rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">

@@ -16,7 +16,7 @@ export const ROUTES = {
   vocabulary: "/vocabulario",
   account: "/perfil",
   history: "/historico",
-  editProfile: "/editperfil",
+  editProfile: "/perfil/editar",
   login: "/login",
   onboarding: "/onboarding",
 } as const;

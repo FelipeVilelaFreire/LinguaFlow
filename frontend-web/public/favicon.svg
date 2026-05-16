@@ -1,23 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Talkly">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0d9488"/>
-      <stop offset="100%" stop-color="#0f766e"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Background tile -->
-  <rect width="64" height="64" rx="15" fill="url(#bg)"/>
-
-  <!-- Speech bubble: rounded rect + tail pointing bottom-left -->
-  <path d="
-    M 16,10 H 48 Q 54,10 54,16
-    V 36 Q 54,42 48,42
-    H 22 L 10,54 L 18,42
-    Q 10,42 10,36
-    V 16 Q 10,10 16,10 Z
-  " fill="white"/>
-
-  <!-- T letter inside bubble -->
-  <path d="M 17,17 H 47 V 23 H 36 V 40 H 28 V 23 H 17 Z" fill="#0d9488"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lang+">
+  <rect width="64" height="64" rx="16" fill="#ffffff"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="none" stroke="#ccfbf1" stroke-width="2"/>
+  <path d="M17 15 V47 H36" fill="none" stroke="#0f172a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M45 22 V42 M35 32 H55" fill="none" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
 </svg>

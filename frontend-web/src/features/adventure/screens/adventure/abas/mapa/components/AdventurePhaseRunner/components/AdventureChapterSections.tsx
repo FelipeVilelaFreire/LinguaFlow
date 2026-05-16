@@ -62,6 +62,7 @@ function normalizeSection(section: PhaseSection): SectionStep[] {
 // ── Scene card — parses "🏘️  Location · Time · Episode" ─────────────────────
 
 function SceneCard({ text, c, onTap }: { text: string; c: Colors; onTap: () => void }) {
+  const s = useStrings();
   const parts    = text.split(" · ");
   const location = parts[0] ?? text;
   const time     = parts[1];
@@ -94,7 +95,7 @@ function SceneCard({ text, c, onTap }: { text: string; c: Colors; onTap: () => v
         className="absolute bottom-14 text-xs font-semibold tracking-wide"
         style={{ color: c.textFaint, animation: "tapPulse 1.8s ease-in-out infinite" }}
       >
-        toque para continuar  ›
+        {s.adventure.tapToContinue}  ›
       </p>
     </div>
   );
@@ -209,6 +210,7 @@ function RecapCard({ recap, c, langCode, onCharacterOpen, onClose, labels }: {
 function SectionCompleteOverlay({ sectionNumber, totalSections, c }: {
   sectionNumber: number; totalSections: number; c: Colors;
 }) {
+  const s = useStrings();
   return (
     <div
       className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-6 pointer-events-none"
@@ -241,10 +243,10 @@ function SectionCompleteOverlay({ sectionNumber, totalSections, c }: {
         style={{ animation: "narrativeFadeIn 450ms 380ms ease-out both" }}
       >
         <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-          Seção {sectionNumber} de {totalSections}
+          {s.adventure.sectionLabel(sectionNumber, totalSections)}
         </p>
         <p className="text-2xl font-bold leading-snug md:text-3xl" style={{ color: c.parchment }}>
-          Concluída
+          {s.adventure.sectionCompleteShort}
         </p>
       </div>
     </div>
@@ -996,7 +998,7 @@ export default function AdventureChapterSections({
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
                 {s.adventure.sectionLabel(sectionNumber, totalSections)}
               </p>
-              <p className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>Concluída</p>
+              <p className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>{s.adventure.sectionCompleteShort}</p>
             </div>
 
             {/* XP earned */}
@@ -1018,13 +1020,13 @@ export default function AdventureChapterSections({
                 {summaryData.mistakes === 0 && summaryData.correct > 0 && (
                   <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: "#4ade80", animation: "narrativeFadeIn 400ms 750ms ease-out both" }}>
                     <Sparkles size={12} />
-                    Sem erros! +10 bônus
+                    {s.adventure.noMistakesBonus}
                   </span>
                 )}
                 {maxComboRef.current >= 3 && (
                   <span className="inline-flex items-center gap-1 text-xs font-bold" style={{ color: c.goldAccent, animation: "narrativeFadeIn 400ms 800ms ease-out both" }}>
                     <Flame size={12} />
-                    Combo ×{maxComboRef.current}! +5 bônus
+                    {s.adventure.comboBonus(maxComboRef.current)}
                   </span>
                 )}
               </div>
@@ -1038,7 +1040,7 @@ export default function AdventureChapterSections({
                   style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
                 >
                   <span className="text-xl font-bold tabular-nums" style={{ color: "#4ade80" }}>{summaryData.correct}</span>
-                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>acertos</span>
+                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>{s.adventure.correctAnswersLabel}</span>
                 </div>
                 <div
                   className="flex flex-1 flex-col items-center gap-1 rounded-xl py-3"
@@ -1050,7 +1052,7 @@ export default function AdventureChapterSections({
                   >
                     {summaryData.mistakes}
                   </span>
-                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>erros</span>
+                  <span className="text-[10px] uppercase tracking-wide" style={{ color: c.textFaint }}>{s.adventure.mistakesLabel}</span>
                 </div>
               </div>
             )}
@@ -1059,7 +1061,7 @@ export default function AdventureChapterSections({
             {summaryData.earnedItems.length > 0 && (
               <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 560ms ease-out both" }}>
                 <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                  Itens encontrados
+                  {s.adventure.itemsFound}
                 </p>
                 <div className="flex flex-col gap-2">
                   {summaryData.earnedItems.map((item, i) => (

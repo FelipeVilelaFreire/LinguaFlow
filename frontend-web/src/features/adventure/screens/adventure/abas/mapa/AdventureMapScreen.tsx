@@ -162,7 +162,7 @@ function PhaseEntry({
             className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider"
             style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}35` }}
           >
-            Dia {phase.number}
+            {s.adventure.dayShort} {phase.number}
           </span>
         )}
       </div>
@@ -315,6 +315,7 @@ function PhaseNode({
   c: ReturnType<typeof getAdventureColors>;
   onClick: (rect: DOMRect) => void;
 }) {
+  const s = useStrings();
   const isCompleted = phase.is_completed;
   const isCurrent   = phase.number === currentPhaseNumber && !phase.is_completed;
   const isLocked    = !isCompleted && !isCurrent;
@@ -399,7 +400,7 @@ function PhaseNode({
           <BookOpen size={17} />
         ) : (
           <div className="flex flex-col items-center leading-none gap-px">
-            <span className="text-[7px] font-bold uppercase tracking-wider opacity-60">dia</span>
+            <span className="text-[7px] font-bold uppercase tracking-wider opacity-60">{s.adventure.dayShort}</span>
             <span className="text-[14px] font-bold tabular-nums">{phase.number}</span>
           </div>
         )}

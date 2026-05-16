@@ -21,13 +21,13 @@ frontend-admin
 Default API base:
 
 ```txt
-http://localhost:8000/api
+http://localhost:8001/api
 ```
 
 Override with:
 
 ```txt
-VITE_API_BASE_URL=http://localhost:8000/api
+VITE_API_BASE_URL=http://localhost:8001/api
 ```
 
 ## Folder Structure

@@ -48,7 +48,7 @@ export default function LessonCard({
     options: [],
     word_bank: [],
   };
-  const labels = getPracticeLabels(exercise.type, strings.today.inputPrompt);
+  const labels = getPracticeLabels(exercise.type, strings);
   const isIntro = exercise.type === "intro";
   const usesChoice = exercise.type === "multiple_choice";
   const usesWordOrder = exercise.type === "word_order";
@@ -56,19 +56,19 @@ export default function LessonCard({
   if (isIntro) {
     return (
       <section className="relative">
-        <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[20px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
+        <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[12px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
         <div className="card relative p-4 md:p-7" style={{ animation: "studyCardIn 320ms ease-out both" }}>
           <p className="inline-flex rounded-full px-3 py-1 text-sm font-semibold ring-1" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
-            Aula do dia
+            {strings.practiceLabels.lessonOfDay}
           </p>
           <h2 className="mt-4 text-2xl font-semibold leading-tight text-slate-950 md:text-5xl">{exercise.prompt}</h2>
           <p className="mt-3 max-w-2xl font-medium leading-7 text-slate-600">
-            {exercise.explanation || "Primeiro veja o contexto e as frases principais. Depois a pratica vai cobrar exatamente esse conteudo e revisoes anteriores."}
+            {exercise.explanation || strings.practiceLabels.introFallback}
           </p>
 
           {exercise.exercise_notes?.length ? (
             <div className="mt-5 rounded-[8px] bg-slate-50 p-4 ring-1 ring-slate-200">
-              <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary)" }}>Como praticar</p>
+              <p className="text-xs font-semibold uppercase" style={{ color: "var(--area-primary)" }}>{strings.practiceLabels.howToPractice}</p>
               <ul className="mt-3 grid gap-2">
                 {exercise.exercise_notes.map((note) => (
                   <li key={note} className="text-sm font-medium leading-6 text-slate-600">{note}</li>
@@ -89,7 +89,7 @@ export default function LessonCard({
           </div>
 
           <button type="button" onClick={onNext} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-[8px] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:brightness-95" style={{ background: "var(--area-primary)" }}>
-            Comecar pratica
+            {strings.practiceLabels.startPractice}
             <Send size={16} />
           </button>
         </div>
@@ -99,8 +99,8 @@ export default function LessonCard({
 
   return (
     <section className="relative">
-      <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[20px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
-      <div className="absolute inset-x-8 -bottom-6 top-10 rounded-[20px] bg-white/40 shadow-[0_1px_6px_rgba(15,23,42,0.04)]" style={{ animation: "stackLift 420ms ease-out both" }} />
+      <div className="absolute inset-x-4 -bottom-3 top-5 rounded-[12px] bg-white/60 shadow-[0_1px_8px_rgba(15,23,42,0.06)]" style={{ animation: "stackLift 360ms ease-out both" }} />
+      <div className="absolute inset-x-8 -bottom-6 top-10 rounded-[12px] bg-white/40 shadow-[0_1px_6px_rgba(15,23,42,0.04)]" style={{ animation: "stackLift 420ms ease-out both" }} />
       <div className="card relative p-4 md:p-7" style={{ animation: checked && feedback.quality !== "wrong" ? "lessonBounce 360ms ease-out both" : "studyCardIn 320ms ease-out both" }}>
       <div className="flex items-start justify-between gap-3 md:gap-4">
         <div>
@@ -154,7 +154,7 @@ export default function LessonCard({
               </button>
             ))}
             <button type="button" onClick={() => onAnswerChange("")} className="rounded-[8px] bg-slate-950 px-3 py-2 text-sm font-semibold text-white">
-              Limpar
+              {strings.actions.clear}
             </button>
           </div>
         </div>
@@ -177,12 +177,12 @@ export default function LessonCard({
         <div className={`mt-4 rounded-[8px] px-4 py-3 text-sm font-semibold transition ${feedback.quality === "correct" ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100" : feedback.quality === "close" ? "bg-amber-50 text-amber-700 ring-1 ring-amber-100" : "bg-red-50 text-red-700 ring-1 ring-red-100 animate-[shake_180ms_ease-in-out]"}`} style={feedback.quality !== "wrong" ? { animation: "successPop 260ms ease-out both" } : undefined}>
           <div className="flex items-center gap-2">
             <CheckCircle2 size={18} />
-            {feedback.quality === "correct" ? strings.today.correct : feedback.quality === "close" ? "Quase certo" : strings.today.tryAgain}
+            {feedback.quality === "correct" ? strings.today.correct : feedback.quality === "close" ? strings.practiceLabels.almostCorrect : strings.today.tryAgain}
           </div>
           {feedback.quality !== "correct" ? (
             <div className="mt-2 text-sm font-medium">
-              <p>Resposta ideal: <span className="font-bold">{feedback.expected}</span></p>
-              {feedback.missingWords.length ? <p className="mt-1">Faltou revisar: {feedback.missingWords.join(", ")}</p> : null}
+              <p>{strings.practiceLabels.idealAnswer} <span className="font-bold">{feedback.expected}</span></p>
+              {feedback.missingWords.length ? <p className="mt-1">{strings.practiceLabels.missingReview} {feedback.missingWords.join(", ")}</p> : null}
             </div>
           ) : null}
         </div>
@@ -202,59 +202,31 @@ export default function LessonCard({
   );
 }
 
-function getPracticeLabels(type: PracticeItem["type"], fallback: string) {
+function getPracticeLabels(type: PracticeItem["type"], strings: ReturnType<typeof useStrings>) {
   if (type === "multiple_choice") {
-    return {
-      title: "Escolha",
-      detail: "Toque na alternativa correta para a frase.",
-      input: "Escolha a resposta correta:",
-    };
+    return strings.practiceLabels.multipleChoice;
   }
   if (type === "intro") {
-    return {
-      title: "Aquecimento",
-      detail: "Veja o contexto antes de praticar.",
-      input: "Comece quando estiver pronto:",
-    };
+    return strings.practiceLabels.intro;
   }
   if (type === "fill_blank") {
-    return {
-      title: "Lacuna",
-      detail: "Complete a palavra que falta na frase.",
-      input: "Digite a palavra faltando:",
-    };
+    return strings.practiceLabels.fillBlank;
   }
   if (type === "word_order") {
-    return {
-      title: "Montar frase",
-      detail: "Toque nas palavras para montar a frase no idioma alvo.",
-      input: "Monte a frase:",
-    };
+    return strings.practiceLabels.wordOrder;
   }
   if (type === "reverse") {
-    return {
-      title: "Traducao",
-      detail: "Leia no idioma base e escreva no idioma alvo.",
-      input: "Escreva a resposta:",
-    };
+    return strings.practiceLabels.reverse;
   }
   if (type === "dictation") {
-    return {
-      title: "Memoria",
-      detail: "Use o sentido da frase para reconstruir a frase no idioma alvo.",
-      input: "Digite no idioma alvo:",
-    };
+    return strings.practiceLabels.dictation;
   }
   if (type === "review") {
-    return {
-      title: "Revisao",
-      detail: "Reforce uma frase antiga antes de avancar.",
-      input: "Escreva o significado:",
-    };
+    return strings.practiceLabels.review;
   }
   return {
-    title: "Frase nova",
-    detail: fallback,
-    input: "Escreva o significado:",
+    title: strings.practiceLabels.newPhrase.title,
+    detail: strings.today.inputPrompt,
+    input: strings.practiceLabels.newPhrase.input,
   };
 }

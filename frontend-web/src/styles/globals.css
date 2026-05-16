@@ -7,7 +7,7 @@
 :root {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #111827;
-  background: #f7f7f4;
+  background: #f8fafc;
   --area-primary: #14b8a6;
   --area-primary-dark: #0f766e;
   --area-primary-soft: #f0fdfa;
@@ -25,6 +25,9 @@ body {
   margin: 0;
   min-width: 320px;
   overflow-x: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 260px),
+    var(--area-page);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -34,10 +37,21 @@ input {
   font: inherit;
 }
 
+button {
+  border: 0;
+}
+
 button,
 a,
 input {
   -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--area-primary) 55%, white);
+  outline-offset: 2px;
 }
 
 @supports (padding: max(0px)) {
@@ -322,14 +336,16 @@ input {
 
 .card {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 1px 8px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
 }
 
 .card-overflow {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 1px 8px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
   overflow: hidden;
 }
 
@@ -338,7 +354,7 @@ input {
 .display-num {
   font-family: 'Manrope', sans-serif;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .area-text-primary {
@@ -357,10 +373,22 @@ input {
 .area-btn {
   background-color: var(--area-primary);
   color: var(--area-text-on-primary);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--area-primary) 20%, transparent);
+  transition: background-color 0.18s ease, transform 0.14s ease, box-shadow 0.18s ease;
 }
 
 .area-btn:hover:not(:disabled) {
   background-color: var(--area-primary-dark);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--area-primary) 18%, transparent);
+}
+
+.area-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.area-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
 }
 
 .area-input:focus {
@@ -379,20 +407,21 @@ input {
   width: 720px;
   height: 480px;
   pointer-events: none;
-  background: radial-gradient(ellipse 60% 55% at 50% 0%, color-mix(in srgb, #14b8a6 13%, transparent), transparent 80%);
+  background: radial-gradient(ellipse 60% 55% at 50% 0%, color-mix(in srgb, #14b8a6 8%, transparent), transparent 80%);
 }
 
 .auth-logo-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 18px;
-  background: var(--area-primary-soft);
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--area-primary) 22%, transparent),
-    0 4px 20px color-mix(in srgb, var(--area-primary) 14%, transparent);
+  width: 220px;
+  height: auto;
+}
+
+.auth-logo-icon img {
+  display: block;
+  width: 220px;
+  height: auto;
 }
 
 .auth-tab-pill {
@@ -466,14 +495,13 @@ input {
   justify-content: center;
   gap: 8px;
   transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--area-primary) 30%, transparent);
-  letter-spacing: -0.1px;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--area-primary) 24%, transparent);
+  letter-spacing: 0;
 }
 
 .auth-submit:hover:not(:disabled) {
   background: var(--area-primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--area-primary) 35%, transparent);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--area-primary) 20%, transparent);
 }
 
 .auth-submit:active:not(:disabled) {
@@ -551,8 +579,8 @@ input {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.34);
+  backdrop-filter: blur(3px);
   padding: 0;
 }
 
@@ -562,7 +590,7 @@ input {
   max-height: 92dvh;
   overflow: hidden;
   background: white;
-  border-radius: 24px 24px 0 0;
+  border-radius: 16px 16px 0 0;
   animation: sheetSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
@@ -586,7 +614,7 @@ input {
   width: 56px;
   height: 56px;
   border-radius: 9999px;
-  border: 2px solid var(--area-primary);
+  border: 1px solid color-mix(in srgb, var(--area-primary) 36%, white);
   background: var(--area-primary-soft);
   color: var(--area-primary);
   font-size: 22px;
@@ -600,8 +628,8 @@ input {
   gap: 12px;
   width: 100%;
   padding: 16px;
-  border-radius: 12px;
-  border: 1.5px dashed #cbd5e1;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
   background: white;
   text-align: left;
   cursor: pointer;
@@ -744,9 +772,11 @@ input {
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
-  border-radius: 8px;
-  background: var(--area-primary);
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--area-primary) 18%, white);
+  border-left: 4px solid var(--area-primary);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--area-primary-soft) 78%, white);
+  color: #0f172a;
   animation: fadeIn 220ms ease-out;
 }
 
@@ -756,10 +786,10 @@ input {
   gap: 6px;
   height: 38px;
   padding: 0 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
-  background: rgba(255, 255, 255, 0.22);
-  color: #ffffff;
+  background: var(--area-primary);
+  color: var(--area-text-on-primary);
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
@@ -769,7 +799,7 @@ input {
 }
 
 .home-study-banner-btn:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--area-primary-dark);
 }
 
 /* ── History / EditProfile full-screen shell ── */
@@ -835,7 +865,7 @@ input {
   background: white;
   border-radius: 8px;
   padding: 6px 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.035);
   ring: 1px solid #e2e8f0;
   border: 1px solid #e2e8f0;
 }
@@ -872,10 +902,13 @@ input {
 
 .study-hero-card {
   position: relative;
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
-  background: var(--area-primary);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--area-primary) 12%, white), white 68%),
+    white;
+  border: 1px solid color-mix(in srgb, var(--area-primary) 18%, #e2e8f0);
   transition: filter 0.15s ease;
 }
 
@@ -890,7 +923,7 @@ input {
 .study-hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, transparent 60%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--area-primary) 12%, transparent) 0%, transparent 58%);
   pointer-events: none;
 }
 
@@ -899,8 +932,8 @@ input {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--area-text-on-primary);
-  opacity: 0.7;
+  color: var(--area-primary);
+  opacity: 0.92;
   margin-bottom: 2px;
 }
 
@@ -908,28 +941,28 @@ input {
   font-size: 1.25rem;
   font-weight: 800;
   line-height: 1.2;
-  color: var(--area-text-on-primary);
+  color: #0f172a;
 }
 
 .study-hero-meta {
   font-size: 12px;
   font-weight: 600;
-  color: var(--area-text-on-primary);
-  opacity: 0.65;
+  color: #64748b;
+  opacity: 1;
 }
 
 .study-hero-meta-icon {
-  color: var(--area-text-on-primary);
-  opacity: 0.65;
+  color: var(--area-primary);
+  opacity: 1;
   flex-shrink: 0;
 }
 
 .study-hero-time {
   font-size: 12px;
   font-weight: 700;
-  color: var(--area-text-on-primary);
-  opacity: 0.75;
-  background: rgba(255,255,255,0.18);
+  color: var(--area-primary);
+  opacity: 1;
+  background: var(--area-primary-soft);
   border-radius: 999px;
   padding: 4px 10px;
   white-space: nowrap;
@@ -944,8 +977,8 @@ input {
   border-radius: 10px;
   font-size: 15px;
   font-weight: 700;
-  background: var(--area-text-on-primary);
-  color: var(--area-primary);
+  background: var(--area-primary);
+  color: var(--area-text-on-primary);
   transition: opacity 0.15s ease;
   cursor: pointer;
 }
@@ -963,9 +996,9 @@ input {
   border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
-  background: rgba(255,255,255,0.15);
-  color: var(--area-text-on-primary);
-  border: 1px solid rgba(255,255,255,0.25);
+  background: white;
+  color: #334155;
+  border: 1px solid #e2e8f0;
   transition: opacity 0.15s ease;
   cursor: pointer;
 }
@@ -1043,6 +1076,16 @@ input {
   0%   { opacity: 0; transform: translateY(26px) scale(0.86); filter: brightness(0.85); }
   58%  { opacity: 1; transform: translateY(-4px) scale(1.04); filter: brightness(1.12); }
   100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+@keyframes chestSlotArrive {
+  0%   { opacity: 0; transform: translateY(44px) scale(0.92); filter: brightness(1.12); }
+  70%  { opacity: 1; transform: translateY(-4px) scale(1.02); filter: brightness(1.06); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+.chest-slot-arrive {
+  animation: chestSlotArrive 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes chestLidOpen {

@@ -150,6 +150,8 @@ _CHEST_UNLOCK_MINUTES = {
     "mitico": 240,
 }
 
+_CHEST_OPENING_SLOTS = 2
+
 
 def _award_skill_xp(user, item: AdventureItem, *, used: bool = False, bonus: int = 0):
     if not item.skill_id:
@@ -980,8 +982,14 @@ class UserChestViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         chest = self.get_object()
         if chest.status != UserChest.STATUS_STORED:
             return Response({"detail": "Este bau nao esta armazenado."}, status=status.HTTP_400_BAD_REQUEST)
-        if UserChest.objects.filter(user=request.user, status=UserChest.STATUS_OPENING).exclude(pk=chest.pk).exists():
-            return Response({"detail": "Ja existe um bau abrindo."}, status=status.HTTP_400_BAD_REQUEST)
+        occupied_slots = (
+            UserChest.objects
+            .filter(user=request.user, status__in=[UserChest.STATUS_OPENING, UserChest.STATUS_READY])
+            .exclude(pk=chest.pk)
+            .count()
+        )
+        if occupied_slots >= _CHEST_OPENING_SLOTS:
+            return Response({"detail": "Os dois slots de abertura ja estao ocupados."}, status=status.HTTP_400_BAD_REQUEST)
         minutes = _CHEST_UNLOCK_MINUTES.get(chest.chest_tier, 2)
         chest.status = UserChest.STATUS_OPENING
         chest.started_at = timezone.now()

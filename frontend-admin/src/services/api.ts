@@ -1,6 +1,6 @@
-import type { AdminContent, AdminGoal, AdminSummary, AdminUser } from "../types/admin";
+import type { AdminAdventure, AdminContent, AdminGoal, AdminLearningDetail, AdminProgressDetail, AdminSummary, AdminUser } from "../types/admin";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001/api";
 const TOKEN_KEY = "linguaflow_admin_access";
 const REFRESH_KEY = "linguaflow_admin_refresh";
 
@@ -56,4 +56,7 @@ export const adminApi = {
   users: () => request<AdminUser[]>("/admin-dashboard/users/"),
   goals: () => request<AdminGoal[]>("/admin-dashboard/goals/"),
   content: () => request<AdminContent>("/admin-dashboard/content/"),
+  learningDetail: () => request<AdminLearningDetail>("/admin-dashboard/learning-detail/"),
+  adventure: () => request<AdminAdventure>("/admin-dashboard/adventure/"),
+  progressDetail: () => request<AdminProgressDetail>("/admin-dashboard/progress/"),
 };
