@@ -12,6 +12,10 @@ interface CharacterAvatarProps {
   className?: string;
 }
 
+const SLUG_IMAGE_ALIASES: Record<string, string[]> = {
+  rosa_panadera: ["rosa"],
+};
+
 // Images live in public/{langCode}/characters/{slug}.png
 // Falls back to emoji → first initial when image is absent or fails to load.
 export default function CharacterAvatar({
@@ -27,12 +31,11 @@ export default function CharacterAvatar({
   const imageSources = useMemo(() => {
     if (!slug) return [];
     const lang = langCode.toLowerCase();
-    return [
-      `/${lang}/characters/${slug}.png`,
-      `/${lang}/characters/${slug}.jpg`,
-      `/characters/${slug}.png`,
-      `/characters/${slug}.jpg`,
-    ];
+    const slugs = [slug, ...(SLUG_IMAGE_ALIASES[slug] ?? [])];
+    return slugs.flatMap(imageSlug => [
+      `/${lang}/characters/${imageSlug}.png`,
+      `/${lang}/characters/${imageSlug}.jpg`,
+    ]);
   }, [langCode, slug]);
 
   useEffect(() => {

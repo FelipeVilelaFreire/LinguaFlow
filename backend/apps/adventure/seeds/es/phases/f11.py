@@ -433,7 +433,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
-                    "npc_reaction": "El Alcalde acena apenas com a cabeça. Não devolve a saudação.",
+                    "npc_reaction": "El Alcalde asiente apenas con la cabeza. No devuelve el saludo.",
                 },
             ],
         },

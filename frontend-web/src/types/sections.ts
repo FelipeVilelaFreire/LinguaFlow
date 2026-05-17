@@ -7,14 +7,14 @@
 // Esmeralda → maestria confirmada
 export type WordTier = "bronze" | "prata" | "ouro" | "diamante" | "esmeralda";
 export type VoiceGender = "male" | "female" | "neutral";
-export type VoiceProfile = { lang?: string; gender?: VoiceGender; pitch?: number; rate?: number };
+export type VoiceProfile = { lang?: string; gender?: VoiceGender; pitch?: number; rate?: number; voiceName?: string };
 
 // ── Beat types — narrativa section only ──────────────────────────────────────
 
 export type NarrativaBeat =
   | { kind: "scene";     text: string }
   | { kind: "narrative"; text: string }
-  | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile }
+  | { kind: "npc";       npc: string; line: string; translation?: string; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile; audio_url?: string }
   | { kind: "player";    text: string }
   | SkillCheckStep;
 
@@ -36,10 +36,12 @@ export interface ItemMomentStep {
   npc:         string;
   situation:   string;          // texto narrativo do momento
   npc_line:    string;          // fala do NPC sugerindo o uso
+  npc_line_audio_url?: string;
   item_tag:    string;          // tag necessária (comida/bebida/...)
   on_use: {
     narrative:    string;        // o que aparece quando usa
     npc_reaction: string;
+    npc_reaction_audio_url?: string;
     bonus:        ItemBonusKind;
   };
   on_skip: {
@@ -60,12 +62,12 @@ export interface SkillCheckStep {
 export type SectionStep =
   | { kind: "narrative";       text: string }
   | { kind: "scene";           text: string }
-  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile }
+  | { kind: "npc_speak";       npc: string; line: string; translation?: string; is_new_npc?: boolean; pace?: "slow" | "normal" | "urgent"; speech_rate?: number; voice?: VoiceProfile; audio_url?: string }
   | { kind: "player_react";    text: string }
   | { kind: "reveal";          phrase: string; meaning: string; note?: string }
   | { kind: "pattern";         parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
   | { kind: "vocab_list";      items: Array<{ target: string; native: string }> }
-  | { kind: "multiple_choice"; question: string; options: Array<{ id: string; text: string }>; correct: string; explanation?: string; word_id?: string; target?: string; native?: string; tier?: WordTier; npc?: string; npc_reaction?: string }
+  | { kind: "multiple_choice"; question: string; options: Array<{ id: string; text: string }>; correct: string; explanation?: string; word_id?: string; target?: string; native?: string; tier?: WordTier; npc?: string; npc_reaction?: string; npc_reaction_audio_url?: string }
   | { kind: "fill_blank";      prompt: string; answer: string }
   | { kind: "translate";       source: string; answer: string }
   | { kind: "write_word";      prompt: string; word_id: string; answer: string; tier: Extract<WordTier, "diamante" | "esmeralda">; hint?: string }

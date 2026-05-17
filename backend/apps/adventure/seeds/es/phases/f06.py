@@ -131,7 +131,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_hola", "target": "hola", "native": "olá",
-                    "npc_reaction": "Hola, amigo. Tá bem agora? Respira.",
+                    "npc_reaction": "Hola, amigo. ¿Estás bien ahora? Respira.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -145,7 +145,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mal", "target": "mal", "native": "mal",
-                    "npc_reaction": "Mal. Entendo. Eu também tô estranho com isso.",
+                    "npc_reaction": "Mal. Entiendo. Yo también estoy raro con esto.",
                 },
                 {
                     "kind": "vocab_list",
@@ -170,7 +170,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_luz", "target": "luz", "native": "luz",
-                    "npc_reaction": "Luz. Da lamparina, do sol, do que ilumina. Aprende rápido.",
+                    "npc_reaction": "Luz. De la lámpara, del sol, de lo que ilumina. Aprendes rápido.",
                 },
             ],
         },
@@ -200,15 +200,33 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Vamo falar normal um pouco. Senão você fica doido aí pensando.",
+                    "line": "Vamos falar normal um pouco.",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.88,
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Senão você fica doido aí pensando.",
                     "translation": "Vamos falar normal um pouco. Senão você fica doido aí pensando.",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.88,
                     "pace": "slow",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Olha — Rosa te deu pan hoy de mañana. ¿Verdad?",
-                    "translation": "Olha — Rosa te deu pão de manhã. Né?",
+                    "line": "Rosa te dio pan esta mañana.",
+                    "translation": "Rosa te deu pão esta manhã.",
+                    "speech_rate": 0.92,
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "¿Verdad?",
+                    "translation": "Né?",
+                    "speech_rate": 0.9,
                 },
                 {
                     "kind": "multiple_choice",
@@ -222,13 +240,20 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_pan", "target": "pan", "native": "pão",
-                    "npc_reaction": "Pan. Ainda no estômago. Sua cabeça tá funcionando.",
+                    "npc_reaction": "Pan. Todavía en el estómago. Tu cabeza funciona.",
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Bom. ¿Y antes de comer, qué dijo Rosa cuando viste el pan caliente?",
-                    "translation": "Bom. E antes de comer, o que Rosa falou ao ver você com cara de fome?",
+                    "line": "Bien.",
+                    "translation": "Bom.",
+                    "speech_rate": 0.9,
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "¿Y antes de comer, qué dijo Rosa cuando vio tu cara de hambre?",
+                    "translation": "E antes de comer, o que Rosa falou ao ver você com cara de fome?",
                 },
                 {
                     "kind": "multiple_choice",
@@ -242,7 +267,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_hambre", "target": "tengo hambre", "native": "tenho fome",
-                    "npc_reaction": "Hambre. Coisa simples. Hoje à noite virou complicado, né?",
+                    "npc_reaction": "Hambre. Cosa simple. Esta noche se volvió complicada, ¿no?",
                 },
                 {
                     "kind": "narrative",
@@ -266,7 +291,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. Agua. Isso continua simples — é bom continuar.",
+                    "npc_reaction": "Sed. Agua. Eso sigue siendo simple — es bueno que algo siga así.",
                 },
                 {
                     "kind": "npc_speak",
@@ -292,7 +317,14 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Y la palabra que saiu da sua boca — ¿la recuerdas?",
+                    "line": "Y la palabra que salió de tu boca...",
+                    "translation": "E a palavra que saiu da sua boca...",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "¿La recuerdas?",
                     "translation": "E a palavra que saiu da sua boca — você lembra?",
                     "pace": "slow",
                 },
@@ -308,7 +340,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
-                    "npc_reaction": "Fuego. Sim. E saiu de você, forastero. Saiu mesmo.",
+                    "npc_reaction": "Fuego. Sí. Y salió de ti, forastero. Salió de verdad.",
                 },
                 {
                     "kind": "narrative",
@@ -333,7 +365,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "Eso. Não esquece. Você é você, antes de qualquer outra coisa.",
+                    "npc_reaction": "Eso. No lo olvides. Eres tú antes que cualquier otra cosa.",
                 },
             ],
         },
@@ -546,7 +578,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada, amigo. Sigue respirando. Tá tudo bem.",
+                    "npc_reaction": "De nada, amigo. Sigue respirando. Todo está bien.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -895,11 +927,11 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_luz", "target": "luz", "native": "luz",
                     "npc_reaction": (
-                        "LUZ — a palavra saiu mais firme que da última vez.\n\n"
-                        "O pavio da lamparina pegou fogo sozinho — pequeno, "
-                        "estável. Sem explosão. Sem barulho.\n\n"
-                        "Sofía respirou fundo. Don Miguel tirou o chapéu por um segundo. "
-                        "Miguel olhou pra você como se você fosse outra coisa agora."
+                        "LUZ — la palabra salió más firme que la última vez.\n\n"
+                        "La mecha de la lámpara prendió sola — pequeña, "
+                        "estable. Sin explosión. Sin ruido.\n\n"
+                        "Sofía respiró hondo. Don Miguel se quitó el sombrero un segundo. "
+                        "Miguel te miró como si ahora fueras otra cosa."
                     ),
                     "gated": True,
                 },
@@ -926,7 +958,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bien. Quem acabou de fazer um milagre tem o direito de estar bem.",
+                    "npc_reaction": "Bien. Quien acaba de hacer un milagro tiene derecho a estar bien.",
                     "gated": True,
                 },
                 {
@@ -956,7 +988,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada, amigo. Pra isso que serve amigo.",
+                    "npc_reaction": "De nada, amigo. Para eso sirve un amigo.",
                     "gated": True,
                 },
                 # ── Closing beats — transição pra F7 (plaza pela manhã) ─────

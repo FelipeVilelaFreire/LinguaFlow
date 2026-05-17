@@ -20,6 +20,7 @@ interface AdventurePhaseRunnerProps {
   firstName?:         string;
   startSectionIdx?:   number;
   onSectionComplete?: (newCount: number) => void;
+  onPhaseCompleteExit?: () => void;
   onBack:             () => void;
 }
 
@@ -50,6 +51,7 @@ export default function AdventurePhaseRunner({
   firstName = "",
   startSectionIdx = 0,
   onSectionComplete,
+  onPhaseCompleteExit,
   onBack,
 }: AdventurePhaseRunnerProps) {
   const s = useStrings();
@@ -145,6 +147,11 @@ export default function AdventurePhaseRunner({
 
   const wordsToShow = serverWords.length > 0 ? serverWords : keyWords;
 
+  function returnToMapAfterCompletion() {
+    onPhaseCompleteExit?.();
+    onBack();
+  }
+
   // ── Trophy ────────────────────────────────────────────────────────────────────
   if (stage === "trophy") {
     return (
@@ -222,7 +229,7 @@ export default function AdventurePhaseRunner({
             onClick={() => {
               if (wordsToShow.length > 0) setStage("words");
               else if (earnedItem) setStage("chest");
-              else onBack();
+              else returnToMapAfterCompletion();
             }}
             className="mt-8 flex h-14 w-full max-w-xs items-center justify-center rounded-2xl text-base font-bold transition active:scale-[0.97]"
             style={{ background: c.ctaBg, color: "#fff", boxShadow: `0 4px 20px ${c.nodeActiveGlow}60` }}
@@ -260,7 +267,7 @@ export default function AdventurePhaseRunner({
                 background: `${c.nodeActive}22`,
                 color:      c.nodeActive,
                 border:     `1px solid ${c.nodeActive}44`,
-                animation:  `wordChipIn 0.35s cubic-bezier(0.16,1,0.3,1) ${i * 55}ms both`,
+                animation:  `wordChipIn 0.58s cubic-bezier(0.16,1,0.3,1) ${220 + i * 150}ms both`,
               }}
             >
               {word}
@@ -271,7 +278,7 @@ export default function AdventurePhaseRunner({
         <div className="mt-auto pt-8">
           <button
             type="button"
-            onClick={() => { if (earnedItem) setStage("chest"); else onBack(); }}
+            onClick={() => { if (earnedItem) setStage("chest"); else returnToMapAfterCompletion(); }}
             className="flex h-14 w-full items-center justify-center rounded-2xl text-base font-bold transition active:scale-[0.97]"
             style={{ background: c.ctaBg, color: "#fff", boxShadow: `0 4px 20px ${c.nodeActiveGlow}60` }}
           >
@@ -290,7 +297,7 @@ export default function AdventurePhaseRunner({
         className="relative flex h-full flex-col items-center justify-center overflow-hidden px-6 pb-10 pt-8 text-center"
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.56, ease: [0.16, 1, 0.3, 1] }}
       >
         <div
           className="pointer-events-none absolute inset-0"
@@ -320,7 +327,7 @@ export default function AdventurePhaseRunner({
 
         <p
           className="relative z-10 text-[10px] font-bold uppercase tracking-[0.25em]"
-          style={{ color: c.goldAccent, animation: "itemLoreIn 0.5s ease-out 0.1s both" }}
+          style={{ color: c.goldAccent, animation: "itemLoreIn 0.7s ease-out 0.18s both" }}
         >
           {s.adventure.chestRewardLabel}
         </p>
@@ -332,14 +339,14 @@ export default function AdventurePhaseRunner({
           initial={{ opacity: 0, y: 26, scale: 0.86 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           whileTap={{ scale: 0.96 }}
-          transition={{ duration: 0.72, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="absolute bottom-4 h-8 w-40 rounded-full bg-black/35 blur-md" />
           <motion.span
             className="absolute left-1/2 top-8 h-24 w-40 -translate-x-1/2 rounded-t-[28px] border"
             initial={{ x: "-50%", rotateX: 0, y: 0, filter: "brightness(1)" }}
             animate={{ x: "-50%", rotateX: -58, y: -16, filter: "brightness(1.28)" }}
-            transition={{ duration: 1.05, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.28, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
             style={{
               background: `linear-gradient(180deg, ${c.goldAccent} 0%, #8a3d11 52%, #4a1c08 100%)`,
               borderColor: `${c.goldAccent}80`,
@@ -367,7 +374,7 @@ export default function AdventurePhaseRunner({
             className="absolute bottom-20 left-1/2 -translate-x-1/2"
             initial={{ x: "-50%", opacity: 0, y: 22, scale: 0.48, rotate: -8 }}
             animate={{ x: "-50%", opacity: 1, y: -18, scale: 1, rotate: 0 }}
-            transition={{ duration: 1.05, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.25, delay: 0.78, ease: [0.16, 1, 0.3, 1] }}
           >
             <Emoji char={earnedItem.emoji} size={62} />
           </motion.span>
@@ -385,13 +392,13 @@ export default function AdventurePhaseRunner({
 
         <h2
           className="relative z-10 mt-3 text-2xl font-bold leading-tight"
-          style={{ color: c.parchment, animation: "itemLoreIn 0.5s ease-out 0.72s both" }}
+          style={{ color: c.parchment, animation: "itemLoreIn 0.7s ease-out 1.05s both" }}
         >
           {s.adventure.chestFoundTitle}
         </h2>
         <p
           className="relative z-10 mt-2 max-w-xs text-sm font-medium leading-relaxed"
-          style={{ color: c.textOnBg, animation: "itemLoreIn 0.5s ease-out 0.82s both" }}
+          style={{ color: c.textOnBg, animation: "itemLoreIn 0.7s ease-out 1.18s both" }}
         >
           {s.adventure.chestFoundHint}
         </p>
@@ -404,7 +411,7 @@ export default function AdventurePhaseRunner({
             background: c.goldAccent,
             color: "#1a0800",
             boxShadow: `0 4px 28px ${c.goldAccent}45`,
-            animation: "itemLoreIn 0.5s ease-out 0.95s both",
+            animation: "itemLoreIn 0.7s ease-out 1.35s both",
           }}
         >
           {s.adventure.chestOpen}
@@ -420,7 +427,7 @@ export default function AdventurePhaseRunner({
         className="relative flex h-full flex-col items-center justify-center overflow-hidden px-6 pb-10 pt-8 text-center"
         initial={{ opacity: 0, scale: 0.985 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.58, ease: [0.16, 1, 0.3, 1] }}
       >
         <div
           className="pointer-events-none absolute inset-0"
@@ -429,7 +436,7 @@ export default function AdventurePhaseRunner({
 
         <p
           className="relative z-10 text-[10px] font-bold uppercase tracking-[0.25em]"
-          style={{ color: r.color, animation: "itemLoreIn 0.5s ease-out 0.1s both" }}
+          style={{ color: r.color, animation: "itemLoreIn 0.7s ease-out 0.18s both" }}
         >
           {s.adventure.phaseItemGainedEyebrow}
         </p>
@@ -439,7 +446,7 @@ export default function AdventurePhaseRunner({
           className="relative z-10 mt-5 flex min-h-[164px] w-full max-w-sm items-center justify-center rounded-[28px] px-6 py-7"
           initial={{ opacity: 0, y: 18, scale: 0.94, rotateX: 8 }}
           animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-          transition={{ duration: 0.62, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.88, ease: [0.16, 1, 0.3, 1] }}
           style={{
             background: `linear-gradient(160deg, ${r.glow}, rgba(255,255,255,0.055) 42%, rgba(0,0,0,0.24))`,
             border: `1px solid ${r.border}`,
@@ -472,7 +479,7 @@ export default function AdventurePhaseRunner({
 
         <h2
           className="relative z-10 mt-6 text-2xl font-bold leading-tight"
-          style={{ color: c.parchment, animation: "itemLoreIn 0.5s ease-out 0.3s both" }}
+          style={{ color: c.parchment, animation: "itemLoreIn 0.7s ease-out 0.62s both" }}
         >
           {earnedItem.name}
         </h2>
@@ -483,7 +490,7 @@ export default function AdventurePhaseRunner({
             background: `${r.color}18`,
             color: r.color,
             border: `1px solid ${r.border}`,
-            animation: "itemLoreIn 0.5s ease-out 0.4s both",
+            animation: "itemLoreIn 0.7s ease-out 0.78s both",
           }}
         >
           {s.adventure.itemRarity[earnedItem.rarity]}
@@ -491,14 +498,14 @@ export default function AdventurePhaseRunner({
 
         <p
           className="relative z-10 mt-4 max-w-sm text-sm font-medium leading-relaxed"
-          style={{ color: c.textOnBg, animation: "itemLoreIn 0.5s ease-out 0.55s both" }}
+          style={{ color: c.textOnBg, animation: "itemLoreIn 0.7s ease-out 0.96s both" }}
         >
           {earnedItem.lore}
         </p>
 
         <motion.button
           type="button"
-          onClick={onBack}
+          onClick={returnToMapAfterCompletion}
           className="relative z-10 mt-8 flex h-14 w-full max-w-xs items-center justify-center gap-2 rounded-2xl text-base font-bold transition active:scale-[0.97]"
           whileTap={{ scale: 0.96 }}
           whileHover={{ y: -2 }}
@@ -506,7 +513,7 @@ export default function AdventurePhaseRunner({
             background:  r.color,
             color:       "#fff",
             boxShadow:   `0 4px 28px ${r.glow}`,
-            animation:   "itemLoreIn 0.5s ease-out 0.7s both",
+            animation:   "itemLoreIn 0.7s ease-out 1.18s both",
           }}
         >
           <Backpack size={18} />

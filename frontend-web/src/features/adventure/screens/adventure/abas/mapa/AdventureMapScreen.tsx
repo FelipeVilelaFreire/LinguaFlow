@@ -305,6 +305,7 @@ function PhaseNode({
   pos,
   currentPhaseNumber,
   themeMode,
+  recentlyCompleted,
   c,
   onClick,
 }: {
@@ -312,6 +313,7 @@ function PhaseNode({
   pos: { x: number; y: number };
   currentPhaseNumber: number;
   themeMode: AdventureThemeMode;
+  recentlyCompleted: boolean;
   c: ReturnType<typeof getAdventureColors>;
   onClick: (rect: DOMRect) => void;
 }) {
@@ -322,6 +324,7 @@ function PhaseNode({
   const isBoss      = phase.is_boss;
   const isReview    = phase.phase_type === "review";
   const isLight     = themeMode === "light";
+  const showCompletionFill = recentlyCompleted && isCompleted;
 
   const size     = isBoss ? 64 : 54;
   const ringSize = size + 20;
@@ -378,7 +381,7 @@ function PhaseNode({
         disabled={isLocked}
         data-current-phase={isCurrent ? "true" : undefined}
         onClick={(e) => onClick((e.currentTarget as HTMLElement).getBoundingClientRect())}
-        className="absolute left-1/2 top-1/2 flex items-center justify-center rounded-full font-bold transition"
+        className="absolute left-1/2 top-1/2 flex items-center justify-center overflow-hidden rounded-full font-bold transition"
         style={{
           transform: "translate(-50%, -50%)",
           width: size,
@@ -388,8 +391,21 @@ function PhaseNode({
           border,
           cursor: isLocked ? "not-allowed" : "pointer",
           color: isLocked ? c.textOnBg : "#ffffff",
+          animation: showCompletionFill ? "phaseNodeCompletionPulse 1.9s ease-out both" : undefined,
         }}
       >
+        {showCompletionFill && (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0"
+            style={{
+              height: "100%",
+              background: `linear-gradient(180deg, ${c.goldAccent}90 0%, ${c.nodeActive}f0 62%, ${c.nodeCompleted} 100%)`,
+              animation: "phaseNodeFillUp 1.65s cubic-bezier(0.16,1,0.3,1) both",
+            }}
+          />
+        )}
+        <span className="relative z-10 grid place-items-center">
         {isCompleted ? (
           <CheckCircle2 size={isBoss ? 24 : 20} />
         ) : isLocked ? (
@@ -404,6 +420,7 @@ function PhaseNode({
             <span className="text-[14px] font-bold tabular-nums">{phase.number}</span>
           </div>
         )}
+        </span>
       </button>
 
       {/* Stars on completed nodes */}
@@ -432,10 +449,11 @@ interface AdventureMapScreenProps {
   langCode: string;
   themeMode: AdventureThemeMode;
   chapters: AdventureChapter[];
+  recentlyCompletedPhaseId?: number | null;
   onStartChapter: (chapterId: number, phaseTitle: string, phaseNumber: number, chapterLevel: string) => void;
 }
 
-export default function AdventureMapScreen({ langCode, themeMode, chapters, onStartChapter }: AdventureMapScreenProps) {
+export default function AdventureMapScreen({ langCode, themeMode, chapters, recentlyCompletedPhaseId = null, onStartChapter }: AdventureMapScreenProps) {
   const s = useStrings();
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
   const c = getAdventureColors(effectiveLangCode, themeMode);
@@ -510,6 +528,7 @@ export default function AdventureMapScreen({ langCode, themeMode, chapters, onSt
                     pos={pos}
                     currentPhaseNumber={currentPhaseNumber}
                     themeMode={themeMode}
+                    recentlyCompleted={phase.id === recentlyCompletedPhaseId}
                     c={c}
                     onClick={(rect) => {
                       if (phase.is_completed || phase.number !== currentPhaseNumber) return;

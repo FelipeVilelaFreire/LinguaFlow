@@ -1,5 +1,5 @@
 import { Backpack, BookOpen, ChevronLeft, Gift, Map, Moon, Shield, Sun, Users } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import LangFlag from "../../../../components/ui/LangFlag";
 import { useStrings } from "../../../../contexts/StringsContext";
@@ -41,6 +41,8 @@ export default function AdventureModule({
   const s = useStrings();
   const [themeMode,   setThemeMode]   = useState<AdventureThemeMode>("dark");
   const [chapterView, setChapterView] = useState<{ phaseNumber: number; phaseId: number; startSectionIdx: number; keyWords: string[] } | null>(null);
+  const [recentlyCompletedPhaseId, setRecentlyCompletedPhaseId] = useState<number | null>(null);
+  const phaseCompleteAnimationTimer = useRef<number | null>(null);
   const [openingDone, setOpeningDone] = useState(() =>
     Boolean(localStorage.getItem(`fluenci_opening_${langCode.toLowerCase()}`)),
   );
@@ -70,6 +72,12 @@ export default function AdventureModule({
       window.removeEventListener("talkly:section_complete", onSectionCompleteEvent);
     };
   }, [refresh, completeSection]);
+
+  useEffect(() => () => {
+    if (phaseCompleteAnimationTimer.current !== null) {
+      window.clearTimeout(phaseCompleteAnimationTimer.current);
+    }
+  }, []);
 
   // ── Derived values ───────────────────────────────────────────────────────────
   const effectiveLangCode = chapters[0]?.language_code ?? langCode;
@@ -118,6 +126,21 @@ export default function AdventureModule({
     }
   }, [chapters, chapterPath, effectiveLangCode, langName, navigateImmersive, s.adventure, sourceLangCode]);
 
+  const handlePhaseCompleteExit = useCallback((phaseId: number) => {
+    if (phaseCompleteAnimationTimer.current !== null) {
+      window.clearTimeout(phaseCompleteAnimationTimer.current);
+    }
+
+    setRecentlyCompletedPhaseId(null);
+    window.requestAnimationFrame(() => setRecentlyCompletedPhaseId(phaseId));
+    phaseCompleteAnimationTimer.current = window.setTimeout(() => {
+      setRecentlyCompletedPhaseId(null);
+      phaseCompleteAnimationTimer.current = null;
+    }, 2800);
+
+    void refresh();
+  }, [refresh]);
+
   // ── Content renderer ─────────────────────────────────────────────────────────
   function renderTabContent() {
     if (isLoading) {
@@ -157,6 +180,7 @@ export default function AdventureModule({
           firstName={firstName}
           startSectionIdx={chapterView.startSectionIdx}
           onSectionComplete={(n) => handleSectionComplete(chapterView.phaseId, n)}
+          onPhaseCompleteExit={() => handlePhaseCompleteExit(chapterView.phaseId)}
           onBack={() => setChapterView(null)}
         />
       );
@@ -178,6 +202,7 @@ export default function AdventureModule({
       langCode: effectiveLangCode,
       themeMode,
       chapters,
+      recentlyCompletedPhaseId,
       onStartChapter: handleStartChapter,
     };
 
@@ -350,7 +375,7 @@ export default function AdventureModule({
           </div>
 
           {import.meta.env.DEV && (
-            <div className="px-4 pb-5">
+            <div className="space-y-2 px-4 pb-5">
               <button
                 type="button"
                 onClick={() => setDevModalOpen(true)}
@@ -358,6 +383,14 @@ export default function AdventureModule({
                 style={{ background: c.surfaceMid, color: c.textFaint }}
               >
                 {s.adventure.devResetLabel}
+              </button>
+              <button
+                type="button"
+                onClick={() => { window.location.href = "/aventura/mapa/dev"; }}
+                className="flex w-full items-center justify-center rounded-xl px-3 py-2 text-xs font-semibold transition"
+                style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}35` }}
+              >
+                DEV · testar vozes
               </button>
             </div>
           )}

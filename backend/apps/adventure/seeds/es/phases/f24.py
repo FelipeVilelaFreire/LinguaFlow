@@ -203,7 +203,7 @@ SECTIONS = [
                      {"id": "d", "text": "Soy nervioso"},
                  ], "correct": "a",
                  "word_id": "es_debe", "target": "debe", "native": "deve (provavelmente)",
-                 "npc_reaction": "Debe. Probabilidad — no certeza. Útil pra hablar de los otros."},
+                 "npc_reaction": "Debe. Probabilidad — no certeza. Útil para hablar de los otros."},
             ],
         },
     },

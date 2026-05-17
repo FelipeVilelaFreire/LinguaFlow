@@ -224,7 +224,7 @@ SECTIONS = [
                      {"id": "d", "text": "Soy Carmen"},
                  ], "correct": "a",
                  "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                 "npc_reaction": "Carmen nem te olha. Mas você sabe — ela ouviu."},
+                 "npc_reaction": "Carmen ni siquiera te mira. Pero tú sabes — ella oyó."},
                 {"kind": "npc_speak", "npc": "Carmen", "line": "Si firmas la sentencia hoy — el pueblo sabe. Si sellas el pase del forastero — el pueblo olvida.", "translation": "Se você assinar a sentença hoje — o pueblo sabe. Se carimbar o pase do forasteiro — o pueblo esquece.", "pace": "slow"},
                 {"kind": "multiple_choice", "npc": "El Alcalde",
                  "question": "El Alcalde olha pra Carmen. Pra você. Pra Carmen de novo. Pensa. Decide. Pra você descrever — ele DEVE estar pensando muito (probabilidade):",

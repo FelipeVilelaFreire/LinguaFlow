@@ -878,7 +878,7 @@ class Command(BaseCommand):
                     "em troca — só sorriu e voltou pra dentro."
                 ),
                 "source_character_slug": None,
-                "word_id": "es_pan",
+                "word_id": "",
                 "item_tag": AdventureItem.TAG_COMIDA,
                 "action":   AdventureItem.ACTION_USAR,
                 "order": 1,
@@ -893,7 +893,7 @@ class Command(BaseCommand):
                     "de verdade. 'El campesino siempre tiene algo en el bolsillo, ¿eh?'"
                 ),
                 "source_character_slug": "don_miguel",
-                "word_id": "es_manzana",
+                "word_id": "",
                 "item_tag": AdventureItem.TAG_COMIDA,
                 "action":   AdventureItem.ACTION_USAR,
                 "order": 2,
@@ -908,7 +908,7 @@ class Command(BaseCommand):
                     "de este pozo es buena. Aquí no te enfermarás, forastero.'"
                 ),
                 "source_character_slug": None,
-                "word_id": "es_agua",
+                "word_id": "",
                 "item_tag": AdventureItem.TAG_BEBIDA,
                 "action":   AdventureItem.ACTION_USAR,
                 "order": 3,
@@ -923,7 +923,7 @@ class Command(BaseCommand):
                     "verde nas bordas, parece ter passado por muitas mãos antes da sua."
                 ),
                 "source_character_slug": "don_miguel",
-                "word_id": "es_forastero",
+                "word_id": "",
                 "item_tag": AdventureItem.TAG_MONEDA,
                 "action":   AdventureItem.ACTION_ENTREGAR,
                 "order": 4,

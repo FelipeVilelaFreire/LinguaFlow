@@ -3,6 +3,7 @@ from rest_framework import serializers
 from apps.learning.serializers import PhraseSerializer
 from apps.progress.models import WordMastery
 
+from .audio import content_with_audio_urls
 from .models import (
     AdventureCharacter,
     AdventureChapter,
@@ -198,7 +199,13 @@ class PhaseSectionSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         rep = {"type": instance.section_type}
-        rep.update(instance.content)
+        request = self.context.get("request")
+        content = content_with_audio_urls(
+            instance.content,
+            language_code=instance.phase.chapter.language.code,
+            request=request,
+        )
+        rep.update(content)
         return rep
 
 

@@ -6,7 +6,7 @@ export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> 
   // Spanish PT -> ES cast
   "Don Miguel el Campesino": { slug: "don_miguel", emoji: "👨‍🌾" },
   "Miguel el Campesino": { slug: "miguel", emoji: "🧑‍🌾" },
-  "Rosa la Panadera": { slug: "rosa_panadera", emoji: "👩‍🍳" },
+  "Rosa la Panadera": { slug: "rosa", emoji: "👩‍🍳" },
   "Ernesto": { slug: "ernesto", emoji: "🪓" },
   "El Mercader": { slug: "mercader", emoji: "🍊" },
   "El Vigilante del Mercado": { slug: "vigilante", emoji: "💂" },
@@ -22,7 +22,7 @@ export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> 
   "Valentina": { slug: "valentina", emoji: "🕯️" },
   "Don Miguel": { slug: "don_miguel", emoji: "👨‍🌾" },
   "Miguel": { slug: "miguel", emoji: "🧑‍🌾" },
-  "Rosa": { slug: "rosa_panadera", emoji: "👩‍🍳" },
+  "Rosa": { slug: "rosa", emoji: "👩‍🍳" },
   "Mercader": { slug: "mercader", emoji: "🍊" },
   "El Vigilante": { slug: "vigilante", emoji: "💂" },
   "Carmen": { slug: "senora_carmen", emoji: "👩" },
@@ -47,6 +47,8 @@ export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> 
   "Der Inspektor": { slug: "inspektor", emoji: "🧾" },
   "Joao der Andere": { slug: "joao", emoji: "📜" },
 
+  "Katharina": { slug: "katharina", emoji: "✨" },
+
   // Italian PT -> IT cast
   "Antonio il Contadino": { slug: "antonio_contadino", emoji: "🌾" },
   "Antonio": { slug: "antonio_contadino", emoji: "🌾" },
@@ -65,6 +67,20 @@ export const CHARACTER_AVATARS: Record<string, { slug: string; emoji: string }> 
   "Il Podesta": { slug: "podesta", emoji: "⚖️" },
   "L'Ispettore": { slug: "ispettore", emoji: "🧾" },
   "Mateusz l'Altro": { slug: "mateusz", emoji: "📜" },
+
+  // Spanish planned/support aliases. Keep fallbacks human; the job belongs in the profile/art.
+  "Doña Esperanza": { slug: "dona_esperanza", emoji: "👵" },
+  "Dona Esperanza": { slug: "dona_esperanza", emoji: "👵" },
+  "Pablo": { slug: "pablo", emoji: "👨" },
+  "Pablo el Cocinero": { slug: "pablo", emoji: "👨" },
+  "Rosa la Vendedora": { slug: "rosa", emoji: "👩" },
+  "Pedro": { slug: "pedro", emoji: "👨" },
+  "Pedro el Herrero": { slug: "pedro", emoji: "👨" },
+  "Elena la Curandera": { slug: "elena", emoji: "👩" },
+  "Carlos": { slug: "carlos", emoji: "👦" },
+  "El Niño Carlos": { slug: "carlos", emoji: "👦" },
+  "El Nino Carlos": { slug: "carlos", emoji: "👦" },
+  "El Jefe del Pueblo": { slug: "alcalde", emoji: "👨" },
 
   // Future Italian Catalina equivalent.
   "Sally": { slug: "sally", emoji: "✨" },

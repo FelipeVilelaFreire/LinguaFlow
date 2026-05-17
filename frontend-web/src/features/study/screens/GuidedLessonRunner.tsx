@@ -1,8 +1,9 @@
-import { ArrowLeft, BookOpen, Check, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowLeft, BookOpen, Check, Volume2, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useStrings } from "../../../contexts/StringsContext";
 import { adventureService } from "../../../services/adventureService";
+import { audioService } from "../../../services/audioService";
 import type { Phrase, StudyLesson } from "../../../types/content";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -88,6 +89,14 @@ export default function GuidedLessonRunner({ lesson, phrases, onBack, onComplete
 
   const step     = steps[stepIdx];
   const progress = steps.length > 1 ? stepIdx / (steps.length - 1) : 1;
+
+  useEffect(() => {
+    if (step.kind !== "learn") return;
+    const timeout = window.setTimeout(() => {
+      audioService.speak(step.phrase.target_text, step.phrase.target_language.code);
+    }, 180);
+    return () => window.clearTimeout(timeout);
+  }, [step]);
 
   function advance() {
     setSelected(null);
@@ -190,12 +199,15 @@ export default function GuidedLessonRunner({ lesson, phrases, onBack, onComplete
         </div>
 
         <div className="card flex flex-col items-center gap-4 p-8 text-center">
-          <p
-            className="text-4xl font-bold leading-tight area-text-primary"
-            style={{ fontFeatureSettings: '"kern"' }}
-          >
-            {step.phrase.target_text}
-          </p>
+          <div className="flex flex-col items-center gap-3">
+            <p
+              className="text-4xl font-bold leading-tight area-text-primary"
+              style={{ fontFeatureSettings: '"kern"' }}
+            >
+              {step.phrase.target_text}
+            </p>
+            <SpeakButton phrase={step.phrase} label={s.study.listenPhrase} />
+          </div>
           <div className="h-px w-10 bg-slate-200" />
           <p className="text-lg font-semibold text-slate-500">{step.phrase.source_text}</p>
         </div>
@@ -271,11 +283,14 @@ export default function GuidedLessonRunner({ lesson, phrases, onBack, onComplete
             </div>
 
             {revealed && (
-              <p className={`text-sm font-semibold ${isRight ? "text-emerald-700" : "text-red-600"}`}>
-                {isRight
-                  ? s.study.correctLabel
-                  : `${s.study.wrongLabel} — ${correctOpt?.text ?? ""}`}
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className={`text-sm font-semibold ${isRight ? "text-emerald-700" : "text-red-600"}`}>
+                  {isRight
+                    ? s.study.correctLabel
+                    : `${s.study.wrongLabel} — ${correctOpt?.text ?? ""}`}
+                </p>
+                <SpeakButton phrase={step.phrase} label={s.study.listenAnswer} compact />
+              </div>
             )}
           </div>
         </div>
@@ -354,4 +369,23 @@ export default function GuidedLessonRunner({ lesson, phrases, onBack, onComplete
   }
 
   return null;
+}
+
+function SpeakButton({ phrase, label, compact = false }: { phrase: Phrase; label: string; compact?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={() => audioService.speak(phrase.target_text, phrase.target_language.code)}
+      className={`inline-flex items-center justify-center gap-2 rounded-[8px] font-semibold transition ${
+        compact
+          ? "h-9 px-3 text-xs bg-slate-100 text-slate-600 hover:bg-slate-200"
+          : "h-10 px-4 text-sm bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-50"
+      }`}
+      title={label}
+      aria-label={label}
+    >
+      <Volume2 size={compact ? 14 : 16} />
+      {label}
+    </button>
+  );
 }

@@ -287,6 +287,33 @@ input:focus-visible {
   }
 }
 
+@keyframes phaseNodeFillUp {
+  0% {
+    transform: translateY(105%);
+    opacity: 0.55;
+  }
+  68% {
+    transform: translateY(0%);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 0.58;
+  }
+}
+
+@keyframes phaseNodeCompletionPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.92);
+  }
+  38% {
+    transform: translate(-50%, -50%) scale(1.16);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 @keyframes sheetSlideUp {
   from {
     transform: translateY(100%);
@@ -1109,6 +1136,38 @@ input:focus-visible {
   0%   { opacity: 0; transform: translateY(18px) scale(0.94) rotateX(8deg); }
   70%  { opacity: 1; transform: translateY(-2px) scale(1.015) rotateX(0deg); }
   100% { opacity: 1; transform: translateY(0) scale(1) rotateX(0deg); }
+}
+
+@keyframes rewardItemIn {
+  0%   { opacity: 0; transform: translateY(18px) scale(0.92); filter: brightness(0.85); }
+  55%  { opacity: 1; transform: translateY(-5px) scale(1.035); filter: brightness(1.2); }
+  78%  { transform: translateY(1px) scale(0.99); filter: brightness(1.06); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
+}
+
+@keyframes rewardItemPrizeIn {
+  0%   { opacity: 0; transform: translate(22px, 10px) scale(0.78); filter: blur(4px) brightness(0.9); }
+  42%  { opacity: 1; transform: translate(-8px, -4px) scale(1.08); filter: blur(0) brightness(1.28); }
+  68%  { transform: translate(2px, 1px) scale(0.99); filter: brightness(1.08); }
+  100% { opacity: 1; transform: translate(0, 0) scale(1); filter: brightness(1); }
+}
+
+@keyframes rewardItemGlow {
+  0%   { box-shadow: 0 0 0 rgba(250, 204, 21, 0), 0 8px 22px rgba(0, 0, 0, 0.24); }
+  35%  { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.16), 0 0 24px rgba(250, 204, 21, 0.28), 0 12px 26px rgba(0, 0, 0, 0.3); }
+  100% { box-shadow: 0 0 0 rgba(250, 204, 21, 0), 0 8px 22px rgba(0, 0, 0, 0.24); }
+}
+
+@keyframes rewardIconPrizePop {
+  0%   { transform: scale(0.35) rotate(-18deg); opacity: 0; }
+  55%  { transform: scale(1.22) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes rewardIconPulse {
+  0%   { transform: scale(0.65) rotate(-10deg); filter: brightness(0.9); }
+  58%  { transform: scale(1.2) rotate(5deg); filter: brightness(1.22); }
+  100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
 }
 
 @keyframes wordChipIn {

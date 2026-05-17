@@ -9,7 +9,7 @@ Novos vocab (2): pan · agua · tengo hambre · tengo sed
 Revisão F1: hola, buenos días, gracias, de nada, me llamo, ¿cómo estás?, bien/mal, forastero
 NPC principal:   Don Miguel (fio condutor)
 NPC cameo:       Rosa la Panadera (reaparece brevemente)
-Itens:           pan_fresco (word_id: es_pan) · agua_del_pozo (word_id: es_agua)
+Itens:           pan_fresco · agua_del_pozo
 Arco emocional:  desorientado → começa a entender o ritmo do pueblo
 Transição:       anoitecer na posada; uma sombra passa pela janela — alguém observou
 
@@ -246,7 +246,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "Exacto. La niña vai repetir seu nome pra mãe dela hoje à noite.",
+                    "npc_reaction": "Exacto. La niña va a repetir tu nombre a su madre esta noche.",
                 },
                 {
                     "kind": "npc_speak",
@@ -266,7 +266,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "Bien. Y ele vai falar 'de nada' — já sabe o que vem depois.",
+                    "npc_reaction": "Bien. Y él va a decir 'de nada' — ya sabes lo que viene después.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -300,7 +300,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bueno. Bem é bom. Continua assim.",
+                    "npc_reaction": "Bueno. Bien es bueno. Sigue así.",
                 },
                 {
                     "kind": "narrative",
@@ -365,8 +365,8 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Oye — sabes decir 'tengo'. 'Tengo' es 'eu tenho' o 'eu sinto'. Mira:",
-                    "translation": "Ei — você sabe falar 'tengo'. 'Tengo' é 'eu tenho' ou 'eu sinto'. Olha:",
+                    "line": "Oye — ya sabes decir 'tengo'. Sirve para lo que tienes y lo que sientes. Mira:",
+                    "translation": "Ei — você já sabe falar 'tengo'. Serve para o que você tem e o que você sente. Olha:",
                 },
                 {
                     "kind": "reveal",
@@ -431,7 +431,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. Agua — aí. Sempre tem na fonte.",
+                    "npc_reaction": "Sed. Agua — ahí. Siempre hay en la fuente.",
                 },
                 {
                     "kind": "narrative",
@@ -562,7 +562,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Forastero. Como você era ontem. Mas menos agora, ¿no?",
+                    "npc_reaction": "Forastero. Como eras ayer. Pero menos ahora, ¿no?",
                 },
                 {
                     "kind": "npc_speak",
@@ -630,7 +630,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Agua. Claro. A maçã fica pra depois.",
+                    "npc_reaction": "Agua. Claro. La manzana queda para después.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -712,7 +712,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada, hijo. Siempre hay pan pra quem precisa.",
+                    "npc_reaction": "De nada, hijo. Siempre hay pan para quien lo necesita.",
                 },
                 {
                     "kind": "narrative",
@@ -831,7 +831,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_agua", "target": "agua", "native": "água",
-                    "npc_reaction": "Água! Você entendeu 'tengo sed'. Dá a cantil pra ela.",
+                    "npc_reaction": "¡Agua! Entendiste 'tengo sed'. Dale la cantimplora.",
                     "gated": True,
                 },
                 {
@@ -861,7 +861,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "O senhor acena satisfeito. Agora você pode tentar explicar onde fica a posada.",
+                    "npc_reaction": "El señor asiente satisfecho. Ahora puedes intentar explicar dónde está la posada.",
                     "gated": True,
                 },
                 {
@@ -887,7 +887,7 @@ SECTIONS = [
                         {"id": "d", "text": "De nada"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Miguel olha pro mesmo lado que você olhou. Franze a testa um segundo. Depois: 'Vamos pra posada.'",
+                    "npc_reaction": "Miguel mira hacia el mismo lado que tú. Frunce el ceño un segundo. Después: 'Vamos a la posada.'",
                     "gated": True,
                 },
                 {

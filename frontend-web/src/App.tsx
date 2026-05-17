@@ -2,12 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 
 import AppLayout from "./components/layout/AppLayout";
 import { APP_NAME } from "./constants/app";
-import { getLocaleFromSourceLanguage, type AppLocale } from "./constants/strings";
+import { getLocaleFromSourceLanguage, STRINGS_BY_LOCALE, type AppLocale } from "./constants/strings";
 import { StringsProvider } from "./contexts/StringsContext";
 import { adventureChapterPath, NAV_ITEMS, ROUTES } from "./constants/routes";
+import { useImmersiveNav } from "./hooks/useImmersiveNav";
 import AccountScreen from "./features/account/screens/AccountScreen";
 import AdventureChapterScreen from "./features/adventure/screens/adventure/abas/mapa/components/AdventureChapterScreen";
 import AdventureModule from "./features/adventure/screens/adventure/AdventureModule";
+import AdventureVoiceDevScreen from "./features/adventure/screens/adventure/AdventureVoiceDevScreen";
 import type { AdventureTab } from "./features/adventure/screens/adventure/AdventureModule";
 import EditProfileScreen from "./features/account/screens/EditProfileScreen";
 import HistoryScreen from "./features/history/screens/HistoryScreen";
@@ -34,6 +36,7 @@ const ROUTE_PATH: Partial<Record<AppRoute, string>> = {
   "adventure-palavras":     ROUTES.adventurePalavras,
   "adventure-heroi":        ROUTES.adventureHeroi,
   "adventure-personagens":  ROUTES.adventurePersonagens,
+  "adventure-map-dev":      ROUTES.adventureMapDev,
   today:              ROUTES.today,
   vocabulary:         ROUTES.vocabulary,
   account:            ROUTES.account,
@@ -52,6 +55,7 @@ export default function App() {
   });
   const [switchingAreaLabel, setSwitchingAreaLabel] = useState<string | null>(null);
   const [booting, setBooting] = useState(true);
+  const { navigateImmersive } = useImmersiveNav();
 
   const activeLocale = uiLocale ?? getLocaleFromSourceLanguage(goal?.source_language?.code);
   const langCode = goal?.target_language?.code ?? "ES";
@@ -152,11 +156,24 @@ export default function App() {
   }, [route, user, goal, goals, activeLocale]);
 
   function navigate(nextRoute: AppRoute) {
-    setRoute(nextRoute);
     const nextPath = ROUTE_PATH[nextRoute];
     if (nextPath && window.location.pathname !== nextPath) {
+      if (shouldUseAdventureTransition(window.location.pathname, nextPath)) {
+        const langName = goal?.target_language?.name ?? langCode;
+        navigateImmersive(nextPath, {}, {
+          title: nextPath === ROUTES.adventure ? STRINGS_BY_LOCALE[activeLocale].adventure.immersiveAdventureTitle : STRINGS_BY_LOCALE[activeLocale].adventure.immersiveEnterWorldTitle,
+          subtitle: `${goal?.current_level ?? "A1"} Â· ${langName}`,
+          langCode,
+        });
+        return;
+      }
+
+      setRoute(nextRoute);
       window.history.pushState({}, "", nextPath);
+      return;
     }
+
+    setRoute(nextRoute);
   }
 
   function logout() {
@@ -258,6 +275,18 @@ export default function App() {
   }
 
   // ── Full-screen adventure module (map / mochila / herói) ─────────────────
+  if (route === "adventure-map-dev") {
+    return (
+      <StringsProvider locale={activeLocale}>
+        <AdventureVoiceDevScreen
+          langCode={langCode}
+          chapterSlug="es-a1-t1"
+          onBack={() => navigate("adventure-personagens")}
+        />
+      </StringsProvider>
+    );
+  }
+
   if (route === "adventure-map" || route === "adventure-mochila" || route === "adventure-baus" || route === "adventure-palavras" || route === "adventure-heroi" || route === "adventure-personagens") {
     const tabMap: Record<string, AdventureTab> = {
       "adventure-map":          "map",
@@ -318,6 +347,7 @@ function routeFromPath(pathname: string): AppRoute {
   if (pathname === ROUTES.adventurePalavras)    return "adventure-palavras";
   if (pathname === ROUTES.adventureHeroi)       return "adventure-heroi";
   if (pathname === ROUTES.adventurePersonagens) return "adventure-personagens";
+  if (pathname === ROUTES.adventureMapDev)      return "adventure-map-dev";
   const found = (Object.entries(ROUTE_PATH) as Array<[AppRoute, string]>)
     .find(([, path]) => path === pathname);
   return found?.[0] ?? "home";
@@ -331,4 +361,12 @@ function replacePath(path: string) {
 
 function isAuthPath(pathname: string) {
   return pathname === ROUTES.login || pathname === ROUTES.onboarding;
+}
+
+function shouldUseAdventureTransition(currentPath: string, nextPath: string) {
+  return isAdventurePath(nextPath) && !isAdventurePath(currentPath);
+}
+
+function isAdventurePath(pathname: string) {
+  return pathname === ROUTES.adventure || pathname.startsWith(`${ROUTES.adventure}/`);
 }

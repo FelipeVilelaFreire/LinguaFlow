@@ -1,6 +1,34 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+load_env_file(BASE_DIR / ".env")
+
+
+def resolve_env_path(name: str, default: str = "") -> str:
+    value = os.environ.get(name, default).strip()
+    if not value:
+        return ""
+    path = Path(value)
+    if path.is_absolute():
+        return str(path)
+    return str(BASE_DIR / path)
 
 SECRET_KEY = "dev-only-linguaflow-secret"
 DEBUG = True
@@ -68,7 +96,28 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+def env_bool(name: str, default: bool = False) -> bool:
+    value = os.environ.get(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+ADVENTURE_TTS_ENABLED = env_bool("ADVENTURE_TTS_ENABLED", False)
+ADVENTURE_TTS_PROVIDER = os.environ.get("ADVENTURE_TTS_PROVIDER", "browser").strip().lower()
+ADVENTURE_TTS_PIPER_EXE = resolve_env_path("ADVENTURE_TTS_PIPER_EXE", "piper")
+ADVENTURE_TTS_PIPER_DEFAULT_MODEL = resolve_env_path("ADVENTURE_TTS_PIPER_DEFAULT_MODEL", "")
+# Optional per-character Piper model env vars:
+# ADVENTURE_TTS_PIPER_MODEL_DON_MIGUEL, ADVENTURE_TTS_PIPER_MODEL_MIGUEL,
+# ADVENTURE_TTS_PIPER_MODEL_ROSA, ADVENTURE_TTS_PIPER_MODEL_CARMEN,
+# ADVENTURE_TTS_PIPER_MODEL_SOFIA, ADVENTURE_TTS_PIPER_MODEL_MARIA,
+# ADVENTURE_TTS_PIPER_MODEL_ALCALDE, ADVENTURE_TTS_PIPER_MODEL_VIGILANTE,
+# ADVENTURE_TTS_PIPER_MODEL_INSPECTOR.
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",

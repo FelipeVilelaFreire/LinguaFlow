@@ -10,6 +10,11 @@ dist/
 .vite/
 *.tsbuildinfo
 
+# Generated/local media and tool binaries
+backend/media/
+backend/models/
+backend/tools/
+
 # Environment
 .env
 .env.local

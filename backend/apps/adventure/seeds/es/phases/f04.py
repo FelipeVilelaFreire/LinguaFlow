@@ -213,7 +213,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_buenos_dias", "target": "buenos días", "native": "bom dia",
-                    "npc_reaction": "Buenos días. Ela acenou de volta. Já não és mais um estranho.",
+                    "npc_reaction": "Buenos días. Ella saludó de vuelta. Ya no eres tan extraño.",
                 },
                 {
                     "kind": "narrative",
@@ -231,7 +231,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_hambre", "target": "tengo hambre", "native": "tenho fome",
-                    "npc_reaction": "Hambre. Você comeu a naranja, não? — 'Sí, Don Miguel, pero...'",
+                    "npc_reaction": "Hambre. Comiste la naranja, ¿no? — 'Sí, Don Miguel, pero...'",
                 },
                 {
                     "kind": "npc_speak",
@@ -271,7 +271,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_arbol", "target": "árbol", "native": "árvore",
-                    "npc_reaction": "Árboles y piedras. E o leñador também estava.",
+                    "npc_reaction": "Árboles y piedras. Y el leñador también estaba.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -337,7 +337,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_tres", "target": "tres", "native": "três",
-                    "npc_reaction": "Tres. Correto. O mercador não vai te enganar.",
+                    "npc_reaction": "Tres. Correcto. El mercader no te va a engañar.",
                 },
                 {
                     "kind": "npc_speak",
@@ -402,7 +402,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_poco", "target": "poco", "native": "pouco",
-                    "npc_reaction": "Poco. Quase nada. Esse mercador não preparou bem o estoque.",
+                    "npc_reaction": "Poco. Casi nada. Ese mercader no preparó bien el puesto.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -520,7 +520,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_tres", "target": "tres", "native": "três",
-                    "npc_reaction": "Tres. Correto. Não é dois — é três.",
+                    "npc_reaction": "Tres. Correcto. No son dos — son tres.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -534,7 +534,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bien, gracias. O mercador sorriu. Você aprendeu o básico.",
+                    "npc_reaction": "Bien, gracias. El mercader sonrió. Aprendiste lo básico.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -613,7 +613,7 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Carmen",
-                    "line": "(em voz baixa) Hay un hombre nuevo en el pueblo. Está haciendo preguntas. Sobre el forastero.",
+                    "line": "(en voz baja) Hay un hombre nuevo en el pueblo. Está haciendo preguntas. Sobre el forastero.",
                     "translation": "(em voz baixa) Tem um homem novo no pueblo. Está fazendo perguntas. Sobre o forasteiro.",
                     "pace": "slow",
                 },
@@ -632,7 +632,7 @@ SECTIONS = [
                         {"id": "d", "text": "Muitos homens chegaram"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Hay. Tem. Agora tem alguém novo. E ele está fazendo perguntas.",
+                    "npc_reaction": "Hay. Hay alguien nuevo. Y está haciendo preguntas.",
                 },
                 {
                     "kind": "npc_speak",
@@ -662,7 +662,7 @@ SECTIONS = [
                         {"id": "d", "text": "Buenos días"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "'Nada que te preocupe.' Mas o rosto dele disse outra coisa.",
+                    "npc_reaction": "'Nada que te preocupe.' Pero su rostro dijo otra cosa.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -676,7 +676,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Sobre você. Forastero. Alguém quer saber quem você é.",
+                    "npc_reaction": "Sobre ti. Forastero. Alguien quiere saber quién eres.",
                 },
                 {
                     "kind": "narrative",
@@ -799,7 +799,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_bien", "target": "bien", "native": "bem",
-                    "npc_reaction": "Bien. O mercador aceita a resposta. O homem já foi embora quando você olhou de volta.",
+                    "npc_reaction": "Bien. El mercader acepta la respuesta. El hombre ya se fue cuando miraste de nuevo.",
                     "gated": True,
                 },
                 {

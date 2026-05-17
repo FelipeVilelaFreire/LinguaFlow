@@ -32,14 +32,6 @@ SECTIONS = [
         "content": {
             "beats": [
                 {
-                    "kind": "skill_check",
-                    "skill": "sustento",
-                    "min_level": 1,
-                    "uses_item_tag": "comida",
-                    "success": "Rosa aceita trocar o pao por ajuda simples, e voce entende melhor a primeira regra do pueblo.",
-                    "fallback": "Rosa guarda o pao, mas Don Miguel intervem e a chegada continua.",
-                },
-                {
                     "kind": "scene",
                     "text": "🌅  San Cristóbal del Pueblo · Manhã · Dia 1",
                 },
@@ -65,6 +57,14 @@ SECTIONS = [
                 {
                     "kind": "player",
                     "text": "Você tira moedas do bolso — as suas. As erradas.",
+                },
+                {
+                    "kind": "skill_check",
+                    "skill": "sustento",
+                    "min_level": 1,
+                    "uses_item_tag": "comida",
+                    "success": "Rosa aceita trocar o pao por ajuda simples. Mesmo sem entender tudo, voce percebe que comida aqui tambem e conversa.",
+                    "fallback": "Rosa olha as moedas, confusa. O pao fica na mao dela por um instante, ate alguem intervir.",
                 },
                 {
                     "kind": "npc",
@@ -137,7 +137,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Forastero. Quem vem de fora. Por enquanto.",
+                    "npc_reaction": "Forastero. El que viene de fuera. Por ahora.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -184,10 +184,18 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "¡Papá! ¡Aquí estoy! — oi?",
-                    "translation": "Pai! Tô aqui! — oi?",
+                    "line": "¡Papá! ¡Aquí estoy!",
+                    "translation": "Pai! Tô aqui!",
                     "is_new_npc": True,
                     "pace": "urgent",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Oi?",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.92,
                 },
                 {
                     "kind": "player",
@@ -202,8 +210,9 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Uh... você... fala português?",
+                    "line": "Você... fala português?",
                     "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
                     "pace": "slow",
                 },
                 {
@@ -224,14 +233,38 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Hola. Me llamo Miguel. Campesino — trabalho na terra.",
+                    "line": "Hola. Me llamo Miguel.",
                     "translation": "Olá. Meu nome é Miguel.",
+                    "speech_rate": 0.92,
                 },
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Meu avô era forastero também — por isso sei um pouco da sua língua. De manhã: 'buenos días'. De tarde: 'buenas tardes'.",
-                    "translation": "buenos días = bom dia | buenas tardes = boa tarde",
+                    "line": "Campesino.",
+                    "translation": "Trabalho na terra.",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Meu avô também era forasteiro. Por isso eu sei um pouco da sua língua.",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.88,
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Buenos días.",
+                    "translation": "bom dia",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Buenas tardes.",
+                    "translation": "boa tarde",
+                    "pace": "slow",
                 },
                 {
                     "kind": "vocab_list",
@@ -255,7 +288,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "¡Eso! Agora ele sabe quem você é.",
+                    "npc_reaction": "¡Eso! Ahora él sabe quién eres.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -284,8 +317,25 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Fala 'gracias' pra ela.",
-                    "translation": "gracias = obrigado/a",
+                    "line": "Dile: gracias.",
+                    "translation": "Diz pra ela: obrigado/a.",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Gracias.",
+                    "translation": "obrigado/a",
+                    "pace": "slow",
+                    "speech_rate": 0.86,
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Pra ela.",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.9,
                 },
                 {
                     "kind": "multiple_choice",
@@ -420,7 +470,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mal", "target": "mal", "native": "mal",
-                    "npc_reaction": "Entendo, forastero. Descansa aqui.",
+                    "npc_reaction": "Entiendo, forastero. Descansa aquí.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -434,7 +484,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_como_te_llamas", "target": "¿cómo te llamas?", "native": "como você se chama?",
-                    "npc_reaction": "Isso. E olha pro peito do outro enquanto pergunta.",
+                    "npc_reaction": "Eso. Y mira al otro cuando preguntes.",
                 },
                 {
                     "kind": "narrative",
@@ -515,8 +565,17 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Ah — e se for embora de alguém, fala 'adiós'. Aprende antes de chegar nela.",
-                    "translation": "adiós = tchau / adeus",
+                    "line": "Adiós.",
+                    "translation": "tchau / adeus",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Quando for embora de alguém, fala isso. Aprende antes de chegar nela.",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.9,
                 },
                 {
                     "kind": "narrative",
@@ -793,8 +852,17 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Miguel",
-                    "line": "Vamos, forastero. Tem uma última coisa antes de você descansar.",
-                    "translation": "Vamos. Tem uma última coisa antes de você descansar.",
+                    "line": "Vamos, forastero.",
+                    "translation": "Vamos, forasteiro.",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Miguel",
+                    "line": "Tem uma última coisa antes de você descansar.",
+                    "translation": "(português quebrado)",
+                    "voice": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+                    "speech_rate": 0.9,
                 },
             ],
         },

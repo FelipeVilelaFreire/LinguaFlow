@@ -1,4 +1,4 @@
-import { BookOpen, RotateCcw, Sword } from "lucide-react";
+import { BookOpen, Brain, CheckCircle2, Circle, ClipboardCheck, Lock, Play, RotateCcw, Sparkles, Sword, Target } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useStrings } from "../../../contexts/StringsContext";
@@ -80,6 +80,16 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
 
   const dueCount = session?.due_count ?? 0;
   const canStudy = !loading && !currentLessonPhrasesLoading && currentLessonPhrases.length >= 2;
+  const lessonStatusByPhase = new Map<number, "completed" | "current" | "locked" | "open">();
+  for (const ch of chapters) {
+    const current = ch.progress?.current_phase ?? 1;
+    for (const phase of ch.phases) {
+      lessonStatusByPhase.set(
+        phase.number,
+        phase.is_completed ? "completed" : phase.number === current ? "current" : "locked",
+      );
+    }
+  }
 
   // ── SRS review session ──────────────────────────────────────────────────────
   if (showSession && session && session.exercises.length > 0) {
@@ -223,6 +233,15 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
             </div>
           )}
 
+          <AdvancedStudyTrail
+            modules={modules}
+            currentLessonSlug={currentLesson?.slug ?? null}
+            lessonStatusByPhase={lessonStatusByPhase}
+            onStartLesson={(lesson) => {
+              if (lesson.slug === currentLesson?.slug && canStudy) setShowGuidedStudy(true);
+            }}
+          />
+
           {/* SRS review card */}
           <div className="card p-4">
             <div className="flex items-center justify-between gap-4">
@@ -264,4 +283,328 @@ export default function StudyScreen({ onCompleted: _onCompleted, onNavigate }: S
       )}
     </div>
   );
+}
+
+function AdvancedStudyTrail({
+  modules,
+  currentLessonSlug,
+  lessonStatusByPhase,
+  onStartLesson,
+}: {
+  modules: StudyModule[];
+  currentLessonSlug: string | null;
+  lessonStatusByPhase: Map<number, "completed" | "current" | "locked" | "open">;
+  onStartLesson: (lesson: StudyLesson) => void;
+}) {
+  const s = useStrings();
+  const enrichedModules = modules.map((module) => ({
+    ...module,
+    lessons: module.lessons.map((lesson) => ({
+      lesson,
+      status: getStudyLessonStatus(lesson, currentLessonSlug, lessonStatusByPhase),
+    })),
+  }));
+  const lessons = enrichedModules.flatMap((module) => module.lessons);
+
+  if (lessons.length === 0) return null;
+
+  const completed = lessons.filter((item) => item.status === "completed").length;
+  const progress = Math.round((completed / lessons.length) * 100);
+
+  return (
+    <section className="card overflow-hidden">
+      <div className="border-b border-slate-100 px-4 py-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide area-text-primary">
+              {s.study.studyPathEyebrow}
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-slate-950">{s.study.studyPathTitle}</h2>
+            <p className="mt-1 text-sm font-medium leading-6 text-slate-500">{s.study.studyPathDetail}</p>
+          </div>
+          <span className="shrink-0 rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
+            {progress}%
+          </span>
+        </div>
+        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+          <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: "var(--area-primary)" }} />
+        </div>
+      </div>
+
+      <div className="grid gap-5 px-4 py-5">
+        {enrichedModules.map((module) => {
+          const moduleDone = module.lessons.filter((item) => item.status === "completed").length;
+          const moduleTotal = module.lessons.length;
+          return (
+            <section key={module.id} className="relative">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400">
+                    {s.study.moduleLabel(module.order)}
+                  </p>
+                  <h3 className="truncate text-base font-semibold text-slate-950">{module.title}</h3>
+                </div>
+                <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500">
+                  {moduleDone}/{moduleTotal}
+                </span>
+              </div>
+
+              <div className="relative grid gap-3">
+                <div className="absolute bottom-7 left-6 top-7 w-0.5 bg-slate-100" />
+                {module.lessons.map(({ lesson, status }, index) => (
+                  <AdvancedStudyTrailLesson
+                    key={lesson.id}
+                    lesson={lesson}
+                    status={status}
+                    index={index + 1}
+                    onStart={() => onStartLesson(lesson)}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function AdvancedStudyTrailLesson({
+  lesson,
+  status,
+  index,
+  onStart,
+}: {
+  lesson: StudyLesson;
+  status: "completed" | "current" | "locked" | "open";
+  index: number;
+  onStart: () => void;
+}) {
+  const s = useStrings();
+  const isCurrent = status === "current";
+  const isLocked = status === "locked" || status === "open";
+
+  return (
+    <article
+      className={`relative rounded-[8px] border p-3 transition ${
+        isCurrent
+          ? "border-[var(--area-primary)] bg-[var(--area-primary-soft)] shadow-sm"
+          : status === "completed"
+            ? "border-emerald-100 bg-emerald-50/40"
+            : "border-slate-100 bg-white"
+      } ${status === "locked" ? "opacity-60" : ""}`}
+    >
+      <div className="grid grid-cols-[48px_1fr_auto] items-start gap-3">
+        <StudyTrailNode status={status} index={index} />
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h4 className="min-w-0 max-w-full truncate text-sm font-semibold text-slate-950">{lesson.title}</h4>
+            {lesson.adventure_phase ? (
+              <span className="shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500 ring-1 ring-slate-200">
+                {s.study.lessonPhaseRef(lesson.adventure_phase)}
+              </span>
+            ) : null}
+          </div>
+          <p className="mt-1 line-clamp-2 text-xs font-medium leading-5 text-slate-500">
+            {lesson.description || s.study.studyLessonFallback}
+          </p>
+        </div>
+        {status === "completed" ? (
+          <CheckCircle2 size={18} className="area-text-primary" />
+        ) : isLocked ? (
+          <Lock size={16} className="text-slate-400" />
+        ) : null}
+      </div>
+
+      <div className="ml-[60px] mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {STUDY_STEP_PREVIEW.map((step, stepIndex) => {
+          const Icon = step.Icon;
+          const done = status === "completed" || (isCurrent && stepIndex === 0);
+          return (
+            <div
+              key={step.labelKey}
+              className={`flex min-h-12 items-center gap-2 rounded-[8px] px-2.5 py-2 text-xs font-semibold ring-1 ${
+                done
+                  ? "bg-white text-slate-800 ring-[var(--area-primary)]/30"
+                  : "bg-slate-50 text-slate-500 ring-slate-100"
+              }`}
+            >
+              <Icon size={14} className={done ? "area-text-primary" : "text-slate-400"} />
+              <span className="min-w-0 truncate">{s.study[step.labelKey]}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {isCurrent ? (
+        <div className="ml-[60px] mt-3">
+          <button
+            type="button"
+            onClick={onStart}
+            className="area-btn flex h-11 w-full items-center justify-center gap-2 rounded-[8px] px-4 text-sm font-semibold transition sm:w-auto"
+          >
+            <Play size={15} fill="currentColor" />
+            {s.study.studyNowBtn}
+          </button>
+        </div>
+      ) : isLocked ? (
+        <p className="ml-[60px] mt-3 text-xs font-semibold text-slate-400">{s.study.studyLockedHint}</p>
+      ) : null}
+    </article>
+  );
+}
+
+const STUDY_STEP_PREVIEW = [
+  { labelKey: "studyStepExplain" as const, Icon: Sparkles },
+  { labelKey: "studyStepUnderstand" as const, Icon: Brain },
+  { labelKey: "studyStepPractice" as const, Icon: Target },
+  { labelKey: "studyStepReview" as const, Icon: ClipboardCheck },
+];
+
+function StudyTrail({
+  modules,
+  currentLessonSlug,
+  lessonStatusByPhase,
+  onStartLesson,
+}: {
+  modules: StudyModule[];
+  currentLessonSlug: string | null;
+  lessonStatusByPhase: Map<number, "completed" | "current" | "locked" | "open">;
+  onStartLesson: (lesson: StudyLesson) => void;
+}) {
+  const s = useStrings();
+  const lessons = modules.flatMap((module) =>
+    module.lessons.map((lesson) => ({
+      module,
+      lesson,
+      status: getStudyLessonStatus(lesson, currentLessonSlug, lessonStatusByPhase),
+    })),
+  );
+
+  if (lessons.length === 0) return null;
+
+  const completed = lessons.filter((item) => item.status === "completed").length;
+  const progress = Math.round((completed / lessons.length) * 100);
+
+  return (
+    <section className="card overflow-hidden">
+      <div className="border-b border-slate-100 px-4 py-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide area-text-primary">
+              {s.study.studyPathEyebrow}
+            </p>
+            <h2 className="mt-1 text-xl font-semibold text-slate-950">{s.study.studyPathTitle}</h2>
+            <p className="mt-1 text-sm font-medium leading-6 text-slate-500">{s.study.studyPathDetail}</p>
+          </div>
+          <span className="shrink-0 rounded-full px-3 py-1 text-xs font-bold" style={{ background: "var(--area-primary-soft)", color: "var(--area-primary-dark)" }}>
+            {progress}%
+          </span>
+        </div>
+        <div className="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+          <div className="h-full rounded-full transition-all duration-500" style={{ width: `${progress}%`, background: "var(--area-primary)" }} />
+        </div>
+      </div>
+
+      <div className="relative px-4 py-5">
+        <div className="absolute bottom-8 left-10 top-8 w-0.5 bg-slate-100" />
+        <div className="grid gap-3">
+          {lessons.map(({ module, lesson, status }, index) => (
+            <button
+              key={lesson.id}
+              type="button"
+              disabled={status === "locked" || status === "open"}
+              onClick={() => onStartLesson(lesson)}
+              className={`relative grid grid-cols-[48px_1fr_auto] items-center gap-3 rounded-[8px] p-2.5 text-left transition ${
+                status === "current"
+                  ? "bg-[var(--area-primary-soft)] ring-1 ring-[var(--area-primary)]"
+                  : status === "locked"
+                    ? "opacity-55"
+                    : "hover:bg-slate-50"
+              }`}
+            >
+              <StudyTrailNode status={status} index={index + 1} />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="truncate text-sm font-semibold text-slate-950">{lesson.title}</p>
+                  {lesson.adventure_phase ? (
+                    <span className="hidden shrink-0 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500 ring-1 ring-slate-200 sm:inline">
+                      {s.study.lessonPhaseRef(lesson.adventure_phase)}
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-0.5 truncate text-xs font-medium text-slate-500">
+                  {s.study.moduleLabel(module.order)} · {s.study.phrasesCount(lesson.phrase_count)}
+                </p>
+              </div>
+              <StudyTrailAction status={status} />
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function getStudyLessonStatus(
+  lesson: StudyLesson,
+  currentLessonSlug: string | null,
+  lessonStatusByPhase: Map<number, "completed" | "current" | "locked" | "open">,
+) {
+  if (lesson.slug === currentLessonSlug) return "current";
+  if (lesson.adventure_phase === null) return "open";
+  return lessonStatusByPhase.get(lesson.adventure_phase) ?? "open";
+}
+
+function StudyTrailNode({ status, index }: { status: "completed" | "current" | "locked" | "open"; index: number }) {
+  const baseClass = "relative z-10 grid h-11 w-11 place-items-center rounded-full text-sm font-bold shadow-sm ring-4 ring-white";
+
+  if (status === "completed") {
+    return (
+      <span className={baseClass} style={{ background: "var(--area-primary)", color: "var(--area-text-on-primary)" }}>
+        <CheckCircle2 size={20} />
+      </span>
+    );
+  }
+
+  if (status === "current") {
+    return (
+      <span className={`${baseClass} animate-[adventureBounce_1.4s_ease-in-out_infinite]`} style={{ background: "var(--area-primary)", color: "var(--area-text-on-primary)" }}>
+        <Play size={17} fill="currentColor" />
+      </span>
+    );
+  }
+
+  if (status === "locked") {
+    return (
+      <span className={`${baseClass} bg-slate-200 text-slate-400`}>
+        <Lock size={16} />
+      </span>
+    );
+  }
+
+  return (
+    <span className={`${baseClass} bg-white text-slate-400 ring-slate-100`}>
+      <Circle size={18} />
+      <span className="sr-only">{index}</span>
+    </span>
+  );
+}
+
+function StudyTrailAction({ status }: { status: "completed" | "current" | "locked" | "open" }) {
+  const s = useStrings();
+  if (status === "current") {
+    return (
+      <span className="hidden rounded-[8px] px-3 py-2 text-xs font-bold text-white sm:inline-flex" style={{ background: "var(--area-primary)" }}>
+        {s.study.studyNowBtn}
+      </span>
+    );
+  }
+  if (status === "completed") {
+    return <span className="hidden text-xs font-bold area-text-primary sm:inline">{s.layout.completed}</span>;
+  }
+  if (status === "locked") {
+    return <Lock size={15} className="text-slate-400" />;
+  }
+  return null;
 }

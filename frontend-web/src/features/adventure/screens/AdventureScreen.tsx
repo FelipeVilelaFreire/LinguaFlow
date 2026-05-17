@@ -67,7 +67,7 @@ export default function AdventureScreen({ langCode = "ES" }: AdventureScreenProp
     navigateImmersive(
       ROUTES.adventureMap,
       {},
-      { title: activeChapter.title, subtitle: `${activeChapter.level} · Entrando no mundo`, langCode: LANG },
+      { title: activeChapter.title, subtitle: `${activeChapter.level} · ${s.adventure.immersiveEnterWorldTitle}`, langCode: LANG },
     );
   }
 

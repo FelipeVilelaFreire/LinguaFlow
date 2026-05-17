@@ -116,7 +116,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_ayer", "target": "ayer", "native": "ontem",
-                    "npc_reaction": "Ayer. El día que ya pasó. Quando hablamos del 'ayer', las palavras cambian un poco.",
+                    "npc_reaction": "Ayer. El día que ya pasó. Cuando hablamos del 'ayer', las palabras cambian un poco.",
                 },
                 {
                     "kind": "multiple_choice",

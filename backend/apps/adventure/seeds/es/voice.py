@@ -6,25 +6,25 @@ VOICE_PROFILES = {
         "lang": "es-ES",
         "gender": "male",
         "pitch": 0.85,
-        "rate": 0.88,
+        "rate": 0.84,
     },
     "Miguel": {
         "lang": "es-ES",
         "gender": "male",
         "pitch": 0.95,
-        "rate": 0.95,
+        "rate": 0.9,
     },
     "Rosa": {
         "lang": "es-ES",
         "gender": "female",
         "pitch": 1.12,
-        "rate": 0.95,
+        "rate": 0.9,
     },
     "Rosa la Panadera": {
         "lang": "es-ES",
         "gender": "female",
         "pitch": 1.1,
-        "rate": 0.95,
+        "rate": 0.9,
     },
     "Carmen": {
         "lang": "es-ES",
@@ -54,13 +54,13 @@ VOICE_PROFILES = {
         "lang": "es-ES",
         "gender": "female",
         "pitch": 1.18,
-        "rate": 1.05,
+        "rate": 0.94,
     },
     "Sofia": {
         "lang": "es-ES",
         "gender": "female",
         "pitch": 1.18,
-        "rate": 1.05,
+        "rate": 0.94,
     },
     "María": {
         "lang": "es-ES",
@@ -102,21 +102,52 @@ VOICE_PROFILES = {
         "lang": "es-ES",
         "gender": "male",
         "pitch": 0.82,
-        "rate": 0.95,
+        "rate": 0.9,
     },
     "Inspector": {
         "lang": "es-ES",
         "gender": "male",
         "pitch": 0.82,
-        "rate": 0.95,
+        "rate": 0.9,
     },
 }
 
 PACE_SPEECH_RATE = {
-    "slow": 0.9,
-    "normal": 1.0,
-    "urgent": 1.3,
+    "slow": 0.82,
+    "normal": 0.96,
+    "urgent": 1.12,
 }
+
+PORTUGUESE_BRIDGE_VOICES = {
+    "male": {"lang": "pt-BR", "gender": "male", "pitch": 0.98, "rate": 0.86},
+    "female": {"lang": "pt-BR", "gender": "female", "pitch": 1.08, "rate": 0.88},
+    "neutral": {"lang": "pt-BR", "gender": "neutral", "pitch": 1.0, "rate": 0.86},
+}
+
+PORTUGUESE_LINE_HINTS = (
+    "você", "voce", "vocês", "voces", "português", "portugues",
+    "não", "nao", "também", "tambem", "avô", "avo", "língua", "lingua",
+    "forasteiro", "trabalho", "terra", "fala ", "pra ", "tô", "to ",
+    "tá", "ta ", "meu ", "minha ", "seu ", "sua ", "aqui ", "sim",
+    "obrigado", "obrigada", "bom dia", "boa tarde", "boa noite",
+)
+
+
+def looks_like_portuguese_bridge(line):
+    if not line:
+        return False
+
+    normalized = line.casefold()
+    hint_count = sum(1 for hint in PORTUGUESE_LINE_HINTS if hint in normalized)
+    if hint_count >= 2:
+        return True
+
+    return hint_count == 1 and not any(mark in normalized for mark in ("¡", "¿"))
+
+
+def portuguese_bridge_voice(base_voice):
+    gender = (base_voice or {}).get("gender", "neutral")
+    return PORTUGUESE_BRIDGE_VOICES.get(gender, PORTUGUESE_BRIDGE_VOICES["neutral"])
 
 
 def hydrate_section_content(content):
@@ -128,8 +159,11 @@ def hydrate_section_content(content):
             return
 
         voice = VOICE_PROFILES.get(npc)
-        if voice:
-            step.setdefault("voice", voice)
+        if "voice" not in step:
+            if looks_like_portuguese_bridge(step.get("line", "")):
+                step["voice"] = portuguese_bridge_voice(voice)
+            elif voice:
+                step["voice"] = voice
 
         if "speech_rate" not in step and step.get("pace") in PACE_SPEECH_RATE:
             step["speech_rate"] = PACE_SPEECH_RATE[step["pace"]]

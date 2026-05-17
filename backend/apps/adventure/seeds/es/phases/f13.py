@@ -345,7 +345,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mi", "target": "mi", "native": "minha / meu",
-                    "npc_reaction": "Mi. La uso para hablar de mis cosas. Igual que en portugués: 'minha cama'.",
+                    "npc_reaction": "Mi. La uso para hablar de mis cosas. Como cuando digo: 'mi cama'.",
                 },
                 {
                     "kind": "npc_speak",

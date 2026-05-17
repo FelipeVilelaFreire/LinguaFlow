@@ -1,6 +1,8 @@
 import random
 from datetime import timedelta
+from pathlib import Path
 
+from django.conf import settings
 from django.db.models import Avg, Q, Sum
 from django.utils import timezone
 from rest_framework import mixins, status, viewsets
@@ -12,6 +14,7 @@ from apps.goals.models import Goal
 from apps.progress.models import DailyStreak, UserAdventureFlag, WordMastery
 from apps.learning.serializers import PhraseSerializer
 
+from .audio import audio_file_path, audio_identity, audio_url_for, content_with_audio_urls, synthesize_with_piper
 from .models import (
     AdventureCharacter,
     AdventureChapter,
@@ -41,6 +44,7 @@ from .serializers import (
     UserSkillMasterySerializer,
     WordMasterySerializer,
 )
+from .voice_config import character_voice_for, piper_model_for
 
 
 # ─── SRS study session ────────────────────────────────────────────────────────
@@ -569,6 +573,11 @@ class AdventurePhaseViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
             for key in ("steps", "exercises", "beats"):
                 if key in content and isinstance(content[key], list):
                     content[key] = _filter_steps_by_flags(content[key], user_flags)
+            content = content_with_audio_urls(
+                content,
+                language_code=phase.chapter.language.code,
+                request=request,
+            )
             result.append({"type": sec.section_type, **content})
 
         return Response(result)
@@ -739,7 +748,11 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         degraded_item_data = None
         if correct:
             # Acerto: entrega o item pleno (não-degradado) ligado à palavra.
-            item = AdventureItem.objects.filter(word_id=word_id, is_degraded=False).first()
+            item = AdventureItem.objects.filter(
+                word_id=word_id,
+                is_degraded=False,
+                source_phase__isnull=True,
+            ).first()
             if item:
                 inv, item_created = UserInventoryItem.objects.get_or_create(
                     user=request.user, item=item
@@ -798,6 +811,99 @@ class VocabularyViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 class AdventureDevViewSet(viewsets.GenericViewSet):
     """Dev-only helpers. Not gated by env flag in MVP — guard in production."""
     permission_classes = [IsAuthenticated]
+
+    @action(detail=False, methods=["post"], url_path="voice-sample")
+    def voice_sample(self, request):
+        """
+        Generates/returns a cached Piper sample for one character.
+        Used only by the frontend dev voice lab.
+        """
+        npc = (request.data.get("npc") or "").strip()
+        language_code = (request.data.get("lang") or "ES").upper()
+        text = (request.data.get("text") or "").strip()
+        model_override = (request.data.get("model_path") or "").strip()
+        length_scale = request.data.get("length_scale")
+        try:
+            length_scale = float(length_scale) if length_scale else None
+        except (TypeError, ValueError):
+            length_scale = None
+        if not npc:
+            return Response({"detail": "npc is required."}, status=status.HTTP_400_BAD_REQUEST)
+        if not text:
+            text = (
+                "¡Buenos días! Soy una voz de prueba para la aventura. "
+                "Escucha mi ritmo, mi emoción y si parezco natural en una frase larga."
+            )
+
+        voice = character_voice_for(npc, language_code)
+        model_path, model_source = piper_model_for(
+            npc,
+            language_code=language_code,
+            override=model_override or None,
+        )
+        if not model_path:
+            return Response(
+                {"detail": f"Missing Piper model for {npc}: {model_source}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        identity = audio_identity(
+            language_code=language_code,
+            npc=npc,
+            text=text,
+            pace="normal",
+            speech_rate=None,
+            voice={
+                "dev_sample": True,
+                "voice_key": voice.key if voice else "default",
+                "model": model_path,
+                "length_scale": length_scale,
+            },
+        )
+        output_path = audio_file_path(identity)
+        if not output_path.exists():
+            synthesize_with_piper(
+                text=text,
+                output_path=output_path,
+                model_path=model_path,
+                piper_exe=settings.ADVENTURE_TTS_PIPER_EXE,
+                length_scale=length_scale,
+            )
+
+        return Response({
+            "npc": npc,
+            "text": text,
+            "audio_url": audio_url_for(identity, request=request),
+        })
+
+    @action(detail=False, methods=["get"], url_path="voice-options")
+    def voice_options(self, request):
+        """Returns local Piper models that can be tested in the dev voice lab."""
+        roots = {
+            Path(settings.ADVENTURE_TTS_PIPER_DEFAULT_MODEL).parent
+            if settings.ADVENTURE_TTS_PIPER_DEFAULT_MODEL else None,
+            Path(settings.BASE_DIR) / "models" / "piper",
+        }
+        models = []
+        seen = set()
+        for root in [p for p in roots if p]:
+            if not root.exists():
+                continue
+            for model in sorted(root.glob("*.onnx")):
+                if model.name in seen:
+                    continue
+                seen.add(model.name)
+                models.append({
+                    "id": model.stem,
+                    "name": model.stem.replace("es_ES-", "").replace("_", " "),
+                    "path": str(model),
+                })
+        rejected = {"es_ES-mls_10246-low", "es_ES-mls_9972-low"}
+        models = [model for model in models if model["id"] not in rejected]
+        variants = []
+        for model in models:
+            variants.append({**model, "variant_id": f"{model['id']}:normal", "label": model["name"], "length_scale": None})
+            variants.append({**model, "variant_id": f"{model['id']}:slow", "label": f"{model['name']} · slow", "length_scale": 1.22})
+        return Response({"models": variants})
 
     @action(detail=False, methods=["post"], url_path="jump-to-phase")
     def jump_to_phase(self, request):

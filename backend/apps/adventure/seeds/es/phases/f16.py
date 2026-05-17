@@ -676,7 +676,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_gracias", "target": "gracias", "native": "obrigado/a",
-                    "npc_reaction": "De nada. Pra isso somos hermanos en esto.",
+                    "npc_reaction": "De nada. Para eso somos hermanos en esto.",
                 },
             ],
         },

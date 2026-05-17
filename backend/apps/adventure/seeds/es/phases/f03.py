@@ -101,7 +101,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_arbol", "target": "árbol", "native": "árvore",
-                    "npc_reaction": "Árboles. Onde tem árbol, tem sombra. E onde tem sombra...",
+                    "npc_reaction": "Árboles. Donde hay árbol, hay sombra. Y donde hay sombra...",
                 },
                 {
                     "kind": "multiple_choice",
@@ -115,7 +115,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Piedras. O chão do campo sempre tem piedras. Os pés aprendem.",
+                    "npc_reaction": "Piedras. El suelo del campo siempre tiene piedras. Los pies aprenden.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -228,7 +228,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_flor", "target": "flor", "native": "flor",
-                    "npc_reaction": "Flor silvestre. Essa é do campo — não cresce na plaza.",
+                    "npc_reaction": "Flor silvestre. Esa es del campo — no crece en la plaza.",
                 },
                 {
                     "kind": "npc_speak",
@@ -248,7 +248,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "Eso. Forastero = de fora. Mas o pueblo já tá acostumando contigo.",
+                    "npc_reaction": "Eso. Forastero = de fuera. Pero el pueblo ya se acostumbra a ti.",
                 },
                 {
                     "kind": "npc_speak",
@@ -286,7 +286,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_sed", "target": "tengo sed", "native": "tenho sede",
-                    "npc_reaction": "Sed. El río tá ali. Já estamos chegando.",
+                    "npc_reaction": "Sed. El río está ahí. Ya estamos llegando.",
                 },
             ],
         },
@@ -366,7 +366,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Hay piedras. Exato. O río fala por si mesmo.",
+                    "npc_reaction": "Hay piedras. Exacto. El río habla por sí mismo.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -450,7 +450,7 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Antes de ele chegar — vamos praticar rápido. Olha ao redor e responde.",
+                    "line": "Antes de que llegue, practicamos rápido. Mira alrededor y responde.",
                     "translation": "Antes dele chegar — vamos praticar rápido. Olha ao redor e responde.",
                     "pace": "urgent",
                 },
@@ -545,7 +545,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "Ernesto ouviu, assentiu devagar. Não disse nada mais por um longo segundo.",
+                    "npc_reaction": "Ernesto oyó, asintió despacio. No dijo nada más por un largo segundo.",
                 },
             ],
         },
@@ -647,7 +647,7 @@ SECTIONS = [
                         {"id": "d", "text": "No hay agua"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Bien. Ernesto é assim — fala coisas, vai embora. Não se preocupa.",
+                    "npc_reaction": "Bien. Ernesto es así — dice cosas, se va. No te preocupes.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -661,7 +661,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_piedra", "target": "piedra", "native": "pedra",
-                    "npc_reaction": "Piedra del río. Guarda. Ernesto não dá coisas pra qualquer um.",
+                    "npc_reaction": "Piedra del río. Guárdala. Ernesto no da cosas a cualquiera.",
                 },
                 {
                     "kind": "narrative",
@@ -718,7 +718,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_forastero", "target": "forastero", "native": "estrangeiro",
-                    "npc_reaction": "O homem ri. 'Sabíamos que ia aparecer um forasteiro. Miguel falou.' ",
+                    "npc_reaction": "El hombre ríe. 'Sabíamos que iba a aparecer un forastero. Miguel lo dijo.' ",
                     "gated": True,
                 },
                 {

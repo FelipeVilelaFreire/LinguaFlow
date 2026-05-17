@@ -100,6 +100,17 @@ export const adventureService = {
       }),
     }),
 
+  devVoiceSample: (payload: { npc: string; lang?: string; text?: string; model_path?: string; length_scale?: number | null }) =>
+    apiRequest<{ npc: string; text: string; audio_url: string }>(
+      "/adventure/dev/voice-sample/",
+      { method: "POST", body: JSON.stringify(payload) },
+    ),
+
+  devVoiceOptions: () =>
+    apiRequest<{ models: Array<{ id: string; name: string; label?: string; path: string; length_scale?: number | null }> }>(
+      "/adventure/dev/voice-options/",
+    ),
+
   updateSectionProgress: (phaseId: number, completedSections: number) =>
     apiRequest<{ phase_id: number; completed_sections: number }>(
       `/adventure/phases/${phaseId}/section-progress/`,

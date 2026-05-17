@@ -10,6 +10,7 @@ export type AppRoute =
   | "adventure-palavras"
   | "adventure-heroi"
   | "adventure-personagens"
+  | "adventure-map-dev"
   | "adventure-chapter"
   | "today"
   | "vocabulary"

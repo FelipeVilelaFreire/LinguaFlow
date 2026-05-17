@@ -1,4 +1,4 @@
-import { Check, ChevronLeft, Flame, History, Lightbulb, Moon, Sparkles, Sun, Sunset, Volume2 } from "lucide-react";
+import { BookOpen, Check, ChevronLeft, Flame, History, Lightbulb, Moon, PackageCheck, Sparkles, Sun, Sunset, Users, Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import CharacterAvatar from "../../../../../../../components/CharacterAvatar";
@@ -19,23 +19,25 @@ type Colors = ReturnType<typeof getAdventureColors>;
 
 type ChatEntry = { id: string } & (
   | { kind: "narrative";      text: string }
-  | { kind: "npc";            npc: string; line: string; translation?: string; isNew?: boolean; pace?: string; speech_rate?: number; voice?: VoiceProfile }
-  | { kind: "npc_reaction";   npc: string; line: string }
+  | { kind: "npc";            npc: string; line: string; translation?: string; isNew?: boolean; pace?: string; speech_rate?: number; voice?: VoiceProfile; audio_url?: string }
+  | { kind: "npc_reaction";   npc: string; line: string; audio_url?: string }
   | { kind: "situation";      context: string; prompt: string }
   | { kind: "player_text";    text: string; label: string }
-  | { kind: "player_answer";  text: string; label: string; correct: boolean }
+  | { kind: "player_answer";  text: string; label: string; correct: boolean; rewards?: RewardBadge[] }
   | { kind: "wrong_hint";     correctText: string }
   | { kind: "pattern";        parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
   | { kind: "reveal";         phrase: string; meaning: string; note?: string }
   | { kind: "vocab_list";     items: Array<{ target: string; native: string }> }
 );
 
+type RewardBadge = { id: string; text: string; emoji?: string; isCombo?: boolean; isItem?: boolean; title?: string };
 type ActiveChoice = {
   question:      string;
   options:       Array<{ id: string; text: string }>;
   correct:       string;
   npc?:          string;
   npc_reaction?: string;
+  npc_reaction_audio_url?: string;
   isGated:       boolean;
   shaking:       boolean;
 };
@@ -271,9 +273,9 @@ function NarrativeEntry({ text, c }: { text: string; c: Colors }) {
   );
 }
 
-function NpcEntry({ npc, line, translation, isNew, langCode, pace, speechRate, voice, ttsSpeed, onCycleSpeed, onCharacterOpen, c }: {
-  npc: string; line: string; translation?: string; isNew?: boolean; langCode: string; pace?: string; speechRate?: number; voice?: VoiceProfile;
-  ttsSpeed?: number; onCycleSpeed?: () => void; onCharacterOpen: (character: SelectedCharacter) => void; c: Colors;
+function NpcEntry({ npc, line, translation, isNew, langCode, pace, speechRate, voice, audioUrl, ttsSpeed, onCycleSpeed, onCharacterOpen, c, newCharacterLabel }: {
+  npc: string; line: string; translation?: string; isNew?: boolean; langCode: string; pace?: string; speechRate?: number; voice?: VoiceProfile; audioUrl?: string;
+  ttsSpeed?: number; onCycleSpeed?: () => void; onCharacterOpen: (character: SelectedCharacter) => void; c: Colors; newCharacterLabel?: string;
 }) {
   const avatar = CHARACTER_AVATARS[npc];
   return (
@@ -298,7 +300,7 @@ function NpcEntry({ npc, line, translation, isNew, langCode, pace, speechRate, v
             className="mb-0.5 w-fit rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest"
             style={{ background: `${c.goldAccent}18`, color: c.goldAccent, border: `1px solid ${c.goldAccent}40`, animation: "narrativeFadeIn 400ms ease-out both" }}
           >
-            ✦ Novo personagem
+            ✦ {newCharacterLabel}
           </span>
         )}
         <p className="text-xs font-bold uppercase tracking-wider pl-1" style={{ color: c.goldAccent }}>
@@ -323,7 +325,7 @@ function NpcEntry({ npc, line, translation, isNew, langCode, pace, speechRate, v
           <div className="mt-2 flex items-center gap-1.5">
             <button
               type="button"
-              onClick={() => audioService.speak(line, langCode, npc, pace, voice, speechRate)}
+              onClick={() => audioService.speakOrPlay(audioUrl, line, langCode, npc, pace, voice, speechRate)}
               className="flex items-center justify-center rounded-full w-7 h-7 transition active:scale-90"
               style={{ background: c.surface, color: c.textFaint }}
             >
@@ -366,14 +368,56 @@ function SituationEntry({ context, prompt, c }: { context: string; prompt: strin
   );
 }
 
-function PlayerEntry({ text, label, correct, c }: {
-  text: string; label: string; correct?: boolean; c: Colors;
+function PlayerEntry({ text, label, correct, rewards = [], c }: {
+  text: string; label: string; correct?: boolean; rewards?: RewardBadge[]; c: Colors;
 }) {
   const isAnswer = correct !== undefined;
   const bg     = isAnswer ? (correct ? "#16a34a22" : "#dc262622") : `${c.nodeActive}15`;
   const border = isAnswer ? (correct ? "#16a34a55" : "#dc262655") : `${c.nodeActive}35`;
   return (
     <div className="flex items-end justify-end gap-2.5">
+      {rewards.length > 0 && (
+        <div className="mb-1 flex max-w-[40%] flex-col items-end gap-1">
+          {rewards.map(reward => (
+            <div
+              key={reward.id}
+              title={reward.title}
+              className={[
+                "inline-flex min-h-8 items-center rounded-full text-xs font-black shadow-lg",
+                reward.isItem ? "gap-2 px-2 py-1.5" : "gap-1.5 px-2.5 py-1",
+              ].join(" ")}
+              style={{
+                background: reward.isItem
+                  ? `linear-gradient(135deg, ${c.goldAccent}2e, #14532d 58%, #052e16)`
+                  : reward.isCombo ? `${c.goldAccent}22` : "#14532d",
+                border:     `1px solid ${reward.isItem ? c.goldAccent + "70" : reward.isCombo ? c.goldAccent + "55" : "#4ade8055"}`,
+                color:      reward.isItem || reward.isCombo ? c.goldAccent : "#bbf7d0",
+                animation:  reward.isItem
+                  ? "rewardItemPrizeIn 1.05s cubic-bezier(0.16,1,0.3,1) both, rewardItemGlow 1.8s ease-out both"
+                  : "rewardItemIn 0.8s cubic-bezier(0.16,1,0.3,1) both",
+                textShadow: reward.isItem || reward.isCombo ? `0 0 10px ${c.goldAccent}60` : "0 0 8px #4ade8060",
+              }}
+            >
+              {reward.emoji ? (
+                <span
+                  className="grid size-6 shrink-0 place-items-center rounded-full bg-black/25"
+                  style={{ animation: reward.isItem ? "rewardIconPrizePop 0.86s cubic-bezier(0.16,1,0.3,1) 0.12s both" : undefined }}
+                >
+                  <Emoji char={reward.emoji} size={17} />
+                </span>
+              ) : null}
+              <span className="flex min-w-0 flex-col leading-none">
+                <span className="whitespace-nowrap">{reward.text}</span>
+                {reward.isItem && reward.title ? (
+                  <span className="mt-1 max-w-32 truncate text-[10px] font-bold text-emerald-100/85">
+                    {reward.title}
+                  </span>
+                ) : null}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
       <div
         className="rounded-2xl rounded-br-sm px-4 py-3"
         style={{ background: bg, border: `1px solid ${border}`, maxWidth: "80%" }}
@@ -390,21 +434,21 @@ function PlayerEntry({ text, label, correct, c }: {
   );
 }
 
-function WrongHintEntry({ correctText, c }: { correctText: string; c: Colors }) {
+function WrongHintEntry({ correctText, c, label }: { correctText: string; c: Colors; label: string }) {
   return (
     <div
       className="rounded-xl px-3 py-2 mx-1"
       style={{ background: "#dc262610", border: "1px solid #dc262625" }}
     >
       <p className="text-sm leading-relaxed" style={{ color: "#f87171" }}>
-        Forma correta: <strong>{correctText}</strong>
+        {label}: <strong>{correctText}</strong>
       </p>
     </div>
   );
 }
 
-function PatternEntry({ parts, example, translation, note, c }: {
-  parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string; c: Colors;
+function PatternEntry({ parts, example, translation, note, c, label }: {
+  parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string; c: Colors; label: string;
 }) {
   return (
     <div
@@ -412,7 +456,7 @@ function PatternEntry({ parts, example, translation, note, c }: {
       style={{ background: c.surfaceMid, border: `1px solid ${c.goldAccent}35` }}
     >
       <p className="mb-3 text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
-        ✏️  Gramática
+        {label}
       </p>
       <div className="mb-3 flex flex-wrap items-center gap-2">
         {parts.map((part, i) =>
@@ -491,15 +535,16 @@ export default function AdventureChapterSections({
   const [entries,      setEntries]      = useState<ChatEntry[]>([]);
   const [cursor,       setCursor]       = useState(0);
   const [sessionId,    setSessionId]    = useState(0);
-  const [phase,        setPhase]        = useState<"auto" | "tap" | "choosing" | "done" | "summary">("auto");
+  const [phase,        setPhase]        = useState<"auto" | "tap" | "choosing" | "readyComplete" | "done" | "summary">("auto");
   const [activeChoice, setActiveChoice] = useState<ActiveChoice | null>(null);
   const [activeItemMoment, setActiveItemMoment] = useState<{
     npc:        string;
     situation:  string;
     npc_line:   string;
+    npc_line_audio_url?: string;
     item_tag:   string;
-    on_use:     { narrative: string; npc_reaction: string; bonus: string };
-    on_skip:    { npc_reaction: string };
+    on_use:     { narrative: string; npc_reaction: string; npc_reaction_audio_url?: string; bonus: string };
+    on_skip:    { npc_reaction: string; npc_reaction_audio_url?: string };
     available:  { name: string; emoji: string; is_degraded: boolean } | null;
     checking:   boolean;
     using:      boolean;
@@ -510,14 +555,21 @@ export default function AdventureChapterSections({
   const [recapOpen,    setRecapOpen]    = useState<boolean>(false);
   const [selectedCharacter, setSelectedCharacter] = useState<SelectedCharacter | null>(null);
   const [ttsSpeed,     setTtsSpeed]     = useState(() => audioService.speedMultiplier);
+  const [soundMuted,   setSoundMuted]   = useState(() => audioService.muted);
   const selectedProfile = selectedCharacter ? getCharacterProfile(selectedCharacter.name) : null;
 
-  const SPEEDS = [1, 1.25, 1.3, 1.5, 2];
+  const SPEEDS = [0.85, 1, 1.15, 1.3, 1.5];
   function cycleSpeed() {
     const currentIndex = SPEEDS.findIndex(speed => Math.abs(speed - ttsSpeed) < 0.001);
     const next = SPEEDS[((currentIndex >= 0 ? currentIndex : 0) + 1) % SPEEDS.length];
     audioService.setSpeed(next);
     setTtsSpeed(next);
+  }
+
+  function toggleSoundMuted() {
+    const next = !soundMuted;
+    audioService.setMuted(next);
+    setSoundMuted(next);
   }
 
   const [floats,       setFloats]       = useState<FloatBadge[]>([]);
@@ -561,6 +613,14 @@ export default function AdventureChapterSections({
       if (prev.some(e => e.id === entry.id)) return prev;
       return [...prev, entry];
     });
+  }, []);
+
+  const addRewardToEntry = useCallback((entryId: string, reward: RewardBadge) => {
+    setEntries(prev => prev.map(entry => {
+      if (entry.id !== entryId || entry.kind !== "player_answer") return entry;
+      if (entry.rewards?.some(existing => existing.id === reward.id)) return entry;
+      return { ...entry, rewards: [...(entry.rewards ?? []), reward] };
+    }));
   }, []);
 
   useEffect(() => {
@@ -615,7 +675,7 @@ export default function AdventureChapterSections({
   useEffect(() => {
     clearTimer();
     const step = allSteps[cursor];
-    if (!step) { setPhase("done"); return; }
+    if (!step) { setPhase("readyComplete"); return; }
 
     const id       = `${sessionId}-${cursor}`;
     const withDelay = (ms: number, fn: () => void) => {
@@ -658,8 +718,9 @@ export default function AdventureChapterSections({
             pace: step.pace,
             speech_rate: step.speech_rate,
             voice: step.voice,
+            audio_url: step.audio_url,
           });
-          audioService.speak(step.line, langCode, step.npc, step.pace, step.voice, step.speech_rate);
+          audioService.speakOrPlay(step.audio_url, step.line, langCode, step.npc, step.pace, step.voice, step.speech_rate);
           setPhase("tap");
         });
         if (step.npc && !metNpcs.current.has(step.npc)) {
@@ -702,6 +763,7 @@ export default function AdventureChapterSections({
             correct:      step.correct,
             npc:          step.npc,
             npc_reaction: step.npc_reaction,
+            npc_reaction_audio_url: step.npc_reaction_audio_url,
             isGated:      section.type === "obstaculo",
             shaking:      false,
           });
@@ -715,7 +777,9 @@ export default function AdventureChapterSections({
         addEntry({
           id, kind: "npc",
           npc: step.npc, line: step.npc_line,
+          audio_url: step.npc_line_audio_url,
         });
+        audioService.speakOrPlay(step.npc_line_audio_url, step.npc_line, langCode, step.npc);
         if (step.npc && !metNpcs.current.has(step.npc)) {
           metNpcs.current.add(step.npc);
           adventureService.meetCharacterByName(step.npc).catch(() => {});
@@ -724,6 +788,7 @@ export default function AdventureChapterSections({
           npc:       step.npc,
           situation: step.situation,
           npc_line:  step.npc_line,
+          npc_line_audio_url: step.npc_line_audio_url,
           item_tag:  step.item_tag,
           on_use:    step.on_use,
           on_skip:   step.on_skip,
@@ -805,6 +870,11 @@ export default function AdventureChapterSections({
   }, [summaryData]);
 
   function handleTap() {
+    if (phase === "readyComplete") {
+      audioService.stop();
+      setPhase("done");
+      return;
+    }
     if (phase !== "tap") return;
     audioService.stop();
     setSceneCard(null);
@@ -826,7 +896,8 @@ export default function AdventureChapterSections({
         text: s.adventure.itemMomentUsed(moment.available!.name),
       });
       addEntry({ id: `${id}-onuse`, kind: "narrative", text: moment.on_use.narrative });
-      addEntry({ id: `${id}-react`, kind: "npc", npc: moment.npc, line: moment.on_use.npc_reaction });
+      addEntry({ id: `${id}-react`, kind: "npc", npc: moment.npc, line: moment.on_use.npc_reaction, audio_url: moment.on_use.npc_reaction_audio_url });
+      audioService.speakOrPlay(moment.on_use.npc_reaction_audio_url, moment.on_use.npc_reaction, langCode, moment.npc);
       setActiveItemMoment(null);
       setPhase("auto");
       timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
@@ -837,7 +908,8 @@ export default function AdventureChapterSections({
     if (!activeItemMoment) return;
     const id     = `${sessionId}-${cursor}`;
     const moment = activeItemMoment;
-    addEntry({ id: `${id}-skip`, kind: "npc", npc: moment.npc, line: moment.on_skip.npc_reaction });
+    addEntry({ id: `${id}-skip`, kind: "npc", npc: moment.npc, line: moment.on_skip.npc_reaction, audio_url: moment.on_skip.npc_reaction_audio_url });
+    audioService.speakOrPlay(moment.on_skip.npc_reaction_audio_url, moment.on_skip.npc_reaction, langCode, moment.npc);
     setActiveItemMoment(null);
     setPhase("auto");
     timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
@@ -845,11 +917,12 @@ export default function AdventureChapterSections({
 
   function handleChoice(chosenId: string) {
     if (!activeChoice || activeChoice.shaking) return;
-    const { correct, options, npc, npc_reaction, isGated } = activeChoice;
+    const { correct, options, npc, npc_reaction, npc_reaction_audio_url, isGated } = activeChoice;
     const isCorrect   = chosenId === correct;
     const chosenText  = options.find(o => o.id === chosenId)?.text ?? chosenId;
     const correctText = options.find(o => o.id === correct)?.text ?? correct;
     const id          = `${sessionId}-${cursor}`;
+    const answerEntryId = `${id}-ans`;
 
     const currentStep = allSteps[cursor];
     const wordId      = currentStep?.kind === "multiple_choice" ? currentStep.word_id : undefined;
@@ -857,6 +930,7 @@ export default function AdventureChapterSections({
     const wordNative  = currentStep?.kind === "multiple_choice" ? currentStep.native  : undefined;
     // New word = section introduces vocab (has vocab_list) AND this word_id hasn't been answered correctly yet
     const isNewWord   = hasVocabList && Boolean(wordId) && !seenWordIds.current.has(wordId!);
+    const rewards: RewardBadge[] = [];
 
     if (wordId) {
       adventureService.recordWordAnswer({
@@ -867,7 +941,13 @@ export default function AdventureChapterSections({
         lang_code: langCode.toLowerCase(),
       }).then(res => {
         if (res.earned_item) {
-          addFloat(res.earned_item.name, false);
+          addRewardToEntry(answerEntryId, {
+            id:    `item-${res.earned_item.slug}`,
+            text:  s.adventure.plusOneItem,
+            emoji: res.earned_item.emoji,
+            isItem: true,
+            title: res.earned_item.name,
+          });
           earnedItemsRef.current = [
             ...earnedItemsRef.current.filter(i => i.name !== res.earned_item!.name),
             { emoji: res.earned_item.emoji, name: res.earned_item.name, rarity: res.earned_item.rarity },
@@ -883,8 +963,11 @@ export default function AdventureChapterSections({
         comboRef.current += 1;
         if (comboRef.current > maxComboRef.current) maxComboRef.current = comboRef.current;
         const n = comboRef.current;
-        if (n >= 3) addFloat(s.adventure.comboLabel(n), true);
-        else        addFloat(s.adventure.plusOne, false);
+        rewards.push({
+          id:      `word-${wordId}`,
+          text:    n >= 3 ? s.adventure.comboLabel(n) : s.adventure.plusOne,
+          isCombo: n >= 3,
+        });
       }
     } else {
       comboRef.current = 0;
@@ -902,7 +985,7 @@ export default function AdventureChapterSections({
 
     if (!isCorrect) mistakesRef.current++;
 
-    addEntry({ id: `${id}-ans`, kind: "player_answer", text: chosenText, label: playerLabel, correct: isCorrect });
+    addEntry({ id: answerEntryId, kind: "player_answer", text: chosenText, label: playerLabel, correct: isCorrect, rewards });
     setActiveChoice(null);
 
     if (!isCorrect) {
@@ -916,7 +999,8 @@ export default function AdventureChapterSections({
 
     if (npc_reaction && npc) {
       timerRef.current = setTimeout(() => {
-        addEntry({ id: `${id}-react`, kind: "npc_reaction", npc, line: npc_reaction });
+        addEntry({ id: `${id}-react`, kind: "npc_reaction", npc, line: npc_reaction, audio_url: npc_reaction_audio_url });
+        audioService.speakOrPlay(npc_reaction_audio_url, npc_reaction, langCode, npc);
         timerRef.current = setTimeout(() => setCursor(n => n + 1), 1100);
       }, 400);
     } else {
@@ -981,33 +1065,36 @@ export default function AdventureChapterSections({
       {phase === "summary" && summaryData && (
         <div
           className="absolute inset-0 z-30 flex flex-col"
-          style={{ background: "rgba(0,0,0,0.97)", animation: "narrativeFadeIn 400ms ease-out both" }}
+          style={{
+            background: `linear-gradient(135deg, rgba(0,0,0,0.98), rgba(0,0,0,0.94)), radial-gradient(circle at 18% 12%, ${c.goldAccent}1f, transparent 34%)`,
+            animation: "narrativeFadeIn 400ms ease-out both",
+          }}
         >
-          <div className="flex flex-1 flex-col items-center gap-5 overflow-y-auto px-5 pb-4 pt-12">
+          <div className="flex flex-1 flex-col items-center gap-5 overflow-y-auto px-5 pb-4 pt-12 md:mx-auto md:grid md:w-full md:max-w-5xl md:grid-cols-[minmax(290px,0.85fr)_minmax(0,1.15fr)] md:content-start md:items-start md:gap-4 md:px-8 md:py-8">
 
             {/* Check icon */}
             <div
-              className="grid h-14 w-14 place-items-center rounded-full"
+              className="grid h-14 w-14 place-items-center rounded-full md:col-span-2 md:mx-auto md:h-16 md:w-16"
               style={{ background: `${c.goldAccent}15`, border: `1.5px solid ${c.goldAccent}55`, animation: "successPop 500ms ease-out both" }}
             >
               <Check size={22} style={{ color: c.goldAccent }} />
             </div>
 
             {/* Title */}
-            <div className="text-center" style={{ animation: "narrativeFadeIn 450ms 200ms ease-out both" }}>
+            <div className="text-center md:col-span-2 md:mb-1 md:w-full" style={{ animation: "narrativeFadeIn 450ms 200ms ease-out both" }}>
               <p className="text-xs font-bold uppercase tracking-widest" style={{ color: c.goldAccent }}>
                 {s.adventure.sectionLabel(sectionNumber, totalSections)}
               </p>
-              <p className="mt-1 text-2xl font-bold" style={{ color: c.parchment }}>{s.adventure.sectionCompleteShort}</p>
+              <p className="mt-1 text-2xl font-bold md:text-3xl" style={{ color: c.parchment }}>{s.adventure.sectionCompleteShort}</p>
             </div>
 
             {/* XP earned */}
             <div
-              className="flex flex-col items-center gap-1"
+              className="flex flex-col items-center gap-1 md:w-full md:rounded-2xl md:border md:border-white/10 md:bg-white/[0.04] md:p-6"
               style={{ animation: "narrativeFadeIn 450ms 350ms ease-out both" }}
             >
               <span
-                className="text-5xl font-black tabular-nums leading-none"
+                className="text-5xl font-black tabular-nums leading-none md:text-6xl"
                 style={{
                   color:      c.goldAccent,
                   textShadow: `0 0 28px ${c.goldAccent}70`,
@@ -1034,7 +1121,7 @@ export default function AdventureChapterSections({
 
             {/* Score row */}
             {summaryData.correct + summaryData.mistakes > 0 && (
-              <div className="flex w-full gap-3" style={{ animation: "narrativeFadeIn 450ms 500ms ease-out both" }}>
+              <div className="flex w-full gap-3 md:h-full md:rounded-2xl md:border md:border-white/10 md:bg-white/[0.04] md:p-4" style={{ animation: "narrativeFadeIn 450ms 500ms ease-out both" }}>
                 <div
                   className="flex flex-1 flex-col items-center gap-1 rounded-xl py-3"
                   style={{ background: c.surfaceMid, border: `1px solid ${c.borderFaint}` }}
@@ -1059,22 +1146,26 @@ export default function AdventureChapterSections({
 
             {/* Earned items */}
             {summaryData.earnedItems.length > 0 && (
-              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 560ms ease-out both" }}>
-                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+              <div className="w-full md:rounded-2xl md:border md:border-white/10 md:bg-white/[0.04] md:p-5" style={{ animation: "narrativeFadeIn 650ms 720ms ease-out both" }}>
+                <p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  <PackageCheck className="hidden md:block" size={14} style={{ color: c.goldAccent }} />
                   {s.adventure.itemsFound}
                 </p>
-                <div className="flex flex-col gap-2">
+                <div className="grid gap-2">
                   {summaryData.earnedItems.map((item, i) => (
                     <div
                       key={item.name}
-                      className="flex items-center gap-3 rounded-xl px-4 py-3"
+                      className="flex items-center gap-3 rounded-xl px-4 py-3 shadow-lg"
                       style={{
                         background: c.surfaceMid,
                         border: `1px solid ${c.goldAccent}30`,
-                        animation: `successPop 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s both`,
+                        boxShadow: `0 10px 28px ${c.goldAccent}12`,
+                        animation: `rewardItemIn 0.75s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.34}s both`,
                       }}
                     >
-                      <Emoji char={item.emoji} size={28} style={{ flexShrink: 0 }} />
+                      <span style={{ animation: `rewardIconPulse 0.72s cubic-bezier(0.16,1,0.3,1) ${0.34 + i * 0.34}s both` }}>
+                        <Emoji char={item.emoji} size={30} style={{ flexShrink: 0 }} />
+                      </span>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-bold" style={{ color: c.parchment }}>{item.name}</p>
                         <p className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: c.goldAccent }}>{item.rarity}</p>
@@ -1093,19 +1184,20 @@ export default function AdventureChapterSections({
 
             {/* New characters */}
             {summaryData.newChars.length > 0 && (
-              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 580ms ease-out both" }}>
-                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                  Personagens encontrados
+              <div className="w-full md:rounded-2xl md:border md:border-white/10 md:bg-white/[0.04] md:p-5" style={{ animation: "narrativeFadeIn 650ms 940ms ease-out both" }}>
+                <p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  <Users className="hidden md:block" size={14} style={{ color: c.goldAccent }} />
+                  {s.adventure.charactersFoundLabel}
                 </p>
-                <div className="flex gap-4 overflow-x-auto pb-1">
+                <div className="flex gap-4 overflow-x-auto pb-1 md:grid md:grid-cols-2 md:gap-3 md:overflow-visible md:pb-0">
                   {summaryData.newChars.map((name, i) => {
                     const avatar = CHARACTER_AVATARS[name];
                     const shortName = name.split(" ")[0];
                     return (
                       <div
                         key={name}
-                        className="flex flex-col items-center gap-2 shrink-0"
-                        style={{ animation: `successPop 0.4s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s both` }}
+                        className="flex shrink-0 flex-col items-center gap-2 md:rounded-xl md:bg-black/10 md:px-3 md:py-3"
+                        style={{ animation: `rewardItemIn 0.72s cubic-bezier(0.16,1,0.3,1) ${0.18 + i * 0.24}s both` }}
                       >
                         <button
                           type="button"
@@ -1142,11 +1234,12 @@ export default function AdventureChapterSections({
 
             {/* Words earned */}
             {sectionWords.length > 0 && (
-              <div className="w-full" style={{ animation: "narrativeFadeIn 450ms 640ms ease-out both" }}>
-                <p className="mb-3 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
-                  Palavras desbloqueadas
+              <div className="w-full md:col-span-2 md:rounded-2xl md:border md:border-white/10 md:bg-white/[0.04] md:p-5" style={{ animation: "narrativeFadeIn 650ms 1160ms ease-out both" }}>
+                <p className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider" style={{ color: c.textFaint }}>
+                  <BookOpen className="hidden md:block" size={14} style={{ color: c.goldAccent }} />
+                  {s.adventure.wordsUnlockedLabel}
                 </p>
-                <div className="flex flex-col gap-2">
+                <div className="grid gap-2 md:grid-cols-2">
                   {sectionWords.map(({ target, native }, i) => (
                     <div
                       key={target}
@@ -1154,7 +1247,7 @@ export default function AdventureChapterSections({
                       style={{
                         background: c.surfaceMid,
                         border: `1px solid ${c.borderFaint}`,
-                        animation: `narrativeFadeIn 0.35s ease-out ${0.65 + i * 0.07}s both`,
+                        animation: `rewardItemIn 0.62s cubic-bezier(0.16,1,0.3,1) ${0.2 + i * 0.16}s both`,
                       }}
                     >
                       <span
@@ -1163,7 +1256,7 @@ export default function AdventureChapterSections({
                       >
                         +1
                       </span>
-                      <span className="flex-1 text-sm font-bold italic" style={{ color: c.parchment }}>{target}</span>
+                      <span className="min-w-0 flex-1 text-sm font-bold italic" style={{ color: c.parchment }}>{target}</span>
                       <span className="text-right text-xs font-medium" style={{ color: c.textOnBg }}>{native}</span>
                     </div>
                   ))}
@@ -1172,12 +1265,12 @@ export default function AdventureChapterSections({
             )}
           </div>
 
-          <div className="shrink-0 px-4 pb-6 pt-2">
+          <div className="shrink-0 px-4 pb-6 pt-2 md:mx-auto md:w-full md:max-w-5xl md:px-8">
             <button
               type="button"
               onClick={() => onComplete(mistakesRef.current)}
-              className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97]"
-              style={{ background: c.goldAccent, color: "#1a0800" }}
+              className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97] md:ml-auto md:flex md:h-14 md:max-w-xs md:items-center md:justify-center"
+              style={{ background: c.goldAccent, color: "#1a0800", boxShadow: `0 14px 34px ${c.goldAccent}1f` }}
             >
               {s.adventure.continueBtn}
             </button>
@@ -1213,6 +1306,20 @@ export default function AdventureChapterSections({
         )}
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleSoundMuted}
+            className="grid h-9 w-9 place-items-center rounded-full transition active:scale-95"
+            title={soundMuted ? s.adventure.soundEnableLabel : s.adventure.soundDisableLabel}
+            aria-label={soundMuted ? s.adventure.soundEnableLabel : s.adventure.soundDisableLabel}
+            style={{
+              background: soundMuted ? `${c.goldAccent}22` : c.surfaceMid,
+              color:      soundMuted ? c.goldAccent : c.parchment,
+              border:     `1px solid ${soundMuted ? c.goldAccent + "55" : c.borderFaint}`,
+            }}
+          >
+            {soundMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+          </button>
           {section.recap && (
             <button
               type="button"
@@ -1243,10 +1350,10 @@ export default function AdventureChapterSections({
                 <NarrativeEntry text={entry.text} c={c} />
               )}
               {entry.kind === "npc" && (
-                <NpcEntry npc={entry.npc} line={entry.line} translation={entry.translation} isNew={entry.isNew} langCode={langCode} pace={entry.pace} speechRate={entry.speech_rate} voice={entry.voice} ttsSpeed={ttsSpeed} onCycleSpeed={cycleSpeed} onCharacterOpen={setSelectedCharacter} c={c} />
+                <NpcEntry npc={entry.npc} line={entry.line} translation={entry.translation} isNew={entry.isNew} langCode={langCode} pace={entry.pace} speechRate={entry.speech_rate} voice={entry.voice} audioUrl={entry.audio_url} ttsSpeed={ttsSpeed} onCycleSpeed={cycleSpeed} onCharacterOpen={setSelectedCharacter} c={c} newCharacterLabel={s.adventure.newCharacterLabel} />
               )}
               {entry.kind === "npc_reaction" && (
-                <NpcEntry npc={entry.npc} line={entry.line} langCode={langCode} onCharacterOpen={setSelectedCharacter} c={c} />
+                <NpcEntry npc={entry.npc} line={entry.line} langCode={langCode} audioUrl={entry.audio_url} onCharacterOpen={setSelectedCharacter} c={c} newCharacterLabel={s.adventure.newCharacterLabel} />
               )}
               {entry.kind === "situation" && (
                 <SituationEntry context={entry.context} prompt={entry.prompt} c={c} />
@@ -1255,10 +1362,10 @@ export default function AdventureChapterSections({
                 <PlayerEntry text={entry.text} label={entry.label} c={c} />
               )}
               {entry.kind === "player_answer" && (
-                <PlayerEntry text={entry.text} label={entry.label} correct={entry.correct} c={c} />
+                <PlayerEntry text={entry.text} label={entry.label} correct={entry.correct} rewards={entry.rewards} c={c} />
               )}
               {entry.kind === "wrong_hint" && (
-                <WrongHintEntry correctText={entry.correctText} c={c} />
+                <WrongHintEntry correctText={entry.correctText} c={c} label={s.adventure.correctFormLabel} />
               )}
               {entry.kind === "pattern" && (
                 <PatternEntry
@@ -1267,6 +1374,7 @@ export default function AdventureChapterSections({
                   translation={entry.translation}
                   note={entry.note}
                   c={c}
+                  label={s.adventure.grammarLabel}
                 />
               )}
               {entry.kind === "reveal" && (
@@ -1318,21 +1426,21 @@ export default function AdventureChapterSections({
         </div>
       </div>
 
-      {/* Footer — fixed Continuar (hidden during choices / scene / done / summary) */}
+      {/* Fixed footer button (hidden during choices / scene / done / summary) */}
       {!sceneCard && phase !== "choosing" && phase !== "done" && phase !== "summary" && (
         <div className="shrink-0 px-4 pb-6 pt-2">
           <button
             type="button"
-            onClick={phase === "tap" ? handleTap : undefined}
-            disabled={phase !== "tap"}
+            onClick={phase === "tap" || phase === "readyComplete" ? handleTap : undefined}
+            disabled={phase !== "tap" && phase !== "readyComplete"}
             className="w-full rounded-2xl py-4 text-base font-bold transition active:scale-[0.97] md:text-lg"
             style={{
-              background: phase === "tap" ? c.goldAccent : `${c.goldAccent}30`,
-              color:      phase === "tap" ? "#1a0800"    : `${c.goldAccent}70`,
-              cursor:     phase === "tap" ? "pointer"    : "default",
+              background: phase === "tap" || phase === "readyComplete" ? c.goldAccent : `${c.goldAccent}30`,
+              color:      phase === "tap" || phase === "readyComplete" ? "#1a0800"    : `${c.goldAccent}70`,
+              cursor:     phase === "tap" || phase === "readyComplete" ? "pointer"    : "default",
             }}
           >
-            Continuar
+            {phase === "readyComplete" ? s.adventure.concludeBtn : s.adventure.continueBtn}
           </button>
         </div>
       )}

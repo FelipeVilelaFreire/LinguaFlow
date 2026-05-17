@@ -75,14 +75,17 @@ if "%CHOICE%"=="4" goto seed_all
 
 :seed_es
 call :run_es
+if %errorlevel% neq 0 goto fail
 goto done
 
 :seed_it
 call :run_it
+if %errorlevel% neq 0 goto fail
 goto done
 
 :seed_de
 call :run_de
+if %errorlevel% neq 0 goto fail
 goto done
 
 :seed_all
@@ -174,9 +177,40 @@ pause
 exit /b 1
 
 :done
+if "%CHOICE%"=="1" call :optional_es_audio
+if "%CHOICE%"=="4" call :optional_es_audio
 echo.
 echo === Setup concluido! ===
 echo.
 
 popd
 pause
+exit /b 0
+
+:optional_es_audio
+echo.
+echo --- Audio opcional da aventura ES ---
+echo Uso normal recomendado: deixar desativado e usar a voz padrao do navegador.
+echo Piper fica como laboratorio/dev para testar vozes em /aventura/mapa/dev.
+set /p AUTO_TTS_SETUP="Abrir configuracao DEV do Piper mesmo assim? (S/N): "
+if /I "%AUTO_TTS_SETUP%"=="S" (
+    call bats\setup_adventure_tts.bat --yes --no-pause
+    if %errorlevel% neq 0 (
+        echo AVISO: a configuracao automatica de audio falhou ou ficou incompleta.
+        echo O setup principal ja foi concluido; o jogo ainda usa a voz do navegador como fallback.
+        exit /b 0
+    )
+)
+echo.
+echo Mostrando vozes DEV configuradas:
+python manage.py generate_adventure_audio --lang ES --voices
+echo.
+set /p GENERATE_ES_AUDIO="Gerar cache DEV de audio ES agora? (S/N): "
+if /I not "%GENERATE_ES_AUDIO%"=="S" exit /b 0
+echo.
+echo Gerando cache de audio ES...
+python manage.py generate_adventure_audio --lang ES --provider piper
+if %errorlevel% neq 0 (
+    echo AVISO: nao foi possivel gerar todos os audios agora. O setup principal ja foi concluido.
+)
+exit /b 0

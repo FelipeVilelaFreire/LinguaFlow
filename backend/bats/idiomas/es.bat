@@ -81,3 +81,4 @@ echo.
 
 popd
 pause
+exit /b 0

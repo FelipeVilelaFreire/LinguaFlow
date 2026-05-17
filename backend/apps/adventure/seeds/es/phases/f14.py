@@ -118,7 +118,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_la", "target": "la", "native": "a (pra mulher)",
-                    "npc_reaction": "La sopa. Igual que la cocina, la mesa, la noche — todas palavras de mujer.",
+                    "npc_reaction": "La sopa. Igual que la cocina, la mesa, la noche — todas palabras de mujer.",
                 },
                 {
                     "kind": "multiple_choice",

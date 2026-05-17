@@ -11,6 +11,7 @@ export const ROUTES = {
   adventurePalavras: "/aventura/palavras",
   adventureHeroi: "/aventura/heroi",
   adventurePersonagens: "/aventura/personagens",
+  adventureMapDev: "/aventura/mapa/dev",
   adventureChapterBase: "/aventura/capitulo",
   today: "/estudo-guiado",
   vocabulary: "/vocabulario",

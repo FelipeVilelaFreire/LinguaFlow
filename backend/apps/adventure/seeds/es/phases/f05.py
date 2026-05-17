@@ -118,7 +118,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
-                    "npc_reaction": "Fuego. Quente. Não avisa — só aparece.",
+                    "npc_reaction": "Fuego. Caliente. No avisa — sólo aparece.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -132,7 +132,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_correr", "target": "correr", "native": "correr",
-                    "npc_reaction": "Corrieron. O cachorro faz isso com todo mundo.",
+                    "npc_reaction": "Corrieron. El perro hace eso con todo el mundo.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -146,7 +146,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Todo mundo tem. O que importa é o que você faz com ele.",
+                    "npc_reaction": "Miedo. Todo el mundo lo tiene. Lo que importa es qué haces con él.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -160,7 +160,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Bom — o miedo avisa. Escuta ele.",
+                    "npc_reaction": "Miedo. Bien — el miedo avisa. Escúchalo.",
                 },
             ],
         },
@@ -193,7 +193,14 @@ SECTIONS = [
                 {
                     "kind": "npc_speak",
                     "npc": "Don Miguel",
-                    "line": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
+                    "line": "Mientras caminamos, repasamos.",
+                    "translation": "Enquanto caminhamos, revisamos.",
+                    "pace": "slow",
+                },
+                {
+                    "kind": "npc_speak",
+                    "npc": "Don Miguel",
+                    "line": "¿Qué aprendiste que puede ayudar ahora?",
                     "translation": "Enquanto caminhamos — vamos revisar. O que você aprendeu que pode ajudar agora?",
                     "pace": "slow",
                 },
@@ -209,7 +216,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_buenas_tardes", "target": "buenas tardes", "native": "boa tarde",
-                    "npc_reaction": "Buenas tardes. O homem não respondeu. Seguiu em frente.",
+                    "npc_reaction": "Buenas tardes. El hombre no respondió. Siguió adelante.",
                 },
                 {
                     "kind": "npc_speak",
@@ -229,7 +236,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "Me llamo. Sempre diga seu nome — não esconde.",
+                    "npc_reaction": "Me llamo. Di siempre tu nombre — no lo escondas.",
                 },
                 {
                     "kind": "npc_speak",
@@ -249,7 +256,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_arbol", "target": "árbol", "native": "árvore",
-                    "npc_reaction": "Hay árboles. E piedras. E o velho Ernesto.",
+                    "npc_reaction": "Hay árboles. Y piedras. Y el viejo Ernesto.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -263,7 +270,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_uno", "target": "uno", "native": "um",
-                    "npc_reaction": "Una. Só uma. Guarda pro caminho.",
+                    "npc_reaction": "Una. Sólo una. Guárdala para el camino.",
                 },
                 {
                     "kind": "npc_speak",
@@ -284,7 +291,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Normal. Eu também. Mas fica perto de mim.",
+                    "npc_reaction": "Miedo. Normal. Yo también. Pero quédate cerca de mí.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -298,7 +305,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
-                    "npc_reaction": "Fuego. Distante — tudo bem. Longe do pueblo — melhor.",
+                    "npc_reaction": "Fuego. Distante — está bien. Lejos del pueblo — mejor.",
                 },
             ],
         },
@@ -390,7 +397,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_correr", "target": "correr", "native": "correr",
-                    "npc_reaction": "Corro. Sem perguntar. Isso salva vidas.",
+                    "npc_reaction": "Corro. Sin preguntar. Eso salva vidas.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -403,7 +410,7 @@ SECTIONS = [
                         {"id": "d", "text": "Pergunto '¿cómo estás?'"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Para. Quieto. Ele ouviu algo. Você ouviu também — depois.",
+                    "npc_reaction": "Para. Quieto. Él oyó algo. Tú también lo oíste — después.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -416,7 +423,7 @@ SECTIONS = [
                         {"id": "d", "text": "Que eu durma"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Mira. Você olhou. A sombra era só uma criança com uma vela.",
+                    "npc_reaction": "Mira. Miraste. La sombra era sólo un niño con una vela.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -430,7 +437,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_correr", "target": "correr", "native": "correr",
-                    "npc_reaction": "Correu. Bom. O corpo aprendeu antes da cabeça.",
+                    "npc_reaction": "Corriste. Bien. El cuerpo aprendió antes que la cabeza.",
                 },
             ],
         },
@@ -473,7 +480,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_correr", "target": "correr", "native": "correr",
-                    "npc_reaction": "¡Corro! Correto. Fogo = corre, grita, busca ajuda.",
+                    "npc_reaction": "¡Corro! Correcto. Fuego = corre, grita, busca ayuda.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -487,7 +494,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Normal. Mas o corpo corre mesmo com miedo — lembra disso.",
+                    "npc_reaction": "Miedo. Normal. Pero el cuerpo corre incluso con miedo — recuerda eso.",
                 },
                 {
                     "kind": "npc_speak",
@@ -507,7 +514,7 @@ SECTIONS = [
                         {"id": "d", "text": "Falo 'buenos días'"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Para. Antes de pensar. Isso.",
+                    "npc_reaction": "Para. Antes de pensar. Eso.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -521,7 +528,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
-                    "npc_reaction": "Fuego. Controlado. Por enquanto.",
+                    "npc_reaction": "Fuego. Controlado. Por ahora.",
                 },
                 {
                     "kind": "npc_speak",
@@ -541,7 +548,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_mucho", "target": "mucho", "native": "muito",
-                    "npc_reaction": "Mucho fuego. Longe é bonito. Perto — perigo.",
+                    "npc_reaction": "Mucho fuego. Lejos es bonito. Cerca — peligro.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -555,7 +562,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Eu também. Isso significa que estamos prestando atenção.",
+                    "npc_reaction": "Miedo. Yo también. Eso significa que estamos prestando atención.",
                 },
                 {
                     "kind": "npc_speak",
@@ -611,7 +618,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_me_llamo", "target": "me llamo", "native": "meu nome é",
-                    "npc_reaction": "De Miguel. Correto. Isso muda como tratam você.",
+                    "npc_reaction": "De Miguel. Correcto. Eso cambia cómo te tratan.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -625,7 +632,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_correr", "target": "correr", "native": "correr",
-                    "npc_reaction": "Corro. Antes de pensar. Sempre.",
+                    "npc_reaction": "Corro. Antes de pensar. Siempre.",
                 },
                 {
                     "kind": "multiple_choice",
@@ -639,7 +646,7 @@ SECTIONS = [
                     ],
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
-                    "npc_reaction": "Miedo. Normal. Mas a vela acendeu de novo — estava só com vento.",
+                    "npc_reaction": "Miedo. Normal. Pero la vela se encendió otra vez — sólo era el viento.",
                 },
                 {
                     "kind": "npc_speak",
@@ -659,7 +666,7 @@ SECTIONS = [
                         {"id": "d", "text": "Tengo hambre"},
                     ],
                     "correct": "a",
-                    "npc_reaction": "Hay algo raro. Sí. Você está sentindo certo. Fica alerta.",
+                    "npc_reaction": "Hay algo raro. Sí. Lo estás sintiendo bien. Mantente alerta.",
                 },
                 {
                     "kind": "narrative",
@@ -726,9 +733,9 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_miedo", "target": "miedo", "native": "medo",
                     "npc_reaction": (
-                        "Miedo. A palavra é real — você a sentiu inteira, do estômago "
-                        "às pontas dos dedos. E de algum jeito, sentir a palavra de "
-                        "verdade mudou algo no ar."
+                        "Miedo. La palabra es real — la sentiste entera, del estómago "
+                        "a la punta de los dedos. Y de algún modo, sentir la palabra "
+                        "de verdad cambió algo en el aire."
                     ),
                     "gated": True,
                 },
@@ -767,14 +774,14 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
                     "npc_reaction": (
-                        "FUEGO — a palavra saiu antes de você pensar.\n\n"
-                        "E o corredor explodiu em luz.\n\n"
-                        "Não uma fogueira. Não uma faísca. Uma parede de fogo "
-                        "entre você e o vigilante — alta, quente, real. Saída das "
-                        "suas mãos abertas.\n\n"
-                        "El Vigilante caiu pra trás gritando. Você olhou pras "
-                        "próprias mãos — pele intacta, sem queimadura. Como se "
-                        "o fogo não fosse seu pra queimar."
+                        "FUEGO — la palabra salió antes de que pensaras.\n\n"
+                        "Y el corredor explotó en luz.\n\n"
+                        "No una fogata. No una chispa. Una pared de fuego "
+                        "entre tú y el vigilante — alta, caliente, real. Salida de "
+                        "tus manos abiertas.\n\n"
+                        "El Vigilante cayó hacia atrás gritando. Miraste tus "
+                        "propias manos — piel intacta, sin quemadura. Como si "
+                        "el fuego no fuera tuyo para quemarte."
                     ),
                     "gated": True,
                 },
@@ -806,10 +813,10 @@ SECTIONS = [
                     "correct": "a",
                     "word_id": "es_fuego", "target": "fuego", "native": "fogo",
                     "npc_reaction": (
-                        "Don Miguel ficou em silêncio. Olhou pras suas mãos. "
-                        "Olhou pro corredor. Olhou de volta pra você.\n\n"
-                        "Não era a expressão de quem duvidava. Era a expressão "
-                        "de quem já sabia que algo assim ia acontecer."
+                        "Don Miguel quedó en silencio. Miró tus manos. "
+                        "Miró el corredor. Te miró otra vez.\n\n"
+                        "No era la expresión de quien dudaba. Era la expresión "
+                        "de quien ya sabía que algo así iba a pasar."
                     ),
                     "gated": True,
                 },
