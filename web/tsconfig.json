@@ -32,6 +32,9 @@
       ],
       "@linguaflow/shared-core/hooks/adventure": [
         "../packages/shared-core/src/hooks/adventure/index.ts"
+      ],
+      "@linguaflow/shared-core/hooks/study": [
+        "../packages/shared-core/src/hooks/study/index.ts"
       ]
     }
   },

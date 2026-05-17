@@ -1,6 +1,6 @@
 # Parity Audit Execution
 
-Progress: 1/12 pairs (8%)
+Progress: 13/13 pairs (100% functional coverage, polish pending)
 
 Checkpoint: 2026-05-17
 
@@ -19,15 +19,19 @@ The active target is the `_TEMPLATESHARED` architecture:
 |---|---|---|---|---|
 | [x] | initial shell | `web/app`, `web/src/screens` | `mobile/app`, `mobile/src/screens` | OK with limited scope |
 | [ ] | adventure map | `web/src/screens/AdventureMapScreen` | `mobile/src/screens/AdventureMapScreen` | Partial |
-| [ ] | adventure phase runner | pending | pending | Legacy only |
-| [ ] | adventure inventory | pending | pending | Legacy only |
-| [ ] | adventure characters | pending | pending | Legacy only |
-| [ ] | adventure words | pending | pending | Legacy only |
-| [ ] | study home | pending | pending | Legacy only |
-| [ ] | study session | pending | pending | Legacy only |
-| [ ] | auth | pending | pending | Legacy only |
-| [ ] | profile/account | pending | pending | Legacy only |
-| [ ] | history | pending | pending | Legacy only |
+| [x] | adventure phase runner | `web/app/aventura/capitulo/[phaseId]` | `mobile/app/adventure/chapter/[phaseId]` | Shared runner, first parity version |
+| [x] | adventure inventory | `web/app/aventura/mochila` | `mobile/app/adventure/inventory` | Data parity, UI still simpler than legacy |
+| [x] | adventure characters | `web/app/aventura/personagens` | `mobile/app/adventure/characters` | Data parity with character profile modal; images still pending |
+| [x] | adventure words | `web/app/aventura/palavras` | `mobile/app/adventure/words` | Data parity, UI still simpler than legacy |
+| [x] | adventure chests | `web/app/aventura/baus` | `mobile/app/adventure/chests` | Data parity, UI still simpler than legacy |
+| [x] | adventure hero | `web/app/aventura/heroi` | `mobile/app/adventure/hero` | Data parity, UI still simpler than legacy |
+| [x] | study home | `web/app/estudo-guiado` | `mobile/app/(tabs)/study` | Data parity, runner still pending |
+| [x] | study session | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | Shared SRS runner, first parity version |
+| [x] | vocabulary | `web/app/vocabulario` | `mobile/app/(tabs)/vocabulary` | Data parity, rich interactions simpler |
+| [x] | auth | `web/app/login` | `mobile/app/login` | Basic parity |
+| [x] | onboarding | `web/app/onboarding` | `mobile/app/onboarding` | Basic parity |
+| [x] | profile/account | `web/app/perfil` | `mobile/app/(tabs)/profile` | Data parity, edit routine/add area pending |
+| [x] | history | `web/app/historico` | `mobile/app/history` | Data parity, calendar UI simpler |
 | [ ] | admin strings | pending | not applicable | Legacy only |
 
 ## Shared-Core Ownership
@@ -56,13 +60,26 @@ Still outside shared-core:
 - Audio/browser TTS behavior.
 - Full app router/session boot logic.
 - Full string tree from legacy `frontend-web/src/constants/strings.ts`.
-- Character image/profile constants.
+- Character image constants.
 
 ## Pair Matrix
 
 | Status | Pair | Web | Mobile | Shared Hook | Result | Issues |
 |---|---|---|---|---|---|---|
 | [x] | Adventure map loader | `web/src/screens/AdventureMapScreen` | `mobile/src/screens/AdventureMapScreen` | `useAdventureChapters` | Partial OK | UI is simple scaffold, not feature parity with legacy map |
+| [x] | Adventure inventory | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Partial OK | Data parity only; item actions/modals are not fully migrated |
+| [x] | Adventure chests | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Partial OK | Start/claim chest interactions still need parity |
+| [x] | Adventure words | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Partial OK | Search/filter/rich mastery visuals still need parity |
+| [x] | Adventure hero | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Partial OK | Achievements/powers rich layout still need parity |
+| [x] | Adventure characters | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Partial OK | Basic profile modal exists; character images still need parity |
+| [x] | Auth/login | `web/src/screens/AuthScreen` | `mobile/src/screens/AuthScreen` | shared services | Partial OK | Global route guard pending |
+| [x] | Onboarding | `web/src/screens/OnboardingScreen` | `mobile/src/screens/OnboardingScreen` | shared services | Partial OK | Full app boot flow pending |
+| [x] | Study home | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | shared services | Partial OK | Guided runner and SRS exercise renderer pending |
+| [x] | Vocabulary | `web/src/screens/VocabularyScreen` | `mobile/src/screens/VocabularyScreen` | shared services | Partial OK | Polished filters and empty states can be improved |
+| [x] | Profile | `web/src/screens/ProfileScreen` | `mobile/src/screens/ProfileScreen` | shared services | Partial OK | Add area, edit routine, edit profile pending |
+| [x] | History | `web/src/screens/HistoryScreen` | `mobile/src/screens/HistoryScreen` | shared services | Partial OK | Legacy calendar richness pending |
+| [x] | Adventure phase runner | `web/src/screens/AdventureChapterRunnerScreen` | `mobile/src/screens/AdventureChapterRunnerScreen` | `useAdventurePhaseRunner`, `useAdventureSectionRunner` | First functional parity | Rich legacy animations/audio/character modals pending |
+| [x] | Study SRS runner | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | `useStudySessionRunner` | First functional parity | Guided lesson runner polish pending |
 
 ## Findings
 
@@ -82,3 +99,10 @@ Still outside shared-core:
 - Web uses CSS Modules and tokens from now on.
 - Mobile uses StyleSheet and shared-core tokens from now on.
 - Tailwind remains only in legacy `frontend-web/` during migration.
+
+## Remaining Polish Before Retiring Legacy
+
+- Match the rich legacy animations, audio controls, character images and reward visuals in the new renderers.
+- Add/profile routine flows now exist in web and mobile; profile edit remains pending.
+- Route guards/boot session logic now exists in web and mobile; manual QA is still needed on device/browser.
+- Run manual QA against real seeded backend data before deleting `frontend-web/`.

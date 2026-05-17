@@ -1,0 +1,165 @@
+import { StyleSheet } from "react-native";
+import { COLORS, FONT_SIZE, RADIUS, SPACING } from "@linguaflow/shared-core";
+
+export const styles = StyleSheet.create({
+  container: {
+    backgroundColor: COLORS.white,
+    flex: 1,
+  },
+  content: {
+    gap: SPACING.md,
+    padding: SPACING.lg,
+    paddingTop: SPACING["3xl"],
+  },
+  eyebrow: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+  },
+  title: {
+    color: COLORS.gray900,
+    fontSize: FONT_SIZE["3xl"],
+    fontWeight: "700",
+  },
+  subtitle: {
+    color: COLORS.gray500,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "500",
+  },
+  hero: {
+    borderColor: COLORS.gray200,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    gap: SPACING.sm,
+    padding: SPACING.md,
+  },
+  card: {
+    borderColor: COLORS.gray200,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    gap: SPACING.xs,
+    padding: SPACING.md,
+  },
+  cardLabel: {
+    color: COLORS.primary,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+  },
+  cardTitle: {
+    color: COLORS.gray900,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: "700",
+  },
+  cardDetail: {
+    color: COLORS.gray500,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "500",
+  },
+  description: {
+    color: COLORS.gray600,
+    fontSize: FONT_SIZE.sm,
+    marginTop: SPACING.sm,
+  },
+  lesson: {
+    borderTopColor: COLORS.gray200,
+    borderTopWidth: 1,
+    color: COLORS.gray700,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "600",
+    marginTop: SPACING.sm,
+    paddingTop: SPACING.sm,
+  },
+  action: {
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
+    color: COLORS.white,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+    marginTop: SPACING.sm,
+    overflow: "hidden",
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 10,
+    textAlign: "center",
+  },
+  actionButton: {
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
+    marginTop: SPACING.sm,
+    minHeight: 44,
+    justifyContent: "center",
+    paddingHorizontal: SPACING.md,
+  },
+  actionText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+  },
+  disabled: {
+    opacity: 0.5,
+  },
+  reviewPage: {
+    alignItems: "center",
+    backgroundColor: COLORS.white,
+    flex: 1,
+    gap: SPACING.md,
+    justifyContent: "center",
+    padding: SPACING.lg,
+  },
+  reviewOptions: {
+    gap: SPACING.sm,
+    width: "100%",
+  },
+  optionButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
+    padding: SPACING.md,
+  },
+  optionText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.base,
+    fontWeight: "700",
+  },
+  reviewInput: {
+    flexDirection: "row",
+    gap: SPACING.sm,
+    width: "100%",
+  },
+  input: {
+    borderColor: COLORS.gray200,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    flex: 1,
+    minHeight: 44,
+    paddingHorizontal: SPACING.md,
+  },
+  smallButton: {
+    alignItems: "center",
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.sm,
+    justifyContent: "center",
+    paddingHorizontal: SPACING.md,
+  },
+  secondaryButton: {
+    backgroundColor: COLORS.gray100,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 10,
+  },
+  secondaryText: {
+    color: COLORS.gray700,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+  },
+  state: {
+    alignItems: "center",
+    backgroundColor: COLORS.white,
+    flex: 1,
+    justifyContent: "center",
+    padding: SPACING.lg,
+  },
+  stateText: {
+    color: COLORS.gray600,
+    fontSize: FONT_SIZE.base,
+  },
+});

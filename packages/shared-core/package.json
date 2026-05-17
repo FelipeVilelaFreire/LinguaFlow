@@ -16,11 +16,16 @@
       "types": "./dist/hooks/adventure/index.d.ts",
       "import": "./dist/hooks/adventure/index.js",
       "require": "./dist/hooks/adventure/index.cjs"
+    },
+    "./hooks/study": {
+      "types": "./dist/hooks/study/index.d.ts",
+      "import": "./dist/hooks/study/index.js",
+      "require": "./dist/hooks/study/index.cjs"
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts src/hooks/adventure/index.ts --format esm,cjs --dts --clean",
-    "dev": "tsup src/index.ts src/hooks/adventure/index.ts --format esm,cjs --dts --watch",
+    "build": "tsup src/index.ts src/hooks/adventure/index.ts src/hooks/study/index.ts --format esm,cjs --dts --clean",
+    "dev": "tsup src/index.ts src/hooks/adventure/index.ts src/hooks/study/index.ts --format esm,cjs --dts --watch",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

@@ -11,6 +11,25 @@ export const styles = StyleSheet.create({
     padding: SPACING.lg,
     paddingTop: SPACING["3xl"],
   },
+  tabs: {
+    gap: SPACING.sm,
+    paddingBottom: SPACING.xs,
+  },
+  tab: {
+    backgroundColor: COLORS.gray100,
+    borderRadius: RADIUS.sm,
+    color: COLORS.gray600,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "700",
+    minHeight: 38,
+    overflow: "hidden",
+    paddingHorizontal: SPACING.md,
+    paddingVertical: 9,
+  },
+  activeTab: {
+    backgroundColor: COLORS.primaryLight,
+    color: COLORS.primary,
+  },
   state: {
     alignItems: "center",
     backgroundColor: COLORS.white,

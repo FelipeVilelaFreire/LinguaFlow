@@ -1,0 +1,116 @@
+.page {
+  background: var(--color-white);
+  min-height: 100dvh;
+  padding: 24px;
+}
+
+.header,
+.stats,
+.goals {
+  margin: 0 auto;
+  max-width: 860px;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.header h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-4xl);
+  margin: 0;
+}
+
+.header div {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.header button {
+  background: var(--color-gray100);
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  min-height: 36px;
+  padding: 0 10px;
+}
+
+.header span {
+  color: var(--color-gray600);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  text-transform: capitalize;
+}
+
+.stats {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 14px;
+}
+
+.metric,
+.goal {
+  border: 1px solid var(--color-gray200);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+}
+
+.metric strong {
+  display: block;
+  font-size: var(--font-size-3xl);
+}
+
+.metric span,
+.state {
+  color: var(--color-gray500);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.goals {
+  display: grid;
+  gap: 12px;
+}
+
+.goal h2 {
+  font-size: var(--font-size-lg);
+  margin: 0 0 12px;
+}
+
+.days {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.days span {
+  align-items: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-gray200);
+  border-radius: var(--radius-xs);
+  color: var(--color-gray500);
+  display: flex;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  height: 32px;
+  justify-content: center;
+}
+
+.days .planned {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.days .completed {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-white);
+}
