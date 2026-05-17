@@ -4,6 +4,10 @@ import { setApiClient, setLocale, setStorageAdapter } from "@linguaflow/shared-c
 import { apiClient } from "@/src/lib/apiClient";
 import { asyncStorageAdapter } from "@/src/lib/storageAdapter";
 
+setApiClient(apiClient);
+setStorageAdapter(asyncStorageAdapter);
+setLocale("pt-BR");
+
 export default function RootLayout() {
   useEffect(() => {
     setApiClient(apiClient);

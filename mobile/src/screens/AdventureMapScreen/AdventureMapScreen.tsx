@@ -1,21 +1,12 @@
-import { useEffect, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { adventureService, type ApiAdventureChapter, STRINGS } from "@linguaflow/shared-core";
+import { STRINGS } from "@linguaflow/shared-core";
+import { useAdventureChapters } from "@linguaflow/shared-core/hooks/adventure";
 import { styles } from "./AdventureMapScreen.styles";
 
 export function AdventureMapScreen() {
-  const [chapters, setChapters] = useState<ApiAdventureChapter[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { chapters, isLoading, error } = useAdventureChapters("ES");
 
-  useEffect(() => {
-    adventureService.listChapters()
-      .then(setChapters)
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : STRINGS.errors.generic))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.state}>
         <Text style={styles.stateText}>{STRINGS.adventure.loading}</Text>

@@ -1,23 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { adventureService, type ApiAdventureChapter, STRINGS } from "@linguaflow/shared-core";
+import { STRINGS } from "@linguaflow/shared-core";
+import { useAdventureChapters } from "@linguaflow/shared-core/hooks/adventure";
 import { AppBoot } from "@/src/components/AppBoot";
 import styles from "./AdventureMapScreen.module.css";
 
 function AdventureMapContent() {
-  const [chapters, setChapters] = useState<ApiAdventureChapter[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { chapters, isLoading, error } = useAdventureChapters("ES");
 
-  useEffect(() => {
-    adventureService.listChapters()
-      .then(setChapters)
-      .catch((err: unknown) => setError(err instanceof Error ? err.message : STRINGS.errors.generic))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) return <p className={styles.state}>{STRINGS.adventure.loading}</p>;
+  if (isLoading) return <p className={styles.state}>{STRINGS.adventure.loading}</p>;
   if (error) return <p className={styles.state}>{error}</p>;
   if (chapters.length === 0) return <p className={styles.state}>{STRINGS.adventure.empty}</p>;
 

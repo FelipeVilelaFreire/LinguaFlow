@@ -93,6 +93,35 @@ export const adventureService = {
       { method: "POST", body: JSON.stringify({ name }) },
     ),
 
+  devJumpToPhase: (chapterSlug: string, phaseNumber: number, sectionNumber: number) =>
+    api().request<{
+      chapter: string;
+      current_phase: number;
+      current_section: number;
+      completed_phases: number;
+      met_characters: number;
+      words_unlocked: number;
+      items_unlocked: number;
+    }>("/adventure/dev/jump-to-phase/", {
+      method: "POST",
+      body: JSON.stringify({
+        chapter_slug: chapterSlug,
+        phase_number: phaseNumber,
+        section_number: sectionNumber,
+      }),
+    }),
+
+  devVoiceSample: (payload: { npc: string; lang?: string; text?: string; model_path?: string; length_scale?: number | null }) =>
+    api().request<{ npc: string; text: string; audio_url: string }>(
+      "/adventure/dev/voice-sample/",
+      { method: "POST", body: JSON.stringify(payload) },
+    ),
+
+  devVoiceOptions: () =>
+    api().request<{ models: Array<{ id: string; name: string; label?: string; path: string; length_scale?: number | null }> }>(
+      "/adventure/dev/voice-options/",
+    ),
+
   updateSectionProgress: (phaseId: number, completedSections: number) =>
     api().request<{ phase_id: number; completed_sections: number }>(
       `/adventure/phases/${phaseId}/section-progress/`,
