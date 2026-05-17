@@ -1,0 +1,41 @@
+.page {
+  min-height: 100dvh;
+  background: var(--color-white);
+  color: var(--color-gray900);
+  padding: var(--spacing-lg);
+}
+
+.panel {
+  display: flex;
+  min-height: 70dvh;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.title {
+  color: var(--color-gray900);
+  font-family: var(--font-display);
+  font-size: var(--font-size-4xl);
+  line-height: 1.08;
+}
+
+.action {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  color: var(--color-white);
+  display: inline-flex;
+  font-weight: var(--font-weight-semibold);
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 var(--spacing-lg);
+  text-decoration: none;
+  width: fit-content;
+}

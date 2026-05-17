@@ -1,0 +1,18 @@
+export const ROUTES = {
+  home: "/",
+  login: "/login",
+  onboarding: "/onboarding",
+  adventure: "/aventura",
+  adventureMap: "/aventura/mapa",
+  adventureMochila: "/aventura/mochila",
+  adventureBaus: "/aventura/baus",
+  adventurePalavras: "/aventura/palavras",
+  adventureHeroi: "/aventura/heroi",
+  adventurePersonagens: "/aventura/personagens",
+  adventureMapDev: "/aventura/mapa/dev",
+  adventureChapter: (id: number) => `/aventura/capitulo/${id}`,
+  study: "/estudo-guiado",
+  vocabulary: "/vocabulario",
+  account: "/perfil",
+  history: "/historico",
+} as const;
