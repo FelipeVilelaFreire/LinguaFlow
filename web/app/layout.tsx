@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import "../src/theme/globals.css";
-import { AppBoot } from "@/src/components/AppBoot";
+import "../src/styles/globals.css";
+import { AppBoot } from "@/src/components/layout";
 
 export const metadata: Metadata = {
   title: "Talkly",
@@ -16,3 +16,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+

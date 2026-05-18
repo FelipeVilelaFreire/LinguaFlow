@@ -21,6 +21,7 @@ import { BookOpen, CheckCircle2, Circle, Lock, Play, RotateCcw, Sparkles, Sword 
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { AdventureTransitionLink } from "@/src/components/features/adventure";
 import styles from "./StudyScreen.module.css";
 
 type StudyTab = "guided" | "modules";
@@ -36,6 +37,7 @@ export function StudyScreen() {
   const [phrasesLoading, setPhrasesLoading] = useState(false);
   const [error, setError] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [lessonOpen, setLessonOpen] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -97,6 +99,9 @@ export function StudyScreen() {
   if (reviewOpen && session) {
     return <StudyReview exercises={session.exercises} onClose={() => setReviewOpen(false)} />;
   }
+  if (lessonOpen && currentLesson && phrases.length > 0) {
+    return <PhraseLessonRunner lesson={currentLesson.lesson} phrases={phrases} onClose={() => setLessonOpen(false)} />;
+  }
 
   return (
     <main className={styles.page} style={themeVars}>
@@ -137,18 +142,18 @@ export function StudyScreen() {
                 <small>{STRINGS.study.continueAdventureHint}</small>
               </div>
               <div className={styles.heroActions}>
-                <Link className={styles.primaryAction} href={ROUTES.adventureMap}>
+                <AdventureTransitionLink className={styles.primaryAction} href={ROUTES.adventureMap}>
                   <Play size={16} />
                   {STRINGS.study.continueAdventureBtn}
-                </Link>
-                <button className={styles.secondaryAction} disabled={phrasesLoading || phrases.length === 0} type="button">
+                </AdventureTransitionLink>
+                <button className={styles.secondaryAction} disabled={phrasesLoading || phrases.length === 0} onClick={() => setLessonOpen(true)} type="button">
                   {STRINGS.study.studyNowBtn}
                 </button>
               </div>
             </section>
 
             {currentLesson ? (
-              <CurrentLessonCard currentLesson={currentLesson} phrases={phrases} phrasesLoading={phrasesLoading} />
+            <CurrentLessonCard currentLesson={currentLesson} phrases={phrases} phrasesLoading={phrasesLoading} onStart={() => setLessonOpen(true)} />
             ) : null}
 
             <ReviewCard dueCount={dueCount} disabled={!hasReview} onReview={() => setReviewOpen(true)} />
@@ -166,10 +171,12 @@ function CurrentLessonCard({
   currentLesson,
   phrases,
   phrasesLoading,
+  onStart,
 }: {
   currentLesson: { module: StudyModule; lesson: StudyLesson };
   phrases: Phrase[];
   phrasesLoading: boolean;
+  onStart: () => void;
 }) {
   const phraseCount = phrases.length || currentLesson.lesson.phrase_count;
 
@@ -193,10 +200,52 @@ function CurrentLessonCard({
         ))}
         {!phrasesLoading && phrases.length === 0 ? <p className={styles.emptyDetail}>{STRINGS.study.noWordsDetail}</p> : null}
       </div>
-      <button className={styles.lessonButton} disabled={phrasesLoading || phraseCount === 0} type="button">
+      <button className={styles.lessonButton} disabled={phrasesLoading || phrases.length === 0} onClick={onStart} type="button">
         {STRINGS.study.studyPhrasesBtn(phraseCount)}
       </button>
     </section>
+  );
+}
+
+function PhraseLessonRunner({ lesson, phrases, onClose }: { lesson: StudyLesson; phrases: Phrase[]; onClose: () => void }) {
+  const [index, setIndex] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+  const phrase = phrases[index];
+  const last = index + 1 >= phrases.length;
+
+  function advance() {
+    if (!revealed) {
+      setRevealed(true);
+      return;
+    }
+    if (last) {
+      onClose();
+      return;
+    }
+    setIndex((item) => item + 1);
+    setRevealed(false);
+  }
+
+  return (
+    <main className={styles.reviewPage}>
+      <span>{STRINGS.study.lessonSessionTitle}</span>
+      <h1>{lesson.title || STRINGS.study.lessonFallback}</h1>
+      <p>{STRINGS.study.phraseProgress(index + 1, phrases.length)}</p>
+      <section className={styles.lessonRunnerCard}>
+        <small>{STRINGS.study.sourcePhrase}</small>
+        <strong>{phrase.source_text}</strong>
+        {revealed ? (
+          <>
+            <small>{STRINGS.study.targetPhrase}</small>
+            <em>{phrase.target_text}</em>
+          </>
+        ) : null}
+      </section>
+      <button onClick={advance} type="button">
+        {!revealed ? STRINGS.study.showTranslation : last ? STRINGS.study.finishLesson : STRINGS.study.nextPhrase}
+      </button>
+      <button className={styles.secondaryButton} onClick={onClose} type="button">{STRINGS.study.exit}</button>
+    </main>
   );
 }
 
@@ -338,3 +387,4 @@ function StudyReview({
 function State({ message }: { message: string }) {
   return <main className={styles.page}><p className={styles.state}>{message}</p></main>;
 }
+

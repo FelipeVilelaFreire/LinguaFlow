@@ -9,13 +9,13 @@
 }
 
 .glow {
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.14), transparent 65%);
-  height: 420px;
+  background: radial-gradient(ellipse 60% 55% at 50% 0%, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 80%);
+  height: 480px;
   left: 50%;
   position: fixed;
-  top: 12%;
+  top: 0;
   transform: translateX(-50%);
-  width: min(640px, 92vw);
+  width: min(720px, 92vw);
 }
 
 .shell {
@@ -47,9 +47,9 @@
 }
 
 .progressBar {
-  background: var(--color-gray100);
+  background: var(--color-gray200);
   border-radius: var(--radius-full);
-  height: 8px;
+  height: 4px;
   overflow: hidden;
 }
 
@@ -116,14 +116,14 @@
 .selectCard {
   align-items: center;
   background: var(--color-white);
-  border: 1px solid var(--color-gray200);
+  border: 2px solid var(--color-gray200);
   border-radius: var(--radius-md);
   color: var(--color-gray900);
   cursor: pointer;
   display: flex;
   gap: 12px;
   min-height: 58px;
-  padding: 10px 12px;
+  padding: 14px 16px;
   text-align: left;
 }
 
@@ -152,7 +152,7 @@
 
 .selected {
   border-color: var(--color-primary) !important;
-  box-shadow: 0 0 0 3px var(--color-primary-light);
+  background: var(--color-primary-light);
   color: var(--color-primary);
 }
 
@@ -166,8 +166,8 @@
 .pill,
 .dayPill {
   background: var(--color-white);
-  border: 1px solid var(--color-gray200);
-  border-radius: var(--radius-md);
+  border: 2px solid var(--color-gray200);
+  border-radius: var(--radius-full);
   color: var(--color-gray700);
   cursor: pointer;
   font: inherit;
@@ -184,14 +184,15 @@
 }
 
 .dayGrid {
-  display: grid;
-  gap: 6px;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
 }
 
 .dayPill {
+  height: 40px;
   min-width: 0;
-  padding: 10px 4px;
+  padding: 0;
+  width: 40px;
 }
 
 .dayError {

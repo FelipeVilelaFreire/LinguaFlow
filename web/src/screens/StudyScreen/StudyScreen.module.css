@@ -411,6 +411,38 @@
   padding: 0 12px;
 }
 
+.lessonRunnerCard {
+  background: var(--color-white);
+  border: 1px solid var(--color-gray200);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03), 0 8px 24px rgba(0, 0, 0, 0.06);
+  display: grid;
+  gap: 10px;
+  padding: 24px;
+  text-align: left;
+  width: min(520px, 100%);
+}
+
+.lessonRunnerCard small {
+  color: var(--area-primary, var(--color-primary));
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.lessonRunnerCard strong,
+.lessonRunnerCard em {
+  color: var(--color-gray900);
+  font-size: var(--font-size-2xl);
+  font-style: normal;
+  font-weight: var(--font-weight-bold);
+  overflow-wrap: anywhere;
+}
+
+.lessonRunnerCard em {
+  color: var(--area-primary-dark, var(--color-primary-hover));
+}
+
 .secondaryButton {
   background: var(--color-gray100) !important;
   border-color: var(--color-gray100) !important;

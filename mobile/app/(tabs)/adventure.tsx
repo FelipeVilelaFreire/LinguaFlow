@@ -1,5 +1,5 @@
-import { AdventureMapScreen } from "@/src/screens/AdventureMapScreen";
+import { AdventureScreen } from "@/src/screens/AdventureScreen";
 
 export default function Page() {
-  return <AdventureMapScreen />;
+  return <AdventureScreen />;
 }

@@ -6,11 +6,13 @@ import {
 } from "@linguaflow/shared-core/hooks/adventure";
 import type { AdventureChatEntry } from "@linguaflow/shared-core/hooks/adventure";
 import { getAdventureColors, getAdventureThemeVars, getCharacterAvatar, ROUTES as APP_ROUTES, STRINGS } from "@linguaflow/shared-core";
+import { Gift, Star, Trophy, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { CSSProperties } from "react";
-import { useState } from "react";
-import { CharacterAvatar } from "@/src/components/CharacterAvatar";
+import { useEffect, useState } from "react";
+import { CharacterAvatar } from "@/src/components/shared";
+import { audioService } from "@/src/lib/audioService";
 import styles from "./AdventureChapterRunnerScreen.module.css";
 
 export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
@@ -30,7 +32,7 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
     onExit: () => router.push(APP_ROUTES.adventureMap),
   });
 
-  if (runner.loading) return <State message="Carregando fase..." style={themeStyle} />;
+  if (runner.loading) return <State message={STRINGS.adventure.phaseLoading} style={themeStyle} />;
   if (runner.error) return <State message={runner.error} />;
   if (runner.stage) {
     return (
@@ -44,7 +46,7 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
       />
     );
   }
-  if (!runner.currentSection) return <State message="Fase sem secoes." style={themeStyle} />;
+  if (!runner.currentSection) return <State message={STRINGS.adventure.phaseEmptySections} style={themeStyle} />;
 
   return (
     <SectionRunner
@@ -73,6 +75,7 @@ function SectionRunner(props: {
   style: CSSProperties;
 }) {
   const [input, setInput] = useState("");
+  const [muted, setMuted] = useState(() => audioService.muted);
   const runner = useAdventureSectionRunner(props);
 
   function submitInput() {
@@ -85,11 +88,21 @@ function SectionRunner(props: {
       <header className={styles.topbar}>
         <button onClick={props.onBack} type="button">{STRINGS.actions.back}</button>
         <span>{STRINGS.adventure.sectionProgress(props.sectionNumber, props.totalSections)}</span>
+        <button
+          className={styles.audioButton}
+          onClick={() => {
+            audioService.setMuted(!muted);
+            setMuted(audioService.muted);
+          }}
+          type="button"
+        >
+          {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        </button>
       </header>
 
       {props.section.recap && (
         <section className={styles.recap}>
-          <strong>Onde paramos</strong>
+          <strong>{STRINGS.adventure.recapTitle}</strong>
           <p>{props.section.recap.story}</p>
           {props.section.recap.now && <span>{props.section.recap.now}</span>}
         </section>
@@ -116,7 +129,7 @@ function SectionRunner(props: {
           {runner.activeInput.hint && <small>{runner.activeInput.hint}</small>}
           <div className={styles.inputRow}>
             <input value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submitInput()} />
-            <button onClick={submitInput} type="button">Responder</button>
+            <button onClick={submitInput} type="button">{STRINGS.adventure.answer}</button>
           </div>
         </section>
       )}
@@ -124,17 +137,17 @@ function SectionRunner(props: {
       {(runner.phase === "tap" || runner.phase === "readyComplete") && (
         <section className={styles.footer}>
           <button onClick={runner.continueStep} type="button">
-            {runner.phase === "readyComplete" ? "Concluir" : "Continuar"}
+            {runner.phase === "readyComplete" ? STRINGS.adventure.finish : STRINGS.actions.continue}
           </button>
         </section>
       )}
 
       {runner.phase === "summary" && runner.summary && (
         <section className={styles.summary}>
-          <h1>Secao concluida</h1>
+          <h1>{STRINGS.adventure.completeSection}</h1>
           <div className={styles.metrics}>
-            <span>{runner.summary.correct} acertos</span>
-            <span>{runner.summary.mistakes} erros</span>
+            <span>{STRINGS.adventure.correctCount(runner.summary.correct)}</span>
+            <span>{STRINGS.adventure.mistakesCount(runner.summary.mistakes)}</span>
             <span>{runner.summary.xp} XP</span>
           </div>
           {runner.summary.words.length > 0 && (
@@ -142,7 +155,7 @@ function SectionRunner(props: {
               {runner.summary.words.map((word) => <span key={word.target}>{word.target}</span>)}
             </div>
           )}
-          <button onClick={runner.completeSummary} type="button">Continuar</button>
+          <button onClick={runner.completeSummary} type="button">{STRINGS.actions.continue}</button>
         </section>
       )}
     </main>
@@ -150,13 +163,28 @@ function SectionRunner(props: {
 }
 
 function ChatEntryView({ entry }: { entry: AdventureChatEntry }) {
+  useEffect(() => {
+    if (entry.kind === "npc") audioService.speakOrPlay(entry.audio_url, entry.line, "ES", entry.npc, entry.pace, entry.voice, entry.speech_rate);
+    if (entry.kind === "answer") {
+      if (entry.correct) audioService.playCorrect();
+      else audioService.playWrong();
+    }
+  }, [entry]);
+
   if (entry.kind === "scene") return <article className={styles.scene}>{entry.text}</article>;
   if (entry.kind === "narrative") return <article className={styles.narrative}>{entry.text}</article>;
   if (entry.kind === "npc") {
     const avatar = getCharacterAvatar(entry.npc);
     return (
       <article className={styles.npc}>
-        <CharacterAvatar emoji="" langCode="ES" name={entry.npc} size={42} slug={avatar?.slug} />
+        <button
+          className={styles.avatarButton}
+          onClick={() => audioService.speakOrPlay(entry.audio_url, entry.line, "ES", entry.npc, entry.pace, entry.voice, entry.speech_rate)}
+          type="button"
+          aria-label={entry.npc}
+        >
+          <CharacterAvatar emoji="" langCode="ES" name={entry.npc} size={42} slug={avatar?.slug} />
+        </button>
         <div>
           <strong>{entry.npc}</strong>
           <p>{entry.line}</p>
@@ -170,7 +198,7 @@ function ChatEntryView({ entry }: { entry: AdventureChatEntry }) {
     return (
       <article className={entry.correct ? styles.correct : styles.wrong}>
         <p>{entry.text}</p>
-        {!entry.correct && entry.correctText && <span>Correto: {entry.correctText}</span>}
+        {!entry.correct && entry.correctText && <span>{STRINGS.adventure.answerCorrect(entry.correctText)}</span>}
       </article>
     );
   }
@@ -202,30 +230,44 @@ function CompletionStage({
   onNext: () => void;
   style: CSSProperties;
 }) {
+  useEffect(() => {
+    if (stage === "trophy" || stage === "item") audioService.playComplete();
+  }, [stage]);
+
   return (
-    <main className={styles.complete} style={style}>
+    <main className={`${styles.complete} ${styles[`complete-${stage}`]}`} style={style}>
       {stage === "trophy" && (
         <>
-          <p>Fase concluida</p>
-          <h1>Fase {phaseNumber}</h1>
+          <div className={styles.trophyBadge}><Trophy size={42} /></div>
+          <p>{STRINGS.adventure.phaseCompleted}</p>
+          <h1>{STRINGS.adventure.phaseLabel(phaseNumber)}</h1>
+          <div className={styles.stars}>
+            {[1, 2, 3].map((star) => <Star fill="currentColor" key={star} size={30} />)}
+          </div>
         </>
       )}
       {stage === "words" && (
         <>
-          <p>Palavras praticadas</p>
+          <p>{STRINGS.adventure.practicedWords}</p>
           <div className={styles.words}>{words.map((word) => <span key={word}>{word}</span>)}</div>
         </>
       )}
       {stage === "item" && earnedItem && (
         <>
-          <p>Item ganho</p>
-          <div className={styles.itemEmoji}>{earnedItem.emoji}</div>
+          <div className={styles.chestReveal}>
+            <div className={styles.chestLid} />
+            <div className={styles.chestBox}><Gift size={34} /></div>
+            <div className={styles.chestTreasure}>{earnedItem.emoji}</div>
+            <span className={styles.sparkOne}>✦</span>
+            <span className={styles.sparkTwo}>✦</span>
+          </div>
+          <p>{STRINGS.adventure.earnedItem}</p>
           <h1>{earnedItem.name}</h1>
           <span>{earnedItem.rarity}</span>
           <small>{earnedItem.lore}</small>
         </>
       )}
-      <button onClick={onNext} type="button">{stage === "item" ? "Para o mapa" : "Continuar"}</button>
+      <button onClick={onNext} type="button">{stage === "item" ? STRINGS.adventure.backToMap : STRINGS.actions.continue}</button>
     </main>
   );
 }
@@ -233,8 +275,9 @@ function CompletionStage({
 function State({ message, style }: { message: string; style?: CSSProperties }) {
   return (
     <main className={styles.page} style={style}>
-      <Link href={APP_ROUTES.adventureMap}>Voltar ao mapa</Link>
+      <Link href={APP_ROUTES.adventureMap}>{STRINGS.adventure.backToMap}</Link>
       <p>{message}</p>
     </main>
   );
 }
+

@@ -18,14 +18,15 @@ Current visual parity status:
 | Area | Functional | Visual/Product | Notes |
 |---|---:|---:|---|
 | App shell/navigation | [~] | [ ] | Sidebar and tabs exist, but add-area/switch-area modal, locale chips and transitions are incomplete. |
-| Home `/` | [~] | [ ] | Must match legacy order: course badge, percent, flag/language, language path, series/season/phase, phrase progress, CTA, stats, next session/routine. Current web still has different hierarchy/copy. |
-| Guided study `/estudo-guiado` | [~] | [~] | New web design is closer and uses shared strings/tokens, but runner/scenario parity is still pending. |
-| Adventure map | [~] | [ ] | Data loads; winding map, node states, transitions and rich map UX still need legacy parity. |
-| Adventure runner | [~] | [ ] | Shared runner exists; rich section renderer, audio, rewards and character UX still pending. |
-| Inventory/chests/words/hero/characters | [~] | [ ] | Data parity exists; per-tab rich renderers and interactions still pending. |
-| Vocabulary | [~] | [ ] | Functional screen exists; filters/rich states need comparison against legacy. |
-| Profile/account | [~] | [ ] | Functional screen exists; edit profile, locale switch and routine flows need parity QA. |
-| History | [~] | [ ] | Functional screen exists; calendar/rich history UI still simpler than legacy. |
+| Home `/` | [~] | [~] | Main block now follows the accepted legacy order; shell/add-area/switch-area QA is still pending before `[x]`. |
+| Auth/onboarding | [~] | [~] | Onboarding now uses the legacy `lang-plus.svg`, two-step card flow, flag cards, level/routine controls, progress bar and shared strings; manual browser/device QA still pending. |
+| Guided study `/estudo-guiado` | [~] | [~] | Web/mobile now include tabs, current lesson, phrase runner, SRS review and study trail; full legacy guided exercise/scenario parity still pending. |
+| Adventure entry/map | [~] | [~] | `/aventura` and mobile adventure tab render a hub; map now has legacy-style winding path, phase states, season headers and adventure menu. Rich map interactions still need QA. |
+| Adventure runner | [~] | [~] | Shared runner now uses shared strings, web TTS/audio cues, NPC replay, answer/section animations and richer trophy/reward stages; full legacy dev voice lab and deeper character UX still pending. |
+| Inventory/chests/words/hero/characters | [~] | [~] | Collection tabs share the adventure shell; inventory, chests, words and characters open details, with item use, chest open/claim, slots/timers and reward states wired. Hero polish still pending. |
+| Vocabulary | [~] | [~] | Web/mobile now follow the legacy saved-phrases structure with shared strings, filters, summary cards, empty states and rich phrase cards; manual QA still pending. |
+| Profile/account | [~] | [~] | Account surface now follows the legacy profile hierarchy; edit-profile/locale switch and manual QA still pending. |
+| History | [~] | [~] | Web/mobile now follow the legacy month calendar, stats, all/by-area toggle, legends and shared strings; manual QA still pending. |
 
 Checkpoint: 2026-05-17
 
@@ -40,6 +41,9 @@ Current update:
 - Legacy public assets (`lang-plus.svg` and `de/es/it/characters`) were copied into `web/public/` and `mobile/assets/`.
 - `web` adventure map, collection screens and phase runner now consume shared adventure theme variables.
 - `mobile` adventure map, collection styles and runner styles now consume shared adventure theme tokens.
+- `web/src` and `mobile/src` now follow the same top-level organization contract: `components`, `config`, `contexts`, `hooks`, `lib`, `screens`, `setup`, `styles`, and `utils`.
+- `web/src/components` and `mobile/src/components` now follow the same component organization contract: `cards`, `features`, `layout`, `modals`, `shared`, and `ui`.
+- New platform files must respect this structure by default. Do not add new top-level `src` folders or loose component folders unless the architecture section below is updated first.
 
 Interpretation:
 
@@ -83,7 +87,7 @@ Legacy reference:
 
 Targets:
 
-- Web: `web/app/page.tsx`, `web/src/screens/HomeScreen/**`, `web/src/components/AppShell/**`.
+- Web: `web/app/page.tsx`, `web/src/screens/HomeScreen/**`, `web/src/components/layout/AppShell/**`.
 - Mobile: matching `mobile/app/(tabs)` home route and `mobile/src/screens/HomeScreen/**` if present.
 - Shared: `packages/shared-core/src/constants/strings/**`, `packages/shared-core/src/theme/**`, `packages/shared-core/src/services/**` or hooks if reusable state is needed.
 
@@ -125,8 +129,8 @@ Implementation rules from this example:
 
 Home/layout checkpoint: 2026-05-18
 
-- `web/src/components/AppShell/**` now restores the logged-in app frame: desktop sidebar, mobile header and bottom navigation.
-- `web/src/components/AppBoot/AppBoot.tsx` wraps authenticated routes with `AppShell` while leaving auth/onboarding and chapter runner immersive.
+- `web/src/components/layout/AppShell/**` now restores the logged-in app frame: desktop sidebar, mobile header and bottom navigation.
+- `web/src/components/layout/AppBoot/AppBoot.tsx` wraps authenticated routes with `AppShell` while leaving auth/onboarding and chapter runner immersive.
 - `web/src/screens/HomeScreen/**` now loads the active goal and renders the language area, flag, progress, routine and action cards instead of a landing-style placeholder.
 - `web/src/screens/HomeScreen/HomeScreen.tsx` now mirrors the legacy home block order from `frontend-web/src/features/home/screens/HomeScreen.tsx`: course badge, percent, flag/language, language path, series/season/phase, phrase progress, CTA, stats, next session/routine.
 - `mobile/src/screens/HomeScreen/**` now uses the same data and visible order for the mobile home surface.
@@ -136,12 +140,130 @@ Home/layout checkpoint: 2026-05-18
 
 Guided study checkpoint: 2026-05-18
 
-- `packages/shared-core/src/constants/strings/**` now owns the guided study, tab, state and SRS review labels used by web and mobile.
-- `web/src/screens/StudyScreen/**` now follows the legacy `frontend-web/src/features/study/screens/StudyScreen.tsx` structure more closely: guided/modules tabs, next adventure phase card, current lesson card, phrase preview, SRS review card and seed module trail.
-- `web/src/screens/StudyScreen/**` now applies shared study-area theme variables instead of the generic scaffold palette.
-- `mobile/src/screens/StudyScreen/StudyScreen.tsx` now consumes the same shared strings for the existing mobile study surface.
-- Shared-core hook/service used: `adventureService.getStudySession`, `adventureService.listChapters`, `contentService.listStudyModules`, `contentService.listPhrases`, `contentService.getCurrentGoal`, and `useStudySessionRunner`.
-- Remaining gaps: the full legacy `GuidedLessonRunner` step flow, audio speak button, answer feedback animations and scenario tab renderer still need their own parity slice before this area is complete.
+- Legacy references inspected: `frontend-web/src/features/study/screens/StudyScreen.tsx`, `StudySessionScreen.tsx`, `GuidedLessonRunner.tsx`, `ScenariosScreen.tsx`, and `TodayScreen.tsx`.
+- Web target updated: `web/src/screens/StudyScreen/StudyScreen.tsx` and `web/src/screens/StudyScreen/StudyScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/StudyScreen/StudyScreen.tsx` and `mobile/src/screens/StudyScreen/StudyScreen.styles.ts`.
+- Shared owner: `packages/shared-core/src/constants/strings/**`, `adventureService.getStudySession`, `adventureService.listChapters`, `contentService.listStudyModules`, `contentService.listPhrases`, `contentService.getCurrentGoal`, and `useStudySessionRunner`.
+- Shared strings added in `pt-BR`, `en`, and `de-DE` for the phrase runner title, progress, source/target labels, translation reveal, next phrase and finish action.
+- Web now opens a phrase lesson runner from the hero/current lesson CTA, keeps the guided/modules tabs, and preserves the current lesson, SRS review and module trail structure.
+- Mobile now follows the same study hierarchy: session/modules tabs, adventure context hero, current lesson phrase previews, SRS review card, module/lesson trail, SRS review runner and phrase runner.
+- Validation: `packages/shared-core npm.cmd run typecheck`, `packages/shared-core npm.cmd run build`, `web npm.cmd run typecheck`, `web npm.cmd run build`, and `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: this is not full legacy `GuidedLessonRunner` parity yet. Audio speak controls, full exercise renderer, answer feedback animations, richer scenario tab content and the old `TodayScreen` lesson-card flow still need dedicated parity slices.
+
+Onboarding checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/features/auth/screens/OnboardingScreen.tsx` and `frontend-web/src/styles/globals.css` `onb-*` / `auth-*` rules.
+- Web target inspected/updated: `web/src/screens/OnboardingScreen/OnboardingScreen.tsx` and `web/src/screens/OnboardingScreen/OnboardingScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/OnboardingScreen/OnboardingScreen.tsx` and `mobile/src/screens/OnboardingScreen/OnboardingScreen.styles.ts`.
+- Shared owner: `packages/shared-core/src/constants/strings/**`, `packages/shared-core/src/theme/languageAssets.ts`, `adventureService.listAvailableLanguages`, and `contentService.createGoal`.
+- `lang-plus.svg` is present with the same hash in `frontend-web/public/`, `web/public/`, and `mobile/assets/`; onboarding web/mobile now render that asset.
+- Mobile onboarding now mirrors the legacy/web structure: centered shell, logo plus step counter, 4px progress bar, card panel, language flag cards with check state, A1 level pill, weekday pills, session duration pills, estimate card, back button and primary CTA.
+- Web onboarding visual tokens were realigned with the legacy reference: teal glow, 4px progress bar, 2px select-card/pill borders, rounded day pills and shared-string logo alt.
+- Text contract: visible labels and alt text come from `STRINGS.*` or backend language metadata; removed mobile hardcoded `Portugues`, `Voltar`, and `Carregando...`.
+- Validation: `mobile npm.cmd run typecheck` passed; `web npm.cmd run typecheck` passed.
+- Remaining gaps: manual browser/device QA with seeded backend data is still required before marking onboarding `[x]`; auth/login visual parity is a separate slice.
+
+Profile/account checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/features/account/screens/AccountScreen.tsx`, `frontend-web/src/features/account/screens/EditProfileScreen.tsx`, and legacy profile/add-area/routine styles.
+- Web target updated: `web/src/screens/ProfileScreen/ProfileScreen.tsx` and `web/src/screens/ProfileScreen/ProfileScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/ProfileScreen/ProfileScreen.tsx` and `mobile/src/screens/ProfileScreen/ProfileScreen.styles.ts`.
+- Shared owner: `packages/shared-core/src/constants/strings/**`, `contentService.listGoals`, `contentService.activateGoal`, `contentService.updateGoal`, `contentService.deleteGoal`, `contentService.getHistory`, `authService.me`, and `authService.logout`.
+- Shared strings added for `STRINGS.profile.*` and `STRINGS.actions.delete` in `pt-BR`, `en`, and `de-DE`; Profile renderers no longer hardcode the main labels, modal labels, loading state, delete copy or routine actions.
+- Web/mobile Profile now follow the legacy account hierarchy: user card, active course card with flag and routine, week activity preview, other areas list with use/delete actions, add-area card, plan card and sign-out action.
+- Add-area and edit-routine modals now use shared copy, shared language metadata, weekday/session controls and backend services on both web and mobile.
+- Mobile profile add/edit/delete modals now live in `mobile/src/components/modals/ProfileModals.tsx`; `ProfileScreen` keeps only modal state and goal callbacks.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: the separate legacy `EditProfileScreen` account settings/locale switch surface is not fully recreated yet; manual browser/device QA with seeded backend data is still required before marking Profile `[x]`.
+
+Vocabulary checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/features/study/screens/VocabularyScreen.tsx`.
+- Web target updated: `web/src/screens/VocabularyScreen/VocabularyScreen.tsx` and `web/src/screens/VocabularyScreen/VocabularyScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/VocabularyScreen/VocabularyScreen.tsx` and `mobile/src/screens/VocabularyScreen/VocabularyScreen.styles.ts`.
+- Shared owner: `packages/shared-core/src/constants/strings/**`, `contentService.listFavorites`, and `contentService.removeFavorite`.
+- Shared strings added for `STRINGS.vocabulary.*` in `pt-BR`, `en`, and `de-DE`; loading, error, header, filters, empty states, remove label and metadata fallback copy now come from shared-core.
+- Web/mobile now render the same vocabulary hierarchy: header, saved/scenario/category counters, horizontal scenario filters, empty/filter-empty states, phrase cards, source/target text, scenario/category/difficulty metadata and remove action.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: manual browser/device QA with seeded favorites is still required before marking Vocabulary `[x]`; any future richer search/sort mastery controls should remain shared-string driven.
+
+History checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/features/history/screens/HistoryScreen.tsx`.
+- Web target updated: `web/src/screens/HistoryScreen/HistoryScreen.tsx` and `web/src/screens/HistoryScreen/HistoryScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/HistoryScreen/HistoryScreen.tsx` and `mobile/src/screens/HistoryScreen/HistoryScreen.styles.ts`.
+- Shared owner: `packages/shared-core/src/constants/strings/**`, `contentService.getHistory`, `HistoryMonth`, `GoalHistory`, `HistoryDay`, and `getStudyAreaTheme`.
+- Shared strings added for `STRINGS.history.*` in `pt-BR`, `en`, and `de-DE`; loading, error, month nav, stats, segmented view, legends, active badge and empty states now come from shared-core.
+- Web/mobile now render the same legacy-aligned structure: month navigation, best streak/completed days/session stats, all/by-area toggle, merged monthly calendar, per-area calendars, completed/planned/open legend, active-area badge and empty/error states.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: manual browser/device QA with seeded history data is still required before marking History `[x]`; if lesson-level drilldown returns, it should be added as a dedicated parity slice.
+
+Adventure entry checkpoint: 2026-05-18
+
+- User decision: Aventura must have its own entry screen first; navigation must not jump directly to the map.
+- Web updated: `web/src/components/layout/AppShell/AppShell.tsx`, `web/src/screens/HomeScreen/HomeScreen.tsx`, `web/src/screens/StudyScreen/StudyScreen.tsx`, and `web/src/screens/AdventureScreen/**`.
+- Mobile updated: `mobile/app/(tabs)/adventure.tsx`, `mobile/app/adventure/map.tsx`, `mobile/src/screens/AdventureScreen/**`, `mobile/src/screens/AdventureCollectionScreen/AdventureCollectionScreen.tsx`, and `mobile/src/screens/AdventureChapterRunnerScreen/AdventureChapterRunnerScreen.tsx`.
+- Shared strings added for the adventure hub and collection shortcut labels in `pt-BR`, `en`, and `de-DE`.
+- Web now routes shell/Home/Study adventure entry actions to `ROUTES.adventure`; `/aventura` renders the hub and only then links to `ROUTES.adventureMap`.
+- Mobile tab `/(tabs)/adventure` now renders the hub; the map moved to `/adventure/map`, and collection/runner return links target that map route.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: this only fixes the entry point. Map parity, collection tabs and runner richness still need separate Aventura slices.
+
+Adventure transition checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/components/navigation/ImmersiveTransitionOverlay.tsx` and `frontend-web/src/hooks/useImmersiveNav.tsx`.
+- Web added `web/src/components/features/adventure/AdventureTransitionLink/**`; Home, Study and the Adventure hub primary CTA now show an immersive overlay before navigating to `ROUTES.adventureMap`.
+- Mobile added `mobile/src/components/features/adventure/AdventureTransitionButton.tsx`; Home, Study and the Adventure hub primary CTA now show the native transition modal before navigating to `/adventure/map`.
+- Product rule clarified: navigation/tab entry can land on the `/aventura` hub, but explicit “continue/open adventure” CTAs transition directly into the map.
+- Validation: `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+
+Adventure map checkpoint: 2026-05-18
+
+- Legacy reference inspected: `frontend-web/src/features/adventure/screens/adventure/abas/mapa/AdventureMapScreen.tsx`.
+- Web target updated: `web/src/screens/AdventureMapScreen/AdventureMapScreen.tsx` and `web/src/screens/AdventureMapScreen/AdventureMapScreen.module.css`.
+- Mobile target updated: `mobile/src/screens/AdventureMapScreen/AdventureMapScreen.tsx` and `mobile/src/screens/AdventureMapScreen/AdventureMapScreen.styles.ts`.
+- Shared strings expanded for map labels, phase states, section labels, phase detail labels and season progress in `pt-BR`, `en`, and `de-DE`.
+- Web map now renders the legacy-style adventure shell: horizontal adventure menu, season header, winding SVG path, phase nodes, completed/current/locked states, boss/review styling, section progress ring and a phase detail modal before entering the runner.
+- Mobile map now mirrors the same product structure with a native horizontal menu, season cards, absolute winding path segments, positioned phase nodes and a native bottom-sheet phase detail modal before entering the runner.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Remaining gaps: manual browser/device QA is needed for exact path spacing and touch behavior; decorative seasonal dividers and finer modal animation polish can be a follow-up map polish slice.
+
+Adventure collection checkpoint: 2026-05-18
+
+- Web target updated: `web/src/screens/AdventureCollectionScreen/AdventureCollectionScreen.tsx`.
+- Mobile target updated: `mobile/src/screens/AdventureCollectionScreen/AdventureCollectionScreen.tsx`.
+- Web modal structure updated: Aventura detail/character modals now live in `web/src/components/modals/**` and use the shared `BaseModal` wrapper instead of being embedded in the screen file.
+- Mobile modal structure updated: Aventura detail/character sheets now live in `mobile/src/components/modals/**`, with `AdventureCollectionScreen` keeping only selected state and refresh callbacks.
+- Shared strings expanded for collection tab titles, subtitles, empty states, load error, item status, chest labels and hero metrics in `pt-BR`, `en`, and `de-DE`.
+- Collection tabs now include the same top-level adventure menu structure as the map: hub, map, mochila, baus, palavras, heroi and personagens.
+- Web/mobile collection renderers now use `STRINGS.adventure.*` for visible UI copy while keeping backend-owned content such as item names, lore, character descriptions and word data unchanged.
+- Validation: `packages/shared-core npm.cmd run typecheck` passed; `packages/shared-core npm.cmd run build` passed; `web npm.cmd run typecheck` passed; `web npm.cmd run build` passed; `mobile npm.cmd run typecheck` passed.
+- Web/mobile collection renderers now open detail modals/sheets for inventory items, chests, learned words and characters. Inventory uses `adventureService.useInventoryItem`, while chests use `startChest`/`claimChest` and refresh the tab after the action.
+- Remaining gaps: hero progression remains metric-first and still needs legacy animation/achievement polish; character art/details are functional but can be enriched with the full legacy presentation.
+
+Adventure runner checkpoint: 2026-05-18
+
+- Web target updated: `web/src/screens/AdventureChapterRunnerScreen/AdventureChapterRunnerScreen.tsx`.
+- Mobile target updated: `mobile/src/screens/AdventureChapterRunnerScreen/AdventureChapterRunnerScreen.tsx`.
+- Web phase modal structure updated: the map phase modal now lives in `web/src/components/modals/AdventurePhaseModal.tsx` and uses the same `BaseModal` wrapper as collection modals.
+- Mobile phase modal structure updated: the native map phase sheet now lives in `mobile/src/components/modals/AdventurePhaseModal.tsx`, and `AdventureMapScreen` keeps only the selected phase state.
+- Web audio adapter added: `web/src/lib/audioService.ts`, porting the legacy browser TTS/audio-url fallback, NPC voice profile matching, muted state, speed storage and correct/wrong/complete tones.
+- Shared hook updated: `packages/shared-core/src/hooks/adventure/useAdventureSectionRunner.ts` now preserves NPC `pace`, `speech_rate`, `voice`, `audio_url` and NPC reactions so clients can render/play richer section beats.
+- Shared strings expanded for runner loading, empty section, recap, answer feedback, section completion, counters and completion stages in `pt-BR`, `en`, and `de-DE`.
+- Runner visible copy now uses `STRINGS.adventure.*` / `STRINGS.actions.*` on both web and mobile instead of hardcoded Portuguese labels.
+- Web runner now auto-plays/replays NPC lines with audio-url fallback/TTS, plays answer/complete cues, and has animated answer cards, section summary, trophy stars and chest/item reveal.
+- Mobile runner now has richer trophy/reward completion presentation matching the same product moments without adding native audio dependencies.
+- Validation after this slice: `packages/shared-core npm.cmd run typecheck`, `packages/shared-core npm.cmd run build`, `web npm.cmd run typecheck`, `web npm.cmd run build`, and `mobile npm.cmd run typecheck` passed.
+
+- Remaining gaps: the standalone legacy `AdventureVoiceDevScreen` voice lab is not yet routed in the new apps; full parity still needs that dev surface, richer recap/character profile overlays and native mobile voice playback if we choose to add an Expo audio/speech dependency.
+
+Adventure chests rich checkpoint: 2026-05-18
+
+- Web/mobile collection chests now render opening slots, stored chests, claimed history, ready/opening/stored labels, countdown text and progress bars instead of one flat list.
+- Shared strings expanded for chest slot labels, summary metrics, ready-to-claim and stored-for-later states in `pt-BR`, `en`, and `de-DE`.
+- Chest cards now keep the detail modal/action path from the previous slice, so clicking a slot or stored chest still opens the same start/claim flow.
+
+- Remaining gaps: timer values update when the screen rerenders; the exact legacy 1-second interval refresh and claimed reward confetti can be a focused follow-up if we want complete chest parity.
 
 ## Current Decision
 
@@ -170,6 +292,53 @@ Required ownership:
 - `web/` owns Next.js routes, CSS Modules, browser UX, route guards and render-only screens/components.
 - `mobile/` owns Expo routes, StyleSheet, native UX, mobile guards and render-only screens/components.
 - `admin/` owns config-driven admin apps, operational views and business-plan dashboards.
+- Web and mobile modal/sheet components must be centralized under `*/src/components/modals/**`. Screen files hold selection state and pass data/actions into modal components; shared modal shell behavior goes through the platform modal base such as `BaseModal`.
+
+Folder structure rule:
+
+- `web/src` and `mobile/src` must keep the same top-level folders listed below.
+- `web/src/components` and `mobile/src/components` must keep the same component category folders listed below.
+- New platform code should go into an existing category. If a new category is genuinely needed, update this audit first with the ownership rule and reason.
+- Avoid recreating loose root component folders such as `web/src/components/AppShell` or `mobile/src/components/AdventureTransitionButton.tsx`; use `layout`, `features`, `shared`, `modals`, `cards`, or `ui`.
+- Avoid adding platform-only services under `*/src/services`; platform adapters belong in `*/src/lib`, while HTTP/domain services belong in `packages/shared-core/src/services`.
+
+Component organization target for both `web/src/components` and `mobile/src/components`:
+
+- `cards/`: reusable card primitives and future card families.
+- `features/`: domain-specific components, grouped by feature such as `features/adventure`.
+- `layout/`: app shells, boot wrappers, navigation frames and layout-only components.
+- `modals/`: modal/sheet components and shared modal wrappers.
+- `shared/`: small cross-screen components such as flags and avatars.
+- `ui/`: low-level UI primitives.
+
+Top-level `src/` organization target for both `web` and `mobile`:
+
+- `components/`: organized as above.
+- `config/`: platform config values and constants.
+- `contexts/`: React providers/contexts owned by the platform.
+- `hooks/`: platform-only hooks.
+- `lib/`: platform adapters and client-side utilities such as storage/audio adapters.
+- `screens/`: render-only route screens for this app.
+- `setup/`: platform bootstrap/setup helpers.
+- `styles/`: global styles or style entry points.
+- `utils/`: platform-only helpers.
+
+Current structure examples:
+
+- `web/src/components/layout/AppShell/**`
+- `web/src/components/layout/AppBoot/**`
+- `web/src/components/shared/CharacterAvatar/**`
+- `web/src/components/shared/LangFlag/**`
+- `web/src/components/features/adventure/AdventureTransitionLink/**`
+- `web/src/components/modals/BaseModal.tsx`
+- `web/src/components/modals/AdventurePhaseModal.tsx`
+- `mobile/src/components/modals/BaseModal.tsx`
+- `mobile/src/components/modals/AdventurePhaseModal.tsx`
+- `mobile/src/components/modals/AdventureCollectionModals.tsx`
+- `mobile/src/components/modals/ProfileModals.tsx`
+- `web/src/lib/audioService.ts`
+- `web/src/styles/globals.css`
+- `mobile/src/components/features/adventure/AdventureTransitionButton.tsx`
 
 BFF rule:
 
@@ -306,20 +475,20 @@ Business model status:
 | Status | Area | Web | Mobile | Result |
 |---|---|---|---|---|
 | [~] | initial shell | `web/app`, `web/src/screens` | `mobile/app`, `mobile/src/screens` | Functional with limited scope; visual parity still pending |
-| [ ] | adventure map | `web/src/screens/AdventureMapScreen` | `mobile/src/screens/AdventureMapScreen` | Partial |
-| [~] | adventure phase runner | `web/app/aventura/capitulo/[phaseId]` | `mobile/app/adventure/chapter/[phaseId]` | Shared runner, first functional version; rich visual parity pending |
-| [~] | adventure inventory | `web/app/aventura/mochila` | `mobile/app/adventure/inventory` | Data parity, UI still simpler than legacy |
-| [~] | adventure characters | `web/app/aventura/personagens` | `mobile/app/adventure/characters` | Data parity with character profile modal; images still pending |
-| [~] | adventure words | `web/app/aventura/palavras` | `mobile/app/adventure/words` | Data parity, UI still simpler than legacy |
-| [~] | adventure chests | `web/app/aventura/baus` | `mobile/app/adventure/chests` | Data parity, UI still simpler than legacy |
-| [~] | adventure hero | `web/app/aventura/heroi` | `mobile/app/adventure/hero` | Data parity, UI still simpler than legacy |
-| [~] | study home | `web/app/estudo-guiado` | `mobile/app/(tabs)/study` | Better visual pass started; runner still pending |
-| [~] | study session | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | Shared SRS runner, first functional version |
-| [~] | vocabulary | `web/app/vocabulario` | `mobile/app/(tabs)/vocabulary` | Data parity, rich interactions simpler |
+| [~] | adventure entry/map | `web/app/aventura`, `web/src/screens/AdventureMapScreen` | `mobile/app/(tabs)/adventure`, `mobile/app/adventure/map` | Entry hub plus winding map visual pass; manual QA/popup polish pending |
+| [~] | adventure phase runner | `web/app/aventura/capitulo/[phaseId]` | `mobile/app/adventure/chapter/[phaseId]` | Shared runner with shared strings, web TTS/audio cues and richer completion/reward animations; voice dev lab pending |
+| [~] | adventure inventory | `web/app/aventura/mochila` | `mobile/app/adventure/inventory` | Shared adventure menu/strings, dark surface, detail modal and use-item action |
+| [~] | adventure characters | `web/app/aventura/personagens` | `mobile/app/adventure/characters` | Shared adventure menu/strings and modal; richer art/details pending |
+| [~] | adventure words | `web/app/aventura/palavras` | `mobile/app/adventure/words` | Shared adventure menu/strings, list surface and word detail modal; filters/mastery pending |
+| [~] | adventure chests | `web/app/aventura/baus` | `mobile/app/adventure/chests` | Shared adventure menu/strings, slots/timers, detail modal and start/claim actions |
+| [~] | adventure hero | `web/app/aventura/heroi` | `mobile/app/adventure/hero` | Shared adventure menu/strings and metric surface; progression polish pending |
+| [~] | study home | `web/app/estudo-guiado` | `mobile/app/(tabs)/study` | Better visual pass with phrase runner; full legacy guided runner/scenarios pending |
+| [~] | study session | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | Shared SRS runner plus phrase runner; rich feedback/audio pending |
+| [~] | vocabulary | `web/app/vocabulario` | `mobile/app/(tabs)/vocabulary` | Legacy-aligned saved phrases surface; manual QA pending |
 | [~] | auth | `web/app/login` | `mobile/app/login` | Basic functional parity; visual QA pending |
-| [~] | onboarding | `web/app/onboarding` | `mobile/app/onboarding` | Basic functional parity; visual QA pending |
-| [~] | profile/account | `web/app/perfil` | `mobile/app/(tabs)/profile` | Data parity, edit routine/add area pending |
-| [~] | history | `web/app/historico` | `mobile/app/history` | Data parity, calendar UI simpler |
+| [~] | onboarding | `web/app/onboarding` | `mobile/app/onboarding` | Legacy-aligned visual pass applied; manual browser/device QA pending |
+| [~] | profile/account | `web/app/perfil` | `mobile/app/(tabs)/profile` | Legacy-aligned account surface with add-area/edit-routine; edit profile/locale QA pending |
+| [~] | history | `web/app/historico` | `mobile/app/history` | Legacy-aligned monthly calendar and per-area views; manual QA pending |
 | [x] | admin strings | `packages/shared-core/src/constants/strings/*` | not applicable | `STRINGS.admin.*` namespace exists; keep expanding as admin grows |
 
 ## Shared-Core Ownership
@@ -357,20 +526,20 @@ Still outside shared-core:
 
 | Status | Pair | Web | Mobile | Shared Hook | Result | Issues |
 |---|---|---|---|---|---|---|
-| [~] | Adventure map loader | `web/src/screens/AdventureMapScreen` | `mobile/src/screens/AdventureMapScreen` | `useAdventureChapters` | Functional only | UI is simple scaffold, not feature parity with legacy map |
-| [~] | Adventure inventory | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Functional only | Data parity only; item actions/modals are not fully migrated |
-| [~] | Adventure chests | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Functional only | Start/claim chest interactions still need parity |
-| [~] | Adventure words | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Functional only | Search/filter/rich mastery visuals still need parity |
-| [~] | Adventure hero | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Functional only | Achievements/powers rich layout still need parity |
-| [~] | Adventure characters | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services | Functional only | Basic profile modal exists; character images still need parity |
+| [~] | Adventure map loader | `web/src/screens/AdventureMapScreen` | `mobile/src/screens/AdventureMapScreen` | `useAdventureChapters`, shared strings/theme | Functional plus visual pass | Manual path/touch QA and decorative divider/modal animation polish pending |
+| [~] | Adventure inventory | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services, shared strings/theme | Functional plus visual pass | Detail modal and use action wired; manual QA with real items pending |
+| [~] | Adventure chests | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services, shared strings/theme | Functional plus rich visual pass | Slots/timers and actions wired; 1-second live timer refresh/confetti pending |
+| [~] | Adventure words | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services, shared strings/theme | Functional plus visual pass | Word detail modal wired; search/filter/rich mastery visuals still need parity |
+| [~] | Adventure hero | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services, shared strings/theme | Functional plus visual pass | Achievements/powers rich layout still need parity |
+| [~] | Adventure characters | `web/src/screens/AdventureCollectionScreen` | `mobile/src/screens/AdventureCollectionScreen` | shared services, shared strings/theme | Functional plus visual pass | Character images/richer details still need parity |
 | [~] | Auth/login | `web/src/screens/AuthScreen` | `mobile/src/screens/AuthScreen` | shared services | Functional only | Global route guard and visual QA pending |
-| [~] | Onboarding | `web/src/screens/OnboardingScreen` | `mobile/src/screens/OnboardingScreen` | shared services | Functional only | Full app boot flow and visual QA pending |
-| [~] | Study home | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | shared services | Functional plus first visual pass | Guided runner and SRS exercise renderer pending |
-| [~] | Vocabulary | `web/src/screens/VocabularyScreen` | `mobile/src/screens/VocabularyScreen` | shared services | Functional only | Polished filters and empty states can be improved |
-| [~] | Profile | `web/src/screens/ProfileScreen` | `mobile/src/screens/ProfileScreen` | shared services | Functional only | Add area, edit routine, edit profile pending |
-| [~] | History | `web/src/screens/HistoryScreen` | `mobile/src/screens/HistoryScreen` | shared services | Functional only | Legacy calendar richness pending |
-| [~] | Adventure phase runner | `web/src/screens/AdventureChapterRunnerScreen` | `mobile/src/screens/AdventureChapterRunnerScreen` | `useAdventurePhaseRunner`, `useAdventureSectionRunner` | First functional parity | Rich legacy animations/audio/character modals pending |
-| [~] | Study SRS runner | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | `useStudySessionRunner` | First functional parity | Guided lesson runner polish pending |
+| [~] | Onboarding | `web/src/screens/OnboardingScreen` | `mobile/src/screens/OnboardingScreen` | shared services, shared strings/assets | Functional plus visual pass | Manual browser/device QA pending before `[x]`; full app boot flow still needs QA |
+| [~] | Study home | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | shared services, shared strings | Functional plus visual pass | Full legacy scenario richness and TodayScreen flow pending |
+| [~] | Vocabulary | `web/src/screens/VocabularyScreen` | `mobile/src/screens/VocabularyScreen` | shared services, shared strings | Functional plus visual pass | Manual browser/device QA with seeded favorites pending |
+| [~] | Profile | `web/src/screens/ProfileScreen` | `mobile/src/screens/ProfileScreen` | shared services, shared strings/assets | Functional plus visual pass | Edit profile/locale switch surface and manual QA pending before `[x]` |
+| [~] | History | `web/src/screens/HistoryScreen` | `mobile/src/screens/HistoryScreen` | shared services, shared strings/theme | Functional plus visual pass | Manual browser/device QA with seeded history pending |
+| [~] | Adventure phase runner | `web/src/screens/AdventureChapterRunnerScreen` | `mobile/src/screens/AdventureChapterRunnerScreen` | `useAdventurePhaseRunner`, `useAdventureSectionRunner`, shared strings, web audio service | Functional shared runner plus rich completion/audio pass | Voice dev lab, richer recap and character modals pending |
+| [~] | Study SRS/phrase runners | `web/src/screens/StudyScreen` | `mobile/src/screens/StudyScreen` | `useStudySessionRunner`, shared services | SRS runner plus phrase runner | Audio, rich feedback animations and full GuidedLessonRunner parity pending |
 
 ## Findings
 
@@ -390,6 +559,10 @@ Still outside shared-core:
 - Web uses CSS Modules and tokens from now on.
 - Mobile uses StyleSheet and shared-core tokens from now on.
 - Tailwind remains only in legacy `frontend-web/` during migration.
+- Keep `web/src` and `mobile/src` aligned with the shared top-level folder contract.
+- Keep `web/src/components` and `mobile/src/components` aligned with the shared component category contract.
+- Put platform adapters in `*/src/lib`; put domain HTTP services in `packages/shared-core/src/services`.
+- Put modal/sheet components in `*/src/components/modals`; screens should not keep large inline modal implementations.
 
 ## Remaining Polish Before Retiring Legacy
 

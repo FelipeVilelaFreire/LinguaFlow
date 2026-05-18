@@ -6,7 +6,7 @@ import { ACCESS_TOKEN_KEY, ROUTES, setApiClient, setLocale, setStorageAdapter } 
 import { usePathname, useRouter } from "next/navigation";
 import { apiClient } from "@/src/lib/apiClient";
 import { webStorageAdapter } from "@/src/lib/storageAdapter";
-import { AppShell } from "@/src/components/AppShell";
+import { AppShell } from "@/src/components/layout";
 
 export function AppBoot({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
@@ -35,3 +35,4 @@ export function AppBoot({ children }: { children: React.ReactNode }) {
   if (!ready) return null;
   return <AppShell>{children}</AppShell>;
 }
+

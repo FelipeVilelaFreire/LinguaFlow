@@ -8,6 +8,7 @@ import {
   getStudyAreaTheme,
 } from "@linguaflow/shared-core";
 import type { Goal } from "@linguaflow/shared-core";
+import { AdventureTransitionButton } from "@/src/components/features/adventure";
 import { styles } from "./HomeScreen.styles";
 
 export function HomeScreen() {
@@ -96,9 +97,9 @@ export function HomeScreen() {
         </View>
         <Text style={styles.phrases}>{goal.learned_phrases.toLocaleString()} / {goal.total_phrases.toLocaleString()} {STRINGS.home.phrasesLabel}</Text>
 
-        <Link href="/(tabs)/adventure" style={styles.primaryAction}>
-          {STRINGS.home.continueAdventure}
-        </Link>
+        <AdventureTransitionButton href="/adventure/map" style={styles.primaryAction}>
+          <Text style={styles.primaryActionText}>{STRINGS.home.continueAdventure}</Text>
+        </AdventureTransitionButton>
       </View>
 
       <View style={styles.statsGrid}>
@@ -128,3 +129,4 @@ function StatCell({ value, label, accent }: { value: number | string; label: str
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "2-digit" }).format(new Date(`${value}T12:00:00`));
 }
+

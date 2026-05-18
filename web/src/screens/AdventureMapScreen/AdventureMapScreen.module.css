@@ -1,23 +1,32 @@
 .page {
-  min-height: 100dvh;
   background:
     radial-gradient(circle at 50% -10%, var(--adventure-ambient-glow), transparent 34rem),
     linear-gradient(180deg, var(--adventure-bg-from), var(--adventure-bg-mid) 48%, var(--adventure-bg-to));
   color: var(--adventure-parchment);
-  padding: var(--spacing-lg);
+  min-height: 100dvh;
+  padding: 18px;
 }
 
 .state {
-  color: var(--color-gray600);
-  padding: var(--spacing-lg);
+  color: var(--adventure-text-on-bg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: 40px;
+  text-align: center;
 }
 
 .tabs {
   display: flex;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-xl);
+  gap: 8px;
+  margin: 0 auto 18px;
+  max-width: 980px;
   overflow-x: auto;
-  padding-bottom: var(--spacing-xs);
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tabs a,
@@ -27,102 +36,238 @@
   border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
   color: var(--adventure-text-on-bg);
-  display: flex;
-  gap: var(--spacing-xs);
+  display: inline-flex;
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
+  gap: 7px;
   min-height: 38px;
-  padding: 0 var(--spacing-md);
+  padding: 0 13px;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.tabs span {
+.tabs .activeTab {
   background: var(--adventure-gold-soft);
+  border-color: var(--adventure-gold);
   color: var(--adventure-parchment);
 }
 
-.title {
-  font-family: var(--font-display);
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
+.mapShell {
   margin: 0 auto;
-  max-width: 980px;
+  max-width: 680px;
 }
 
-.chapterList {
-  display: grid;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-xl);
+.season {
+  margin-bottom: 20px;
 }
 
-.chapter {
-  background: var(--adventure-surface);
-  border: 1px solid var(--adventure-border-faint);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 20px 60px var(--adventure-surface-mid);
-  padding: var(--spacing-lg);
+.seasonHeader {
+  background: color-mix(in srgb, var(--adventure-season-bg) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--adventure-season-bg) 42%, transparent);
+  border-radius: var(--radius-md);
+  margin: 0 10px 10px;
+  padding: 16px;
 }
 
-.chapterHeader {
+.seasonHeader div {
   align-items: center;
   display: flex;
-  gap: var(--spacing-sm);
+  gap: 8px;
 }
 
-.chapterTitle {
+.levelBadge {
+  background: var(--adventure-season-bg);
+  border-radius: var(--radius-xs);
+  color: var(--adventure-season-text);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: 3px 8px;
+}
+
+.seasonHeader small,
+.seasonHeader p {
+  color: var(--adventure-text-on-bg);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.seasonHeader h1 {
+  color: var(--adventure-parchment);
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+  margin: 8px 0 4px;
+}
+
+.seasonHeader p {
   margin: 0;
 }
 
-.phaseList {
-  display: grid;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-md);
+.winding {
+  position: relative;
 }
 
-.phaseCard {
-  align-items: center;
-  background: var(--adventure-surface);
-  border: 1px solid var(--adventure-border-faint);
-  border-radius: var(--radius-md);
-  color: var(--adventure-parchment);
-  display: flex;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+.winding::before {
+  background: radial-gradient(ellipse at 50% 40%, var(--adventure-ambient-glow), transparent 65%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.path {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.phaseNodeWrap {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  display: block;
+  font: inherit;
+  height: calc(var(--node-size) + 44px);
+  left: var(--node-x);
+  position: absolute;
   text-decoration: none;
+  top: var(--node-y);
+  transform: translate(-50%, -50%);
+  width: 180px;
+  z-index: 1;
+}
+
+.phaseNodeWrap:has(.currentNode) {
+  animation: adventureBounce 1.4s ease-in-out infinite;
+  z-index: 3;
 }
 
 .phaseNode {
   align-items: center;
   background: var(--adventure-node-active);
   border-radius: var(--radius-full);
-  box-shadow: 0 0 0 4px var(--adventure-node-active-glow);
+  box-shadow: 0 0 0 3px var(--adventure-node-active), 0 0 28px var(--adventure-node-active-glow);
   color: var(--adventure-cta-text);
-  display: inline-flex;
-  flex: 0 0 34px;
-  font-weight: var(--font-weight-bold);
-  height: 34px;
+  display: flex;
+  height: var(--node-size);
   justify-content: center;
+  left: 50%;
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  width: var(--node-size);
 }
 
-.phaseCopy {
-  display: grid;
-  gap: var(--spacing-xs);
+.phaseNode strong {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  line-height: 1;
 }
 
-.phaseCopy span {
+.phaseNode small {
+  font-size: 7px;
+  opacity: 0.68;
+  text-transform: uppercase;
+}
+
+.completedNode {
+  background: var(--adventure-node-completed);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--adventure-node-completed) 60%, transparent), 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.lockedNode {
+  background: var(--adventure-node-locked);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
   color: var(--adventure-text-on-bg);
-  font-size: var(--font-size-sm);
+  opacity: 0.55;
 }
 
-@media (min-width: 769px) {
+.bossNode.currentNode {
+  background: var(--adventure-boss);
+  box-shadow: 0 0 0 3px var(--adventure-boss), 0 0 28px var(--adventure-boss-glow);
+}
+
+.reviewNode.currentNode {
+  background: var(--adventure-gold);
+}
+
+.phaseLabel {
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 16px 38px var(--adventure-surface-mid);
+  display: grid;
+  gap: 3px;
+  left: 50%;
+  max-width: 164px;
+  padding: 7px 9px;
+  position: absolute;
+  text-align: center;
+  top: calc(var(--node-size) + 8px);
+  transform: translateX(-50%);
+}
+
+.phaseLabel strong {
+  color: var(--adventure-parchment);
+  font-size: var(--font-size-xs);
+  line-height: 1.15;
+}
+
+.phaseLabel small {
+  color: var(--adventure-text-on-bg);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+  left: 50%;
+  position: absolute;
+  top: calc(var(--node-size) - 4px);
+  transform: translateX(-50%);
+}
+
+.progressRing {
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: -10px;
+  transform: translateX(-50%) rotate(-90deg);
+}
+
+.progressRing circle:first-child {
+  stroke: var(--adventure-text-faint);
+  stroke-width: 6;
+}
+
+.progressRing circle:last-child {
+  stroke: var(--adventure-gold);
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+
+@keyframes adventureBounce {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-5px);
+  }
+}
+
+@media (max-width: 720px) {
   .page {
-    padding: var(--spacing-3xl);
+    padding: 14px 10px;
   }
 
-  .phaseList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .mapShell {
+    max-width: 100%;
+  }
+
+  .phaseLabel {
+    max-width: 140px;
   }
 }
+

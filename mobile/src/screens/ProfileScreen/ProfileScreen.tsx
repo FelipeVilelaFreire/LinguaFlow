@@ -1,115 +1,142 @@
+﻿import { AntDesign, Feather } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
-import { Modal, Pressable, ScrollView, Text, View } from "react-native";
-import { STRINGS, adventureService, authService, contentService } from "@linguaflow/shared-core";
-import type { AvailableLanguage, Goal, User } from "@linguaflow/shared-core";
+import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import { STRINGS, authService, contentService, getFlagImage } from "@linguaflow/shared-core";
+import type { Goal, HistoryMonth, User } from "@linguaflow/shared-core";
+import {
+  ProfileAddAreaModal,
+  ProfileConfirmModal,
+  ProfileEditRoutineModal,
+} from "@/src/components/modals";
 import { styles } from "./ProfileScreen.styles";
-
-const WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
-const SESSION_OPTIONS = [15, 30, 45, 60, 90];
 
 export function ProfileScreen() {
   const [user, setUser] = useState<User | null>(null);
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [history, setHistory] = useState<HistoryMonth | null>(null);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState<"add" | "routine" | "delete" | null>(null);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
 
   useEffect(() => {
-    Promise.all([authService.me(), contentService.listGoals()])
-      .then(([nextUser, nextGoals]) => {
+    const today = new Date();
+    Promise.all([
+      authService.me(),
+      contentService.listGoals(),
+      contentService.getHistory(today.getFullYear(), today.getMonth() + 1).catch(() => null),
+    ])
+      .then(([nextUser, nextGoals, nextHistory]) => {
         setUser(nextUser);
         setGoals(nextGoals);
+        setHistory(nextHistory);
       })
       .finally(() => setLoading(false));
   }, []);
 
   async function logout() {
     await authService.logout();
-    router.replace("/(tabs)/home");
+    router.replace("/login");
   }
 
   function upsertGoal(goal: Goal) {
     setGoals((current) => {
-      const exists = current.some((item) => item.id === goal.id);
-      return exists ? current.map((item) => item.id === goal.id ? goal : item) : [...current, goal];
+      const normalized = goal.is_active ? current.map((item) => ({ ...item, is_active: item.id === goal.id })) : current;
+      return normalized.some((item) => item.id === goal.id)
+        ? normalized.map((item) => item.id === goal.id ? goal : item)
+        : [...normalized, goal];
     });
+  }
+
+  async function activateGoal(goal: Goal) {
+    const updated = await contentService.activateGoal(goal.id);
+    upsertGoal(updated);
   }
 
   async function deleteGoal(goal: Goal) {
     const result = await contentService.deleteGoal(goal.id);
-    setGoals((current) => current.filter((item) => item.id !== goal.id));
+    setGoals((current) => current.filter((item) => item.id !== goal.id).map((item) => ({
+      ...item,
+      is_active: result.current_goal?.id === item.id ? true : item.is_active,
+    })));
     if (result.current_goal) upsertGoal(result.current_goal);
     setModal(null);
     setSelectedGoal(null);
   }
 
-  if (loading) {
-    return (
-      <View style={styles.state}>
-        <Text style={styles.stateText}>Carregando perfil...</Text>
-      </View>
-    );
-  }
-
-  if (!user) {
-    return (
-      <View style={styles.state}>
-        <Text style={styles.stateText}>Perfil indisponivel.</Text>
-      </View>
-    );
-  }
+  if (loading) return <State message={STRINGS.profile.loading} />;
+  if (!user) return <State message={STRINGS.profile.unavailable} />;
 
   const activeGoal = goals.find((goal) => goal.is_active);
+  const inactiveGoals = goals.filter((goal) => !goal.is_active);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View style={styles.userCard}>
+      <Pressable style={styles.userCard}>
         <Text style={styles.avatar}>{user.username.charAt(0).toUpperCase()}</Text>
         <View style={styles.userText}>
           <Text style={styles.username}>{user.username}</Text>
-          <Text style={styles.email}>{user.email || "Sem email"}</Text>
+          <Text style={styles.email}>{user.email || STRINGS.profile.noEmail}</Text>
+          <Text style={styles.member}>{STRINGS.profile.memberLabel}</Text>
         </View>
-        <Pressable style={styles.logout} onPress={logout}>
-          <Text style={styles.logoutText}>Sair</Text>
-        </Pressable>
-      </View>
+        <AntDesign name="right" size={16} color="#cbd5e1" />
+      </Pressable>
 
       {activeGoal ? (
-        <View style={styles.card}>
-          <Text style={styles.label}>Curso ativo</Text>
-          <Text style={styles.cardTitle}>{activeGoal.target_language?.name ?? activeGoal.target_language?.code}</Text>
-          <Text style={styles.cardDetail}>{activeGoal.source_language?.code} {"->"} {activeGoal.target_language?.code} · {activeGoal.target_level}</Text>
-          <View style={styles.progress}><View style={[styles.progressFill, { width: `${activeGoal.progress_percent}%` }]} /></View>
-          <Pressable style={styles.secondaryAction} onPress={() => { setSelectedGoal(activeGoal); setModal("routine"); }}>
-            <Text style={styles.secondaryActionText}>Editar rotina</Text>
-          </Pressable>
+        <ActiveGoalCard goal={activeGoal} onEdit={() => { setSelectedGoal(activeGoal); setModal("routine"); }} />
+      ) : null}
+
+      <WeekPreview activeGoal={activeGoal ?? null} history={history} />
+
+      {inactiveGoals.length > 0 ? (
+        <View style={styles.listCard}>
+          <Text style={styles.sectionLabel}>{STRINGS.profile.otherAreas}</Text>
+          {inactiveGoals.map((goal) => (
+            <View style={styles.areaRow} key={goal.id}>
+              <LangFlag code={goal.target_language?.code ?? ""} />
+              <View style={styles.areaText}>
+                <Text style={styles.areaTitle}>{languageName(goal)}</Text>
+                <Text style={styles.areaDetail}>{goal.source_language?.code} {"->"} {goal.target_language?.code} Â· {goal.target_level}</Text>
+              </View>
+              <Pressable style={styles.useButton} onPress={() => activateGoal(goal)}>
+                <Text style={styles.useButtonText}>{STRINGS.profile.useArea}</Text>
+              </Pressable>
+              <Pressable style={styles.trashButton} onPress={() => { setSelectedGoal(goal); setModal("delete"); }}>
+                <Feather name="trash-2" size={14} color="#dc2626" />
+              </Pressable>
+            </View>
+          ))}
         </View>
       ) : null}
 
-      {goals.map((goal) => (
-        <View style={styles.goalCard} key={goal.id}>
-          <Text style={styles.goalTitle}>{goal.target_language?.name ?? goal.target_language?.code}</Text>
-          <Text style={styles.cardDetail}>{goal.progress_percent}% concluido</Text>
-          {!goal.is_active ? (
-            <Pressable style={styles.dangerOutline} onPress={() => { setSelectedGoal(goal); setModal("delete"); }}>
-              <Text style={styles.dangerText}>Excluir</Text>
-            </Pressable>
-          ) : null}
-        </View>
-      ))}
-
       <Pressable style={styles.addArea} onPress={() => setModal("add")}>
-        <Text style={styles.addAreaText}>Adicionar area</Text>
+        <View style={styles.addIcon}><Feather name="plus" size={18} color="#14b8a6" /></View>
+        <View style={styles.userText}>
+          <Text style={styles.addAreaTitle}>{STRINGS.profile.addArea}</Text>
+          <Text style={styles.addAreaDetail}>{STRINGS.profile.addAreaDetail}</Text>
+        </View>
+        <AntDesign name="right" size={16} color="#cbd5e1" />
       </Pressable>
-      <Link href="/history" style={styles.historyLink}>Ver historico completo</Link>
 
-      {modal === "add" ? <AddAreaModal onClose={() => setModal(null)} onCreated={upsertGoal} /> : null}
-      {modal === "routine" && selectedGoal ? <EditRoutineModal goal={selectedGoal} onClose={() => setModal(null)} onSaved={upsertGoal} /> : null}
+      <View style={styles.planCard}>
+        <Text style={styles.sectionLabel}>{STRINGS.profile.planLabel}</Text>
+        <View style={styles.planRow}>
+          <View>
+            <Text style={styles.planName}>{STRINGS.profile.planName}</Text>
+            <Text style={styles.planDetail}>{STRINGS.profile.planDetail}</Text>
+          </View>
+          <Pressable style={styles.upgradeButton}><Text style={styles.upgradeText}>{STRINGS.profile.upgrade}</Text></Pressable>
+        </View>
+      </View>
+
+      <Pressable style={styles.signOut} onPress={logout}><Text style={styles.signOutText}>{STRINGS.profile.signOut}</Text></Pressable>
+
+      {modal === "add" ? <ProfileAddAreaModal onClose={() => setModal(null)} onCreated={upsertGoal} /> : null}
+      {modal === "routine" && selectedGoal ? <ProfileEditRoutineModal goal={selectedGoal} onClose={() => setModal(null)} onSaved={upsertGoal} /> : null}
       {modal === "delete" && selectedGoal ? (
-        <ConfirmModal
-          title="Excluir area"
-          detail={`Excluir ${selectedGoal.target_language?.name ?? selectedGoal.target_language?.code}?`}
+        <ProfileConfirmModal
+          title={STRINGS.profile.deleteAreaTitle}
+          detail={STRINGS.profile.deleteAreaBody(languageName(selectedGoal))}
           onCancel={() => setModal(null)}
           onConfirm={() => deleteGoal(selectedGoal)}
         />
@@ -118,138 +145,90 @@ export function ProfileScreen() {
   );
 }
 
-function AddAreaModal({ onClose, onCreated }: { onClose: () => void; onCreated: (goal: Goal) => void }) {
-  const [languages, setLanguages] = useState<AvailableLanguage[]>([]);
-  const [target, setTarget] = useState<AvailableLanguage | null>(null);
-  const [days, setDays] = useState([0, 2, 4]);
-  const [minutes, setMinutes] = useState(30);
-  const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    adventureService.listAvailableLanguages().then((items) => {
-      setLanguages(items);
-      if (items[0]) setTarget(items[0]);
-    });
-  }, []);
-
-  function toggleDay(day: number) {
-    setDays((current) => current.includes(day) ? current.filter((item) => item !== day) : [...current, day].sort((a, b) => a - b));
-  }
-
-  async function submit() {
-    if (!target || days.length === 0) return;
-    setSaving(true);
-    try {
-      const goal = await contentService.createGoal({
-        source_language: "PT",
-        target_language: target.code,
-        target_level: "A1",
-        duration_days: 90,
-        study_weekdays: days,
-        session_minutes: minutes,
-      });
-      onCreated(goal);
-      onClose();
-    } finally {
-      setSaving(false);
-    }
-  }
-
+function ActiveGoalCard({ goal, onEdit }: { goal: Goal; onEdit: () => void }) {
   return (
-    <ModalShell title="Adicionar area" onClose={onClose}>
-      <Text style={styles.modalLabel}>Voce quer aprender</Text>
-      {languages.map((language) => (
-        <Pressable style={[styles.modalCard, target?.code === language.code ? styles.modalSelected : null]} key={language.code} onPress={() => setTarget(language)}>
-          <Text style={styles.modalCardTitle}>{STRINGS.languages[language.code as keyof typeof STRINGS.languages] ?? language.code}</Text>
-          <Text style={styles.modalCardDetail}>{language.chapter_subtitle || language.chapter_title}</Text>
-        </Pressable>
-      ))}
-      <RoutineFields days={days} minutes={minutes} onToggleDay={toggleDay} onMinutes={setMinutes} />
-      <Pressable style={[styles.modalPrimary, saving || !target || days.length === 0 ? styles.disabled : null]} disabled={saving || !target || days.length === 0} onPress={submit}>
-        <Text style={styles.modalPrimaryText}>{saving ? "Salvando..." : "Adicionar area"}</Text>
-      </Pressable>
-    </ModalShell>
-  );
-}
-
-function EditRoutineModal({ goal, onClose, onSaved }: { goal: Goal; onClose: () => void; onSaved: (goal: Goal) => void }) {
-  const [days, setDays] = useState(goal.study_weekdays);
-  const [minutes, setMinutes] = useState(goal.session_minutes);
-  const [saving, setSaving] = useState(false);
-
-  function toggleDay(day: number) {
-    setDays((current) => current.includes(day) ? current.filter((item) => item !== day) : [...current, day].sort((a, b) => a - b));
-  }
-
-  async function submit() {
-    if (days.length === 0) return;
-    setSaving(true);
-    try {
-      const updated = await contentService.updateGoal(goal.id, { study_weekdays: days, session_minutes: minutes });
-      onSaved(updated);
-      onClose();
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  return (
-    <ModalShell title="Editar rotina" onClose={onClose}>
-      <RoutineFields days={days} minutes={minutes} onToggleDay={toggleDay} onMinutes={setMinutes} />
-      <Pressable style={[styles.modalPrimary, saving || days.length === 0 ? styles.disabled : null]} disabled={saving || days.length === 0} onPress={submit}>
-        <Text style={styles.modalPrimaryText}>{saving ? "Salvando..." : "Salvar rotina"}</Text>
-      </Pressable>
-    </ModalShell>
-  );
-}
-
-function ConfirmModal({ title, detail, onCancel, onConfirm }: { title: string; detail: string; onCancel: () => void; onConfirm: () => void }) {
-  return (
-    <ModalShell title={title} onClose={onCancel}>
-      <Text style={styles.modalCardDetail}>{detail}</Text>
-      <View style={styles.confirmRow}>
-        <Pressable style={styles.cancelButton} onPress={onCancel}><Text style={styles.cancelText}>Cancelar</Text></Pressable>
-        <Pressable style={styles.dangerButton} onPress={onConfirm}><Text style={styles.dangerButtonText}>Excluir</Text></Pressable>
-      </View>
-    </ModalShell>
-  );
-}
-
-function RoutineFields({ days, minutes, onToggleDay, onMinutes }: { days: number[]; minutes: number; onToggleDay: (day: number) => void; onMinutes: (minutes: number) => void }) {
-  return (
-    <>
-      <Text style={styles.modalLabel}>Dias de estudo</Text>
-      <View style={styles.modalDayGrid}>
-        {WEEKDAYS.map((day) => (
-          <Pressable style={[styles.modalDay, days.includes(day) ? styles.modalSelected : null]} key={day} onPress={() => onToggleDay(day)}>
-            <Text style={days.includes(day) ? styles.modalSelectedText : styles.modalDayText}>{STRINGS.weekdays.short[day]}</Text>
-          </Pressable>
-        ))}
-      </View>
-      <Text style={styles.modalLabel}>Duracao</Text>
-      <View style={styles.modalPillGrid}>
-        {SESSION_OPTIONS.map((option) => (
-          <Pressable style={[styles.modalPill, minutes === option ? styles.modalSelected : null]} key={option} onPress={() => onMinutes(option)}>
-            <Text style={minutes === option ? styles.modalSelectedText : styles.modalDayText}>{STRINGS.onboarding.minutesShort(option)}</Text>
-          </Pressable>
-        ))}
-      </View>
-    </>
-  );
-}
-
-function ModalShell({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
-  return (
-    <Modal transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.modalBackdrop}>
-        <View style={styles.modalPanel}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>{title}</Text>
-            <Pressable style={styles.modalClose} onPress={onClose}><Text style={styles.modalCloseText}>Fechar</Text></Pressable>
+    <View style={styles.courseCard}>
+      <View style={styles.courseHeader}>
+        <LangFlag code={goal.target_language?.code ?? ""} large />
+        <View style={styles.courseText}>
+          <Text style={styles.cardTitle}>{languageName(goal)}</Text>
+          <View style={styles.badgeRow}>
+            <Text style={styles.langBadge}>{goal.source_language?.code} {"->"} {goal.target_language?.code}</Text>
+            <Text style={styles.levelBadge}>{goal.target_level}</Text>
           </View>
-          <ScrollView contentContainerStyle={styles.modalContent}>{children}</ScrollView>
         </View>
       </View>
-    </Modal>
+      <View style={styles.divider} />
+      <View style={styles.routineRow}>
+        <Feather name="clock" size={14} color="#a1a1aa" />
+        <Text style={styles.routineText}>{formatDays(goal.study_weekdays)} Â· {formatMinutes(goal.session_minutes)}</Text>
+        <Pressable onPress={onEdit}><Text style={styles.linkText}>{STRINGS.profile.editRoutine}</Text></Pressable>
+      </View>
+    </View>
   );
+}
+
+function WeekPreview({ activeGoal, history }: { activeGoal: Goal | null; history: HistoryMonth | null }) {
+  const today = new Date();
+  const completedDates = new Set<string>();
+  history?.goals.forEach((goal) => goal.days.forEach((day) => {
+    if (day.completed) completedDates.add(day.date);
+  }));
+  const routineSet = new Set(activeGoal?.study_weekdays ?? []);
+  const last7 = Array.from({ length: 7 }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - 6 + index);
+    return date.toISOString().split("T")[0];
+  });
+
+  return (
+    <View style={styles.weekCard}>
+      <View style={styles.weekHeader}>
+        <Text style={styles.sectionLabel}>{STRINGS.profile.weekActivity}</Text>
+        <Link href="/history" style={styles.linkText}>{STRINGS.profile.viewHistory}</Link>
+      </View>
+      <View style={styles.weekGrid}>
+        {last7.map((dateString) => {
+          const date = new Date(`${dateString}T12:00:00`);
+          const weekdayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
+          const completed = completedDates.has(dateString);
+          const planned = routineSet.has(weekdayIndex);
+          return (
+            <View style={styles.weekDay} key={dateString}>
+              <Text style={[styles.weekDate, planned ? styles.plannedDay : null, completed ? styles.completedDay : null]}>{date.getDate()}</Text>
+              <Text style={styles.weekLabel}>{STRINGS.weekdays.short[weekdayIndex]}</Text>
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+
+function LangFlag({ code, large = false }: { code: string; large?: boolean }) {
+  const flag = getFlagImage(code, large ? "xl" : "sm");
+  return <Image source={{ uri: flag.src }} style={large ? styles.flagLarge : styles.flag} />;
+}
+
+function State({ message }: { message: string }) {
+  return <View style={styles.state}><Text style={styles.stateText}>{message}</Text></View>;
+}
+
+
+function languageName(goal: Goal) {
+  const code = goal.target_language?.code ?? "";
+  return STRINGS.languages[code as keyof typeof STRINGS.languages] ?? goal.target_language?.name ?? code;
+}
+
+function formatDays(days: number[]) {
+  if (days.length === 0) return STRINGS.profile.casualStudy;
+  if (days.length === 7) return STRINGS.profile.allDays;
+  return days.map((day) => STRINGS.weekdays.short[day]).join(", ");
+}
+
+function formatMinutes(minutes: number) {
+  if (minutes === 60) return STRINGS.onboarding.hourShort;
+  if (minutes === 90) return STRINGS.onboarding.hourAndHalfShort;
+  return STRINGS.onboarding.minutesShort(minutes);
 }

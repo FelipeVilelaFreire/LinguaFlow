@@ -14,12 +14,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { LangFlag } from "@/src/components/LangFlag";
+import { LangFlag } from "@/src/components/shared";
 import styles from "./AppShell.module.css";
 
 const NAV_ITEMS = [
   { href: ROUTES.home, label: STRINGS.nav.home, icon: LayoutDashboard },
-  { href: ROUTES.adventureMap, label: STRINGS.nav.adventure, icon: Swords },
+  { href: ROUTES.adventure, label: STRINGS.nav.adventure, icon: Swords },
   { href: ROUTES.study, label: STRINGS.nav.study, icon: BookOpen },
   { href: ROUTES.vocabulary, label: STRINGS.nav.vocabulary, icon: BookMarked },
   { href: ROUTES.account, label: STRINGS.nav.profile, icon: CircleUser },
@@ -151,3 +151,4 @@ export function AppShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+

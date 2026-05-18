@@ -116,6 +116,22 @@
   transform: translateY(-2px);
 }
 
+.clickableRow {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.clickableRow:hover,
+.clickableRow:focus-visible {
+  background: var(--adventure-gold-soft);
+  outline: none;
+}
+
 .emoji {
   align-items: center;
   background: var(--adventure-gold-soft);
@@ -177,6 +193,81 @@
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
+.chestBoard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+  margin: 0 auto;
+  max-width: 980px;
+}
+
+.chestSummary {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.chestSectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chestSectionHeader h2 {
+  color: var(--adventure-parchment);
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+.chestSectionHeader span {
+  background: var(--adventure-surface-mid);
+  border: 1px solid var(--adventure-border-faint);
+  border-radius: var(--radius-full);
+  color: var(--adventure-text-on-bg);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: 5px 10px;
+}
+
+.emptyChestSlot {
+  align-items: center;
+  background: var(--adventure-surface);
+  border: 1px dashed var(--adventure-border-faint);
+  border-radius: var(--radius-sm);
+  color: var(--adventure-text-faint);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  min-height: 150px;
+}
+
+.emptyChestSlot span {
+  color: var(--adventure-gold);
+  font-size: 34px;
+}
+
+.chestCard {
+  animation: chestSlotArrive 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.chestProgress {
+  background: var(--adventure-surface-mid);
+  border-radius: var(--radius-full);
+  display: block;
+  height: 7px;
+  margin-top: var(--spacing-sm);
+  overflow: hidden;
+  width: 100%;
+}
+
+.chestProgress i {
+  background: linear-gradient(90deg, var(--adventure-node-active), var(--adventure-gold));
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
 .metric {
   background: var(--adventure-surface);
   border: 1px solid var(--adventure-border-faint);
@@ -206,120 +297,10 @@
   text-align: center;
 }
 
-.modalBackdrop {
-  align-items: center;
-  background: var(--adventure-surface-mid);
-  display: flex;
-  inset: 0;
-  justify-content: center;
-  padding: var(--spacing-xl);
-  position: fixed;
-  z-index: 50;
-}
-
-.modalPanel {
-  background: var(--adventure-parchment);
-  border: 1px solid var(--adventure-parchment-border);
-  border-radius: var(--radius-sm);
-  box-shadow: 0 28px 70px var(--adventure-surface-mid);
-  color: var(--adventure-parchment-text);
-  max-width: 520px;
-  padding: var(--spacing-2xl);
-  position: relative;
-  width: min(100%, 520px);
-}
-
-.closeButton {
-  align-items: center;
-  background: var(--adventure-gold-soft);
-  border: 1px solid var(--adventure-parchment-border);
-  border-radius: var(--radius-sm);
-  color: var(--adventure-parchment-text);
-  cursor: pointer;
-  display: flex;
-  font-size: var(--font-size-xl);
-  height: 34px;
-  justify-content: center;
-  position: absolute;
-  right: var(--spacing-lg);
-  top: var(--spacing-lg);
-  width: 34px;
-}
-
-.modalHero {
-  align-items: center;
-  display: flex;
-  gap: var(--spacing-lg);
-  padding-right: var(--spacing-4xl);
-}
-
-.modalHero p {
-  color: var(--adventure-parchment-subtext);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  margin: 0 0 var(--spacing-xs);
-}
-
-.modalHero h2 {
-  color: var(--adventure-parchment-text);
-  font-family: var(--font-display);
-  font-size: var(--font-size-3xl);
-  line-height: 1.08;
-  margin: 0;
-}
-
-.modalHero small {
-  color: var(--adventure-parchment-subtext);
-  display: block;
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  margin-top: var(--spacing-xs);
-  text-transform: uppercase;
-}
-
-.modalPanel blockquote {
-  border-left: 3px solid var(--adventure-gold);
-  color: var(--adventure-parchment-text);
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.45;
-  margin: var(--spacing-xl) 0 0;
-  padding-left: var(--spacing-md);
-}
-
-.modalDescription {
-  color: var(--adventure-parchment-text);
-  font-size: var(--font-size-base);
-  line-height: 1.55;
-  margin: var(--spacing-xl) 0;
-}
-
-.modalFacts {
-  display: grid;
-  gap: var(--spacing-sm);
-  grid-template-columns: repeat(2, 1fr);
-  margin: 0;
-}
-
-.modalFacts div {
-  background: var(--adventure-gold-soft);
-  border: 1px solid var(--adventure-parchment-border);
-  border-radius: var(--radius-sm);
-  padding: var(--spacing-md);
-}
-
-.modalFacts dt {
-  color: var(--adventure-parchment-subtext);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-}
-
-.modalFacts dd {
-  color: var(--adventure-parchment-text);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  margin: var(--spacing-xs) 0 0;
+@keyframes chestSlotArrive {
+  0% { opacity: 0; transform: translateY(28px) scale(0.94); filter: brightness(1.12); }
+  70% { opacity: 1; transform: translateY(-3px) scale(1.02); filter: brightness(1.06); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1); }
 }
 
 @media (max-width: 640px) {
@@ -338,7 +319,5 @@
     padding: var(--spacing-md);
   }
 
-  .modalFacts {
-    grid-template-columns: 1fr;
-  }
 }
+

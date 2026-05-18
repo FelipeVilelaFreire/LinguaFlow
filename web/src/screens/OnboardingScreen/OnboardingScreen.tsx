@@ -83,7 +83,7 @@ export function OnboardingScreen() {
       <div aria-hidden className={styles.glow} />
       <section className={styles.shell}>
         <header className={styles.header}>
-          <img src="/lang-plus.svg" alt="Talkly" />
+          <img src="/lang-plus.svg" alt={STRINGS.app.name} />
           <span>{STRINGS.onboarding.stepProgress(step, 2)}</span>
           <div className={styles.progressBar}>
             <div style={{ width: step === 1 ? "50%" : "100%" }} />

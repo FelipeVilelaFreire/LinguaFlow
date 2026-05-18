@@ -1,25 +1,29 @@
 .page {
-  background: var(--color-white);
-  display: grid;
-  gap: 14px;
-  margin: 0 auto;
-  max-width: 760px;
-  min-height: 100dvh;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 16px;
 }
 
 .userCard,
-.card,
-.goalCard {
+.courseCard,
+.weekCard,
+.listCard,
+.planCard {
+  background: var(--color-white);
   border: 1px solid var(--color-gray200);
-  border-radius: var(--radius-sm);
-  padding: 18px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 }
 
 .userCard {
   align-items: center;
+  cursor: pointer;
   display: flex;
   gap: 16px;
+  padding: 20px;
+  text-align: left;
+  width: 100%;
 }
 
 .avatar {
@@ -35,100 +39,272 @@
   justify-content: center;
 }
 
-.userCard div:nth-child(2) {
+.userText {
   flex: 1;
+  min-width: 0;
 }
 
-.userCard h1,
-.card h2 {
+.userText h1,
+.courseCard h2,
+.planCard strong {
+  color: var(--color-gray900);
   margin: 0;
 }
 
-.userCard p,
-.card span,
-.goalCard span {
+.userText p,
+.userText span,
+.areaRow span,
+.planCard small,
+.modalDetail {
   color: var(--color-gray500);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  margin: 4px 0 0;
+  margin: 2px 0 0;
 }
 
-.userCard button {
-  background: var(--color-gray100);
-  border: 0;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font: inherit;
+.userText span {
+  color: var(--color-gray400);
+  font-size: var(--font-size-xs);
+}
+
+.courseCard,
+.weekCard,
+.planCard {
+  padding: 20px;
+}
+
+.courseHeader {
+  align-items: flex-start;
+  display: flex;
+  gap: 16px;
+}
+
+.courseHeader div {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+
+.courseHeader h2 {
+  flex-basis: 100%;
+  font-size: var(--font-size-xl);
+  line-height: 1.15;
+}
+
+.courseHeader span,
+.courseHeader small {
+  background: var(--color-primary-light);
+  border-radius: var(--radius-full);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  min-height: 38px;
-  padding: 0 12px;
+  padding: 2px 10px;
 }
 
-.card p {
+.courseHeader small {
+  background: transparent;
+  color: var(--color-gray400);
+  padding-inline: 0;
+}
+
+.divider {
+  background: var(--color-gray100);
+  height: 1px;
+  margin: 16px 0;
+}
+
+.routineRow,
+.weekHeader,
+.areaRow,
+.addArea,
+.planCard > div {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.routineRow svg {
+  color: var(--color-gray400);
+}
+
+.routineRow span,
+.weekHeader p {
+  color: var(--color-gray600);
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.routineRow button,
+.weekHeader a,
+.useButton {
   color: var(--color-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  margin: 0 0 4px;
 }
 
-.progress {
-  background: var(--color-gray100);
-  border-radius: var(--radius-full);
-  height: 8px;
-  margin-top: 14px;
-  overflow: hidden;
+.weekHeader p,
+.sectionLabel,
+.planCard > p,
+.modalSection > p {
+  color: var(--color-gray400);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0;
+  margin: 0;
+  text-transform: uppercase;
 }
 
-.progress div {
-  background: var(--color-primary);
-  height: 100%;
-}
-
-.grid {
+.weekGrid {
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: 12px;
 }
 
-.goalCard {
-  display: grid;
+.weekDay {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   gap: 4px;
 }
 
-.historyLink {
+.weekDay span {
   align-items: center;
+  border-radius: var(--radius-sm);
+  color: var(--color-gray300);
+  display: flex;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  height: 36px;
+  justify-content: center;
+  width: 100%;
+}
+
+.weekDay small {
+  color: var(--color-gray300);
+  font-size: 9px;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.weekDay .plannedDay {
+  background: var(--color-gray100);
+  color: var(--color-gray600);
+  outline: 1px solid var(--color-gray200);
+}
+
+.weekDay .completedDay {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.listCard {
+  overflow: hidden;
+}
+
+.sectionLabel {
+  padding: 16px 20px 8px;
+}
+
+.areaRow {
+  border-top: 1px solid var(--color-gray100);
+  padding: 14px 20px;
+}
+
+.areaRow div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.areaRow strong {
+  color: var(--color-gray900);
+  font-size: var(--font-size-sm);
+}
+
+.useButton {
   background: var(--color-primary);
   border-radius: var(--radius-sm);
   color: var(--color-white);
-  display: flex;
-  font-weight: var(--font-weight-bold);
-  justify-content: center;
-  min-height: 44px;
-  text-decoration: none;
-}
-
-.addButton,
-.inlineAction,
-.goalCard button {
-  background: var(--color-gray100);
-  border: 0;
-  border-radius: var(--radius-sm);
-  color: var(--color-gray700);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
-  min-height: 38px;
+  height: 32px;
   padding: 0 12px;
 }
 
-.addButton {
-  background: var(--color-white);
-  border: 1px dashed var(--color-gray300);
+.trashButton {
+  align-items: center;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  color: #dc2626;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
 }
 
-.inlineAction {
-  margin-top: 14px;
+.addArea {
+  border: 1px dashed var(--color-gray300);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: left;
+}
+
+.addArea > span {
+  align-items: center;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-full);
+  color: var(--color-primary);
+  display: flex;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.addArea div {
+  flex: 1;
+}
+
+.addArea strong {
+  color: var(--color-gray900);
+  font-size: var(--font-size-sm);
+}
+
+.addArea p {
+  color: var(--color-gray500);
+  font-size: var(--font-size-xs);
+  margin: 2px 0 0;
+}
+
+.planCard > p {
+  margin-bottom: 8px;
+}
+
+.planCard > div {
+  justify-content: space-between;
+}
+
+.planCard span {
+  display: flex;
+  flex-direction: column;
+}
+
+.planCard button {
+  background: var(--color-primary-light);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: 9px 12px;
+}
+
+.signOut {
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  color: #dc2626;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  height: 46px;
 }
 
 .modalBackdrop {
@@ -156,9 +332,11 @@
   width: 100%;
 }
 
-.modalPanel header {
+.modalPanel header,
+.modalActions {
   align-items: center;
   display: flex;
+  gap: 10px;
   justify-content: space-between;
 }
 
@@ -166,14 +344,15 @@
   margin: 0;
 }
 
+.modalPanel button {
+  font: inherit;
+}
+
 .modalPanel header button,
 .modalActions button {
   background: var(--color-gray100);
-  border: 0;
   border-radius: var(--radius-sm);
   color: var(--color-gray700);
-  cursor: pointer;
-  font: inherit;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   min-height: 36px;
@@ -185,28 +364,25 @@
   gap: 10px;
 }
 
-.modalSection > p {
-  color: var(--color-gray400);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-bold);
-  margin: 0;
-  text-transform: uppercase;
-}
-
 .selectCard {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray200);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  display: grid;
-  gap: 4px;
-  padding: 12px;
+  align-items: center;
+  border: 2px solid var(--color-gray200);
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
   text-align: left;
 }
 
 .selectCard span {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectCard small {
   color: var(--color-gray500);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
 }
 
 .selected {
@@ -216,21 +392,23 @@
 }
 
 .dayGrid {
-  display: grid;
-  gap: 6px;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
 }
 
 .dayGrid button,
 .pillGrid button {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray200);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
+  border: 2px solid var(--color-gray200);
+  border-radius: var(--radius-full);
+  color: var(--color-gray500);
   font: inherit;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
   min-height: 40px;
+}
+
+.dayGrid button {
+  width: 40px;
 }
 
 .pillGrid {
@@ -240,16 +418,19 @@
 }
 
 .pillGrid button {
-  padding: 0 12px;
+  padding: 0 14px;
+}
+
+.selectedDay {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
 }
 
 .modalPrimary {
   background: var(--color-primary);
-  border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   color: var(--color-white);
-  cursor: pointer;
-  font: inherit;
   font-weight: var(--font-weight-bold);
   min-height: 48px;
 }
@@ -258,14 +439,11 @@
   opacity: 0.55;
 }
 
-.modalDetail {
-  color: var(--color-gray500);
+.errorText {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
   margin: 0;
-}
-
-.modalActions {
-  display: flex;
-  gap: 10px;
 }
 
 .modalActions button {

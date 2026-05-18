@@ -12,7 +12,8 @@ import { ArrowRight, BookOpen, CalendarDays, Flame, Plus, Sparkles, Sword } from
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect, useMemo, useState } from "react";
-import { LangFlag } from "@/src/components/LangFlag";
+import { AdventureTransitionLink } from "@/src/components/features/adventure";
+import { LangFlag } from "@/src/components/shared";
 import styles from "./HomeScreen.module.css";
 
 export function HomeScreen() {
@@ -112,10 +113,10 @@ export function HomeScreen() {
         </div>
 
         <div className={styles.heroActions}>
-          <Link className={styles.primaryAction} href={ROUTES.adventureMap}>
+          <AdventureTransitionLink className={styles.primaryAction} href={ROUTES.adventureMap}>
             {STRINGS.home.continueAdventure}
             <ArrowRight size={18} />
-          </Link>
+          </AdventureTransitionLink>
         </div>
       </section>
 
@@ -169,3 +170,5 @@ function StatCard({
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "2-digit" }).format(new Date(`${value}T12:00:00`));
 }
+
+

@@ -87,16 +87,20 @@ export const styles = StyleSheet.create({
     marginTop: SPACING.sm,
   },
   primaryAction: {
+    alignItems: "center",
     backgroundColor: COLORS.primary,
     borderRadius: RADIUS.sm,
-    color: COLORS.white,
-    fontSize: FONT_SIZE.base,
-    fontWeight: "700",
+    justifyContent: "center",
     marginTop: SPACING.lg,
     minHeight: 48,
     overflow: "hidden",
     paddingHorizontal: SPACING.lg,
     paddingVertical: 14,
+  },
+  primaryActionText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.base,
+    fontWeight: "700",
     textAlign: "center",
   },
   statsGrid: {

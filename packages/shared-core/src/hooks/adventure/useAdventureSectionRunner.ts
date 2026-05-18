@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { adventureService } from "../../services/adventureService";
-import type { PhaseSection, SectionStep } from "../../types/sections";
+import type { PhaseSection, SectionStep, VoiceProfile } from "../../types/sections";
 
 export type AdventureChatEntry =
   | { id: string; kind: "scene"; text: string }
   | { id: string; kind: "narrative"; text: string }
-  | { id: string; kind: "npc"; npc: string; line: string; translation?: string; isNew?: boolean; audio_url?: string }
+  | { id: string; kind: "npc"; npc: string; line: string; translation?: string; isNew?: boolean; audio_url?: string; pace?: string; speech_rate?: number; voice?: VoiceProfile }
   | { id: string; kind: "player"; text: string; label: string }
   | { id: string; kind: "answer"; text: string; label: string; correct: boolean; correctText?: string }
   | { id: string; kind: "pattern"; parts: Array<{ text: string; isKey: boolean }>; example: string; translation: string; note: string }
@@ -115,7 +115,18 @@ export function useAdventureSectionRunner({
       return;
     }
     if (step.kind === "npc_speak") {
-      addEntry({ id, kind: "npc", npc: step.npc, line: step.line, translation: step.translation, isNew: step.is_new_npc, audio_url: step.audio_url });
+      addEntry({
+        id,
+        kind: "npc",
+        npc: step.npc,
+        line: step.line,
+        translation: step.translation,
+        isNew: step.is_new_npc,
+        audio_url: step.audio_url,
+        pace: step.pace,
+        speech_rate: step.speech_rate,
+        voice: step.voice,
+      });
       adventureService.meetCharacterByName(step.npc).catch(() => {});
       setPhase("tap");
       return;
@@ -221,6 +232,9 @@ export function useAdventureSectionRunner({
     const chosenText = step.options.find((option) => option.id === choiceId)?.text ?? choiceId;
     const correctText = step.options.find((option) => option.id === step.correct)?.text ?? step.correct;
     addEntry({ id: `${id}-answer`, kind: "answer", text: chosenText, label: playerLabel, correct: isCorrect, correctText });
+    if (step.npc_reaction) {
+      addEntry({ id: `${id}-reaction`, kind: "npc", npc: step.npc ?? "", line: step.npc_reaction, audio_url: step.npc_reaction_audio_url });
+    }
     if (isCorrect) setCorrect((value) => value + 1);
     else setMistakes((value) => value + 1);
     if (step.word_id) {
