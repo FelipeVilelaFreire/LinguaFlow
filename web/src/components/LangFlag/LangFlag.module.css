@@ -1,0 +1,6 @@
+.flag {
+  box-shadow: var(--shadow-flag);
+  display: block;
+  flex: 0 0 auto;
+  object-fit: cover;
+}

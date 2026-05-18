@@ -27,18 +27,20 @@ If a file is missing, the frontend uses the existing browser TTS.
 On Windows, the easiest local setup is:
 
 ```bat
-backend\bats\setup_adventure_tts.bat
+bats\backend\tts.bat
 ```
 
 The main interactive setup also offers this when you choose ES:
 
 ```bat
-backend\bats\setup.bat
+bats\backend\setup.bat
 ```
 
-That script downloads Piper to `backend\tools\piper`, downloads free ES Piper
-voices to `backend\models\piper`, writes `backend\.env`, and can generate the
-WAV cache at the end.
+That script downloads Piper and voices to the local user cache under
+`%USERPROFILE%\.codex\memories\linguaflow-tts`, writes `backend\.env`, and can
+generate the WAV cache at the end. Old local copies under `backend\tools`,
+`backend\tts_models`, and `backend\media` are generated artifacts, not source
+code.
 
 Configure Piper and at least one voice model:
 

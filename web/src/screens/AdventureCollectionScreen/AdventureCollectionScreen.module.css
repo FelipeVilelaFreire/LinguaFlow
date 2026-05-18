@@ -1,53 +1,58 @@
 .page {
-  background: var(--color-white);
-  color: var(--color-gray900);
+  background:
+    radial-gradient(circle at 50% -10%, var(--adventure-ambient-glow), transparent 34rem),
+    linear-gradient(180deg, var(--adventure-bg-from), var(--adventure-bg-mid) 48%, var(--adventure-bg-to));
+  color: var(--adventure-parchment);
   min-height: 100dvh;
-  padding: 20px;
+  padding: var(--spacing-xl);
 }
 
 .tabs {
   display: flex;
-  gap: 8px;
-  margin: 0 auto 28px;
+  gap: var(--spacing-sm);
+  margin: 0 auto var(--spacing-2xl);
   max-width: 980px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: var(--spacing-xs);
 }
 
 .tabs a {
   align-items: center;
-  background: var(--color-gray100);
-  border: 1px solid transparent;
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
-  color: var(--color-gray600);
+  color: var(--adventure-text-on-bg);
   display: flex;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   min-height: 38px;
-  padding: 0 12px;
+  padding: 0 var(--spacing-md);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .tabs .activeTab {
-  background: var(--color-primary-light);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  background: var(--adventure-gold-soft);
+  border-color: var(--adventure-gold);
+  color: var(--adventure-parchment);
 }
 
 .header {
   align-items: end;
   display: flex;
   justify-content: space-between;
-  margin: 0 auto 28px;
+  margin: 0 auto var(--spacing-2xl);
   max-width: 980px;
 }
 
 .header p {
-  color: var(--color-primary);
+  align-items: center;
+  color: var(--adventure-gold);
+  display: flex;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  margin: 0 0 4px;
+  gap: var(--spacing-xs);
+  margin: 0 0 var(--spacing-xs);
 }
 
 .header h1 {
@@ -58,15 +63,15 @@
 }
 
 .header span {
-  color: var(--color-gray500);
+  color: var(--adventure-text-on-bg);
   display: block;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-  margin-top: 8px;
+  margin-top: var(--spacing-sm);
 }
 
 .header > strong {
-  color: var(--color-primary);
+  color: var(--adventure-gold);
   font-size: var(--font-size-2xl);
 }
 
@@ -79,44 +84,41 @@
 
 .grid {
   display: grid;
-  gap: 12px;
+  gap: var(--spacing-md);
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 }
 
 .itemCard {
   align-items: flex-start;
-  background: var(--color-white);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
+  color: var(--adventure-parchment);
   display: flex;
-  gap: 14px;
+  gap: var(--spacing-md);
   min-height: 126px;
-  padding: 16px;
+  padding: var(--spacing-lg);
 }
 
 .clickableCard {
-  color: inherit;
   cursor: pointer;
   font: inherit;
   text-align: left;
-  transition:
-    border-color 160ms ease,
-    box-shadow 160ms ease,
-    transform 160ms ease;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   width: 100%;
 }
 
 .clickableCard:hover,
 .clickableCard:focus-visible {
-  border-color: var(--color-primary);
-  box-shadow: 0 14px 32px rgb(18 24 40 / 10%);
+  border-color: var(--adventure-gold);
+  box-shadow: 0 14px 32px var(--adventure-surface-mid);
   outline: none;
   transform: translateY(-2px);
 }
 
 .emoji {
   align-items: center;
-  background: var(--color-gray100);
+  background: var(--adventure-gold-soft);
   border-radius: var(--radius-sm);
   display: flex;
   flex: 0 0 42px;
@@ -132,21 +134,22 @@
 }
 
 .itemCard p {
-  color: var(--color-gray500);
+  color: var(--adventure-text-on-bg);
   font-size: var(--font-size-sm);
-  margin: 6px 0;
+  margin: var(--spacing-xs) 0;
 }
 
 .itemCard small,
 .wordRow small {
-  color: var(--color-gray400);
+  color: var(--adventure-text-faint);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
 }
 
 .wordList {
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
@@ -154,120 +157,111 @@
 .wordRow {
   align-items: center;
   display: grid;
-  gap: 12px;
+  gap: var(--spacing-md);
   grid-template-columns: 1fr 1fr auto;
   min-height: 54px;
-  padding: 0 16px;
+  padding: 0 var(--spacing-lg);
 }
 
 .wordRow + .wordRow {
-  border-top: 1px solid var(--color-gray200);
+  border-top: 1px solid var(--adventure-border-faint);
 }
 
 .wordRow span {
-  color: var(--color-gray500);
+  color: var(--adventure-text-on-bg);
 }
 
 .heroGrid {
   display: grid;
-  gap: 12px;
+  gap: var(--spacing-md);
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 }
 
 .metric {
-  background: var(--color-gray50);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 18px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg);
 }
 
 .metric span {
-  color: var(--color-gray500);
+  color: var(--adventure-text-on-bg);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
 }
 
 .metric strong {
-  color: var(--color-gray900);
+  color: var(--adventure-parchment);
   font-size: var(--font-size-3xl);
 }
 
 .state {
-  color: var(--color-gray500);
+  color: var(--adventure-text-on-bg);
   font-weight: var(--font-weight-semibold);
-  margin: 64px auto 0;
+  margin: var(--spacing-5xl) auto 0;
   max-width: 980px;
   text-align: center;
 }
 
 .modalBackdrop {
   align-items: center;
-  background: rgb(18 24 40 / 48%);
+  background: var(--adventure-surface-mid);
   display: flex;
   inset: 0;
   justify-content: center;
-  padding: 20px;
+  padding: var(--spacing-xl);
   position: fixed;
   z-index: 50;
 }
 
 .modalPanel {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-parchment);
+  border: 1px solid var(--adventure-parchment-border);
   border-radius: var(--radius-sm);
-  box-shadow: 0 28px 70px rgb(18 24 40 / 18%);
+  box-shadow: 0 28px 70px var(--adventure-surface-mid);
+  color: var(--adventure-parchment-text);
   max-width: 520px;
-  padding: 24px;
+  padding: var(--spacing-2xl);
   position: relative;
   width: min(100%, 520px);
 }
 
 .closeButton {
   align-items: center;
-  background: var(--color-gray100);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-gold-soft);
+  border: 1px solid var(--adventure-parchment-border);
   border-radius: var(--radius-sm);
-  color: var(--color-gray600);
+  color: var(--adventure-parchment-text);
   cursor: pointer;
   display: flex;
   font-size: var(--font-size-xl);
   height: 34px;
   justify-content: center;
   position: absolute;
-  right: 16px;
-  top: 16px;
+  right: var(--spacing-lg);
+  top: var(--spacing-lg);
   width: 34px;
 }
 
 .modalHero {
   align-items: center;
   display: flex;
-  gap: 16px;
-  padding-right: 48px;
-}
-
-.modalEmoji {
-  align-items: center;
-  background: var(--color-primary-light);
-  border-radius: var(--radius-sm);
-  display: flex;
-  flex: 0 0 64px;
-  font-size: 34px;
-  height: 64px;
-  justify-content: center;
+  gap: var(--spacing-lg);
+  padding-right: var(--spacing-4xl);
 }
 
 .modalHero p {
-  color: var(--color-primary);
+  color: var(--adventure-parchment-subtext);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
-  margin: 0 0 4px;
+  margin: 0 0 var(--spacing-xs);
 }
 
 .modalHero h2 {
+  color: var(--adventure-parchment-text);
   font-family: var(--font-display);
   font-size: var(--font-size-3xl);
   line-height: 1.08;
@@ -275,87 +269,73 @@
 }
 
 .modalHero small {
-  color: var(--color-gray400);
+  color: var(--adventure-parchment-subtext);
   display: block;
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  margin-top: 6px;
+  margin-top: var(--spacing-xs);
   text-transform: uppercase;
 }
 
 .modalPanel blockquote {
-  border-left: 3px solid var(--color-primary);
-  color: var(--color-gray700);
+  border-left: 3px solid var(--adventure-gold);
+  color: var(--adventure-parchment-text);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   line-height: 1.45;
-  margin: 22px 0 0;
-  padding-left: 14px;
+  margin: var(--spacing-xl) 0 0;
+  padding-left: var(--spacing-md);
 }
 
 .modalDescription {
-  color: var(--color-gray600);
+  color: var(--adventure-parchment-text);
   font-size: var(--font-size-base);
   line-height: 1.55;
-  margin: 20px 0;
+  margin: var(--spacing-xl) 0;
 }
 
 .modalFacts {
   display: grid;
-  gap: 10px;
+  gap: var(--spacing-sm);
   grid-template-columns: repeat(2, 1fr);
   margin: 0;
 }
 
 .modalFacts div {
-  background: var(--color-gray50);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-gold-soft);
+  border: 1px solid var(--adventure-parchment-border);
   border-radius: var(--radius-sm);
-  padding: 12px;
+  padding: var(--spacing-md);
 }
 
 .modalFacts dt {
-  color: var(--color-gray400);
+  color: var(--adventure-parchment-subtext);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
 }
 
 .modalFacts dd {
-  color: var(--color-gray900);
+  color: var(--adventure-parchment-text);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  margin: 4px 0 0;
+  margin: var(--spacing-xs) 0 0;
 }
 
 @media (max-width: 640px) {
   .page {
-    padding: 16px;
+    padding: var(--spacing-lg);
   }
 
   .header {
     align-items: flex-start;
     flex-direction: column;
-    gap: 10px;
-  }
-
-  .header h1 {
-    font-size: var(--font-size-3xl);
+    gap: var(--spacing-sm);
   }
 
   .wordRow {
-    align-items: flex-start;
     grid-template-columns: 1fr;
-    padding: 14px 16px;
-  }
-
-  .modalPanel {
-    padding: 20px;
-  }
-
-  .modalHero {
-    align-items: flex-start;
-    flex-direction: column;
+    padding: var(--spacing-md);
   }
 
   .modalFacts {

@@ -6,7 +6,7 @@ Plataforma de aprendizado de idiomas para estudo diario em situacoes reais.
 
 - `backend/`: Django + Django REST Framework.
 - `frontend-web/`: React + Vite + Tailwind CSS.
-- `frontend-admin/`: interface administrativa React.
+- `admin/`: interface administrativa React separada, modular e config-driven.
 - `docs/`: documentacao organizada por produto, conteudo, design, arquitetura e features.
 
 ## Documentacao

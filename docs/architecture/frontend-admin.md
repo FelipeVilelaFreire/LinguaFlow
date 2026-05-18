@@ -2,17 +2,17 @@
 
 ## Purpose
 
-`frontend-admin` is a separate React application for staff and superusers. It is not part of the learner-facing `frontend-web` app.
+`admin/` is the separate React application for staff and superusers. It is not part of the learner-facing `web/` app.
 
 The admin surface has two layers:
 
 - Django Admin at `/admin/` for direct database maintenance.
-- React Admin at `http://localhost:5178` for a cleaner operational dashboard.
+- React Admin at `http://localhost:5178` for operational workflows, content inspection, adventure entities and business planning.
 
 ## Runtime
 
 ```txt
-frontend-admin
+admin/
   -> Vite React app
   -> talks to backend /api/admin-dashboard/*
   -> requires a staff/superuser JWT
@@ -30,23 +30,53 @@ Override with:
 VITE_API_BASE_URL=http://localhost:8001/api
 ```
 
-## Folder Structure
+## Current Structure
 
 ```txt
-frontend-admin/
+admin/
   src/
-    components/
-      DataTable.tsx
-      StatCard.tsx
-    services/
-      api.ts
-    styles/
-      index.css
-    types/
-      admin.ts
-    App.tsx
-    main.tsx
+    admin/
+      AdminApp.tsx
+      apps/
+        dashboard/config.tsx
+        users/config.tsx
+        goals/config.tsx
+        content/config.tsx
+        learning/config.tsx
+        adventure/config.tsx
+        progress/config.tsx
+        business-plan/config.tsx
+        system/config.tsx
+      ini/config/endpoints.ts
+      shared/
+        components/
+        services/
+        types.ts
+        utils/
+    styles/index.css
 ```
+
+## Rules
+
+- Admin remains separate from `web/`.
+- Admin apps are config-driven under `admin/src/admin/apps/**`.
+- Visible admin text comes from `STRINGS.admin.*` in shared-core.
+- Admin CSS uses `--admin-*` variables.
+- No Tailwind in `admin/`.
+- API endpoints are centralized in `admin/src/admin/ini/config/endpoints.ts`.
+- Backend endpoints remain protected by `IsAdminUser`.
+
+## Current Apps
+
+- Dashboard.
+- Users.
+- Goals/areas.
+- Content catalog.
+- Learning/study.
+- Adventure, including phases, characters and items.
+- Progress.
+- Business plan.
+- System/Django app map.
 
 ## Backend Contract
 
@@ -63,6 +93,9 @@ GET /api/admin-dashboard/summary/
 GET /api/admin-dashboard/users/
 GET /api/admin-dashboard/goals/
 GET /api/admin-dashboard/content/
+GET /api/admin-dashboard/learning-detail/
+GET /api/admin-dashboard/adventure/
+GET /api/admin-dashboard/progress/
 ```
 
 All routes use:
@@ -71,81 +104,12 @@ All routes use:
 permission_classes = [IsAdminUser]
 ```
 
-So the logged user must have `is_staff=True`.
-
-## Current Screens
-
-### Dashboard
-
-Shows high-level metrics:
-
-- users
-- staff users
-- active goals
-- total goals
-- languages
-- scenarios
-- lessons
-- study days
-- phrases
-- completions
-- favorites
-- progress entries
-
-### Users
-
-Shows recent users with:
-
-- id
-- username
-- email
-- staff status
-- active status
-- goal count
-- completion count
-
-### Areas
-
-Shows study goals with:
-
-- user
-- source and target language
-- current level
-- target level
-- duration
-- routine
-- progress
-- streak
-
-### Content
-
-Shows:
-
-- languages
-- scenarios
-- phrase counts by course and level
-- lesson totals
-- study day totals
-
-## Django Admin
-
-Each backend app owns its own admin registration:
-
-```txt
-backend/apps/accounts/admin.py
-backend/apps/learning/admin.py
-backend/apps/goals/admin.py
-backend/apps/progress/admin.py
-```
-
-This keeps database maintenance close to each domain app.
-
 ## Commands
 
 Install dependencies:
 
 ```powershell
-cd LinguaFlow/frontend-admin
+cd LinguaFlow/admin
 npm install
 ```
 
@@ -161,6 +125,12 @@ Open:
 http://localhost:5178
 ```
 
+Build:
+
+```powershell
+npm run build
+```
+
 Backend requirements:
 
 ```powershell
@@ -171,3 +141,11 @@ python manage.py runserver
 ```
 
 The same superuser works for Django Admin and React Admin.
+
+## Remaining Admin Work
+
+- Add real CRUD mutations per entity.
+- Add generic detail page.
+- Add form builder.
+- Add trash/history apps after backend soft-delete/audit endpoints exist.
+- Turn `business-plan` from static scenario table into editable assumptions and cashflow model.

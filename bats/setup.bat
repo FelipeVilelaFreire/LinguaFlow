@@ -10,7 +10,8 @@ rem   backend/              Django source of truth
 rem   packages/shared-core/ Shared business logic
 rem   web/                  Next.js render-only app
 rem   mobile/               Expo render-only app
-rem   frontend-web/         Legacy Vite app kept during migration
+rem   admin/                Vite React admin app
+rem   frontend-web/         Legacy Vite app kept only for QA reference
 rem ============================================================
 
 set "SCRIPT_DIR=%~dp0"
@@ -35,7 +36,7 @@ call :require_command npm "npm nao encontrado no PATH. Instale Node.js LTS antes
 if errorlevel 1 exit /b 1
 
 echo.
-echo [1/7] Preparando ambiente Conda...
+echo [1/8] Preparando ambiente Conda...
 call conda env list | findstr /R /C:"^%CONDA_ENV% " /C:"^%CONDA_ENV%$" >nul 2>nul
 if errorlevel 1 (
   echo Criando env "%CONDA_ENV%" com Python %PYTHON_VERSION%...
@@ -55,7 +56,7 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/7] Instalando backend Django...
+echo [2/8] Instalando backend Django...
 pushd "%PROJECT_PATH%\backend"
 if not exist requirements.txt (
   echo ERRO: backend\requirements.txt nao encontrado.
@@ -81,8 +82,26 @@ if exist .env.example if not exist .env (
 popd
 
 echo.
-echo [3/7] Rodando migrations do backend...
+echo [3/8] Sincronizando banco do backend...
 pushd "%PROJECT_PATH%\backend"
+echo.
+echo --- Django check ---
+python manage.py check
+if errorlevel 1 (
+  echo ERRO: python manage.py check falhou.
+  popd
+  exit /b 1
+)
+echo.
+echo --- makemigrations ---
+python manage.py makemigrations
+if errorlevel 1 (
+  echo ERRO: python manage.py makemigrations falhou.
+  popd
+  exit /b 1
+)
+echo.
+echo --- migrate ---
 python manage.py migrate
 if errorlevel 1 (
   echo ERRO: python manage.py migrate falhou.
@@ -92,7 +111,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo [4/7] Instalando e buildando shared-core...
+echo [4/8] Instalando e buildando shared-core...
 pushd "%PROJECT_PATH%\packages\shared-core"
 call npm install
 if errorlevel 1 (
@@ -109,7 +128,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo [5/7] Instalando web Next.js...
+echo [5/8] Instalando web Next.js...
 pushd "%PROJECT_PATH%\web"
 if exist .env.example if not exist .env.local (
   copy .env.example .env.local >nul
@@ -124,7 +143,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo [6/7] Instalando mobile Expo...
+echo [6/8] Instalando mobile Expo...
 pushd "%PROJECT_PATH%\mobile"
 if exist .env.example if not exist .env (
   copy .env.example .env >nul
@@ -139,7 +158,28 @@ if errorlevel 1 (
 popd
 
 echo.
-echo [7/7] Instalando frontend-web legado...
+echo [7/8] Instalando e buildando admin...
+pushd "%PROJECT_PATH%\admin"
+if exist .env.example if not exist .env (
+  copy .env.example .env >nul
+  echo Criado admin\.env a partir de admin\.env.example.
+)
+call npm install
+if errorlevel 1 (
+  echo ERRO: npm install em admin falhou.
+  popd
+  exit /b 1
+)
+call npm run build
+if errorlevel 1 (
+  echo ERRO: npm run build em admin falhou.
+  popd
+  exit /b 1
+)
+popd
+
+echo.
+echo [8/8] Instalando frontend-web legado para QA...
 if exist "%PROJECT_PATH%\frontend-web\package.json" (
   pushd "%PROJECT_PATH%\frontend-web"
   if exist .env.example if not exist .env (
@@ -166,7 +206,8 @@ echo - backend: fonte da verdade em Django
 echo - packages\shared-core: logica compartilhada
 echo - web: app Next.js novo
 echo - mobile: app Expo novo
-echo - frontend-web: legado temporario durante a migracao
+echo - admin: app administrativo config-driven
+echo - frontend-web: legado temporario apenas para QA/comparacao
 echo.
 echo Comandos de desenvolvimento:
 echo - bats\dev.bat
@@ -174,8 +215,17 @@ echo - backend: cd backend ^& conda activate %CONDA_ENV% ^& python manage.py run
 echo - shared-core: cd packages\shared-core ^& npm run dev
 echo - web: cd web ^& npm run dev
 echo - mobile: cd mobile ^& npm run start
+echo - admin: cd admin ^& npm run dev
 echo ============================================================
 echo.
+
+set /p RUN_BACKEND_SEED="Rodar setup interativo de seeds do backend agora? (S/N): "
+if /I "%RUN_BACKEND_SEED%"=="S" (
+  call "%PROJECT_PATH%\bats\backend\setup.bat"
+  if errorlevel 1 (
+    echo AVISO: setup de seeds falhou ou foi interrompido.
+  )
+)
 
 set /p OPEN_DEV="Abrir o ambiente dev agora? (S/N): "
 if /I "%OPEN_DEV%"=="S" (

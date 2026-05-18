@@ -1,7 +1,7 @@
 :root {
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #dbeafe;
+  --color-primary: #14b8a6;
+  --color-primary-hover: #0f766e;
+  --color-primary-light: #f0fdfa;
   --color-white: #ffffff;
   --color-gray50: #fafafa;
   --color-gray100: #f4f4f5;
@@ -47,6 +47,35 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  --shadow-flag: 0 1px 4px rgba(0,0,0,0.16);
+  --adventure-surface: rgba(255,255,255,0.08);
+  --adventure-surface-mid: rgba(0,0,0,0.35);
+  --adventure-text-on-bg: rgba(255,255,255,0.70);
+  --adventure-text-faint: rgba(255,255,255,0.52);
+  --adventure-border-faint: rgba(255,255,255,0.06);
+  --adventure-bg-from: #3d0f00;
+  --adventure-bg-mid: #5c1a00;
+  --adventure-bg-to: #3d0f00;
+  --adventure-ambient-glow: rgba(185,28,28,0.18);
+  --adventure-path: #b91c1c;
+  --adventure-path-glow: rgba(185,28,28,0.35);
+  --adventure-node-active: #dc2626;
+  --adventure-node-active-glow: rgba(220,38,38,0.50);
+  --adventure-node-completed: #059669;
+  --adventure-node-locked: #1c0808;
+  --adventure-boss: #78350f;
+  --adventure-boss-glow: rgba(120,53,15,0.55);
+  --adventure-season-bg: #b91c1c;
+  --adventure-season-text: #fef2f2;
+  --adventure-parchment: #fffbeb;
+  --adventure-parchment-border: rgba(185,28,28,0.20);
+  --adventure-parchment-text: #1c0505;
+  --adventure-parchment-subtext: #7f1d1d;
+  --adventure-gold: #ca8a04;
+  --adventure-gold-soft: rgba(202,138,4,0.15);
+  --adventure-cta-bg: #b91c1c;
+  --adventure-cta-text: #ffffff;
+  --adventure-cta-hover: #7f1d1d;
 }
 
 * {
@@ -60,7 +89,9 @@ body {
 }
 
 body {
-  background: var(--color-white);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), transparent 260px),
+    var(--area-page);
   color: var(--color-gray900);
   font-family: var(--font-body);
   font-size: var(--font-size-base);

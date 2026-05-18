@@ -5,10 +5,12 @@ import {
   useAdventureSectionRunner,
 } from "@linguaflow/shared-core/hooks/adventure";
 import type { AdventureChatEntry } from "@linguaflow/shared-core/hooks/adventure";
-import { ROUTES as APP_ROUTES } from "@linguaflow/shared-core";
+import { getAdventureColors, getAdventureThemeVars, getCharacterAvatar, ROUTES as APP_ROUTES, STRINGS } from "@linguaflow/shared-core";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { CSSProperties } from "react";
 import { useState } from "react";
+import { CharacterAvatar } from "@/src/components/CharacterAvatar";
 import styles from "./AdventureChapterRunnerScreen.module.css";
 
 export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
@@ -19,6 +21,7 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
   const sourceLangCode = search.get("source") ?? "PT";
   const firstName = search.get("name") ?? "";
   const keyWords = (search.get("words") ?? "").split(",").map((word) => word.trim()).filter(Boolean);
+  const themeStyle = getAdventureThemeVars(getAdventureColors(langCode, "dark")) as CSSProperties;
 
   const runner = useAdventurePhaseRunner({
     phaseId,
@@ -27,7 +30,7 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
     onExit: () => router.push(APP_ROUTES.adventureMap),
   });
 
-  if (runner.loading) return <State message="Carregando fase..." />;
+  if (runner.loading) return <State message="Carregando fase..." style={themeStyle} />;
   if (runner.error) return <State message={runner.error} />;
   if (runner.stage) {
     return (
@@ -37,10 +40,11 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
         words={runner.wordsToShow}
         earnedItem={runner.earnedItem}
         onNext={runner.nextStage}
+        style={themeStyle}
       />
     );
   }
-  if (!runner.currentSection) return <State message="Fase sem secoes." />;
+  if (!runner.currentSection) return <State message="Fase sem secoes." style={themeStyle} />;
 
   return (
     <SectionRunner
@@ -52,6 +56,7 @@ export function AdventureChapterRunnerScreen({ phaseId }: { phaseId: number }) {
       firstName={firstName}
       onBack={() => router.push(APP_ROUTES.adventureMap)}
       onComplete={runner.completeSection}
+      style={themeStyle}
     />
   );
 }
@@ -65,6 +70,7 @@ function SectionRunner(props: {
   firstName: string;
   onBack: () => void;
   onComplete: (mistakes: number) => void;
+  style: CSSProperties;
 }) {
   const [input, setInput] = useState("");
   const runner = useAdventureSectionRunner(props);
@@ -75,10 +81,10 @@ function SectionRunner(props: {
   }
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={props.style}>
       <header className={styles.topbar}>
-        <button onClick={props.onBack} type="button">Voltar</button>
-        <span>Secao {props.sectionNumber}/{props.totalSections}</span>
+        <button onClick={props.onBack} type="button">{STRINGS.actions.back}</button>
+        <span>{STRINGS.adventure.sectionProgress(props.sectionNumber, props.totalSections)}</span>
       </header>
 
       {props.section.recap && (
@@ -147,11 +153,15 @@ function ChatEntryView({ entry }: { entry: AdventureChatEntry }) {
   if (entry.kind === "scene") return <article className={styles.scene}>{entry.text}</article>;
   if (entry.kind === "narrative") return <article className={styles.narrative}>{entry.text}</article>;
   if (entry.kind === "npc") {
+    const avatar = getCharacterAvatar(entry.npc);
     return (
       <article className={styles.npc}>
-        <strong>{entry.npc}</strong>
-        <p>{entry.line}</p>
-        {entry.translation && <span>{entry.translation}</span>}
+        <CharacterAvatar emoji="" langCode="ES" name={entry.npc} size={42} slug={avatar?.slug} />
+        <div>
+          <strong>{entry.npc}</strong>
+          <p>{entry.line}</p>
+          {entry.translation && <span>{entry.translation}</span>}
+        </div>
       </article>
     );
   }
@@ -183,15 +193,17 @@ function CompletionStage({
   words,
   earnedItem,
   onNext,
+  style,
 }: {
   stage: "trophy" | "words" | "item";
   phaseNumber: number;
   words: string[];
   earnedItem: { emoji: string; name: string; lore: string; rarity: string } | null;
   onNext: () => void;
+  style: CSSProperties;
 }) {
   return (
-    <main className={styles.complete}>
+    <main className={styles.complete} style={style}>
       {stage === "trophy" && (
         <>
           <p>Fase concluida</p>
@@ -218,9 +230,9 @@ function CompletionStage({
   );
 }
 
-function State({ message }: { message: string }) {
+function State({ message, style }: { message: string; style?: CSSProperties }) {
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={style}>
       <Link href={APP_ROUTES.adventureMap}>Voltar ao mapa</Link>
       <p>{message}</p>
     </main>

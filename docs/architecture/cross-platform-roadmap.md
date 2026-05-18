@@ -2,7 +2,7 @@
 
 Checkpoint date: 2026-05-17
 
-This document records the current checkpoint before the larger architecture shift toward the `_TEMPLATESHARED` model.
+This document records the current checkpoint for the local shared web/mobile/admin architecture.
 
 ## Current State
 
@@ -10,26 +10,61 @@ The project currently has:
 
 - `backend/`: Django + DRF, already split by domain apps.
 - `frontend-web/`: Vite + React 18 + Tailwind CSS.
-- `frontend-admin/`: separate admin frontend.
+- `admin/`: separate admin frontend.
 - `docs/`: product, content, design, architecture and feature docs.
-- `docs/_TEMPLATESHARED/`: target architecture template for shared web/mobile projects.
+- `docs/architecture/`: target architecture docs for this project.
 
 The backend is close to the target architecture. The frontend is not: it still keeps types, services, hooks, strings and render logic inside `frontend-web`.
 
 ## Target Architecture
 
-The target is to move toward the `_TEMPLATESHARED` shape:
+The target is to move toward this repository shape:
 
 ```txt
 backend/                source of truth
 packages/shared-core/   shared brain: types, services, hooks, strings, tokens
 frontend-web/           current web app, later render-only consumer
 mobile/                 Expo app, render-only consumer
-frontend-admin/         admin app
+admin/                  admin app
 docs/                   canonical decisions and audits
 ```
 
 Important adaptation: this project will not immediately replace `frontend-web` with Next.js. The safer first step is to keep the current Vite app and extract shared logic into `packages/shared-core`.
+
+## Future Folder Consolidation
+
+After parity is complete and `frontend-web/` has been removed, consider one
+structural cleanup: consolidate the client-side projects under a single
+`frontend/` folder.
+
+Potential future shape:
+
+```txt
+backend/
+frontend/
+  shared-core/
+  web/
+  mobile/
+  admin/
+docs/
+bats/
+```
+
+This is cleaner for new templates and future projects because it separates the
+Django source of truth from all client consumers. It also makes it clear that
+`frontend/shared-core` is the shared client brain while `backend/` remains the
+authoritative source of business rules, persistence, permissions, rewards and
+content integrity.
+
+Do not do this during the active parity migration. The current repo has many
+path-sensitive references in package file links, TypeScript aliases, Next config,
+BAT automation, package locks and architecture docs. Moving folders now would
+add migration risk without improving product parity. Revisit only after:
+
+- `frontend-web/` is deleted;
+- `web/`, `mobile/` and `admin/` builds are stable;
+- package locks can be regenerated intentionally;
+- docs and BATs can be updated in one focused structural pass.
 
 ## Checkpoint Decision
 
@@ -50,7 +85,7 @@ The current `frontend-web` does use Tailwind:
 - `frontend-web/package.json` includes `tailwindcss`, `postcss` and `autoprefixer`.
 - Many components use utility classes through `className`.
 
-The template target says web should use CSS Modules + design tokens, not Tailwind. That is a large UI migration and should happen after shared-core extraction, otherwise we would be changing architecture and visual implementation at the same time.
+The target architecture says web should use CSS Modules + design tokens, not Tailwind. That is a large UI migration and should happen after shared-core extraction, otherwise we would be changing architecture and visual implementation at the same time.
 
 ## Migration Phases
 

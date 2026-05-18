@@ -1,17 +1,39 @@
 "use client";
 
-import { ROUTES, adventureService, contentService } from "@linguaflow/shared-core";
-import type { ApiAdventureChapter, StudyModule, StudySessionData } from "@linguaflow/shared-core";
+import {
+  ROUTES,
+  STRINGS,
+  adventureService,
+  contentService,
+  getStudyAreaTheme,
+  getStudyAreaThemeVars,
+} from "@linguaflow/shared-core";
+import type {
+  ApiAdventureChapter,
+  Goal,
+  Phrase,
+  StudyLesson,
+  StudyModule,
+  StudySessionData,
+} from "@linguaflow/shared-core";
 import { useStudySessionRunner } from "@linguaflow/shared-core/hooks/study";
+import { BookOpen, CheckCircle2, Circle, Lock, Play, RotateCcw, Sparkles, Sword } from "lucide-react";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./StudyScreen.module.css";
+
+type StudyTab = "guided" | "modules";
 
 export function StudyScreen() {
   const [session, setSession] = useState<StudySessionData | null>(null);
   const [chapters, setChapters] = useState<ApiAdventureChapter[]>([]);
   const [modules, setModules] = useState<StudyModule[]>([]);
+  const [goal, setGoal] = useState<Goal | null>(null);
+  const [phrases, setPhrases] = useState<Phrase[]>([]);
+  const [tab, setTab] = useState<StudyTab>("guided");
   const [loading, setLoading] = useState(true);
+  const [phrasesLoading, setPhrasesLoading] = useState(false);
   const [error, setError] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
 
@@ -20,11 +42,13 @@ export function StudyScreen() {
       adventureService.getStudySession(),
       adventureService.listChapters(),
       contentService.listStudyModules(),
+      contentService.getCurrentGoal().catch(() => null),
     ])
-      .then(([nextSession, nextChapters, nextModules]) => {
+      .then(([nextSession, nextChapters, nextModules, nextGoal]) => {
         setSession(nextSession);
         setChapters(nextChapters);
         setModules(nextModules);
+        setGoal(nextGoal);
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false));
@@ -49,60 +73,216 @@ export function StudyScreen() {
     return null;
   }, [modules, nextPhase]);
 
-  if (loading) return <State message="Carregando estudo..." />;
-  if (error) return <State message="Nao foi possivel carregar o estudo." />;
+  useEffect(() => {
+    if (!currentLesson?.lesson.slug) {
+      setPhrases([]);
+      return;
+    }
+
+    setPhrasesLoading(true);
+    contentService
+      .listPhrases(currentLesson.lesson.slug)
+      .then(setPhrases)
+      .catch(() => setPhrases([]))
+      .finally(() => setPhrasesLoading(false));
+  }, [currentLesson?.lesson.slug]);
+
+  const theme = getStudyAreaTheme(goal);
+  const themeVars = getStudyAreaThemeVars(theme) as CSSProperties;
+  const dueCount = session?.due_count ?? 0;
+  const hasReview = Boolean(session?.exercises.length);
+
+  if (loading) return <State message={STRINGS.states.loadingStudy} />;
+  if (error) return <State message={STRINGS.states.studyLoadError} />;
   if (reviewOpen && session) {
     return <StudyReview exercises={session.exercises} onClose={() => setReviewOpen(false)} />;
   }
 
   return (
-    <main className={styles.page}>
-      <header className={styles.header}>
-        <p>Estudo guiado</p>
-        <h1>Treine o que a aventura esta pedindo agora.</h1>
-        <span>{session?.due_count ?? 0} revisoes pendentes</span>
-      </header>
-
-      <section className={styles.hero}>
-        <div>
-          <p>Proxima fase</p>
-          <h2>{nextPhase?.phase.title ?? "Comece sua aventura"}</h2>
-          <span>{nextPhase ? `${nextPhase.chapter.title} · Fase ${nextPhase.phase.number}` : "Mapa da aventura"}</span>
-        </div>
-        <div className={styles.actions}>
-          <button disabled={!session?.exercises.length} onClick={() => setReviewOpen(true)} type="button">Revisar agora</button>
-          <Link href={ROUTES.adventureMap}>Abrir mapa</Link>
-        </div>
-      </section>
-
-      {currentLesson && (
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <div>
-              <p>Licao atual</p>
-              <h2>{currentLesson.lesson.title}</h2>
-              <span>{currentLesson.module.title}</span>
-            </div>
-            <strong>{currentLesson.lesson.phrase_count}</strong>
+    <main className={styles.page} style={themeVars}>
+      <div className={styles.inner}>
+        <header className={styles.header}>
+          <div>
+            <p>{STRINGS.study.title}</p>
+            <h1>{STRINGS.study.headline}</h1>
           </div>
-          <p className={styles.description}>{currentLesson.lesson.description}</p>
-        </section>
-      )}
+          <span>{STRINGS.study.pendingReviews(dueCount)}</span>
+        </header>
 
-      <section className={styles.moduleGrid}>
+        <div className={styles.tabs}>
+          <button className={tab === "guided" ? styles.activeTab : styles.tab} onClick={() => setTab("guided")} type="button">
+            <Sparkles size={16} />
+            {STRINGS.today.tabSession}
+          </button>
+          <button className={tab === "modules" ? styles.activeTab : styles.tab} onClick={() => setTab("modules")} type="button">
+            <BookOpen size={16} />
+            {STRINGS.today.tabModules}
+          </button>
+        </div>
+
+        {tab === "guided" ? (
+          <div className={styles.content}>
+            <section className={styles.hero}>
+              <div className={styles.heroCopy}>
+                <div className={styles.iconBubble}>
+                  <Sword size={22} />
+                </div>
+                <p>{STRINGS.study.nextPhase}</p>
+                <h2>{nextPhase?.phase.title ?? STRINGS.study.startAdventureTitle}</h2>
+                <span>
+                  {nextPhase
+                    ? `${nextPhase.chapter.title} - ${STRINGS.adventure.phaseLabel(nextPhase.phase.number)}`
+                    : STRINGS.study.adventureMap}
+                </span>
+                <small>{STRINGS.study.continueAdventureHint}</small>
+              </div>
+              <div className={styles.heroActions}>
+                <Link className={styles.primaryAction} href={ROUTES.adventureMap}>
+                  <Play size={16} />
+                  {STRINGS.study.continueAdventureBtn}
+                </Link>
+                <button className={styles.secondaryAction} disabled={phrasesLoading || phrases.length === 0} type="button">
+                  {STRINGS.study.studyNowBtn}
+                </button>
+              </div>
+            </section>
+
+            {currentLesson ? (
+              <CurrentLessonCard currentLesson={currentLesson} phrases={phrases} phrasesLoading={phrasesLoading} />
+            ) : null}
+
+            <ReviewCard dueCount={dueCount} disabled={!hasReview} onReview={() => setReviewOpen(true)} />
+            <StudyTrail modules={modules} currentLessonId={currentLesson?.lesson.id ?? null} currentPhase={nextPhase?.phase.number ?? null} />
+          </div>
+        ) : (
+          <StudyTrail modules={modules} currentLessonId={currentLesson?.lesson.id ?? null} currentPhase={nextPhase?.phase.number ?? null} expanded />
+        )}
+      </div>
+    </main>
+  );
+}
+
+function CurrentLessonCard({
+  currentLesson,
+  phrases,
+  phrasesLoading,
+}: {
+  currentLesson: { module: StudyModule; lesson: StudyLesson };
+  phrases: Phrase[];
+  phrasesLoading: boolean;
+}) {
+  const phraseCount = phrases.length || currentLesson.lesson.phrase_count;
+
+  return (
+    <section className={styles.card}>
+      <div className={styles.cardHeader}>
+        <div>
+          <p>{STRINGS.study.currentLesson}</p>
+          <h2>{currentLesson.lesson.title || STRINGS.study.lessonFallback}</h2>
+          <span>{currentLesson.module.title}</span>
+        </div>
+        <strong>{STRINGS.study.phrasesCount(phraseCount)}</strong>
+      </div>
+      <p className={styles.description}>{currentLesson.lesson.description}</p>
+      <div className={styles.phraseList}>
+        {phrases.slice(0, 4).map((phrase) => (
+          <div className={styles.phraseRow} key={phrase.id}>
+            <span>{phrase.source_text}</span>
+            <strong>{phrase.target_text}</strong>
+          </div>
+        ))}
+        {!phrasesLoading && phrases.length === 0 ? <p className={styles.emptyDetail}>{STRINGS.study.noWordsDetail}</p> : null}
+      </div>
+      <button className={styles.lessonButton} disabled={phrasesLoading || phraseCount === 0} type="button">
+        {STRINGS.study.studyPhrasesBtn(phraseCount)}
+      </button>
+    </section>
+  );
+}
+
+function ReviewCard({ dueCount, disabled, onReview }: { dueCount: number; disabled: boolean; onReview: () => void }) {
+  return (
+    <section className={styles.reviewCard}>
+      <div className={styles.reviewIcon}>
+        <RotateCcw size={18} />
+      </div>
+      <div>
+        <p>{STRINGS.study.reviewNowTitle}</p>
+        <h2>{STRINGS.study.reviewNowWords(dueCount)}</h2>
+        <span>{STRINGS.study.reviewNowSubtitle}</span>
+      </div>
+      <button disabled={disabled} onClick={onReview} type="button">
+        {STRINGS.study.reviewBtn}
+      </button>
+    </section>
+  );
+}
+
+function StudyTrail({
+  modules,
+  currentLessonId,
+  currentPhase,
+  expanded = false,
+}: {
+  modules: StudyModule[];
+  currentLessonId: number | null;
+  currentPhase: number | null;
+  expanded?: boolean;
+}) {
+  return (
+    <section className={styles.trail}>
+      <div className={styles.trailHeader}>
+        <p>{STRINGS.study.pathEyebrow}</p>
+        <h2>{STRINGS.study.pathTitle}</h2>
+        <span>{STRINGS.study.pathDetail}</span>
+      </div>
+      <div className={styles.moduleList}>
         {modules.map((module) => (
           <article className={styles.moduleCard} key={module.id}>
-            <h2>{module.title}</h2>
-            <span>{module.lessons.length} licoes</span>
-            <div>
-              {module.lessons.slice(0, 5).map((lesson) => (
-                <p key={lesson.id}>{lesson.title}</p>
+            <div className={styles.moduleHeader}>
+              <span>{STRINGS.study.moduleLabel(module.order)}</span>
+              <strong>{module.title}</strong>
+              <small>{STRINGS.study.moduleLessons(module.lessons.length)}</small>
+            </div>
+            <div className={styles.lessonList}>
+              {(expanded ? module.lessons : module.lessons.slice(0, 5)).map((lesson) => (
+                <LessonRow currentLessonId={currentLessonId} currentPhase={currentPhase} key={lesson.id} lesson={lesson} />
               ))}
             </div>
           </article>
         ))}
-      </section>
-    </main>
+      </div>
+    </section>
+  );
+}
+
+function LessonRow({
+  lesson,
+  currentLessonId,
+  currentPhase,
+}: {
+  lesson: StudyLesson;
+  currentLessonId: number | null;
+  currentPhase: number | null;
+}) {
+  const isCurrent = lesson.id === currentLessonId;
+  const isCompleted = Boolean(currentPhase && lesson.adventure_phase && lesson.adventure_phase < currentPhase);
+  const isLocked = Boolean(currentPhase && lesson.adventure_phase && lesson.adventure_phase > currentPhase);
+  const status = isCurrent ? STRINGS.study.current : isCompleted ? STRINGS.study.completed : isLocked ? STRINGS.study.locked : STRINGS.study.unlocked;
+
+  return (
+    <div className={`${styles.lessonRow} ${isCurrent ? styles.currentLesson : ""}`}>
+      <span className={styles.lessonIcon}>
+        {isCompleted ? <CheckCircle2 size={16} /> : isLocked ? <Lock size={16} /> : <Circle size={16} />}
+      </span>
+      <div>
+        <strong>{lesson.title}</strong>
+        <small>
+          {lesson.adventure_phase ? STRINGS.study.phaseLabel(lesson.adventure_phase) : STRINGS.study.lessonFallback} - {status}
+        </small>
+      </div>
+      <em>{STRINGS.study.phrasesCount(lesson.phrase_count)}</em>
+    </div>
   );
 }
 
@@ -119,14 +299,14 @@ function StudyReview({
   if (runner.done) {
     return (
       <main className={styles.reviewPage}>
-        <h1>Revisao concluida</h1>
-        <p>{runner.correctCount} acertos · {runner.mistakes} erros</p>
-        <button onClick={runner.finish} type="button">Voltar</button>
+        <h1>{STRINGS.study.sessionComplete}</h1>
+        <p>{STRINGS.study.sessionScore(runner.correctCount, runner.mistakes)}</p>
+        <button onClick={runner.finish} type="button">{STRINGS.actions.back}</button>
       </main>
     );
   }
 
-  if (!runner.current) return <State message="Nenhuma revisao pendente." />;
+  if (!runner.current) return <State message={STRINGS.states.emptyReview} />;
 
   return (
     <main className={styles.reviewPage}>
@@ -147,10 +327,10 @@ function StudyReview({
               setAnswer("");
             }
           }} />
-          <button onClick={() => { runner.submit(answer); setAnswer(""); }} type="button">Responder</button>
+          <button onClick={() => { runner.submit(answer); setAnswer(""); }} type="button">{STRINGS.study.answer}</button>
         </div>
       )}
-      <button className={styles.secondaryButton} onClick={onClose} type="button">Sair</button>
+      <button className={styles.secondaryButton} onClick={onClose} type="button">{STRINGS.study.exit}</button>
     </main>
   );
 }

@@ -1,7 +1,9 @@
 .page,
 .complete {
-  background: linear-gradient(180deg, #20120a 0%, #0f0906 100%);
-  color: #fff7ed;
+  background:
+    radial-gradient(circle at 50% -10%, var(--adventure-ambient-glow), transparent 34rem),
+    linear-gradient(180deg, var(--adventure-bg-from), var(--adventure-bg-mid) 48%, var(--adventure-bg-to));
+  color: var(--adventure-parchment);
   min-height: 100dvh;
 }
 
@@ -22,10 +24,10 @@
 .summary button,
 .complete button,
 .inputRow button {
-  background: #fbbf24;
   border: 0;
   border-radius: var(--radius-sm);
-  color: #1a0800;
+  background: var(--adventure-gold);
+  color: var(--adventure-cta-text);
   cursor: pointer;
   font: inherit;
   font-weight: var(--font-weight-bold);
@@ -34,13 +36,13 @@
 }
 
 .topbar button {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff7ed;
+  background: var(--adventure-surface);
+  color: var(--adventure-parchment);
 }
 
 .recap {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
   margin: 0 16px 12px;
   padding: 12px;
@@ -48,7 +50,7 @@
 
 .recap p,
 .recap span {
-  color: rgba(255, 247, 237, 0.78);
+  color: var(--adventure-text-on-bg);
   font-size: var(--font-size-sm);
   margin: 6px 0 0;
 }
@@ -78,8 +80,8 @@
 
 .scene {
   align-self: center;
-  background: rgba(251, 191, 36, 0.16);
-  border: 1px solid rgba(251, 191, 36, 0.4);
+  background: var(--adventure-gold-soft);
+  border: 1px solid var(--adventure-gold);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   text-align: center;
@@ -89,16 +91,18 @@
 .pattern,
 .reveal,
 .vocab {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--adventure-surface);
 }
 
 .npc {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--adventure-surface);
+  display: flex;
+  gap: var(--spacing-md);
 }
 
 .npc strong {
-  color: #fbbf24;
+  color: var(--adventure-gold);
   display: block;
   font-size: var(--font-size-xs);
   margin-bottom: 6px;
@@ -120,7 +124,7 @@
 .pattern span,
 .pattern small,
 .reveal span {
-  color: rgba(255, 247, 237, 0.66);
+  color: var(--adventure-text-on-bg);
   display: block;
   font-size: var(--font-size-sm);
   margin-top: 6px;
@@ -130,20 +134,21 @@
 .correct,
 .wrong {
   align-self: flex-end;
-  background: rgba(37, 99, 235, 0.34);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
 }
 
 .correct {
-  background: rgba(22, 163, 74, 0.28);
+  background: var(--adventure-gold-soft);
 }
 
 .wrong {
-  background: rgba(220, 38, 38, 0.28);
+  background: var(--adventure-surface-mid);
 }
 
 .footer {
-  background: rgba(0, 0, 0, 0.24);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--adventure-surface-mid);
+  border-top: 1px solid var(--adventure-border-faint);
   padding: 14px 16px 22px;
 }
 
@@ -157,10 +162,10 @@
 }
 
 .choiceGrid button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
-  color: #fff7ed;
+  color: var(--adventure-parchment);
   cursor: pointer;
   font: inherit;
   font-weight: var(--font-weight-semibold);
@@ -175,7 +180,7 @@
 }
 
 .inputRow input {
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
   flex: 1;
   font: inherit;
@@ -210,7 +215,7 @@
 
 .metrics span,
 .words span {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--adventure-surface);
   border-radius: var(--radius-full);
   font-weight: var(--font-weight-bold);
   padding: 7px 12px;

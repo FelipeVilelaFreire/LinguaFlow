@@ -14,7 +14,7 @@ dist/
 
 # Generated/local media and tool binaries
 backend/media/
-backend/models/
+backend/tts_models/
 backend/tools/
 
 # Environment

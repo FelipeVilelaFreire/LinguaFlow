@@ -4,7 +4,7 @@ Arquitetura ativa do backend Django/DRF do LinguaFlow.
 
 O backend usa apps Django reais por dominio. A regra principal e simples:
 codigo de produto fica em `apps/<dominio>/`; configuracao global fica em
-`linguaflow/`; dados/seeds legados ficam fora do caminho principal.
+`config/`; dados/seeds legados ficam fora do caminho principal.
 
 ## Estrutura Atual
 
@@ -12,9 +12,8 @@ codigo de produto fica em `apps/<dominio>/`; configuracao global fica em
 backend/
 |-- manage.py
 |-- requirements.txt
-|-- setup.bat
 |-- db.sqlite3
-|-- linguaflow/
+|-- config/
 |   |-- settings.py
 |   |-- urls.py
 |   `-- wsgi.py
@@ -63,17 +62,23 @@ backend/
 
 ## Responsabilidades
 
-- `linguaflow/`: configuracao global do Django, DRF, CORS, JWT, banco e rotas.
+- `config/`: configuracao global do Django, DRF, CORS, JWT, banco e rotas.
 - `apps/accounts/`: autenticacao, usuario atual, login, registro e dashboard admin via API.
 - `apps/learning/`: idiomas, cenarios, frases, aulas, modulos e dias de estudo.
 - `apps/goals/`: areas de estudo, objetivo ativo, rotina, onboarding e historico por meta.
 - `apps/progress/`: progresso do usuario, favoritos, completions, streak e estado salvo.
 - `apps/adventure/`: capitulos, fases, personagens, inventario, itens, vocabulario de aventura e endpoints de dev.
 - `content/`: area legada para seeds/cache/migracoes antigas. Nao deve receber codigo novo de produto.
+- `bats/backend/`: automacao local do backend. Fica fora de `backend/`
+  porque `bats/` e a raiz unica de scripts Windows do repositorio.
+- `tts_models/`: modelos Piper locais para laboratorio/dev de TTS. E gerado,
+  ignorado pelo Git e nao contem Django models.
+- `media/`: cache/arquivos locais gerados pelo Django, como WAVs da aventura.
+  E ignorado pelo Git e pode ser recriado.
 
 ## Installed Apps
 
-Os apps de dominio ativos ficam em `linguaflow/settings.py`:
+Os apps de dominio ativos ficam em `config/settings.py`:
 
 ```python
 INSTALLED_APPS = [
@@ -87,7 +92,7 @@ INSTALLED_APPS = [
 
 ## Rotas
 
-As rotas de API ficam centralizadas em `linguaflow/urls.py` com `DefaultRouter`.
+As rotas de API ficam centralizadas em `config/urls.py` com `DefaultRouter`.
 Esse arquivo deve registrar ViewSets, mas a regra de negocio deve continuar
 dentro do app de dominio.
 
@@ -120,7 +125,7 @@ Principais grupos:
 - Novo codigo de metas/areas/rotina entra em `apps/goals/`.
 - Novo codigo de progresso entra em `apps/progress/`.
 - Novo codigo de aventura entra em `apps/adventure/`.
-- Rotas continuam centralizadas em `linguaflow/urls.py`.
+- Rotas continuam centralizadas em `config/urls.py`.
 - Seeds de estudo ficam em `apps/learning/management/commands/`.
 - Seeds da aventura ficam em `apps/adventure/management/commands/`.
 - `content/` e compatibilidade legada nao devem ser usados para codigo novo.
@@ -182,6 +187,16 @@ apps/adventure/
 Os comandos podem continuar existindo, mas deveriam ficar finos: eles chamam
 funcoes/dados de `seed_data/` em vez de carregar dezenas de milhares de linhas
 diretamente no command.
+
+Automacao local para rodar migrations e seeds fica em:
+
+```bat
+bats\backend\setup.bat
+bats\backend\migrations.bat
+```
+
+Nao recrie `backend\bats`; scripts Windows do projeto ficam centralizados em
+`bats/`.
 
 ## Validacao
 

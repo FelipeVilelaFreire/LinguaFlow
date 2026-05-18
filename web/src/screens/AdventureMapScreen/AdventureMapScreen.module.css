@@ -1,7 +1,9 @@
 .page {
   min-height: 100dvh;
-  background: var(--color-white);
-  color: var(--color-gray900);
+  background:
+    radial-gradient(circle at 50% -10%, var(--adventure-ambient-glow), transparent 34rem),
+    linear-gradient(180deg, var(--adventure-bg-from), var(--adventure-bg-mid) 48%, var(--adventure-bg-to));
+  color: var(--adventure-parchment);
   padding: var(--spacing-lg);
 }
 
@@ -21,10 +23,12 @@
 .tabs a,
 .tabs span {
   align-items: center;
-  background: var(--color-gray100);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-sm);
-  color: var(--color-gray600);
+  color: var(--adventure-text-on-bg);
   display: flex;
+  gap: var(--spacing-xs);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   min-height: 38px;
@@ -34,14 +38,16 @@
 }
 
 .tabs span {
-  background: var(--color-primary-light);
-  color: var(--color-primary);
+  background: var(--adventure-gold-soft);
+  color: var(--adventure-parchment);
 }
 
 .title {
   font-family: var(--font-display);
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
+  margin: 0 auto;
+  max-width: 980px;
 }
 
 .chapterList {
@@ -51,15 +57,23 @@
 }
 
 .chapter {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-xl);
+  box-shadow: 0 20px 60px var(--adventure-surface-mid);
   padding: var(--spacing-lg);
+}
+
+.chapterHeader {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-sm);
 }
 
 .chapterTitle {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
+  margin: 0;
 }
 
 .phaseList {
@@ -70,13 +84,37 @@
 
 .phaseCard {
   align-items: center;
-  border: 1px solid var(--color-gray200);
+  background: var(--adventure-surface);
+  border: 1px solid var(--adventure-border-faint);
   border-radius: var(--radius-md);
-  color: inherit;
+  color: var(--adventure-parchment);
   display: flex;
-  justify-content: space-between;
+  gap: var(--spacing-md);
   padding: var(--spacing-md);
   text-decoration: none;
+}
+
+.phaseNode {
+  align-items: center;
+  background: var(--adventure-node-active);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 0 4px var(--adventure-node-active-glow);
+  color: var(--adventure-cta-text);
+  display: inline-flex;
+  flex: 0 0 34px;
+  font-weight: var(--font-weight-bold);
+  height: 34px;
+  justify-content: center;
+}
+
+.phaseCopy {
+  display: grid;
+  gap: var(--spacing-xs);
+}
+
+.phaseCopy span {
+  color: var(--adventure-text-on-bg);
+  font-size: var(--font-size-sm);
 }
 
 @media (min-width: 769px) {

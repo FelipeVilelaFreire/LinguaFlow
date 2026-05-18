@@ -31,7 +31,7 @@ backend/apps/progress/admin.py
 Folder:
 
 ```txt
-frontend-admin/
+admin/
 ```
 
 URL:

@@ -29,11 +29,10 @@ Esse comando cria:
 - 25 `StudyDay` canônicos alinhados às fases ES A1 T1
 - 25 explicações curtas com objetivo e notas de exercício
 
-Os bats de ES já chamam esse seed:
+O setup de seeds do backend chama esse seed:
 
 ```text
-backend/bats/idiomas/es.bat
-backend/bats/seeds/es.bat
+bats/backend/setup.bat
 ```
 
 Importante: seed de estudo pertence ao app `learning/`, não ao app `adventure/`.
@@ -118,8 +117,7 @@ python manage.py seed_es_study
 Via bat:
 
 ```bat
-backend\bats\idiomas\es.bat
-backend\bats\seeds\es.bat
+bats\backend\setup.bat
 ```
 
 ## Status
@@ -128,8 +126,8 @@ backend\bats\seeds\es.bat
 - [x] Modo Estudo conectado à API.
 - [x] `seed_es_study.py` cria módulos, cenários, frases, explicações e StudyDays para ES A1.
 - [x] `StudyDayViewSet.today` filtra pelo idioma da meta ativa.
-- [x] Bats ES chamam `seed_es_study`.
-- [x] Bats IT/DE chamam `seed_it_study` e `seed_de_study`.
+- [x] `bats\backend\setup.bat` chama `seed_es_study`.
+- [x] `bats\backend\setup.bat` chama `seed_it_study` e `seed_de_study`.
 - [ ] Validar localmente o fluxo completo com banco populado.
 - [x] `seed_it_study.py` e `seed_de_study.py` criam estudo canonico para IT e DE.
 

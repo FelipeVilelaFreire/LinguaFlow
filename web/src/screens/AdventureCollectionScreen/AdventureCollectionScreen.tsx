@@ -1,6 +1,6 @@
 "use client";
 
-import { ROUTES, STRINGS, adventureService } from "@linguaflow/shared-core";
+import { getAdventureColors, getAdventureThemeVars, getCharacterAvatar, ROUTES, STRINGS, adventureService } from "@linguaflow/shared-core";
 import type {
   ApiAdventureCharacter,
   ApiUserChest,
@@ -8,7 +8,10 @@ import type {
   HeroStats,
 } from "@linguaflow/shared-core";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { CharacterAvatar } from "@/src/components/CharacterAvatar";
+import { LangFlag } from "@/src/components/LangFlag";
 import styles from "./AdventureCollectionScreen.module.css";
 
 type CollectionKind = "inventory" | "chests" | "words" | "hero" | "characters";
@@ -67,6 +70,8 @@ const TITLES: Record<CollectionKind, { eyebrow: string; title: string; subtitle:
 };
 
 export function AdventureCollectionScreen({ kind }: { kind: CollectionKind }) {
+  const langCode = "ES";
+  const themeStyle = getAdventureThemeVars(getAdventureColors(langCode, "dark")) as CSSProperties;
   const [data, setData] = useState<CollectionState>(EMPTY_STATE);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,7 +102,7 @@ export function AdventureCollectionScreen({ kind }: { kind: CollectionKind }) {
   const count = useMemo(() => getCount(kind, data), [kind, data]);
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} style={themeStyle}>
       <nav className={styles.tabs} aria-label="Aventura">
         {TABS.map((tab) => (
           <Link
@@ -112,7 +117,7 @@ export function AdventureCollectionScreen({ kind }: { kind: CollectionKind }) {
 
       <header className={styles.header}>
         <div>
-          <p>{title.eyebrow}</p>
+          <p><LangFlag code={langCode} size="xs" /> {title.eyebrow}</p>
           <h1>{title.title}</h1>
           <span>{title.subtitle}</span>
         </div>
@@ -121,7 +126,7 @@ export function AdventureCollectionScreen({ kind }: { kind: CollectionKind }) {
 
       {loading && <StateMessage message="Carregando..." />}
       {error && <StateMessage message={error} />}
-      {!loading && !error && renderCollection(kind, data, setSelectedCharacter)}
+      {!loading && !error && renderCollection(kind, data, setSelectedCharacter, langCode)}
       {selectedCharacter ? (
         <CharacterModal character={selectedCharacter} onClose={() => setSelectedCharacter(null)} />
       ) : null}
@@ -154,6 +159,7 @@ function renderCollection(
   kind: CollectionKind,
   data: CollectionState,
   onCharacterSelect: (character: ApiAdventureCharacter) => void,
+  langCode: string,
 ) {
   if (kind === "inventory") {
     if (data.inventory.length === 0) return <StateMessage message="Sua mochila esta vazia. Complete fases para coletar itens." />;
@@ -231,7 +237,13 @@ function renderCollection(
           key={character.id}
           onClick={() => onCharacterSelect(character)}
         >
-          <span className={styles.emoji}>{character.emoji}</span>
+          <CharacterAvatar
+            emoji={character.emoji}
+            langCode={langCode}
+            name={character.name}
+            size={48}
+            slug={character.slug || getCharacterAvatar(character.name)?.slug}
+          />
           <div>
             <h2>{character.name}</h2>
             <p>{character.description}</p>
@@ -271,7 +283,13 @@ function CharacterModal({
           ×
         </button>
         <div className={styles.modalHero}>
-          <span className={styles.modalEmoji}>{character.emoji}</span>
+          <CharacterAvatar
+            emoji={character.emoji}
+            langCode="ES"
+            name={character.name}
+            size={72}
+            slug={character.slug || getCharacterAvatar(character.name)?.slug}
+          />
           <div>
             <p>{character.role}</p>
             <h2>{character.name}</h2>

@@ -1,46 +1,165 @@
 .page {
-  min-height: 100dvh;
-  background: var(--color-white);
-  color: var(--color-gray900);
-  padding: var(--spacing-lg);
-}
-
-.hero {
   display: flex;
-  min-height: 70dvh;
-  max-width: 720px;
   flex-direction: column;
-  justify-content: center;
-  gap: var(--spacing-lg);
+  gap: 12px;
+  padding-bottom: 16px;
 }
 
-.eyebrow {
-  color: var(--color-primary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
+.studyBanner {
+  align-items: center;
+  background: var(--area-primary);
+  border-radius: var(--radius-md);
+  color: var(--area-text-on-primary);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: 14px 16px;
 }
 
-.title {
-  color: var(--color-gray900);
-  font-family: var(--font-display);
-  font-size: var(--font-size-4xl);
+.studyBanner div {
+  display: grid;
+  gap: 2px;
+}
+
+.studyBanner span {
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
-  line-height: 1.08;
+  opacity: 0.78;
+  text-transform: uppercase;
 }
 
-.actions {
+.studyBanner strong {
+  font-size: var(--font-size-base);
+}
+
+.studyBanner a {
+  align-items: center;
+  background: var(--color-white);
+  border-radius: var(--radius-sm);
+  color: var(--area-primary-dark);
+  display: inline-flex;
+  gap: 6px;
+  font-weight: var(--font-weight-bold);
+  min-height: 40px;
+  padding: 0 var(--spacing-md);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.heroCard,
+.heroCardActive,
+.routineCard,
+.emptyState {
+  background: var(--color-white);
+  border: 1px solid rgba(226, 232, 240, 0.88);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(15,23,42,0.035);
+}
+
+.heroCard {
+  padding: 20px;
+}
+
+.heroCardActive {
+  box-shadow: 0 0 0 1.5px var(--area-primary), 0 2px 12px rgba(15,23,42,0.08);
+  padding: 20px;
+}
+
+.heroTop {
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.levelPill {
+  background: var(--area-primary-soft);
+  border-radius: var(--radius-full);
+  color: var(--area-primary-dark);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  padding: 6px var(--spacing-md);
+  text-transform: uppercase;
+}
+
+.heroTop strong {
+  color: var(--area-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.languageRow {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: 16px;
+}
+
+.languageRow h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.languagePath,
+.progressMeta,
+.routineCard p {
+  align-items: center;
+  color: var(--color-gray500);
+  display: flex;
+  gap: 6px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  margin: 4px 0 0;
+}
+
+.progressMeta {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin-top: 8px;
+}
+
+.progressBlock {
+  margin-top: 16px;
+}
+
+.progressBlock p {
+  color: var(--color-gray400);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  margin: 8px 0 0;
+}
+
+.progressTrack {
+  background: var(--color-gray100);
+  border-radius: var(--radius-full);
+  height: 8px;
+  overflow: hidden;
+}
+
+.progressTrack span {
+  background: var(--area-primary);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.heroActions {
+  display: grid;
   gap: var(--spacing-sm);
+  margin-top: 16px;
 }
 
 .primaryAction,
 .secondaryAction {
   align-items: center;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   display: inline-flex;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-semibold);
+  gap: var(--spacing-sm);
+  font-weight: var(--font-weight-bold);
   justify-content: center;
   min-height: 48px;
   padding: 0 var(--spacing-lg);
@@ -48,21 +167,127 @@
 }
 
 .primaryAction {
-  background: var(--color-primary);
-  color: var(--color-white);
+  background: var(--area-primary);
+  color: var(--area-text-on-primary);
 }
 
 .secondaryAction {
   background: var(--color-gray100);
+  color: var(--color-gray800);
+}
+
+.statsGrid {
+  background: var(--color-gray100);
+  border-radius: var(--radius-md);
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  overflow: hidden;
+}
+
+.statCard {
+  background: var(--color-white);
+  padding: 16px 12px;
+}
+
+.statCard div {
+  align-items: center;
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.statCard strong {
   color: var(--color-gray900);
+  font-family: var(--font-display);
+  font-size: var(--font-size-3xl);
+  line-height: 1;
+}
+
+.statCard .accentValue {
+  color: var(--area-primary);
+}
+
+.statCard span {
+  display: inline-flex;
+  color: var(--area-primary);
+}
+
+.flameIcon {
+  color: #fb923c;
+}
+
+.bookIcon {
+  color: #0ea5e9;
+}
+
+.statCard p {
+  color: var(--color-gray500);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  margin: var(--spacing-xs) 0 0;
+}
+
+.routineCard {
+  padding: 16px;
+}
+
+.routineCard span {
+  align-items: center;
+  color: var(--color-gray400);
+  display: flex;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+}
+
+.routineCard strong {
+  color: var(--area-primary);
+  display: block;
+  font-size: var(--font-size-base);
+  margin-top: var(--spacing-xs);
+}
+
+.emptyState {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 58dvh;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+}
+
+.emptyIcon {
+  align-items: center;
+  background: var(--area-primary);
+  border-radius: var(--radius-full);
+  color: var(--area-text-on-primary);
+  display: inline-flex;
+  height: 64px;
+  justify-content: center;
+  width: 64px;
+}
+
+.emptyState h1 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  margin: var(--spacing-lg) 0 0;
+}
+
+.emptyState p {
+  color: var(--color-gray500);
+  font-weight: var(--font-weight-semibold);
+  margin: var(--spacing-sm) 0 var(--spacing-lg);
+  max-width: 360px;
 }
 
 @media (min-width: 769px) {
   .page {
-    padding: var(--spacing-3xl);
+    gap: 12px;
   }
 
-  .actions {
-    flex-direction: row;
+  .heroActions {
+    grid-template-columns: 1fr;
   }
 }

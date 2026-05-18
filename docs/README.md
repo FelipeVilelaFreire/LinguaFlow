@@ -26,7 +26,7 @@ Indice central da documentacao do projeto. A raiz do repositorio deve ficar enxu
 
 - [Backend](architecture/backend.md): arquitetura Django/API.
 - [Frontend Web](architecture/frontend-web.md): arquitetura do app web.
-- [Frontend Admin](architecture/frontend-admin.md): arquitetura do admin React.
+- [Admin](architecture/frontend-admin.md): arquitetura do admin React.
 - [Admin Split](architecture/admin.md): divisao entre Django Admin e React Admin.
 
 ## Features

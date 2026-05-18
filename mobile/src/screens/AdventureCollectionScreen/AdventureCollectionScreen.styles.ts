@@ -1,9 +1,11 @@
 import { StyleSheet } from "react-native";
-import { COLORS, FONT_SIZE, RADIUS, SPACING } from "@linguaflow/shared-core";
+import { COLORS, FONT_SIZE, RADIUS, SPACING, getAdventureColors } from "@linguaflow/shared-core";
+
+const adventureTheme = getAdventureColors("ES", "dark");
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.white,
+    backgroundColor: adventureTheme.bgFrom,
     flex: 1,
   },
   content: {
@@ -16,9 +18,9 @@ export const styles = StyleSheet.create({
     paddingBottom: SPACING.xs,
   },
   tab: {
-    backgroundColor: COLORS.gray100,
+    backgroundColor: adventureTheme.surface,
     borderRadius: RADIUS.sm,
-    color: COLORS.gray600,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.sm,
     fontWeight: "700",
     minHeight: 38,
@@ -27,8 +29,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 9,
   },
   activeTab: {
-    backgroundColor: COLORS.primaryLight,
-    color: COLORS.primary,
+    backgroundColor: adventureTheme.goldAccentSoft,
+    color: adventureTheme.parchment,
   },
   header: {
     alignItems: "flex-end",
@@ -41,29 +43,30 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   eyebrow: {
-    color: COLORS.primary,
+    color: adventureTheme.goldAccent,
     fontSize: FONT_SIZE.sm,
     fontWeight: "700",
   },
   title: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchment,
     fontSize: FONT_SIZE["3xl"],
     fontWeight: "700",
   },
   subtitle: {
-    color: COLORS.gray500,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.sm,
     fontWeight: "500",
     marginTop: SPACING.xs,
   },
   count: {
-    color: COLORS.primary,
+    color: adventureTheme.goldAccent,
     fontSize: FONT_SIZE["2xl"],
     fontWeight: "700",
   },
   card: {
     alignItems: "flex-start",
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.surface,
+    borderColor: adventureTheme.borderFaint,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     flexDirection: "row",
@@ -71,14 +74,14 @@ export const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   pressableCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: adventureTheme.surface,
   },
   pressedCard: {
-    borderColor: COLORS.primary,
+    borderColor: adventureTheme.goldAccent,
     transform: [{ translateY: 1 }],
   },
   emoji: {
-    backgroundColor: COLORS.gray100,
+    backgroundColor: adventureTheme.goldAccentSoft,
     borderRadius: RADIUS.sm,
     fontSize: 24,
     height: 42,
@@ -92,34 +95,35 @@ export const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   cardTitle: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchment,
     fontSize: FONT_SIZE.base,
     fontWeight: "700",
   },
   cardDetail: {
-    color: COLORS.gray500,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.sm,
   },
   meta: {
-    color: COLORS.gray400,
+    color: adventureTheme.textFaint,
     fontSize: FONT_SIZE.xs,
     fontWeight: "700",
     textTransform: "uppercase",
   },
   wordRow: {
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.surface,
+    borderColor: adventureTheme.borderFaint,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     gap: SPACING.xs,
     padding: SPACING.md,
   },
   wordTarget: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchment,
     fontSize: FONT_SIZE.base,
     fontWeight: "700",
   },
   wordNative: {
-    color: COLORS.gray500,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.sm,
   },
   metricGrid: {
@@ -128,8 +132,8 @@ export const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   metric: {
-    backgroundColor: COLORS.gray50,
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.surface,
+    borderColor: adventureTheme.borderFaint,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     flexBasis: "47%",
@@ -138,17 +142,17 @@ export const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   metricLabel: {
-    color: COLORS.gray500,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },
   metricValue: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchment,
     fontSize: FONT_SIZE["2xl"],
     fontWeight: "700",
   },
   state: {
-    color: COLORS.gray500,
+    color: adventureTheme.textOnBg,
     fontSize: FONT_SIZE.base,
     fontWeight: "600",
     paddingVertical: SPACING["3xl"],
@@ -156,14 +160,14 @@ export const styles = StyleSheet.create({
   },
   modalBackdrop: {
     alignItems: "center",
-    backgroundColor: "rgba(18, 24, 40, 0.48)",
+    backgroundColor: adventureTheme.surfaceMid,
     flex: 1,
     justifyContent: "center",
     padding: SPACING.lg,
   },
   modalPanel: {
-    backgroundColor: COLORS.white,
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.parchment,
+    borderColor: adventureTheme.parchmentBorder,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     gap: SPACING.md,
@@ -172,8 +176,8 @@ export const styles = StyleSheet.create({
   },
   closeButton: {
     alignItems: "center",
-    backgroundColor: COLORS.gray100,
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.goldAccentSoft,
+    borderColor: adventureTheme.parchmentBorder,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     height: 34,
@@ -185,7 +189,7 @@ export const styles = StyleSheet.create({
     zIndex: 2,
   },
   closeButtonText: {
-    color: COLORS.gray600,
+    color: adventureTheme.parchmentText,
     fontSize: FONT_SIZE.xl,
     fontWeight: "700",
     lineHeight: 24,
@@ -201,7 +205,7 @@ export const styles = StyleSheet.create({
     gap: SPACING.xs,
   },
   modalEmoji: {
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: adventureTheme.goldAccentSoft,
     borderRadius: RADIUS.sm,
     fontSize: 34,
     height: 64,
@@ -211,26 +215,26 @@ export const styles = StyleSheet.create({
     width: 64,
   },
   modalRole: {
-    color: COLORS.primary,
+    color: adventureTheme.parchmentSubtext,
     fontSize: FONT_SIZE.sm,
     fontWeight: "700",
   },
   modalTitle: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchmentText,
     fontSize: FONT_SIZE["2xl"],
     fontWeight: "700",
   },
   quote: {
-    borderLeftColor: COLORS.primary,
+    borderLeftColor: adventureTheme.goldAccent,
     borderLeftWidth: 3,
-    color: COLORS.gray700,
+    color: adventureTheme.parchmentText,
     fontSize: FONT_SIZE.base,
     fontWeight: "700",
     lineHeight: 24,
     paddingLeft: SPACING.md,
   },
   modalDescription: {
-    color: COLORS.gray600,
+    color: adventureTheme.parchmentText,
     fontSize: FONT_SIZE.base,
     lineHeight: 24,
   },
@@ -239,8 +243,8 @@ export const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   fact: {
-    backgroundColor: COLORS.gray50,
-    borderColor: COLORS.gray200,
+    backgroundColor: adventureTheme.goldAccentSoft,
+    borderColor: adventureTheme.parchmentBorder,
     borderRadius: RADIUS.sm,
     borderWidth: 1,
     flex: 1,
@@ -248,13 +252,13 @@ export const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   factLabel: {
-    color: COLORS.gray400,
+    color: adventureTheme.parchmentSubtext,
     fontSize: FONT_SIZE.xs,
     fontWeight: "700",
     textTransform: "uppercase",
   },
   factValue: {
-    color: COLORS.gray900,
+    color: adventureTheme.parchmentText,
     fontSize: FONT_SIZE.sm,
     fontWeight: "700",
   },
